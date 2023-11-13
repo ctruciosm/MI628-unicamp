@@ -1,0 +1,54 @@
+---
+title: "ME920/MI628 - Inferência Causal"
+subtitle: "Introdução"
+author: "Prof. Carlos Trucíos </br> ctrucios@unicamp.br"
+Email: "ctrucios@unicamp.br"
+institute: "Instituto de Matemática, Estatística e Computação Científica (IMECC), </br> Universidade Estadual de Campinas (UNICAMP)."
+knitr:
+    opts_chunk: 
+      fig.align: 'center'
+execute:
+    message: false
+    warning: false
+format:
+    revealjs:
+        slide-number: true
+        show-slide-number: print
+        self-contained: false
+        chalkboard: true
+        width: 1600
+        height: 900
+        theme: [default, styles.scss]
+        incremental: true
+        code-fold: true
+        logo: "imagens/imecc.png"
+        footer: "Carlos Trucíos (IMECC/UNICAMP)  |  ME920/MI628 - Inferência Causal |  [ctruciosm.github.io](https://ctruciosm.github.io/)"
+        highlight-style: "a11y"
+        title-slide-attributes:
+            data-background-image: "imagens/unicamp.png"
+            data-background-size: 20%
+            data-background-position: 99% 5%
+            data-background-opacity: "1"
+---
+
+# Introdução
+## Introdução
+ghfahgfasd
+
+# Conceitos básicos
+## Conceitos básicos
+
+
+
+Causation and Causality has typically been addressed by social scientists in the form of SEM (Structural Equation Modeling) and by the medical community in the form of Randomized Controlled Trials. However, in recent years, it's been realized that Directed Acyclic Graphs (DAGs), which have been exploited for years in performing multi-directional inference in Bayesian Networks, is an excellent tool for performing causal inference.
+
+
+## Conceitos básicos
+
+There is no so-called one best causal inference technique, but we do have several ways of identifying causation. I’m going to list three general type according to the strength of causal argument.
+
+The most persuasive approach: Experimental designs or A/B testing or Randomized Controlled Trial. However, not all types of questions can’t be answered in this way as it could be expensive, time-consuming, not ethical, etc.
+    Quasi-experimental approach. If you can’t do a full scale A/B testing, a quasi-experimental approach is the second best option. Within this category, there are several approaches: such as Difference-in-difference, regression discontinuity design, interrupted time series, instrumental variable, panel design with Fixed effect, synthetic control, etc. Please check my blog for detailed description of each approach. I’ve written on most of these topics before.
+    The last resort, observational design. Observational methods include matching, covariate adjustment, propensity score matching. If doing an experiment and quasi-experiment is not possible, we have to rely on observational data. It’s possible to do observational “causal” study using observational data because not everyone agrees whether it is a valid approach of addressing causal questions. Empirical study shows there is discrepancy between Observational and RCT designs. That’s why I call it the last resort.
+
+
