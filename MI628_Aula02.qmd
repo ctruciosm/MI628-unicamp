@@ -269,6 +269,7 @@ As vantagens da randomização são (Fisher, 1935):
 
 :::
 
+# Fisher Randomization Test (FRT)
 
 ## FRT: Fisher Randomization Test
 
