@@ -1,0 +1,1681 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<script src="MI618_Aula03_files/libs/clipboard/clipboard.min.js"></script>
+<script src="MI618_Aula03_files/libs/quarto-html/tabby.min.js"></script>
+<script src="MI618_Aula03_files/libs/quarto-html/popper.min.js"></script>
+<script src="MI618_Aula03_files/libs/quarto-html/tippy.umd.min.js"></script>
+<link href="MI618_Aula03_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="MI618_Aula03_files/libs/quarto-html/quarto-html.min.css" rel="stylesheet" data-mode="light">
+<link href="MI618_Aula03_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+  <meta name="generator" content="quarto-1.2.269">
+
+  <meta name="author" content="Prof.&nbsp;Carlos Trucíos  ctrucios@unicamp.br">
+  <title>Inferência Causal</title>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+  <link rel="stylesheet" href="MI618_Aula03_files/libs/revealjs/dist/reset.css">
+  <link rel="stylesheet" href="MI618_Aula03_files/libs/revealjs/dist/reveal.css">
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #767676;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #767676;  padding-left: 4px; }
+    div.sourceCode
+      { color: #545454; background-color: #fefefe; }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span { color: #545454; } /* Normal */
+    code span.al { color: #7928a1; } /* Alert */
+    code span.an { color: #696969; } /* Annotation */
+    code span.at { color: #a55a00; } /* Attribute */
+    code span.bn { color: #7928a1; } /* BaseN */
+    code span.bu { } /* BuiltIn */
+    code span.cf { color: #d91e18; } /* ControlFlow */
+    code span.ch { color: #008000; } /* Char */
+    code span.cn { color: #d91e18; } /* Constant */
+    code span.co { color: #696969; } /* Comment */
+    code span.cv { color: #696969; font-style: italic; } /* CommentVar */
+    code span.do { color: #696969; font-style: italic; } /* Documentation */
+    code span.dt { color: #7928a1; } /* DataType */
+    code span.dv { color: #7928a1; } /* DecVal */
+    code span.er { color: #7928a1; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #a55a00; } /* Float */
+    code span.fu { color: #06287e; } /* Function */
+    code span.im { } /* Import */
+    code span.in { color: #696969; } /* Information */
+    code span.kw { color: #d91e18; } /* Keyword */
+    code span.op { color: #00769e; } /* Operator */
+    code span.ot { color: #d91e18; } /* Other */
+    code span.pp { color: #7928a1; } /* Preprocessor */
+    code span.sc { color: #00769e; } /* SpecialChar */
+    code span.ss { color: #008000; } /* SpecialString */
+    code span.st { color: #008000; } /* String */
+    code span.va { color: #a55a00; } /* Variable */
+    code span.vs { color: #008000; } /* VerbatimString */
+    code span.wa { color: #696969; font-style: italic; } /* Warning */
+  </style>
+  <link rel="stylesheet" href="MI618_Aula03_files/libs/revealjs/dist/theme/quarto.css" id="theme">
+  <link href="MI618_Aula03_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
+  <link href="MI618_Aula03_files/libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
+  <link href="MI618_Aula03_files/libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
+  <link href="MI618_Aula03_files/libs/revealjs/plugin/reveal-chalkboard/font-awesome/css/all.css" rel="stylesheet">
+  <link href="MI618_Aula03_files/libs/revealjs/plugin/reveal-chalkboard/style.css" rel="stylesheet">
+  <link href="MI618_Aula03_files/libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
+  <style type="text/css">
+
+  .callout {
+    margin-top: 1em;
+    margin-bottom: 1em;  
+    border-radius: .25rem;
+  }
+
+  .callout.callout-style-simple { 
+    padding: 0em 0.5em;
+    border-left: solid #acacac .3rem;
+    border-right: solid 1px silver;
+    border-top: solid 1px silver;
+    border-bottom: solid 1px silver;
+    display: flex;
+  }
+
+  .callout.callout-style-default {
+    border-left: solid #acacac .3rem;
+    border-right: solid 1px silver;
+    border-top: solid 1px silver;
+    border-bottom: solid 1px silver;
+  }
+
+  .callout .callout-body-container {
+    flex-grow: 1;
+  }
+
+  .callout.callout-style-simple .callout-body {
+    font-size: 1rem;
+    font-weight: 400;
+  }
+
+  .callout.callout-style-default .callout-body {
+    font-size: 0.9rem;
+    font-weight: 400;
+  }
+
+  .callout.callout-captioned.callout-style-simple .callout-body {
+    margin-top: 0.2em;
+  }
+
+  .callout:not(.callout-captioned) .callout-body {
+      display: flex;
+  }
+
+  .callout:not(.no-icon).callout-captioned.callout-style-simple .callout-content {
+    padding-left: 1.6em;
+  }
+
+  .callout.callout-captioned .callout-header {
+    padding-top: 0.2em;
+    margin-bottom: -0.2em;
+  }
+
+  .callout.callout-captioned .callout-caption  p {
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
+  }
+    
+  .callout.callout-captioned.callout-style-simple .callout-content  p {
+    margin-top: 0;
+  }
+
+  .callout.callout-captioned.callout-style-default .callout-content  p {
+    margin-top: 0.7em;
+  }
+
+  .callout.callout-style-simple div.callout-caption {
+    border-bottom: none;
+    font-size: .9rem;
+    font-weight: 600;
+    opacity: 75%;
+  }
+
+  .callout.callout-style-default  div.callout-caption {
+    border-bottom: none;
+    font-weight: 600;
+    opacity: 85%;
+    font-size: 0.9rem;
+    padding-left: 0.5em;
+    padding-right: 0.5em;
+  }
+
+  .callout.callout-style-default div.callout-content {
+    padding-left: 0.5em;
+    padding-right: 0.5em;
+  }
+
+  .callout.callout-style-simple .callout-icon::before {
+    height: 1rem;
+    width: 1rem;
+    display: inline-block;
+    content: "";
+    background-repeat: no-repeat;
+    background-size: 1rem 1rem;
+  }
+
+  .callout.callout-style-default .callout-icon::before {
+    height: 0.9rem;
+    width: 0.9rem;
+    display: inline-block;
+    content: "";
+    background-repeat: no-repeat;
+    background-size: 0.9rem 0.9rem;
+  }
+
+  .callout-caption {
+    display: flex
+  }
+    
+  .callout-icon::before {
+    margin-top: 1rem;
+    padding-right: .5rem;
+  }
+
+  .callout.no-icon::before {
+    display: none !important;
+  }
+
+  .callout.callout-captioned .callout-body > .callout-content > :last-child {
+    margin-bottom: 0.5rem;
+  }
+
+  .callout.callout-captioned .callout-icon::before {
+    margin-top: .5rem;
+    padding-right: .5rem;
+  }
+
+  .callout:not(.callout-captioned) .callout-icon::before {
+    margin-top: 1rem;
+    padding-right: .5rem;
+  }
+
+  /* Callout Types */
+
+  div.callout-note {
+    border-left-color: #4582ec !important;
+  }
+
+  div.callout-note .callout-icon::before {
+    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAERlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAA6ABAAMAAAABAAEAAKACAAQAAAABAAAAIKADAAQAAAABAAAAIAAAAACshmLzAAAEU0lEQVRYCcVXTWhcVRQ+586kSUMMxkyaElstCto2SIhitS5Ek8xUKV2poatCcVHtUlFQk8mbaaziwpWgglJwVaquitBOfhQXFlqlzSJpFSpIYyXNjBNiTCck7x2/8/LeNDOZxDuEkgOXe++553zfefee+/OYLOXFk3+1LLrRdiO81yNqZ6K9cG0P3MeFaMIQjXssE8Z1JzLO9ls20MBZX7oG8w9GxB0goaPrW5aNMp1yOZIa7Wv6o2ykpLtmAPs/vrG14Z+6d4jpbSKuhdcSyq9wGMPXjonwmESXrriLzFGOdDBLB8Y6MNYBu0dRokSygMA/mrun8MGFN3behm6VVAwg4WR3i6FvYK1T7MHo9BK7ydH+1uurECoouk5MPRyVSBrBHMYwVobG2aOXM07sWrn5qgB60rc6mcwIDJtQrnrEr44kmy+UO9r0u9O5/YbkS9juQckLed3DyW2XV/qWBBB3ptvI8EUY3I9p/67OW+g967TNr3Sotn3IuVlfMLVnsBwH4fsnebJvyGm5GeIUA3jljERmrv49SizPYuq+z7c2H/jlGC+Ghhupn/hcapqmcudB9jwJ/3jvnvu6vu5lVzF1fXyZuZZ7U8nRmVzytvT+H3kilYvH09mLWrQdwFSsFEsxFVs5fK7A0g8gMZjbif4ACpKbjv7gNGaD8bUrlk8x+KRflttr22JEMRUbTUwwDQScyzPgedQHZT0xnx7ujw2jfVfExwYHwOsDTjLdJ2ebmeQIlJ7neo41s/DrsL3kl+W2lWvAga0tR3zueGr6GL78M3ifH0rGXrBC2aAR8uYcIA5gwV8zIE8onoh8u0Fca/ciF7j1uOzEnqcIm59sEXoGc0+z6+H45V1CvAvHcD7THztu669cnp+L0okAeIc6zjbM/24LgGM1gZk7jnRu1aQWoU9sfUOuhrmtaPIO3YY1KLLWZaEO5TKUbMY5zx8W9UJ6elpLwKXbsaZ4EFl7B4bMtDv0iRipKoDQT2sNQI9b1utXFdYisi+wzZ/ri/1m7QfDgEuvgUUEIJPq3DhX/5DWNqIXDOweC2wvIR90Oq3lDpdMIgD2r0dXvGdsEW5H6x6HLRJYU7C69VefO1x8Gde1ZFSJLfWS1jbCnhtOPxmpfv2LXOA2Xk2tvnwKKPFuZ/oRmwBwqRQDcKNeVQkYcOjtWVBuM/JuYw5b6isojIkYxyYAFn5K7ZBF10fea52y8QltAg6jnMqNHFBmGkQ1j+U43HMi2xMar1Nv0zGsf1s8nUsmUtPOOrbFIR8bHFDMB5zL13Gmr/kGlCkUzedTzzmzsaJXhYawnA3UmARpiYj5ooJZiUoxFRtK3X6pgNPv+IZVPcnwbOl6f+aBaO1CNvPW9n9LmCp01nuSaTRF2YxHqZ8DYQT6WsXT+RD6eUztwYLZ8rM+rcPxamv1VQzFUkzFXvkiVrySGQgJNvXHJAxiU3/NwiC03rSf05VBaPtu/Z7/B8Yn/w7eguloAAAAAElFTkSuQmCC');
+  }
+
+  div.callout-note.callout-style-default .callout-caption {
+    background-color: #dae6fb
+  }
+
+  div.callout-important {
+    border-left-color: #d9534f !important;
+  }
+
+  div.callout-important .callout-icon::before {
+    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAERlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAA6ABAAMAAAABAAEAAKACAAQAAAABAAAAIKADAAQAAAABAAAAIAAAAACshmLzAAAEKklEQVRYCcVXTWhcVRS+575MJym48A+hSRFr00ySRQhURRfd2HYjk2SSTokuBCkU2o0LoSKKraKIBTcuFCoidGFD08nkBzdREbpQ1EDNIv8qSGMFUboImMSZd4/f9zJv8ibJMC8xJQfO3HPPPef7zrvvvnvviIkpC9nsw0UttFunbUhpFzFtarSd6WJkStVMw5xyVqYTvkwfzuf/5FgtkVoB0729j1rjXwThS7Vio+Mo6DNnvLfahoZ+i/o32lULuJ3NNiz7q6+pyAUkJaFF6JwaM2lUJlV0MlnQn5aTRbEu0SEqHUa0A4AdiGuB1kFXRfVyg5d87+Dg4DL6m2TLAub60ilj7A1Ec4odSAc8X95sHh7+ZRPCFo6Fnp7HfU/fBng/hi10CjCnWnJjsxvDNxWw0NfV6Rv5GgP3I3jGWXumdTD/3cbEOP2ZbOZp69yniG3FQ9z1jD7bnBu9Fc2tKGC2q+uAJOQHBDRiZX1x36o7fWBs7J9ownbtO+n0/qWkvW7UPIfc37WgT6ZGR++EOJyeQDSb9UB+DZ1G6DdLDzyS+b/kBCYGsYgJbSQHuThGKRcw5xdeQf8YdNHsc6ePXrlSYMBuSIAFTGAtQo+VuALo4BX83N190NWZWbynBjhOHsmNfFWLeL6v+ynsA58zDvvAC8j5PkbOcXCMg2PZFk3q8MjI7WAG/Dp9AwP7jdGBOOQkAvlFUB+irtm16I1Zw9YBcpGTGXYmk3kQIC/Cds55l+iMI3jqhjAuaoe+am2Jw5GT3Nbz3CkE12NavmzN5+erJW7046n/CH1RO/RVa8lBLozXk9uqykkGAyRXLWlLv5jyp4RFsG5vGVzpDLnIjTWgnRy2Rr+tDKvRc7Y8AyZq10jj8DqXdnIRNtFZb+t/ZRtXcDiVnzpqx8mPcDWxgARUqx0W1QB9MeUZiNrV4qP+Ehc+BpNgATsTX8ozYKL2NtFYAHc84fG7ndxUPr+AR/iQSns7uSUufAymwDOb2+NjK27lEFocm/EE2WpyIy/Hi66MWuMKJn8RvxIcj87IM5Vh9663ziW36kR0HNenXuxmfaD8JC7tfKbrhFr7LiZCrMjrzTeGx+PmkosrkNzW94ObzwocJ7A1HokLolY+AvkTiD/q1H0cN48c5EL8Crkttsa/AXQVDmutfyku0E7jShx49XqV3MFK8IryDhYVbj7Sj2P2eBxwcXoe8T8idsKKPRcnZw1b+slFTubwUwhktrfnAt7J++jwQtLZcm3sr9LQrjRzz6cfMv9aLvgmnAGvpoaGLxM4mAEaLV7iAzQ3oU0IvD5x9ix3yF2RAAuYAOO2f7PEFWCXZ4C9Pb2UsgDeVnFSpbFK7/IWu7TPTvBqzbGdCHOJQSxiEjt6IyZmxQyEJHv6xyQsYk//moVFsN2zP6fRImjfq7/n/wFDguUQFNEwugAAAABJRU5ErkJggg==');
+  }
+
+  div.callout-important.callout-style-default .callout-caption {
+    background-color: #f7dddc
+  }
+
+  div.callout-warning {
+    border-left-color: #f0ad4e !important;
+  }
+
+  div.callout-warning .callout-icon::before {
+    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAERlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAA6ABAAMAAAABAAEAAKACAAQAAAABAAAAIKADAAQAAAABAAAAIAAAAACshmLzAAAETklEQVRYCeVWW2gcVRg+58yaTUnizqbipZeX4uWhBEniBaoUX1Ioze52t7sRq6APio9V9MEaoWlVsFasRq0gltaAPuxms8lu0gcviE/FFOstVbSIxgcv6SU7EZqmdc7v9+9mJtNks51NTUH84ed889/PP+cmxP+d5FIbMJmNbpREu4WUkiTtCicKny0l1pIKmBzovF2S+hIJHX8iEu3hZJ5lNZGqyRrGSIQpq15AzF28jgpeY6yk6GVdrfFqdrD6Iw+QlB8g0YS2g7dyQmXM/IDhBhT0UCiRf59lfqmmDvzRt6kByV/m4JjtzuaujMUM2c5Z2d6JdKrRb3K2q6mA+oYVz8JnDdKPmmNthzkAk/lN63sYPgevrguc72aZX/L9C6x09GYyxBgCX4NlvyGUHOKELlm5rXeR1kchuChJt4SSwyddZRXgvwMGvYo4QSlk3/zkHD8UHxwVJA6zjZZqP8v8kK8OWLnIZtLyCAJagYC4rTGW/9Pqj92N/c+LUaAj27movwbi19tk/whRCIE7Q9vyI6yvRpftAKVTdUjOW40X3h5OXsKCdmFcx0xlLJoSuQngnrJe7Kcjm4OMq9FlC7CMmScQANuNvjfP3PjGXDBaUQmbp296S5L4DrpbrHN1T87ZVEZVCzg1FF0Ft+dKrlLukI+/c9ENo+TvlTDbYFvuKPtQ9+l052rXrgKoWkDAFnvh0wTOmYn8R5f4k/jN/fZiCM1tQx9jQQ4ANhqG4hiL0qIFTGViG9DKB7GYzgubnpofgYRwO+DFjh0Zin2m4b/97EDkXkc+f6xYAPX0KK2I/7fUQuwzuwo/L3AkcjugPNixC8cHf0FyPjWlItmLxWw4Ou9YsQCr5fijMGoD/zpdRy95HRysyXA74MWOnscpO4j2y3HAVisw85hX5+AFBRSHt4ShfLFkIMXTqyKFc46xdzQM6XbAi702a7sy04J0+feReMFKp5q9esYLCqAZYw/k14E/xcLLsFElaornTuJB0svMuJINy8xkIYuL+xPAlWRceH6+HX7THJ0djLUom46zREu7tTkxwmf/FdOZ/sh6Q8qvEAiHpm4PJ4a/doJe0gH1t+aHRgCzOvBvJedEK5OFE5jpm4AGP2a8Dxe3gGJ/pAutug9Gp6he92CsSsWBaEcxGx0FHytmIpuqGkOpldqNYQK8cSoXvd+xLxXADw0kf6UkJNFtdo5MOgaLjiQOQHcn+A6h5NuL2s0qsC2LOM75PcF3yr5STuBSAcGG+meA14K/CI21HcS4LBT6tv0QAh8Dr5l93AhZzG5ZJ4VxAqdZUEl9z7WJ4aN+svMvwHHL21UKTd1mqvChH7/Za5xzXBBKrUcB0TQ+Ulgkfbi/H/YT5EptrGzsEK7tR1B7ln9BBwckYfMiuSqklSznIuoIIOM42MQO+QnduCoFCI0bpkzjCjddHPN/F+2Yu+sd9bKNpVwHhbS3LluK/0zgfwD0xYI5dXuzlQAAAABJRU5ErkJggg==');
+  }
+
+  div.callout-warning.callout-style-default .callout-caption {
+    background-color: #fcefdc
+  }
+
+  div.callout-tip {
+    border-left-color: #02b875 !important;
+  }
+
+  div.callout-tip .callout-icon::before {
+    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAERlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAA6ABAAMAAAABAAEAAKACAAQAAAABAAAAIKADAAQAAAABAAAAIAAAAACshmLzAAADr0lEQVRYCe1XTWgTQRj9ZjZV8a9SPIkKgj8I1bMHsUWrqYLVg4Ue6v9BwZOxSYsIerFao7UiUryIqJcqgtpimhbBXoSCVxUFe9CTiogUrUp2Pt+3aUI2u5vdNh4dmMzOzHvvezuz8xNFM0mjnbXaNu1MvFWRXkXEyE6aYOYJpdW4IXuA4r0fo8qqSMDBU0v1HJUgVieAXxzCsdE/YJTdFcVIZQNMyhruOMJKXYFoLfIfIvVIMWdsrd+Rpd86ZmyzzjJmLStqRn0v8lzkb4rVIXvnpScOJuAn2ACC65FkPzEdEy4TPWRLJ2h7z4cArXzzaOdKlbOvKKX25Wl00jSnrwVxAg3o4dRxhO13RBSdNvH0xSARv3adTXbBdTf64IWO2vH0LT+cv4GR1DJt+DUItaQogeBX/chhbTBxEiZ6gftlDNXTrvT7co4ub5A6gp9HIcHvzTa46OS5fBeP87Qm0fQkr4FsYgVQ7Qg+ZayaDg9jhg1GkWj8RG6lkeSacrrHgDaxdoBiZPg+NXV/KifMuB6//JmYH4CntVEHy/keA6x4h4CU5oFy8GzrBS18cLJMXcljAKB6INjWsRcuZBWVaS3GDrqB7rdapVIeA+isQ57Eev9eCqzqOa81CY05VLd6SamW2wA2H3SiTbnbSxmzfp7WtKZkqy4mdyAlGx7ennghYf8voqp9cLSgKdqNfa6RdRsAAkPwRuJZNbpByn+RrJi1RXTwdi8RQF6ymDwGMAtZ6TVE+4uoKh+MYkcLsT0Hk8eAienbiGdjJHZTpmNjlbFJNKDVAp2fJlYju6IreQxQ08UJDNYdoLSl6AadO+fFuCQqVMB1NJwPm69T04Wv5WhfcWyfXQB+wXRs1pt+nCknRa0LVzSA/2B+a9+zQJadb7IyyV24YAxKp2Jqs3emZTuNnKxsah+uabKbMk7CbTgJx/zIgQYErIeTKRQ9yD9wxVof5YolPHqaWo7TD6tJlh7jQnK5z2n3+fGdggIOx2kaa2YI9QWarc5Ce1ipNWMKeSG4DysFF52KBmTNMmn5HqCFkwy34rDg05gDwgH3bBi+sgFhN/e8QvRn8kbamCOhgrZ9GJhFDgfcMHzFb6BAtjKpFhzTjwv1KCVuxHvCbsSiEz4CANnj84cwHdFXAbAOJ4LTSAawGWFn5tDhLMYz6nWeU2wJfIhmIJBefcd/A5FWQWGgrWzyORZ3Q6HuV+Jf0Bj+BTX69fm1zWgK7By1YTXchFDORywnfQ7GpzOo6S+qECrsx2ifVQAAAABJRU5ErkJggg==');
+  }
+
+  div.callout-tip.callout-style-default .callout-caption {
+    background-color: #ccf1e3
+  }
+
+  div.callout-caution {
+    border-left-color: #fd7e14 !important;
+  }
+
+  div.callout-caution .callout-icon::before {
+    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAERlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAA6ABAAMAAAABAAEAAKACAAQAAAABAAAAIKADAAQAAAABAAAAIAAAAACshmLzAAACV0lEQVRYCdVWzWoUQRCuqp2ICBLJXgITZL1EfQDBW/bkzUMUD7klD+ATSHBEfAIfQO+iXsWDxJsHL96EHAwhgzlkg8nBg25XWb0zIb0zs9muYYWkoKeru+vn664fBqElyZNuyh167NXJ8Ut8McjbmEraKHkd7uAnAFku+VWdb3reSmRV8PKSLfZ0Gjn3a6Xlcq9YGb6tADjn+lUfTXtVmaZ1KwBIvFI11rRXlWlatwIAAv2asaa9mlB9wwygiDX26qaw1yYPzFXg2N1GgG0FMF8Oj+VIx7E/03lHx8UhvYyNZLN7BwSPgekXXLribw7w5/c8EF+DBK5idvDVYtEEwMeYefjjLAdEyQ3M9nfOkgnPTEkYU+sxMq0BxNR6jExrAI31H1rzvLEfRIdgcv1XEdj6QTQAS2wtstEALLG1yEZ3QhH6oDX7ExBSFEkFINXH98NTrme5IOaaA7kIfiu2L8A3qhH9zRbukdCqdsA98TdElyeMe5BI8Rs2xHRIsoTSSVFfCFCWGPn9XHb4cdobRIWABNf0add9jakDjQJpJ1bTXOJXnnRXHRf+dNL1ZV1MBRCXhMbaHqGI1JkKIL7+i8uffuP6wVQAzO7+qVEbF6NbS0LJureYcWXUUhH66nLR5rYmva+2tjRFtojkM2aD76HEGAD3tPtKM309FJg5j/K682ywcWJ3PASCcycH/22u+Bh7Aa0ehM2Fu4z0SAE81HF9RkB21c5bEn4Dzw+/qNOyXr3DCTQDMBOdhi4nAgiFDGCinIa2owCEChUwD8qzd03PG+qdW/4fDzjUMcE1ZpIAAAAASUVORK5CYII=');
+  }
+
+  div.callout-caution.callout-style-default .callout-caption {
+    background-color: #ffe5d0
+  }
+
+  </style>
+  <style type="text/css">
+    .reveal div.sourceCode {
+      margin: 0;
+      overflow: auto;
+    }
+    .reveal div.hanging-indent {
+      margin-left: 1em;
+      text-indent: -1em;
+    }
+    .reveal .slide:not(.center) {
+      height: 100%;
+    }
+    .reveal .slide.scrollable {
+      overflow-y: auto;
+    }
+    .reveal .footnotes {
+      height: 100%;
+      overflow-y: auto;
+    }
+    .reveal .slide .absolute {
+      position: absolute;
+      display: block;
+    }
+    .reveal .footnotes ol {
+      counter-reset: ol;
+      list-style-type: none; 
+      margin-left: 0;
+    }
+    .reveal .footnotes ol li:before {
+      counter-increment: ol;
+      content: counter(ol) ". "; 
+    }
+    .reveal .footnotes ol li > p:first-child {
+      display: inline-block;
+    }
+    .reveal .slide ul,
+    .reveal .slide ol {
+      margin-bottom: 0.5em;
+    }
+    .reveal .slide ul li,
+    .reveal .slide ol li {
+      margin-top: 0.4em;
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide ul[role="tablist"] li {
+      margin-bottom: 0;
+    }
+    .reveal .slide ul li > *:first-child,
+    .reveal .slide ol li > *:first-child {
+      margin-block-start: 0;
+    }
+    .reveal .slide ul li > *:last-child,
+    .reveal .slide ol li > *:last-child {
+      margin-block-end: 0;
+    }
+    .reveal .slide .columns:nth-child(3) {
+      margin-block-start: 0.8em;
+    }
+    .reveal blockquote {
+      box-shadow: none;
+    }
+    .reveal .tippy-content>* {
+      margin-top: 0.2em;
+      margin-bottom: 0.7em;
+    }
+    .reveal .tippy-content>*:last-child {
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide > img.stretch.quarto-figure-center,
+    .reveal .slide > img.r-stretch.quarto-figure-center {
+      display: block;
+      margin-left: auto;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-left,
+    .reveal .slide > img.r-stretch.quarto-figure-left  {
+      display: block;
+      margin-left: 0;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-right,
+    .reveal .slide > img.r-stretch.quarto-figure-right  {
+      display: block;
+      margin-left: auto;
+      margin-right: 0; 
+    }
+  </style>
+</head>
+<body class="quarto-light">
+  <div class="reveal">
+    <div class="slides">
+
+<section id="title-slide" data-background-image="imagens/unicamp.png" data-background-opacity="1" data-background-position="99% 5%" data-background-size="20%" class="quarto-title-block center">
+  <h1 class="title">Inferência Causal</h1>
+  <p class="subtitle">CRE: Abordagem de Neyman</p>
+
+<div class="quarto-title-authors">
+<div class="quarto-title-author">
+<div class="quarto-title-author-name">
+Prof.&nbsp;Carlos Trucíos <br> ctrucios@unicamp.br 
+</div>
+        <p class="quarto-title-affiliation">
+            Instituto de Matemática, Estatística e Computação Científica (IMECC), <br> Universidade Estadual de Campinas (UNICAMP).
+          </p>
+    </div>
+</div>
+
+</section><section id="TOC">
+<nav role="doc-toc"> 
+<h2 id="toc-title">Conteúdo</h2>
+<ul>
+<li class="fragment"><a href="#/introdução" id="/toc-introdução">Introdução</a></li>
+<li class="fragment"><a href="#/neyman" id="/toc-neyman">Neyman</a></li>
+<li class="fragment"><a href="#/ilustração" id="/toc-ilustração">Ilustração</a></li>
+<li class="fragment"><a href="#/aplicação" id="/toc-aplicação">Aplicação</a></li>
+<li class="fragment"><a href="#/demostração" id="/toc-demostração">Demostração</a></li>
+</ul>
+</nav>
+</section>
+<section>
+<section id="introdução" class="title-slide slide level1 center">
+<h1>Introdução</h1>
+
+</section>
+<section id="introdução-1" class="slide level2">
+<h2>Introdução</h2>
+</section></section>
+<section>
+<section id="neyman" class="title-slide slide level1 center">
+<h1>Neyman</h1>
+
+</section>
+<section id="neyman-1" class="slide level2">
+<h2>Neyman</h2>
+<ul>
+<li class="fragment">Neyman (1923) propõe um método para fazer inferência para o efeito causal médio (ACE: <strong>A</strong>verage <strong>C</strong>ausal <strong>E</strong>ffect).</li>
+<li class="fragment">Diferente da abordagem de Fisher (p-valor), Neyman propõe um estimador pontual não viesado e, baseado na distribuição amostral do estimador pontual, intervalos de confiança.</li>
+</ul>
+</section>
+<section id="neyman-2" class="slide level2">
+<h2>Neyman</h2>
+<p>Considere um CRE com <span class="math inline">\(n\)</span> unidades, em que <span class="math inline">\(n_1\)</span> recebem o tratamento e <span class="math inline">\(n_0\)</span> recebem o placebo. Para cada <span class="math inline">\(i\)</span> (<span class="math inline">\(i = 1, \cdots, n.\)</span>) temos os resultados potenciais <span class="math inline">\(Y_i(1)\)</span> e <span class="math inline">\(Y_i(0)\)</span>, bem como o efeito causal individual <span class="math inline">\(\tau_i = Y_i(1) - Y_i(0)\)</span>. Então:</p>
+<ul>
+<li class="fragment">Médias: <span class="math inline">\(\bar{Y}(1) = \displaystyle \sum_{i = 1}^n Y_i(1) \Big / n\)</span> e <span class="math inline">\(\bar{Y}(0) = \displaystyle \sum_{i = 1}^n Y_i(0) \Big / n\)</span>.</li>
+<li class="fragment">Variâncias: <span class="math inline">\(S^2(1) = \displaystyle \sum_{i = 1}^n (Y_i(1) - \bar{Y}(1))^2 \Big / n - 1\)</span> e <span class="math inline">\(S^2(0) = \displaystyle \sum_{i = 1}^n (Y_i(0) - \bar{Y}(0))^2 \Big / n - 1\)</span>.</li>
+<li class="fragment">Covariância: <span class="math inline">\(S(1, 0) = \displaystyle \sum_{i = 1}^n [Y_i(1) - \bar{Y}(1)][Y_i(0) - \bar{Y}(0)]\Big / n - 1\)</span></li>
+</ul>
+</section>
+<section id="neyman-3" class="slide level2">
+<h2>Neyman</h2>
+<p>Ademais, <span class="math display">\[\tau = \displaystyle \sum_{i = 1}^n \tau_i \Big / n = \bar{Y}(1) - \bar{Y}(0) \quad e \quad S^2(\tau) = \sum_{i = 1}^n(\tau_i - \tau)^2 \Big / n - 1.\]</span></p>
+<div class="fragment">
+<div class="callout callout-tip callout-captioned callout-style-default">
+<div class="callout-body">
+<div class="callout-caption">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Lema</strong></p>
+</div>
+<div class="callout-content">
+<p><span class="math display">\[2 S(1, 0) = S^2(1) + S^2(0) - S^2(\tau).\]</span></p>
+</div>
+</div>
+</div>
+</div>
+<div class="fragment">
+<blockquote>
+<p>Estamos interessados em estimar o efeito causal médio (ACE), <span class="math inline">\(\tau\)</span>, baseados em <span class="math inline">\((Z_i, Y_i)_{i = 1}^n\)</span> sob CRE.</p>
+</blockquote>
+</div>
+</section>
+<section id="teorema-de-neyman" class="slide level2">
+<h2>Teorema de Neyman</h2>
+<p>Utilizando os resultados observados (<span class="math inline">\(Y_i\)</span>), podemos calcular aa médiaa e variâncias amostrais como:</p>
+<p><span class="math display">\[\hat{\bar{Y}}(1) = \displaystyle \sum_{i = 1}^n Z_i Y_i \Big /n_1 \quad  e \quad \hat{\bar{Y}}(0) = \displaystyle \sum_{i = 1}^n (1 - Z_i) Y_i \Big /n_0\]</span></p>
+<p><span class="math display">\[\hat{S}^2(1) = \displaystyle \sum_{i = 1}^n Z_i (Y_i - \hat{\bar{Y}}(1))^2 \Big / n_1 - 1 \quad e \quad \hat{S}^2(0) = \displaystyle \sum_{i = 1}^n (1 - Z_i) (Y_i - \hat{\bar{Y}}(0))^2 \Big / n_0 - 1\]</span></p>
+<div class="fragment">
+<p><strong>Quais seriam as versões amostrais de <span class="math inline">\(S(1, 0)\)</span> e <span class="math inline">\(S^2(\tau)\)</span>?</strong></p>
+</div>
+<div class="fragment">
+<p><span style="color:red;">Nenhuma!. Não existe versões amostrais de <span class="math inline">\(S(1, 0)\)</span> nem <span class="math inline">\(S^2(\tau)\)</span> pois os resultados potenciais <span class="math inline">\(Y_i(1)\)</span> e <span class="math inline">\(Y_i(0)\)</span> nunca são observados simultaneamente para cada unidade <span class="math inline">\(i\)</span>.</span></p>
+</div>
+</section>
+<section id="teorema-de-neyman-1" class="slide level2">
+<h2>Teorema de Neyman</h2>
+<div class="callout callout-tip callout-captioned callout-style-default">
+<div class="callout-body">
+<div class="callout-caption">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Teorema</strong></p>
+</div>
+<div class="callout-content">
+<p>Sob CRE:</p>
+<div>
+<ol type="1">
+<li>O estimador da diferença de médias, <span class="math inline">\(\hat{\tau} = \hat{\bar{Y}}(1) - \hat{\bar{Y}}(0)\)</span> é não viesado para <span class="math inline">\(\tau\)</span>, ou seja, <span class="math inline">\(\mathbb{E}(\hat{\tau}) = \tau.\)</span></li>
+<li><span class="math display">\[\mathbb{V}(\hat{\tau}) = \dfrac{S^2(1)}{n_1} + \dfrac{S^2(0)}{n_0} - \dfrac{S^2(\tau)}{n} = \dfrac{n_0 S^2(1)}{n_1 n} + \dfrac{n_1 S^2(0)}{n_0 n} + 2\dfrac{S(1, 0)}{n}\]</span></li>
+<li>O estimador da variância, <span class="math inline">\(\hat{V} = \dfrac{\hat{S}^2(1)}{n_1} +\dfrac{\hat{S}^2(0)}{n_0}\)</span> é conservador para estimar <span class="math inline">\(\mathbb{V}(\hat{\tau})\)</span>. Isto significa que <span class="math display">\[\mathbb{E}(\hat{V}) - \mathbb{V}(\hat{\tau}) = \dfrac{S^2(\tau)}{n} \geq 0,\]</span> com a igualdade acontecendo se <span class="math inline">\(\tau_i = \tau\)</span> <span class="math inline">\(\forall i\)</span>.</li>
+</ol>
+</div>
+</div>
+</div>
+</div>
+<div class="fragment">
+<p><strong>Demostração:</strong> (no final da aula)</p>
+</div>
+</section>
+<section id="teorema-de-neyman-2" class="slide level2">
+<h2>Teorema de Neyman</h2>
+<ul>
+<li class="fragment">Repare que apenas <span class="math inline">\(Z_1, \cdots, Z_n\)</span> é aleatório (mas os resultados potenciais são todos fixos).</li>
+<li class="fragment">Assim, <span class="math inline">\(\mathbb{E}(\cdot)\)</span> e <span class="math inline">\(\mathbb{V}(\cdot)\)</span> são em <span class="math inline">\(Z_1, \cdots, Z_n\)</span>, que são permutações aleatórias de <span class="math inline">\(n_1\)</span> 1s e <span class="math inline">\(n_0\)</span> 0s.</li>
+<li class="fragment"><span class="math inline">\(\hat{\tau}\)</span> tem uma distribuição discreta sob <span class="math inline">\(\hat{\tau}^1, \cdots, \hat{\tau}^M\)</span>, com <span class="math inline">\(M = \binom{n}{n_1}\)</span>.</li>
+</ul>
+<div class="fragment">
+<center>
+<p><span style="color:red;">Quais são as diferenças entre o teste de Neyman e o de Fisher?</span></p>
+<p><img data-src="imagens/Fisher_Neyman.png"></p>
+</center>
+</div>
+</section>
+<section id="fisher-vs-neyman" class="slide level2">
+<h2>Fisher vs Neyman</h2>
+<div class="quarto-layout-panel">
+<div class="quarto-layout-row quarto-layout-valign-top">
+<div class="quarto-layout-cell" style="flex-basis: 33.3%;justify-content: center;">
+<center>
+</center></div>
+<div class="quarto-layout-cell" style="flex-basis: 33.3%;justify-content: center;">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="imagens/Fisher.png"></p>
+<p></p><figcaption>FRT</figcaption><p></p>
+</figure>
+</div>
+</div>
+<div class="quarto-layout-cell" style="flex-basis: 33.3%;justify-content: center;">
+
+</div>
+</div>
+<div class="quarto-layout-row quarto-layout-valign-top">
+<div class="quarto-layout-cell" style="flex-basis: 33.3%;justify-content: center;">
+<center>
+</center></div>
+<div class="quarto-layout-cell" style="flex-basis: 33.3%;justify-content: center;">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="imagens/Neyman.png"></p>
+<p></p><figcaption>Neyman</figcaption><p></p>
+</figure>
+</div>
+</div>
+<div class="quarto-layout-cell" style="flex-basis: 33.3%;justify-content: center;">
+
+</div>
+</div>
+</div>
+</section>
+<section id="fisher-vs-neyman-1" class="slide level2">
+<h2>Fisher vs Neyman</h2>
+<center>
+<img data-src="imagens/Fisher_Neyman.png" style="width:25.0%">
+</center>
+<ul>
+<li class="fragment">FRT funciona para qualquer teste, já o teorema Neyman apenas fornece resultados para a diferença de médias.</li>
+<li class="fragment">No FRT, <span class="math inline">\(\textbf{Y}\)</span> é fixo, já na abordagem de Neyman <span class="math inline">\(\textbf{Y}(\textbf{z}^m)\)</span> muda com mudanças de <span class="math inline">\(\textbf{z}^m\)</span>.</li>
+<li class="fragment">No FRT, todos os <span class="math inline">\(T(\textbf{z}^m, \textbf{Y})\)</span> são calculáveis, já na abordagem de Neyman, os <span class="math inline">\(\hat{\tau}^m\)</span> são valores hipotéticos pois não todos os resultados potenciais são conhecidos (apenas conhecemos os resultados observados).</li>
+</ul>
+</section>
+<section id="teorema-de-neyman-3" class="slide level2">
+<h2>Teorema de Neyman</h2>
+<center>
+<span style="color:red;">Até agora, temos visto que <span class="math inline">\(\hat{\tau}\)</span> é um estimador não viesado para <span class="math inline">\(\tau\)</span>, mas não temos visto como calcular intervalos de confiança.</span>
+</center>
+<div class="fragment">
+<div class="callout callout-tip callout-captioned callout-style-default">
+<div class="callout-body">
+<div class="callout-caption">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Teorema</strong></p>
+</div>
+<div class="callout-content">
+<p>Seja <span class="math inline">\(n, n_1 \rightarrow \infty\)</span>. Se <span class="math inline">\(n_1/n \rightarrow k \in (0, 1)\)</span>, <span class="math inline">\(S^2(1), S^2(0), S(1, 0) &lt; \infty\)</span> e <span class="math display">\[\max_{1\leq i \leq n} \{Y_i(1) - \bar{Y}(1)\}^2 \big / n \rightarrow 0, \quad \max_{1\leq i \leq n} \{Y_i(0) - \bar{Y}(0)\}^2 \big / n \rightarrow 0,\]</span> então <span class="math display">\[\dfrac{\hat{\tau} - \tau}{\sqrt{\mathbb{V}(\hat{\tau})}} \xrightarrow D N(0,1),\]</span></p>
+<p><span class="math display">\[\hat{S}^2(1) \xrightarrow p S^2(1), \quad e \quad \hat{S}^2(0) \xrightarrow p S^2(0).\]</span></p>
+</div>
+</div>
+</div>
+<p>A prova do teorema é bastante técnica e está em <a href="https://www.tandfonline.com/doi/full/10.1080/01621459.2017.1295865">Li e Peng (2017).</a></p>
+</div>
+</section>
+<section id="teorema-de-neyman-4" class="slide level2">
+<h2>Teorema de Neyman</h2>
+<p>O teorema garante a normalidade e, ao mesmo tempo, que o estimador da variância, <span class="math inline">\(\hat{V} = \frac{\hat{S}^2(1)}{n_1} + \frac{\hat{S}^2(0)}{n_0}\)</span>, é maior (em probabilidade) do que <span class="math inline">\(\mathbb{V}(\hat{\tau}) = \frac{S^2(1)}{n_1} + \frac{S^2(0)}{n_0} - \frac{S^2(\tau)}{n}\)</span>, o que permite calcular intervalos de confiança conservadores (<em>i.e,</em> de tamanho maior): <span class="math display">\[\hat{\tau} \pm z_{1-\alpha/2} \sqrt{\hat{V}}.\]</span></p>
+<div class="fragment">
+<p>Pela relação intervalo de confiança-teste de hipóteses, podemos utilizar o intervalo para testar a <em>hipótese nula fraca</em>: <span class="math display">\[H_{0N}: \tau = 0\]</span></p>
+</div>
+<div class="fragment">
+<p><span style="color:gray;"><strong>Observação:</strong> <span class="math inline">\(H_{0F}\)</span> e <span class="math inline">\(H_{0N}\)</span> são conhecidas como hipótese nula forte e fraca, respectivamente.</span></p>
+</div>
+</section></section>
+<section>
+<section id="ilustração" class="title-slide slide level1 center">
+<h1>Ilustração</h1>
+
+</section>
+<section id="ilustração-1" class="slide level2">
+<h2>Ilustração</h2>
+<div class="callout callout-note callout-captioned callout-style-default">
+<div class="callout-body">
+<div class="callout-caption">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Simulação</strong></p>
+</div>
+<div class="callout-content">
+<div class="fragment">
+<p>Consideremos uma amostra de tamanho 100 com 60 tratamentos e 40 placebos em que os resultados potenciais são gerados com efeito individual constante.</p>
+<div class="cell" data-layout-align="center">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a>n <span class="ot">&lt;-</span> <span class="dv">100</span></span>
+<span id="cb1-2"><a href="#cb1-2"></a>n1 <span class="ot">&lt;-</span> <span class="dv">60</span></span>
+<span id="cb1-3"><a href="#cb1-3"></a>n0 <span class="ot">&lt;-</span> <span class="dv">40</span></span>
+<span id="cb1-4"><a href="#cb1-4"></a>y0 <span class="ot">&lt;-</span> <span class="fu">sort</span>(<span class="fu">rexp</span>(n), <span class="at">decreasing =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb1-5"><a href="#cb1-5"></a>tau <span class="ot">&lt;-</span> <span class="dv">1</span></span>
+<span id="cb1-6"><a href="#cb1-6"></a>y1 <span class="ot">&lt;-</span> y0 <span class="sc">+</span> tau</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+</div>
+<div class="fragment">
+<p>A <em>Scientific Table</em> é então</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output cell-output-stdout">
+<pre><code>                 y0       y1
+  [1,] 4.4955400237 5.495540
+  [2,] 3.6959254453 4.695925
+  [3,] 3.4853035962 4.485304
+  [4,] 2.8194584696 3.819458
+  [5,] 2.5722474026 3.572247
+  [6,] 2.4761499482 3.476150
+  [7,] 2.4283260832 3.428326
+  [8,] 2.2888453881 3.288845
+  [9,] 1.9644662625 2.964466
+ [10,] 1.9517656787 2.951766
+ [11,] 1.9390347189 2.939035
+ [12,] 1.8972182366 2.897218
+ [13,] 1.7190141009 2.719014
+ [14,] 1.7089545000 2.708954
+ [15,] 1.6997399906 2.699740
+ [16,] 1.5861773612 2.586177
+ [17,] 1.5498990142 2.549899
+ [18,] 1.5490495264 2.549050
+ [19,] 1.4330316270 2.433032
+ [20,] 1.4300318359 2.430032
+ [21,] 1.1887021288 2.188702
+ [22,] 1.1730235600 2.173024
+ [23,] 1.1671236182 2.167124
+ [24,] 1.1520730215 2.152073
+ [25,] 1.1462553991 2.146255
+ [26,] 1.1150940759 2.115094
+ [27,] 1.1148031699 2.114803
+ [28,] 1.0988789191 2.098879
+ [29,] 1.0850463621 2.085046
+ [30,] 1.0764766087 2.076477
+ [31,] 1.0148238055 2.014824
+ [32,] 1.0115120755 2.011512
+ [33,] 0.9846248318 1.984625
+ [34,] 0.9562177369 1.956218
+ [35,] 0.9405338410 1.940534
+ [36,] 0.8950863620 1.895086
+ [37,] 0.8761274777 1.876127
+ [38,] 0.8755637705 1.875564
+ [39,] 0.8323972160 1.832397
+ [40,] 0.7928101311 1.792810
+ [41,] 0.7892197631 1.789220
+ [42,] 0.7547091441 1.754709
+ [43,] 0.7155720461 1.715572
+ [44,] 0.7122935677 1.712294
+ [45,] 0.7010551374 1.701055
+ [46,] 0.6936846710 1.693685
+ [47,] 0.6806564569 1.680656
+ [48,] 0.6422472657 1.642247
+ [49,] 0.6311101159 1.631110
+ [50,] 0.6114363759 1.611436
+ [51,] 0.6088257190 1.608826
+ [52,] 0.5939258197 1.593926
+ [53,] 0.5623597149 1.562360
+ [54,] 0.5554823573 1.555482
+ [55,] 0.5496443757 1.549644
+ [56,] 0.5349820699 1.534982
+ [57,] 0.5093004899 1.509300
+ [58,] 0.4969619941 1.496962
+ [59,] 0.4883725303 1.488373
+ [60,] 0.4624032523 1.462403
+ [61,] 0.4327762742 1.432776
+ [62,] 0.4259512634 1.425951
+ [63,] 0.3874922032 1.387492
+ [64,] 0.3616389146 1.361639
+ [65,] 0.3359878273 1.335988
+ [66,] 0.3329553590 1.332955
+ [67,] 0.3228269522 1.322827
+ [68,] 0.3124192685 1.312419
+ [69,] 0.2937310454 1.293731
+ [70,] 0.2709304449 1.270930
+ [71,] 0.2666948321 1.266695
+ [72,] 0.2581925565 1.258193
+ [73,] 0.2574585148 1.257459
+ [74,] 0.2448665016 1.244867
+ [75,] 0.2348106150 1.234811
+ [76,] 0.1986314463 1.198631
+ [77,] 0.1886423784 1.188642
+ [78,] 0.1807401767 1.180740
+ [79,] 0.1676924322 1.167692
+ [80,] 0.1669535375 1.166954
+ [81,] 0.1659340874 1.165934
+ [82,] 0.1385450317 1.138545
+ [83,] 0.1145367903 1.114537
+ [84,] 0.1019147863 1.101915
+ [85,] 0.0665012788 1.066501
+ [86,] 0.0641083498 1.064108
+ [87,] 0.0557121946 1.055712
+ [88,] 0.0538508099 1.053851
+ [89,] 0.0517150064 1.051715
+ [90,] 0.0492779503 1.049278
+ [91,] 0.0427051531 1.042705
+ [92,] 0.0372538097 1.037254
+ [93,] 0.0364826272 1.036483
+ [94,] 0.0323806186 1.032381
+ [95,] 0.0222322957 1.022232
+ [96,] 0.0139237377 1.013924
+ [97,] 0.0088351162 1.008835
+ [98,] 0.0075645829 1.007565
+ [99,] 0.0053792557 1.005379
+[100,] 0.0008112116 1.000811</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="ilustração-2" class="slide level2">
+<h2>Ilustração</h2>
+<div class="callout callout-note callout-captioned callout-style-default">
+<div class="callout-body">
+<div class="callout-caption">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Simulação</strong></p>
+</div>
+<div class="callout-content">
+<p>Escolhemos 1 amostra e calculamos: <span class="math inline">\(\hat{\tau}\)</span>, <span class="math inline">\(\hat{V}\)</span>, intervalo de confiança e <span class="math inline">\(\mathbb{V}(\hat{\tau})\)</span>.</p>
+<div class="cell" data-layout-align="center">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a>z <span class="ot">&lt;-</span> <span class="fu">sample</span>(<span class="fu">c</span>(<span class="fu">rep</span>(<span class="dv">1</span>, n1), <span class="fu">rep</span>(<span class="dv">0</span>, n0)))</span>
+<span id="cb3-2"><a href="#cb3-2"></a>tau_hat <span class="ot">&lt;-</span> <span class="fu">mean</span>(y1[z <span class="sc">==</span> <span class="dv">1</span>]) <span class="sc">-</span> <span class="fu">mean</span>(y0[z <span class="sc">==</span> <span class="dv">0</span>])</span>
+<span id="cb3-3"><a href="#cb3-3"></a>tau_hat</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.9831407</code></pre>
+</div>
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a>V_hat <span class="ot">&lt;-</span> <span class="fu">var</span>(y1[z <span class="sc">==</span> <span class="dv">1</span>]) <span class="sc">/</span> n1 <span class="sc">+</span> <span class="fu">var</span>(y0[z <span class="sc">==</span> <span class="dv">0</span>]) <span class="sc">/</span> n0</span>
+<span id="cb5-2"><a href="#cb5-2"></a>V_hat</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.03191751</code></pre>
+</div>
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1"></a>intervalo_confianca <span class="ot">&lt;-</span> <span class="fu">c</span>(tau_hat <span class="sc">-</span> <span class="fl">1.96</span> <span class="sc">*</span> <span class="fu">sqrt</span>(V_hat), tau_hat <span class="sc">+</span> <span class="fl">1.96</span> <span class="sc">*</span> <span class="fu">sqrt</span>(V_hat))</span>
+<span id="cb7-2"><a href="#cb7-2"></a>intervalo_confianca</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.6329775 1.3333040</code></pre>
+</div>
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1"></a>var_hat_tau <span class="ot">&lt;-</span> n0 <span class="sc">*</span> <span class="fu">var</span>(y1) <span class="sc">/</span> (n1 <span class="sc">*</span> n) <span class="sc">+</span> n1 <span class="sc">*</span> <span class="fu">var</span>(y0) <span class="sc">/</span> (n0 <span class="sc">*</span> n) <span class="sc">+</span> <span class="dv">2</span><span class="sc">*</span><span class="fu">cov</span>(y1, y0) <span class="sc">/</span> n</span>
+<span id="cb9-2"><a href="#cb9-2"></a>var_hat_tau</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.03073098</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="ilustração-3" class="slide level2">
+<h2>Ilustração</h2>
+<div class="callout callout-note callout-captioned callout-style-default">
+<div class="callout-body">
+<div class="callout-caption">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Simulação</strong></p>
+</div>
+<div class="callout-content">
+<div class="fragment">
+<p>E se gerarmos não um, mas vários CRE?</p>
+<div class="cell" data-layout-align="center">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1"></a>tau_hat_p <span class="ot">&lt;-</span> <span class="fu">c</span>()</span>
+<span id="cb11-2"><a href="#cb11-2"></a>V_hat_p <span class="ot">&lt;-</span> <span class="fu">c</span>()</span>
+<span id="cb11-3"><a href="#cb11-3"></a>lim_sup <span class="ot">&lt;-</span> <span class="fu">c</span>()</span>
+<span id="cb11-4"><a href="#cb11-4"></a>lim_inf <span class="ot">&lt;-</span> <span class="fu">c</span>()</span>
+<span id="cb11-5"><a href="#cb11-5"></a>est <span class="ot">&lt;-</span> <span class="fu">c</span>()</span>
+<span id="cb11-6"><a href="#cb11-6"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">10</span><span class="sc">^</span><span class="dv">4</span>) {</span>
+<span id="cb11-7"><a href="#cb11-7"></a>  z_permut <span class="ot">&lt;-</span> <span class="fu">sample</span>(z)</span>
+<span id="cb11-8"><a href="#cb11-8"></a>  tau_hat_p[i] <span class="ot">&lt;-</span> <span class="fu">mean</span>(y1[z_permut <span class="sc">==</span> <span class="dv">1</span>]) <span class="sc">-</span> <span class="fu">mean</span>(y0[z_permut <span class="sc">==</span> <span class="dv">0</span>])</span>
+<span id="cb11-9"><a href="#cb11-9"></a>  V_hat_p[i] <span class="ot">&lt;-</span> <span class="fu">var</span>(y1[z_permut <span class="sc">==</span> <span class="dv">1</span>]) <span class="sc">/</span> n1 <span class="sc">+</span> <span class="fu">var</span>(y0[z_permut <span class="sc">==</span> <span class="dv">0</span>]) <span class="sc">/</span> n0</span>
+<span id="cb11-10"><a href="#cb11-10"></a>  lim_sup[i] <span class="ot">&lt;-</span> tau_hat_p[i] <span class="sc">+</span> <span class="fl">1.96</span><span class="sc">*</span><span class="fu">sqrt</span>(V_hat_p[i])</span>
+<span id="cb11-11"><a href="#cb11-11"></a>  lim_inf[i] <span class="ot">&lt;-</span> tau_hat_p[i] <span class="sc">-</span> <span class="fl">1.96</span><span class="sc">*</span><span class="fu">sqrt</span>(V_hat_p[i])</span>
+<span id="cb11-12"><a href="#cb11-12"></a>  est[i] <span class="ot">&lt;-</span> (tau_hat_p[i] <span class="sc">-</span> tau) <span class="sc">/</span> <span class="fu">sqrt</span>(V_hat_p[i])</span>
+<span id="cb11-13"><a href="#cb11-13"></a>}</span>
+<span id="cb11-14"><a href="#cb11-14"></a><span class="fu">mean</span>(V_hat_p)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.03070238</code></pre>
+</div>
+</div>
+</div>
+<div class="fragment">
+<p>Quantas vezes será que o intervalo de confiança 95% cobriu o verdadeiro valor do parâmetro?</p>
+<div class="cell" data-layout-align="center">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1"></a>cobertura <span class="ot">&lt;-</span> <span class="fu">c</span>()</span>
+<span id="cb13-2"><a href="#cb13-2"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">10</span><span class="sc">^</span><span class="dv">4</span>) {</span>
+<span id="cb13-3"><a href="#cb13-3"></a>  cobertura[i] <span class="ot">&lt;-</span> <span class="fu">ifelse</span>(lim_inf[i] <span class="sc">&lt;</span> tau <span class="sc">&amp;&amp;</span> tau <span class="sc">&lt;</span> lim_sup[i], <span class="dv">1</span>, <span class="dv">0</span>)</span>
+<span id="cb13-4"><a href="#cb13-4"></a>}</span>
+<span id="cb13-5"><a href="#cb13-5"></a><span class="fu">mean</span>(cobertura)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.9452</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="ilustração-4" class="slide level2">
+<h2>Ilustração</h2>
+<div class="callout callout-note callout-captioned callout-style-default">
+<div class="callout-body">
+<div class="callout-caption">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Simulação</strong></p>
+</div>
+<div class="callout-content">
+<div class="cell" data-layout-align="center">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1"></a><span class="fu">hist</span>(est)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="MI618_Aula03_files/figure-revealjs/unnamed-chunk-6-1.png" width="960"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="ilustração-5" class="slide level2">
+<h2>Ilustração</h2>
+<div class="callout callout-note callout-captioned callout-style-default">
+<div class="callout-body">
+<div class="callout-caption">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Simulação</strong></p>
+</div>
+<div class="callout-content">
+<p>Repetiremos o experimento mas mudando os resultados potenciais:</p>
+<div class="cell" data-layout-align="center">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1"></a>y0 <span class="ot">&lt;-</span> <span class="fu">sort</span>(y0, <span class="at">decreasing =</span> <span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<div class="cell" data-layout-align="center">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1"></a>tau_hat_p <span class="ot">&lt;-</span> <span class="fu">c</span>()</span>
+<span id="cb17-2"><a href="#cb17-2"></a>V_hat_p <span class="ot">&lt;-</span> <span class="fu">c</span>()</span>
+<span id="cb17-3"><a href="#cb17-3"></a>lim_sup <span class="ot">&lt;-</span> <span class="fu">c</span>()</span>
+<span id="cb17-4"><a href="#cb17-4"></a>lim_inf <span class="ot">&lt;-</span> <span class="fu">c</span>()</span>
+<span id="cb17-5"><a href="#cb17-5"></a>cobertura <span class="ot">&lt;-</span> <span class="fu">c</span>()</span>
+<span id="cb17-6"><a href="#cb17-6"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">10</span><span class="sc">^</span><span class="dv">4</span>) {</span>
+<span id="cb17-7"><a href="#cb17-7"></a>  z_permut <span class="ot">&lt;-</span> <span class="fu">sample</span>(z)</span>
+<span id="cb17-8"><a href="#cb17-8"></a>  tau_hat_p[i] <span class="ot">&lt;-</span> <span class="fu">mean</span>(y1[z_permut <span class="sc">==</span> <span class="dv">1</span>]) <span class="sc">-</span> <span class="fu">mean</span>(y0[z_permut <span class="sc">==</span> <span class="dv">0</span>])</span>
+<span id="cb17-9"><a href="#cb17-9"></a>  V_hat_p[i] <span class="ot">&lt;-</span> <span class="fu">var</span>(y1[z_permut <span class="sc">==</span> <span class="dv">1</span>]) <span class="sc">/</span> n1 <span class="sc">+</span> <span class="fu">var</span>(y0[z_permut <span class="sc">==</span> <span class="dv">0</span>]) <span class="sc">/</span> n0</span>
+<span id="cb17-10"><a href="#cb17-10"></a>  lim_sup[i] <span class="ot">&lt;-</span> tau_hat_p[i] <span class="sc">+</span> <span class="fl">1.96</span><span class="sc">*</span><span class="fu">sqrt</span>(V_hat_p[i])</span>
+<span id="cb17-11"><a href="#cb17-11"></a>  lim_inf[i] <span class="ot">&lt;-</span> tau_hat_p[i] <span class="sc">-</span> <span class="fl">1.96</span><span class="sc">*</span><span class="fu">sqrt</span>(V_hat_p[i])</span>
+<span id="cb17-12"><a href="#cb17-12"></a>  cobertura[i] <span class="ot">&lt;-</span> <span class="fu">ifelse</span>(lim_inf[i] <span class="sc">&lt;</span> tau <span class="sc">&amp;&amp;</span> tau <span class="sc">&lt;</span> lim_sup[i], <span class="dv">1</span>, <span class="dv">0</span>)</span>
+<span id="cb17-13"><a href="#cb17-13"></a>  est[i] <span class="ot">&lt;-</span> (tau_hat_p[i] <span class="sc">-</span> tau) <span class="sc">/</span> <span class="fu">sqrt</span>(V_hat_p[i])</span>
+<span id="cb17-14"><a href="#cb17-14"></a>}</span>
+<span id="cb17-15"><a href="#cb17-15"></a><span class="fu">mean</span>(cobertura)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 1</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="fragment">
+<p>O que implica fazermos “y0 = sort(y0, decreasing = FALSE)”?</p>
+</div>
+</section>
+<section id="ilustração-6" class="slide level2">
+<h2>Ilustração</h2>
+<div class="callout callout-note callout-captioned callout-style-default">
+<div class="callout-body">
+<div class="callout-caption">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Simulação</strong></p>
+</div>
+<div class="callout-content">
+<div class="cell" data-layout-align="center">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1"></a><span class="fu">hist</span>(est)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="MI618_Aula03_files/figure-revealjs/unnamed-chunk-9-1.png" width="960"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="ilustração-7" class="slide level2">
+<h2>Ilustração</h2>
+<div class="callout callout-note callout-captioned callout-style-default">
+<div class="callout-body">
+<div class="callout-caption">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Simulação</strong></p>
+</div>
+<div class="callout-content">
+<p>Repetiremos o experimento mas mudando os resultados potenciais:</p>
+<div class="cell" data-layout-align="center">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1"></a>y0 <span class="ot">&lt;-</span> <span class="fu">sample</span>(y0)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<div class="cell" data-layout-align="center">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1"></a>tau_hat_p <span class="ot">&lt;-</span> <span class="fu">c</span>()</span>
+<span id="cb21-2"><a href="#cb21-2"></a>V_hat_p <span class="ot">&lt;-</span> <span class="fu">c</span>()</span>
+<span id="cb21-3"><a href="#cb21-3"></a>lim_sup <span class="ot">&lt;-</span> <span class="fu">c</span>()</span>
+<span id="cb21-4"><a href="#cb21-4"></a>lim_inf <span class="ot">&lt;-</span> <span class="fu">c</span>()</span>
+<span id="cb21-5"><a href="#cb21-5"></a>cobertura <span class="ot">&lt;-</span> <span class="fu">c</span>()</span>
+<span id="cb21-6"><a href="#cb21-6"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">10</span><span class="sc">^</span><span class="dv">4</span>) {</span>
+<span id="cb21-7"><a href="#cb21-7"></a>  z_permut <span class="ot">&lt;-</span> <span class="fu">sample</span>(z)</span>
+<span id="cb21-8"><a href="#cb21-8"></a>  tau_hat_p[i] <span class="ot">&lt;-</span> <span class="fu">mean</span>(y1[z_permut <span class="sc">==</span> <span class="dv">1</span>]) <span class="sc">-</span> <span class="fu">mean</span>(y0[z_permut <span class="sc">==</span> <span class="dv">0</span>])</span>
+<span id="cb21-9"><a href="#cb21-9"></a>  V_hat_p[i] <span class="ot">&lt;-</span> <span class="fu">var</span>(y1[z_permut <span class="sc">==</span> <span class="dv">1</span>]) <span class="sc">/</span> n1 <span class="sc">+</span> <span class="fu">var</span>(y0[z_permut <span class="sc">==</span> <span class="dv">0</span>]) <span class="sc">/</span> n0</span>
+<span id="cb21-10"><a href="#cb21-10"></a>  lim_sup[i] <span class="ot">&lt;-</span> tau_hat_p[i] <span class="sc">+</span> <span class="fl">1.96</span><span class="sc">*</span><span class="fu">sqrt</span>(V_hat_p[i])</span>
+<span id="cb21-11"><a href="#cb21-11"></a>  lim_inf[i] <span class="ot">&lt;-</span> tau_hat_p[i] <span class="sc">-</span> <span class="fl">1.96</span><span class="sc">*</span><span class="fu">sqrt</span>(V_hat_p[i])</span>
+<span id="cb21-12"><a href="#cb21-12"></a>  cobertura[i] <span class="ot">&lt;-</span> <span class="fu">ifelse</span>(lim_inf[i] <span class="sc">&lt;</span> tau <span class="sc">&amp;&amp;</span> tau <span class="sc">&lt;</span> lim_sup[i], <span class="dv">1</span>, <span class="dv">0</span>)</span>
+<span id="cb21-13"><a href="#cb21-13"></a>  est[i] <span class="ot">&lt;-</span> (tau_hat_p[i] <span class="sc">-</span> tau) <span class="sc">/</span> <span class="fu">sqrt</span>(V_hat_p[i])</span>
+<span id="cb21-14"><a href="#cb21-14"></a>}</span>
+<span id="cb21-15"><a href="#cb21-15"></a><span class="fu">mean</span>(cobertura)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.9942</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="fragment">
+<p>O que implica fazermos “y0 = sample(y0)”?</p>
+</div>
+</section>
+<section id="ilustração-8" class="slide level2">
+<h2>Ilustração</h2>
+<div class="callout callout-note callout-captioned callout-style-default">
+<div class="callout-body">
+<div class="callout-caption">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Simulação</strong></p>
+</div>
+<div class="callout-content">
+<div class="cell" data-layout-align="center">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1"></a><span class="fu">hist</span>(est)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="MI618_Aula03_files/figure-revealjs/unnamed-chunk-12-1.png" width="960"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="ilustração-9" class="slide level2">
+<h2>Ilustração</h2>
+<div class="callout callout-note callout-captioned callout-style-default">
+<div class="callout-body">
+<div class="callout-caption">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Simulação</strong></p>
+</div>
+<div class="callout-content">
+<div class="cell" data-layout-align="center">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1"></a><span class="fu">set.seed</span>(<span class="dv">123</span>)</span>
+<span id="cb24-2"><a href="#cb24-2"></a>eps <span class="ot">&lt;-</span> <span class="fu">rbinom</span>(n, <span class="dv">1</span>, <span class="fl">0.4</span>)</span>
+<span id="cb24-3"><a href="#cb24-3"></a>y0 <span class="ot">&lt;-</span> (<span class="dv">1</span> <span class="sc">-</span> eps) <span class="sc">*</span> <span class="fu">rexp</span>(n) <span class="sc">+</span> eps<span class="sc">*</span><span class="fu">rcauchy</span>(n)</span>
+<span id="cb24-4"><a href="#cb24-4"></a>tau <span class="ot">&lt;-</span> <span class="dv">1</span></span>
+<span id="cb24-5"><a href="#cb24-5"></a>y1 <span class="ot">&lt;-</span> y0 <span class="sc">+</span> tau</span>
+<span id="cb24-6"><a href="#cb24-6"></a></span>
+<span id="cb24-7"><a href="#cb24-7"></a>tau_hat_p <span class="ot">&lt;-</span> <span class="fu">c</span>()</span>
+<span id="cb24-8"><a href="#cb24-8"></a>V_hat_p <span class="ot">&lt;-</span> <span class="fu">c</span>()</span>
+<span id="cb24-9"><a href="#cb24-9"></a>lim_sup <span class="ot">&lt;-</span> <span class="fu">c</span>()</span>
+<span id="cb24-10"><a href="#cb24-10"></a>lim_inf <span class="ot">&lt;-</span> <span class="fu">c</span>()</span>
+<span id="cb24-11"><a href="#cb24-11"></a>cobertura <span class="ot">&lt;-</span> <span class="fu">c</span>()</span>
+<span id="cb24-12"><a href="#cb24-12"></a>est <span class="ot">&lt;-</span> <span class="fu">c</span>()</span>
+<span id="cb24-13"><a href="#cb24-13"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">10</span><span class="sc">^</span><span class="dv">4</span>) {</span>
+<span id="cb24-14"><a href="#cb24-14"></a>  z_permut <span class="ot">&lt;-</span> <span class="fu">sample</span>(z)</span>
+<span id="cb24-15"><a href="#cb24-15"></a>  tau_hat_p[i] <span class="ot">&lt;-</span> <span class="fu">mean</span>(y1[z_permut <span class="sc">==</span> <span class="dv">1</span>]) <span class="sc">-</span> <span class="fu">mean</span>(y0[z_permut <span class="sc">==</span> <span class="dv">0</span>])</span>
+<span id="cb24-16"><a href="#cb24-16"></a>  V_hat_p[i] <span class="ot">&lt;-</span> <span class="fu">var</span>(y1[z_permut <span class="sc">==</span> <span class="dv">1</span>]) <span class="sc">/</span> n1 <span class="sc">+</span> <span class="fu">var</span>(y0[z_permut <span class="sc">==</span> <span class="dv">0</span>]) <span class="sc">/</span> n0</span>
+<span id="cb24-17"><a href="#cb24-17"></a>  lim_sup[i] <span class="ot">&lt;-</span> tau_hat_p[i] <span class="sc">+</span> <span class="fl">1.96</span><span class="sc">*</span><span class="fu">sqrt</span>(V_hat_p[i])</span>
+<span id="cb24-18"><a href="#cb24-18"></a>  lim_inf[i] <span class="ot">&lt;-</span> tau_hat_p[i] <span class="sc">-</span> <span class="fl">1.96</span><span class="sc">*</span><span class="fu">sqrt</span>(V_hat_p[i])</span>
+<span id="cb24-19"><a href="#cb24-19"></a>  cobertura[i] <span class="ot">&lt;-</span> <span class="fu">ifelse</span>(lim_inf[i] <span class="sc">&lt;</span> tau <span class="sc">&amp;&amp;</span> tau <span class="sc">&lt;</span> lim_sup[i], <span class="dv">1</span>, <span class="dv">0</span>)</span>
+<span id="cb24-20"><a href="#cb24-20"></a>  est[i] <span class="ot">&lt;-</span> (tau_hat_p[i] <span class="sc">-</span> tau) <span class="sc">/</span> <span class="fu">sqrt</span>(V_hat_p[i])</span>
+<span id="cb24-21"><a href="#cb24-21"></a>}</span>
+<span id="cb24-22"><a href="#cb24-22"></a><span class="fu">mean</span>(cobertura)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.9981</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="ilustração-10" class="slide level2">
+<h2>Ilustração</h2>
+<div class="callout callout-note callout-captioned callout-style-default">
+<div class="callout-body">
+<div class="callout-caption">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Simulação</strong></p>
+</div>
+<div class="callout-content">
+<div class="cell" data-layout-align="center">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1"></a><span class="fu">hist</span>(est)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="MI618_Aula03_files/figure-revealjs/unnamed-chunk-14-1.png" width="960"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section></section>
+<section>
+<section id="aplicação" class="title-slide slide level1 center">
+<h1>Aplicação</h1>
+
+</section>
+<section id="aplicação-1" class="slide level2">
+<h2>Aplicação</h2>
+<ul>
+<li class="fragment">Suponha que estamos em um CRE.</li>
+<li class="fragment">Temos <span class="math inline">\(Y_i\)</span> (os resultados observados) e <span class="math inline">\(Z_i\)</span> (o vetor de indicador de tratamento).</li>
+<li class="fragment">O objetivo é determinar se o uso do tratamento causa algum efeito em <span class="math inline">\(Y_i\)</span>.</li>
+<li class="fragment">Seu colega, quase que imediatamente, resolve ajustar um modelo de regressão do tipo <span class="math display">\[Y_i = \beta_0 + \beta_1 Z_i + \epsilon_i.\]</span></li>
+</ul>
+<div class="fragment">
+<center>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="imagens/duvida_ds.jpg" style="width:30.0%"></p>
+<p></p><figcaption>Concorda ou não com a proposta do seu colega?</figcaption><p></p>
+</figure>
+</div>
+<center>
+</center></center></div>
+</section>
+<section id="aplicação-2" class="slide level2">
+<h2>Aplicação</h2>
+<ul>
+<li class="fragment">Regressão é um dos métodos mais conhecidos por usuários treinados (e destreinados) e é frequentemente utilizado para fazer inferência acerca do <strong>ACE</strong>.</li>
+<li class="fragment">O procediemnto padrão consiste em ajusta a regressão por MQO e utilizar <span class="math inline">\(\hat{\beta}\)</span> como o estimador do <strong>ACE</strong> (<span class="math inline">\(\tau\)</span>).</li>
+<li class="fragment">De fato, pode-se provar que <span class="math inline">\(\hat{\beta} = \hat{\tau}\)</span>.</li>
+<li class="fragment">Contudo, a variância do estimador obtido por MQO é <span class="math display">\[\hat{V}_{MQO} = \dfrac{n(n_1 -1)}{(n-2)n_1n_0}\hat{S}^2(1) + \dfrac{n(n_0 -1)}{(n-2)n_1n_0}\hat{S}^2(0) \approx \dfrac{\hat{S}^2(1)}{n_0} + \dfrac{\hat{S}^2(0)}{n_1}\]</span></li>
+<li class="fragment">Mas <span class="math inline">\(\hat{V} \neq \hat{V}_{MQO}\)</span> 😞</li>
+</ul>
+<div class="fragment">
+<center>
+<span style="color:red;">E agora, José?</span>
+</center>
+</div>
+</section>
+<section id="aplicação-3" class="slide level2">
+<h2>Aplicação</h2>
+<ul>
+<li class="fragment">Não podemos utilizar <span class="math inline">\(\hat{V}_{MQO}\)</span> 😢.</li>
+<li class="fragment">Felizmente, o estimador robusto da variância EHW (Eicker-Huber-White) é bastante próximo de <span class="math inline">\(\hat{V}\)</span> 🏄, <span class="math display">\[\hat{V}_{EHW} = \dfrac{\hat{S}^2(1) (n_1 - 1)}{n_1 n_1} +\dfrac{\hat{S}^2(0) (n_0 - 1)}{n_0 n_0} \approx \dfrac{\hat{S}^2(1)}{n_1} + \dfrac{\hat{S}^2(0)}{n_0}.\]</span></li>
+<li class="fragment">Ademais, o estimador HC2 que é uma variante do EHW é exatamente igual a <span class="math inline">\(\hat{V}\)</span> 😄.</li>
+</ul>
+<div class="fragment">
+<center>
+<span style="color:red;">A função <code>hccm</code> do pacote <code>car</code> do <strong>R</strong> calcula tanto o estimador EHW quanto o HC2!.</span>
+</center>
+</div>
+</section>
+<section id="aplicação-4" class="slide level2">
+<h2>Aplicação</h2>
+<p>Utilizaremos o <em>dataset</em> <code>lalonde</code> do pacote <code>Matching</code> para mostrar como utilizar o método de Neyman, bem como comparar com o modelo de regressão.</p>
+<div class="fragment">
+<div class="cell" data-layout-align="center">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1"></a><span class="fu">library</span>(Matching)</span>
+<span id="cb27-2"><a href="#cb27-2"></a><span class="fu">data</span>(lalonde)</span>
+<span id="cb27-3"><a href="#cb27-3"></a>n <span class="ot">&lt;-</span> <span class="fu">nrow</span>(lalonde)</span>
+<span id="cb27-4"><a href="#cb27-4"></a></span>
+<span id="cb27-5"><a href="#cb27-5"></a>z <span class="ot">&lt;-</span> lalonde<span class="sc">$</span>treat</span>
+<span id="cb27-6"><a href="#cb27-6"></a>y <span class="ot">&lt;-</span> lalonde<span class="sc">$</span>re78</span>
+<span id="cb27-7"><a href="#cb27-7"></a></span>
+<span id="cb27-8"><a href="#cb27-8"></a>n1 <span class="ot">&lt;-</span> <span class="fu">sum</span>(z)</span>
+<span id="cb27-9"><a href="#cb27-9"></a>n0 <span class="ot">&lt;-</span> n <span class="sc">-</span> n1</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+</div>
+<div class="fragment">
+<p>Podemos, então calcular facilmente <span class="math inline">\(\hat{\tau}\)</span> e <span class="math inline">\(\hat{V}\)</span>.</p>
+</div>
+<div class="fragment">
+<div class="cell" data-layout-align="center">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1"></a>tau_hat <span class="ot">&lt;-</span> <span class="fu">mean</span>(y[z <span class="sc">==</span> <span class="dv">1</span>]) <span class="sc">-</span> <span class="fu">mean</span>(y[z <span class="sc">==</span> <span class="dv">0</span>])</span>
+<span id="cb28-2"><a href="#cb28-2"></a>V_hat <span class="ot">&lt;-</span> <span class="fu">var</span>(y[z <span class="sc">==</span> <span class="dv">1</span>]) <span class="sc">/</span> n1 <span class="sc">+</span> <span class="fu">var</span>(y[z <span class="sc">==</span> <span class="dv">0</span>]) <span class="sc">/</span> n0</span>
+<span id="cb28-3"><a href="#cb28-3"></a>se_hat <span class="ot">&lt;-</span> <span class="fu">sqrt</span>(V_hat)</span>
+<span id="cb28-4"><a href="#cb28-4"></a><span class="fu">c</span>(tau_hat, V_hat, se_hat)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1]   1794.3431 450236.6112    670.9967</code></pre>
+</div>
+</div>
+</div>
+</section>
+<section id="aplicação-5" class="slide level2">
+<h2>Aplicação</h2>
+<p>Vejamo o que acontece se ajustarmos um modelo de regressão por MQO.</p>
+<div class="fragment">
+<div class="cell" data-layout-align="center">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1"></a>modelo <span class="ot">&lt;-</span> <span class="fu">lm</span>(y <span class="sc">~</span> z)</span>
+<span id="cb30-2"><a href="#cb30-2"></a><span class="fu">summary</span>(modelo)<span class="sc">$</span>coef</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>            Estimate Std. Error   t value     Pr(&gt;|t|)
+(Intercept) 4554.802   408.0460 11.162474 1.154114e-25
+z           1794.343   632.8536  2.835321 4.787524e-03</code></pre>
+</div>
+</div>
+</div>
+<div class="fragment">
+<p>Contudo, lembre-se que não devemos utilizar <span class="math inline">\(\hat{V}_{MQO}\)</span>, mas podemos utilizar os estimadores EHW ou HC2.</p>
+</div>
+<div class="fragment">
+<div class="cell" data-layout-align="center">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1"></a><span class="fu">library</span>(car)</span>
+<span id="cb32-2"><a href="#cb32-2"></a>se_EHW <span class="ot">&lt;-</span> <span class="fu">sqrt</span>(<span class="fu">hccm</span>(modelo, <span class="at">type =</span> <span class="st">"hc0"</span>)[<span class="dv">2</span>, <span class="dv">2</span>])</span>
+<span id="cb32-3"><a href="#cb32-3"></a>se_hc2 <span class="ot">&lt;-</span> <span class="fu">sqrt</span>(<span class="fu">hccm</span>(modelo, <span class="at">type =</span> <span class="st">"hc2"</span>)[<span class="dv">2</span>, <span class="dv">2</span>])</span>
+<span id="cb32-4"><a href="#cb32-4"></a><span class="fu">c</span>(se_EHW, se_hc2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 669.3155 670.9967</code></pre>
+</div>
+</div>
+</div>
+<div class="fragment">
+<p>Para mais detalhes de estimadores robustos da matriz de covariância, ver <a href="https://www.tandfonline.com/doi/abs/10.1080/00031305.2000.10474549">aqui</a></p>
+</div>
+</section>
+<section id="aplicação-6" class="slide level2">
+<h2>Aplicação</h2>
+<p><span class="math display">\[H_{0N}: \tau = 0\]</span> Estatística de teste:</p>
+<div>
+<ul>
+<li><span class="math inline">\(\dfrac{\hat{\tau}-\tau}{\sqrt{\hat{V}}} = \dfrac{1794.3431}{670.9967} = 2.674146 \quad , \quad \dfrac{\hat{\tau}-\tau}{\sqrt{\hat{V}_{MQO}}} = \dfrac{1794.3431}{632.8536} = 2.835321\)</span></li>
+<li><span class="math inline">\(\dfrac{\hat{\tau}-\tau}{\sqrt{\hat{V}_{EHW}}} = \dfrac{1794.3431}{669.3155} = 2.680863 \quad , \quad \dfrac{\hat{\tau}-\tau}{\sqrt{\hat{V}_{HC2}}} = \dfrac{1794.3431}{670.9967} = 2.674146\)</span></li>
+</ul>
+</div>
+<div class="cell" data-layout-align="center">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1"></a><span class="fu">c</span>(<span class="fu">qnorm</span>(<span class="fl">0.975</span>), <span class="fu">qnorm</span>(<span class="fl">0.995</span>), <span class="fu">qnorm</span>(<span class="fl">0.9975</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 1.959964 2.575829 2.807034</code></pre>
+</div>
+</div>
+</section></section>
+<section>
+<section id="demostração" class="title-slide slide level1 center">
+<h1>Demostração</h1>
+
+</section>
+<section id="demostração-do-teorema-de-neyman" class="slide level2">
+<h2>Demostração do Teorema de Neyman</h2>
+<div class="callout callout-tip callout-captioned callout-style-default">
+<div class="callout-body">
+<div class="callout-caption">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Teorema</strong></p>
+</div>
+<div class="callout-content">
+<p>Sob CRE:</p>
+<div>
+<ol type="1">
+<li>O estimador da diferença de médias, <span class="math inline">\(\hat{\tau} = \hat{\bar{Y}}(1) - \hat{\bar{Y}}(0)\)</span> é não viesado para <span class="math inline">\(\tau\)</span>, ou seja, <span class="math inline">\(\mathbb{E}(\hat{\tau}) = \tau.\)</span></li>
+<li><span class="math display">\[\mathbb{V}(\hat{\tau}) = \dfrac{S^2(1)}{n_1} + \dfrac{S^2(0)}{n_0} - \dfrac{S^2(\tau)}{n} = \dfrac{n_0 S^2(1)}{n_1 n} + \dfrac{n_1 S^2(0)}{n_0 n} + 2\dfrac{S(1, 0)}{n}\]</span></li>
+<li>O estimador da variância, <span class="math inline">\(\hat{V} = \dfrac{\hat{S}^2(1)}{n_1} +\dfrac{\hat{S}^2(0)}{n_0}\)</span> é conservador para estimar <span class="math inline">\(\mathbb{V}(\hat{\tau})\)</span>. Isto significa que <span class="math display">\[\mathbb{E}(\hat{V}) - \mathbb{V}(\hat{\tau}) = \dfrac{S^2(\tau)}{n} \geq 0,\]</span> com a igualdade acontecendo se <span class="math inline">\(\tau_i = \tau\)</span> <span class="math inline">\(\forall i\)</span>.</li>
+</ol>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="referências" class="slide level2">
+<h2>Referências</h2>
+<div>
+<ul>
+<li>Peng Ding (2023). A First Course in Causal Inference. Capítulo 4</li>
+<li>Li, X., &amp; Ding, P. (2017). General forms of finite population central limit theorems with applications to causal inference. Journal of the American Statistical Association, 112(520), 1759-1769.</li>
+<li>Long, J. S., &amp; Ervin, L. H. (2000). Using heteroscedasticity consistent standard errors in the linear regression model. The American Statistician, 54(3), 217-224.</li>
+<li>https://www.causalconversations.com/post/randomization-based-inference/</li>
+</ul>
+</div>
+
+<img src="imagens/imecc.png" class="slide-logo r-stretch"><div class="footer footer-default">
+<p>Carlos Trucíos (IMECC/UNICAMP) | ME920/MI628 - Inferência Causal | <a href="https://ctruciosm.github.io/">ctruciosm.github.io</a></p>
+</div>
+</section></section>
+    </div>
+  </div>
+
+  <script>window.backupDefine = window.define; window.define = undefined;</script>
+  <script src="MI618_Aula03_files/libs/revealjs/dist/reveal.js"></script>
+  <!-- reveal.js plugins -->
+  <script src="MI618_Aula03_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script>
+  <script src="MI618_Aula03_files/libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
+  <script src="MI618_Aula03_files/libs/revealjs/plugin/reveal-menu/menu.js"></script>
+  <script src="MI618_Aula03_files/libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
+  <script src="MI618_Aula03_files/libs/revealjs/plugin/reveal-chalkboard/plugin.js"></script>
+  <script src="MI618_Aula03_files/libs/revealjs/plugin/quarto-support/support.js"></script>
+  
+
+  <script src="MI618_Aula03_files/libs/revealjs/plugin/notes/notes.js"></script>
+  <script src="MI618_Aula03_files/libs/revealjs/plugin/search/search.js"></script>
+  <script src="MI618_Aula03_files/libs/revealjs/plugin/zoom/zoom.js"></script>
+  <script src="MI618_Aula03_files/libs/revealjs/plugin/math/math.js"></script>
+  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script>
+
+  <script>
+
+      // Full list of configuration options available at:
+      // https://revealjs.com/config/
+      Reveal.initialize({
+'controlsAuto': true,
+'previewLinksAuto': false,
+'smaller': false,
+'pdfSeparateFragments': false,
+'autoAnimateEasing': "ease",
+'autoAnimateDuration': 1,
+'autoAnimateUnmatched': true,
+'menu': {"side":"left","useTextContentForMissingTitles":true,"markers":false,"loadIcons":false,"custom":[{"title":"Tools","icon":"<i class=\"fas fa-gear\"></i>","content":"<ul class=\"slide-menu-items\">\n<li class=\"slide-tool-item active\" data-item=\"0\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.fullscreen(event)\"><kbd>f</kbd> Fullscreen</a></li>\n<li class=\"slide-tool-item\" data-item=\"1\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.speakerMode(event)\"><kbd>s</kbd> Speaker View</a></li>\n<li class=\"slide-tool-item\" data-item=\"2\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.overview(event)\"><kbd>o</kbd> Slide Overview</a></li>\n<li class=\"slide-tool-item\" data-item=\"3\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.overview(event)\"><kbd>e</kbd> PDF Export Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"4\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleChalkboard(event)\"><kbd>b</kbd> Toggle Chalkboard</a></li>\n<li class=\"slide-tool-item\" data-item=\"5\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleNotesCanvas(event)\"><kbd>c</kbd> Toggle Notes Canvas</a></li>\n<li class=\"slide-tool-item\" data-item=\"6\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.downloadDrawings(event)\"><kbd>d</kbd> Download Drawings</a></li>\n<li class=\"slide-tool-item\" data-item=\"7\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.keyboardHelp(event)\"><kbd>?</kbd> Keyboard Help</a></li>\n</ul>"}],"openButton":true},
+'chalkboard': {"buttons":true},
+'smaller': false,
+ 
+        // Display controls in the bottom right corner
+        controls: false,
+
+        // Help the user learn the controls by providing hints, for example by
+        // bouncing the down arrow when they first encounter a vertical slide
+        controlsTutorial: false,
+
+        // Determines where controls appear, "edges" or "bottom-right"
+        controlsLayout: 'edges',
+
+        // Visibility rule for backwards navigation arrows; "faded", "hidden"
+        // or "visible"
+        controlsBackArrows: 'faded',
+
+        // Display a presentation progress bar
+        progress: true,
+
+        // Display the page number of the current slide
+        slideNumber: 'c/t',
+
+        // 'all', 'print', or 'speaker'
+        showSlideNumber: 'print',
+
+        // Add the current slide number to the URL hash so that reloading the
+        // page/copying the URL will return you to the same slide
+        hash: true,
+
+        // Start with 1 for the hash rather than 0
+        hashOneBasedIndex: false,
+
+        // Flags if we should monitor the hash and change slides accordingly
+        respondToHashChanges: true,
+
+        // Push each slide change to the browser history
+        history: true,
+
+        // Enable keyboard shortcuts for navigation
+        keyboard: true,
+
+        // Enable the slide overview mode
+        overview: true,
+
+        // Disables the default reveal.js slide layout (scaling and centering)
+        // so that you can use custom CSS layout
+        disableLayout: false,
+
+        // Vertical centering of slides
+        center: false,
+
+        // Enables touch navigation on devices with touch input
+        touch: true,
+
+        // Loop the presentation
+        loop: false,
+
+        // Change the presentation direction to be RTL
+        rtl: false,
+
+        // see https://revealjs.com/vertical-slides/#navigation-mode
+        navigationMode: 'linear',
+
+        // Randomizes the order of slides each time the presentation loads
+        shuffle: false,
+
+        // Turns fragments on and off globally
+        fragments: true,
+
+        // Flags whether to include the current fragment in the URL,
+        // so that reloading brings you to the same fragment position
+        fragmentInURL: false,
+
+        // Flags if the presentation is running in an embedded mode,
+        // i.e. contained within a limited portion of the screen
+        embedded: false,
+
+        // Flags if we should show a help overlay when the questionmark
+        // key is pressed
+        help: true,
+
+        // Flags if it should be possible to pause the presentation (blackout)
+        pause: true,
+
+        // Flags if speaker notes should be visible to all viewers
+        showNotes: false,
+
+        // Global override for autoplaying embedded media (null/true/false)
+        autoPlayMedia: null,
+
+        // Global override for preloading lazy-loaded iframes (null/true/false)
+        preloadIframes: null,
+
+        // Number of milliseconds between automatically proceeding to the
+        // next slide, disabled when set to 0, this value can be overwritten
+        // by using a data-autoslide attribute on your slides
+        autoSlide: 0,
+
+        // Stop auto-sliding after user input
+        autoSlideStoppable: true,
+
+        // Use this method for navigation when auto-sliding
+        autoSlideMethod: null,
+
+        // Specify the average time in seconds that you think you will spend
+        // presenting each slide. This is used to show a pacing timer in the
+        // speaker view
+        defaultTiming: null,
+
+        // Enable slide navigation via mouse wheel
+        mouseWheel: false,
+
+        // The display mode that will be used to show slides
+        display: 'block',
+
+        // Hide cursor if inactive
+        hideInactiveCursor: true,
+
+        // Time before the cursor is hidden (in ms)
+        hideCursorTime: 5000,
+
+        // Opens links in an iframe preview overlay
+        previewLinks: false,
+
+        // Transition style (none/fade/slide/convex/concave/zoom)
+        transition: 'none',
+
+        // Transition speed (default/fast/slow)
+        transitionSpeed: 'default',
+
+        // Transition style for full page slide backgrounds
+        // (none/fade/slide/convex/concave/zoom)
+        backgroundTransition: 'none',
+
+        // Number of slides away from the current that are visible
+        viewDistance: 3,
+
+        // Number of slides away from the current that are visible on mobile
+        // devices. It is advisable to set this to a lower number than
+        // viewDistance in order to save resources.
+        mobileViewDistance: 2,
+
+        // The "normal" size of the presentation, aspect ratio will be preserved
+        // when the presentation is scaled to fit different resolutions. Can be
+        // specified using percentage units.
+        width: 1600,
+
+        height: 900,
+
+        // Factor of the display size that should remain empty around the content
+        margin: 0.1,
+
+        math: {
+          mathjax: 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js',
+          config: 'TeX-AMS_HTML-full',
+          tex2jax: {
+            inlineMath: [['\\(','\\)']],
+            displayMath: [['\\[','\\]']],
+            balanceBraces: true,
+            processEscapes: false,
+            processRefs: true,
+            processEnvironments: true,
+            preview: 'TeX',
+            skipTags: ['script','noscript','style','textarea','pre','code'],
+            ignoreClass: 'tex2jax_ignore',
+            processClass: 'tex2jax_process'
+          },
+        },
+
+        // reveal.js plugins
+        plugins: [QuartoLineHighlight, PdfExport, RevealMenu, RevealChalkboard, QuartoSupport,
+
+          RevealMath,
+          RevealNotes,
+          RevealSearch,
+          RevealZoom
+        ]
+      });
+    </script>
+    
+    <script>
+      // htmlwidgets need to know to resize themselves when slides are shown/hidden.
+      // Fire the "slideenter" event (handled by htmlwidgets.js) when the current
+      // slide changes (different for each slide format).
+      (function () {
+        // dispatch for htmlwidgets
+        function fireSlideEnter() {
+          const event = window.document.createEvent("Event");
+          event.initEvent("slideenter", true, true);
+          window.document.dispatchEvent(event);
+        }
+
+        function fireSlideChanged(previousSlide, currentSlide) {
+          fireSlideEnter();
+
+          // dispatch for shiny
+          if (window.jQuery) {
+            if (previousSlide) {
+              window.jQuery(previousSlide).trigger("hidden");
+            }
+            if (currentSlide) {
+              window.jQuery(currentSlide).trigger("shown");
+            }
+          }
+        }
+
+        // hookup for slidy
+        if (window.w3c_slidy) {
+          window.w3c_slidy.add_observer(function (slide_num) {
+            // slide_num starts at position 1
+            fireSlideChanged(null, w3c_slidy.slides[slide_num - 1]);
+          });
+        }
+
+      })();
+    </script>
+
+    <script id="quarto-html-after-body" type="application/javascript">
+    window.document.addEventListener("DOMContentLoaded", function (event) {
+      const toggleBodyColorMode = (bsSheetEl) => {
+        const mode = bsSheetEl.getAttribute("data-mode");
+        const bodyEl = window.document.querySelector("body");
+        if (mode === "dark") {
+          bodyEl.classList.add("quarto-dark");
+          bodyEl.classList.remove("quarto-light");
+        } else {
+          bodyEl.classList.add("quarto-light");
+          bodyEl.classList.remove("quarto-dark");
+        }
+      }
+      const toggleBodyColorPrimary = () => {
+        const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+        if (bsSheetEl) {
+          toggleBodyColorMode(bsSheetEl);
+        }
+      }
+      toggleBodyColorPrimary();  
+      const tabsets =  window.document.querySelectorAll(".panel-tabset-tabby")
+      tabsets.forEach(function(tabset) {
+        const tabby = new Tabby('#' + tabset.id);
+      });
+      const clipboard = new window.ClipboardJS('.code-copy-button', {
+        target: function(trigger) {
+          return trigger.previousElementSibling;
+        }
+      });
+      clipboard.on('success', function(e) {
+        // button target
+        const button = e.trigger;
+        // don't keep focus
+        button.blur();
+        // flash "checked"
+        button.classList.add('code-copy-button-checked');
+        var currentTitle = button.getAttribute("title");
+        button.setAttribute("title", "Copied!");
+        let tooltip;
+        if (window.bootstrap) {
+          button.setAttribute("data-bs-toggle", "tooltip");
+          button.setAttribute("data-bs-placement", "left");
+          button.setAttribute("data-bs-title", "Copied!");
+          tooltip = new bootstrap.Tooltip(button, 
+            { trigger: "manual", 
+              customClass: "code-copy-button-tooltip",
+              offset: [0, -8]});
+          tooltip.show();    
+        }
+        setTimeout(function() {
+          if (tooltip) {
+            tooltip.hide();
+            button.removeAttribute("data-bs-title");
+            button.removeAttribute("data-bs-toggle");
+            button.removeAttribute("data-bs-placement");
+          }
+          button.setAttribute("title", currentTitle);
+          button.classList.remove('code-copy-button-checked');
+        }, 1000);
+        // clear code selection
+        e.clearSelection();
+      });
+      function tippyHover(el, contentFn) {
+        const config = {
+          allowHTML: true,
+          content: contentFn,
+          maxWidth: 500,
+          delay: 100,
+          arrow: false,
+          appendTo: function(el) {
+              return el.closest('section.slide') || el.parentElement;
+          },
+          interactive: true,
+          interactiveBorder: 10,
+          theme: 'quarto-reveal',
+          placement: 'bottom-start'
+        };
+          config['offset'] = [0,0];
+          config['maxWidth'] = 700;
+        window.tippy(el, config); 
+      }
+      const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+      for (var i=0; i<noterefs.length; i++) {
+        const ref = noterefs[i];
+        tippyHover(ref, function() {
+          // use id or data attribute instead here
+          let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+          try { href = new URL(href).hash; } catch {}
+          const id = href.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          return note.innerHTML;
+        });
+      }
+      const findCites = (el) => {
+        const parentEl = el.parentElement;
+        if (parentEl) {
+          const cites = parentEl.dataset.cites;
+          if (cites) {
+            return {
+              el,
+              cites: cites.split(' ')
+            };
+          } else {
+            return findCites(el.parentElement)
+          }
+        } else {
+          return undefined;
+        }
+      };
+      var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+      for (var i=0; i<bibliorefs.length; i++) {
+        const ref = bibliorefs[i];
+        const citeInfo = findCites(ref);
+        if (citeInfo) {
+          tippyHover(citeInfo.el, function() {
+            var popup = window.document.createElement('div');
+            citeInfo.cites.forEach(function(cite) {
+              var citeDiv = window.document.createElement('div');
+              citeDiv.classList.add('hanging-indent');
+              citeDiv.classList.add('csl-entry');
+              var biblioDiv = window.document.getElementById('ref-' + cite);
+              if (biblioDiv) {
+                citeDiv.innerHTML = biblioDiv.innerHTML;
+              }
+              popup.appendChild(citeDiv);
+            });
+            return popup.innerHTML;
+          });
+        }
+      }
+    });
+    </script>
+    
+
+</body></html>

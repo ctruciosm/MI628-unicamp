@@ -1,0 +1,638 @@
+---
+title: "Inferência Causal"
+subtitle: "CRE: Abordagem de Neyman"
+author: "Prof. Carlos Trucíos </br> ctrucios@unicamp.br"
+Email: "ctrucios@unicamp.br"
+institute: "Instituto de Matemática, Estatística e Computação Científica (IMECC), </br> Universidade Estadual de Campinas (UNICAMP)."
+toc: true
+toc-depth: 1
+toc-title: "Conteúdo"
+knitr:
+    opts_chunk: 
+      fig.align: 'center'
+execute:
+    message: false
+    warning: false
+format:
+    revealjs:
+        slide-number: true
+        show-slide-number: print
+        self-contained: false
+        chalkboard: true
+        width: 1600
+        height: 900
+        theme: [default, styles.scss]
+        incremental: true
+        code-fold: true
+        logo: "imagens/imecc.png"
+        footer: "Carlos Trucíos (IMECC/UNICAMP)  |  ME920/MI628 - Inferência Causal |  [ctruciosm.github.io](https://ctruciosm.github.io/)"
+        highlight-style: "a11y"
+        title-slide-attributes:
+            data-background-image: "imagens/unicamp.png"
+            data-background-size: 20%
+            data-background-position: 99% 5%
+            data-background-opacity: "1"
+---
+
+
+
+# Introdução
+## Introdução
+
+
+
+
+
+
+# Neyman
+## Neyman
+
+- Neyman (1923) propõe um método para fazer inferência para o efeito causal médio (ACE: **A**verage **C**ausal **E**ffect).
+- Diferente da abordagem de Fisher (p-valor), Neyman propõe um estimador pontual não viesado e, baseado na distribuição amostral do estimador pontual, intervalos de confiança.
+
+
+## Neyman
+
+Considere um CRE com $n$ unidades, em que $n_1$ recebem o tratamento e $n_0$ recebem o placebo. Para cada $i$ ($i = 1, \cdots, n.$) temos os resultados potenciais $Y_i(1)$ e $Y_i(0)$, bem como o efeito causal individual $\tau_i = Y_i(1) - Y_i(0)$. Então:
+
+- Médias: $\bar{Y}(1) = \displaystyle \sum_{i = 1}^n Y_i(1) \Big / n$  e $\bar{Y}(0) = \displaystyle \sum_{i = 1}^n Y_i(0) \Big / n$.
+- Variâncias: $S^2(1) = \displaystyle \sum_{i = 1}^n (Y_i(1) - \bar{Y}(1))^2 \Big / n - 1$ e  $S^2(0) = \displaystyle \sum_{i = 1}^n (Y_i(0) - \bar{Y}(0))^2 \Big / n - 1$.
+- Covariância: $S(1, 0) = \displaystyle \sum_{i = 1}^n [Y_i(1) - \bar{Y}(1)][Y_i(0) - \bar{Y}(0)]\Big / n - 1$
+
+
+## Neyman
+
+Ademais, $$\tau = \displaystyle \sum_{i = 1}^n \tau_i \Big / n = \bar{Y}(1) - \bar{Y}(0) \quad e \quad S^2(\tau) = \sum_{i = 1}^n(\tau_i - \tau)^2 \Big / n - 1.$$
+
+. . . 
+
+
+::: {.callout-tip}
+### Lema
+
+$$2 S(1, 0) = S^2(1) + S^2(0) - S^2(\tau).$$
+
+:::
+
+. . . 
+
+> Estamos interessados em estimar o efeito causal médio (ACE), $\tau$, baseados em $(Z_i, Y_i)_{i = 1}^n$ sob CRE.
+
+
+
+## Teorema de Neyman
+
+
+Utilizando os resultados observados ($Y_i$), podemos calcular aa médiaa e variâncias amostrais como:
+
+$$\hat{\bar{Y}}(1) = \displaystyle \sum_{i = 1}^n Z_i Y_i \Big /n_1 \quad  e \quad \hat{\bar{Y}}(0) = \displaystyle \sum_{i = 1}^n (1 - Z_i) Y_i \Big /n_0$$
+
+$$\hat{S}^2(1) = \displaystyle \sum_{i = 1}^n Z_i (Y_i - \hat{\bar{Y}}(1))^2 \Big / n_1 - 1 \quad e \quad \hat{S}^2(0) = \displaystyle \sum_{i = 1}^n (1 - Z_i) (Y_i - \hat{\bar{Y}}(0))^2 \Big / n_0 - 1$$
+
+. . . 
+
+**Quais seriam as versões amostrais de $S(1, 0)$ e $S^2(\tau)$?**
+
+. . . 
+
+[Nenhuma!. Não existe versões amostrais de $S(1, 0)$ nem $S^2(\tau)$ pois os resultados potenciais $Y_i(1)$ e $Y_i(0)$ nunca são observados simultaneamente para cada unidade $i$.]{style="color:red;"}
+
+
+
+## Teorema de Neyman
+
+
+::: {.callout-tip}
+### Teorema
+
+Sob CRE:
+
+::: {.nonincremental}
+
+1. O estimador da diferença de médias, $\hat{\tau} = \hat{\bar{Y}}(1) - \hat{\bar{Y}}(0)$ é não viesado para $\tau$, ou seja, $\mathbb{E}(\hat{\tau}) = \tau.$
+2. $$\mathbb{V}(\hat{\tau}) = \dfrac{S^2(1)}{n_1} + \dfrac{S^2(0)}{n_0} - \dfrac{S^2(\tau)}{n} = \dfrac{n_0 S^2(1)}{n_1 n} + \dfrac{n_1 S^2(0)}{n_0 n} + 2\dfrac{S(1, 0)}{n}$$
+3. O estimador da variância, $\hat{V} = \dfrac{\hat{S}^2(1)}{n_1} +\dfrac{\hat{S}^2(0)}{n_0}$ é conservador para estimar $\mathbb{V}(\hat{\tau})$. Isto significa que $$\mathbb{E}(\hat{V}) - \mathbb{V}(\hat{\tau}) = \dfrac{S^2(\tau)}{n} \geq 0,$$ com a igualdade acontecendo se $\tau_i = \tau$ $\forall i$.
+
+:::
+:::
+
+. . . 
+
+**Demostração:** (no final da aula)
+
+## Teorema de Neyman
+
+- Repare que apenas $Z_1, \cdots, Z_n$ é aleatório (mas os resultados potenciais são todos fixos).
+- Assim, $\mathbb{E}(\cdot)$ e  $\mathbb{V}(\cdot)$ são em $Z_1, \cdots, Z_n$, que são permutações aleatórias de $n_1$ 1s e $n_0$ 0s.
+- $\hat{\tau}$ tem uma distribuição discreta sob $\hat{\tau}^1, \cdots, \hat{\tau}^M$, com $M = \binom{n}{n_1}$.
+
+. . . 
+
+<center>
+[Quais são as diferenças entre o teste de Neyman e o de Fisher?]{style="color:red;"}
+
+![](imagens/Fisher_Neyman.png)
+
+</center>
+
+
+## Fisher vs Neyman
+
+
+::: {layout-nrow=2}
+
+<center>
+![FRT](imagens/Fisher.png){width=90%}
+
+</center>
+
+<center>
+![Neyman](imagens/Neyman.png){width=90%}
+</center>
+
+:::
+
+
+
+## Fisher vs Neyman
+
+
+<center>
+![](imagens/Fisher_Neyman.png){width=25%}
+</center>
+
+- FRT funciona para qualquer teste, já o teorema Neyman apenas fornece resultados para a diferença de médias.
+- No FRT, $\textbf{Y}$ é fixo, já na abordagem de Neyman $\textbf{Y}(\textbf{z}^m)$ muda com mudanças de $\textbf{z}^m$.
+- No FRT, todos os $T(\textbf{z}^m, \textbf{Y})$ são calculáveis, já na abordagem de Neyman, os $\hat{\tau}^m$ são valores hipotéticos pois não todos os resultados potenciais são conhecidos (apenas conhecemos os resultados observados).
+
+
+
+## Teorema de Neyman
+
+<center>
+[Até agora, temos visto que $\hat{\tau}$ é um estimador não viesado para $\tau$, mas não temos visto como calcular intervalos de confiança.]{style="color:red;"}
+</center>
+
+. . . 
+
+::: {.callout-tip}
+### Teorema
+Seja $n, n_1 \rightarrow \infty$. Se $n_1/n \rightarrow k \in (0, 1)$, $S^2(1), S^2(0), S(1, 0) < \infty$  e $$\max_{1\leq i \leq n} \{Y_i(1) - \bar{Y}(1)\}^2 \big / n \rightarrow 0, \quad \max_{1\leq i \leq n} \{Y_i(0) - \bar{Y}(0)\}^2 \big / n \rightarrow 0,$$ então $$\dfrac{\hat{\tau} - \tau}{\sqrt{\mathbb{V}(\hat{\tau})}} \xrightarrow D N(0,1),$$
+
+$$\hat{S}^2(1) \xrightarrow p S^2(1), \quad e \quad \hat{S}^2(0) \xrightarrow p S^2(0).$$
+
+:::
+
+A prova do teorema é bastante técnica e está em [Li e Peng (2017).](https://www.tandfonline.com/doi/full/10.1080/01621459.2017.1295865)
+
+
+## Teorema de Neyman
+
+O teorema garante a normalidade e, ao mesmo tempo, que o estimador da variância, $\hat{V} = \frac{\hat{S}^2(1)}{n_1} + \frac{\hat{S}^2(0)}{n_0}$, é maior (em probabilidade) do que $\mathbb{V}(\hat{\tau}) = \frac{S^2(1)}{n_1} + \frac{S^2(0)}{n_0} - \frac{S^2(\tau)}{n}$, o que permite calcular intervalos de confiança conservadores (*i.e,* de tamanho maior): $$\hat{\tau} \pm z_{1-\alpha/2} \sqrt{\hat{V}}.$$
+
+
+. . . 
+
+Pela relação intervalo de confiança-teste de hipóteses, podemos utilizar o intervalo para testar a _hipótese nula fraca_: $$H_{0N}: \tau = 0$$
+
+
+. . .
+
+
+[**Observação:** $H_{0F}$ e $H_{0N}$ são conhecidas como hipótese nula forte e fraca, respectivamente.]{style="color:gray;"}
+
+
+# Ilustração
+
+## Ilustração
+
+::: {.callout-note}
+### Simulação
+
+::: {.fragment}
+Consideremos uma amostra de tamanho 100 com 60 tratamentos e 40 placebos em que os resultados potenciais são gerados com efeito individual constante.
+
+```{r}
+#| echo: true
+n <- 100
+n1 <- 60
+n0 <- 40
+y0 <- sort(rexp(n), decreasing = TRUE)
+tau <- 1
+y1 <- y0 + tau
+```
+
+:::
+
+::: {.fragment}
+A _Scientific Table_ é então
+```{r}
+cbind(y0, y1)
+```
+
+
+:::
+:::
+
+
+## Ilustração
+
+
+::: {.callout-note}
+### Simulação
+Escolhemos 1 amostra e calculamos: $\hat{\tau}$, $\hat{V}$, intervalo de confiança e $\mathbb{V}(\hat{\tau})$.
+
+
+```{r}
+#| echo: true
+z <- sample(c(rep(1, n1), rep(0, n0)))
+tau_hat <- mean(y1[z == 1]) - mean(y0[z == 0])
+tau_hat
+V_hat <- var(y1[z == 1]) / n1 + var(y0[z == 0]) / n0
+V_hat
+intervalo_confianca <- c(tau_hat - 1.96 * sqrt(V_hat), tau_hat + 1.96 * sqrt(V_hat))
+intervalo_confianca
+var_hat_tau <- n0 * var(y1) / (n1 * n) + n1 * var(y0) / (n0 * n) + 2*cov(y1, y0) / n
+var_hat_tau
+```
+:::
+
+
+## Ilustração
+
+::: {.callout-note}
+### Simulação
+
+::: {.fragment}
+E se gerarmos não um, mas vários CRE? 
+
+```{r}
+#| echo: true
+tau_hat_p <- c()
+V_hat_p <- c()
+lim_sup <- c()
+lim_inf <- c()
+est <- c()
+for (i in 1:10^4) {
+  z_permut <- sample(z)
+  tau_hat_p[i] <- mean(y1[z_permut == 1]) - mean(y0[z_permut == 0])
+  V_hat_p[i] <- var(y1[z_permut == 1]) / n1 + var(y0[z_permut == 0]) / n0
+  lim_sup[i] <- tau_hat_p[i] + 1.96*sqrt(V_hat_p[i])
+  lim_inf[i] <- tau_hat_p[i] - 1.96*sqrt(V_hat_p[i])
+  est[i] <- (tau_hat_p[i] - tau) / sqrt(V_hat_p[i])
+}
+mean(V_hat_p)
+```
+
+:::
+
+::: {.fragment}
+Quantas vezes será que o intervalo de confiança 95\% cobriu o verdadeiro valor do parâmetro?
+```{r}
+#| echo: true
+cobertura <- c()
+for (i in 1:10^4) {
+  cobertura[i] <- ifelse(lim_inf[i] < tau && tau < lim_sup[i], 1, 0)
+}
+mean(cobertura)
+```
+
+
+:::
+:::
+
+
+## Ilustração
+
+::: {.callout-note}
+### Simulação
+
+```{r}
+#| echo: true
+hist(est)
+```
+
+:::
+
+
+
+## Ilustração
+
+::: {.callout-note}
+### Simulação
+
+Repetiremos o experimento mas mudando os resultados potenciais:
+
+```{r}
+#| echo: true
+y0 <- sort(y0, decreasing = FALSE)
+```
+
+```{r}
+#| echo: true
+tau_hat_p <- c()
+V_hat_p <- c()
+lim_sup <- c()
+lim_inf <- c()
+cobertura <- c()
+for (i in 1:10^4) {
+  z_permut <- sample(z)
+  tau_hat_p[i] <- mean(y1[z_permut == 1]) - mean(y0[z_permut == 0])
+  V_hat_p[i] <- var(y1[z_permut == 1]) / n1 + var(y0[z_permut == 0]) / n0
+  lim_sup[i] <- tau_hat_p[i] + 1.96*sqrt(V_hat_p[i])
+  lim_inf[i] <- tau_hat_p[i] - 1.96*sqrt(V_hat_p[i])
+  cobertura[i] <- ifelse(lim_inf[i] < tau && tau < lim_sup[i], 1, 0)
+  est[i] <- (tau_hat_p[i] - tau) / sqrt(V_hat_p[i])
+}
+mean(cobertura)
+```
+
+:::
+
+. . . 
+
+O que implica fazermos "y0 = sort(y0, decreasing = FALSE)"?
+
+
+## Ilustração
+
+::: {.callout-note}
+### Simulação
+
+
+```{r}
+#| echo: true
+hist(est)
+```
+
+:::
+
+
+
+## Ilustração
+
+::: {.callout-note}
+### Simulação
+
+Repetiremos o experimento mas mudando os resultados potenciais:
+
+```{r}
+#| echo: true
+y0 <- sample(y0)
+```
+
+```{r}
+#| echo: true
+tau_hat_p <- c()
+V_hat_p <- c()
+lim_sup <- c()
+lim_inf <- c()
+cobertura <- c()
+for (i in 1:10^4) {
+  z_permut <- sample(z)
+  tau_hat_p[i] <- mean(y1[z_permut == 1]) - mean(y0[z_permut == 0])
+  V_hat_p[i] <- var(y1[z_permut == 1]) / n1 + var(y0[z_permut == 0]) / n0
+  lim_sup[i] <- tau_hat_p[i] + 1.96*sqrt(V_hat_p[i])
+  lim_inf[i] <- tau_hat_p[i] - 1.96*sqrt(V_hat_p[i])
+  cobertura[i] <- ifelse(lim_inf[i] < tau && tau < lim_sup[i], 1, 0)
+  est[i] <- (tau_hat_p[i] - tau) / sqrt(V_hat_p[i])
+}
+mean(cobertura)
+```
+
+:::
+
+. . . 
+
+O que implica fazermos "y0 = sample(y0)"?
+
+## Ilustração
+
+::: {.callout-note}
+### Simulação
+
+
+```{r}
+#| echo: true
+hist(est)
+```
+
+:::
+
+
+
+
+## Ilustração
+
+
+::: {.callout-note}
+### Simulação
+
+
+```{r}
+#| echo: true
+set.seed(123)
+eps <- rbinom(n, 1, 0.4)
+y0 <- (1 - eps) * rexp(n) + eps*rcauchy(n)
+tau <- 1
+y1 <- y0 + tau
+
+tau_hat_p <- c()
+V_hat_p <- c()
+lim_sup <- c()
+lim_inf <- c()
+cobertura <- c()
+est <- c()
+for (i in 1:10^4) {
+  z_permut <- sample(z)
+  tau_hat_p[i] <- mean(y1[z_permut == 1]) - mean(y0[z_permut == 0])
+  V_hat_p[i] <- var(y1[z_permut == 1]) / n1 + var(y0[z_permut == 0]) / n0
+  lim_sup[i] <- tau_hat_p[i] + 1.96*sqrt(V_hat_p[i])
+  lim_inf[i] <- tau_hat_p[i] - 1.96*sqrt(V_hat_p[i])
+  cobertura[i] <- ifelse(lim_inf[i] < tau && tau < lim_sup[i], 1, 0)
+  est[i] <- (tau_hat_p[i] - tau) / sqrt(V_hat_p[i])
+}
+mean(cobertura)
+```
+:::
+
+
+## Ilustração
+
+
+::: {.callout-note}
+### Simulação
+```{r}
+#| echo: true
+hist(est)
+```
+
+:::
+
+# Aplicação
+
+## Aplicação
+
+- Suponha que estamos em um CRE.
+- Temos $Y_i$ (os resultados observados) e $Z_i$ (o vetor de indicador de tratamento).
+- O objetivo é determinar se o uso do tratamento causa algum efeito em $Y_i$.
+- Seu colega, quase que imediatamente, resolve ajustar um modelo de regressão do tipo $$Y_i = \beta_0 + \beta_1 Z_i + \epsilon_i.$$
+
+. . .
+
+<center>
+![Concorda ou não com a proposta do seu colega?](imagens/duvida_ds.jpg){width=30%}
+<center>
+
+
+## Aplicação
+
+- Regressão é um dos métodos mais conhecidos por usuários treinados (e destreinados) e é frequentemente utilizado para fazer inferência acerca do **ACE**.
+- O procediemnto padrão consiste em ajusta a regressão por MQO e utilizar $\hat{\beta}$ como o estimador do **ACE** ($\tau$).
+- De fato, pode-se provar que $\hat{\beta} = \hat{\tau}$.
+- Contudo, a variância do estimador obtido por MQO é $$\hat{V}_{MQO} = \dfrac{n(n_1 -1)}{(n-2)n_1n_0}\hat{S}^2(1) + \dfrac{n(n_0 -1)}{(n-2)n_1n_0}\hat{S}^2(0) \approx \dfrac{\hat{S}^2(1)}{n_0} + \dfrac{\hat{S}^2(0)}{n_1}$$
+- Mas $\hat{V} \neq \hat{V}_{MQO}$ `r emo::ji("sad")`
+
+. . . 
+
+
+<center>
+[E agora, José?]{style="color:red;"}
+</center>
+
+
+## Aplicação
+
+
+- Não podemos utilizar $\hat{V}_{MQO}$ `r emo::ji("sad")`.
+- Felizmente, o estimador robusto da variância EHW (Eicker-Huber-White) é bastante próximo de $\hat{V}$ `r emo::ji("surfing")`, $$\hat{V}_{EHW} = \dfrac{\hat{S}^2(1) (n_1 - 1)}{n_1 n_1} +\dfrac{\hat{S}^2(0) (n_0 - 1)}{n_0 n_0} \approx \dfrac{\hat{S}^2(1)}{n_1} + \dfrac{\hat{S}^2(0)}{n_0}.$$
+- Ademais, o estimador HC2 que é uma variante do EHW é exatamente igual a $\hat{V}$ `r emo::ji("smile")`.
+
+. . . 
+
+
+<center>
+[A função `hccm` do pacote `car` do **R** calcula tanto o estimador EHW quanto o HC2!.]{style="color:red;"}
+</center>
+
+
+
+## Aplicação
+
+Utilizaremos o _dataset_ `lalonde` do pacote `Matching` para mostrar como utilizar o método de Neyman, bem como comparar com o modelo de regressão.
+
+. . . 
+
+
+```{r}
+#| echo: true
+library(Matching)
+data(lalonde)
+n <- nrow(lalonde)
+
+z <- lalonde$treat
+y <- lalonde$re78
+
+n1 <- sum(z)
+n0 <- n - n1
+```
+
+
+. . . 
+
+Podemos, então calcular facilmente $\hat{\tau}$ e $\hat{V}$.
+
+. . . 
+
+```{r}
+#| echo: true
+tau_hat <- mean(y[z == 1]) - mean(y[z == 0])
+V_hat <- var(y[z == 1]) / n1 + var(y[z == 0]) / n0
+se_hat <- sqrt(V_hat)
+c(tau_hat, V_hat, se_hat)
+```
+
+## Aplicação
+
+Vejamo o que acontece se ajustarmos um modelo de regressão por MQO.
+
+. . . 
+
+```{r}
+#| echo: true
+modelo <- lm(y ~ z)
+summary(modelo)$coef
+```
+
+. . . 
+
+Contudo, lembre-se que não devemos utilizar $\hat{V}_{MQO}$, mas podemos utilizar os estimadores EHW ou HC2.
+
+. . . 
+
+```{r}
+#| echo: true
+library(car)
+se_EHW <- sqrt(hccm(modelo, type = "hc0")[2, 2])
+se_hc2 <- sqrt(hccm(modelo, type = "hc2")[2, 2])
+c(se_EHW, se_hc2)
+```
+
+
+
+
+. . . 
+
+
+Para mais detalhes de estimadores robustos da matriz de covariância, ver [aqui](https://www.tandfonline.com/doi/abs/10.1080/00031305.2000.10474549)
+
+
+## Aplicação
+
+
+$$H_{0N}: \tau = 0$$
+Estatística de teste:
+
+::: {.nonincremental}
+- $\dfrac{\hat{\tau}-\tau}{\sqrt{\hat{V}}} = \dfrac{1794.3431}{670.9967} = 2.674146 \quad , \quad \dfrac{\hat{\tau}-\tau}{\sqrt{\hat{V}_{MQO}}} = \dfrac{1794.3431}{632.8536} = 2.835321$
+- $\dfrac{\hat{\tau}-\tau}{\sqrt{\hat{V}_{EHW}}} = \dfrac{1794.3431}{669.3155} = 2.680863 \quad , \quad \dfrac{\hat{\tau}-\tau}{\sqrt{\hat{V}_{HC2}}} = \dfrac{1794.3431}{670.9967} = 2.674146$
+:::
+
+```{r}
+#| echo: true
+c(qnorm(0.975), qnorm(0.995), qnorm(0.9975))
+```
+
+
+# Demostração
+
+## Demostração do Teorema de Neyman
+
+
+::: {.callout-tip}
+### Teorema
+
+Sob CRE:
+
+::: {.nonincremental}
+
+1. O estimador da diferença de médias, $\hat{\tau} = \hat{\bar{Y}}(1) - \hat{\bar{Y}}(0)$ é não viesado para $\tau$, ou seja, $\mathbb{E}(\hat{\tau}) = \tau.$
+2. $$\mathbb{V}(\hat{\tau}) = \dfrac{S^2(1)}{n_1} + \dfrac{S^2(0)}{n_0} - \dfrac{S^2(\tau)}{n} = \dfrac{n_0 S^2(1)}{n_1 n} + \dfrac{n_1 S^2(0)}{n_0 n} + 2\dfrac{S(1, 0)}{n}$$
+3. O estimador da variância, $\hat{V} = \dfrac{\hat{S}^2(1)}{n_1} +\dfrac{\hat{S}^2(0)}{n_0}$ é conservador para estimar $\mathbb{V}(\hat{\tau})$. Isto significa que $$\mathbb{E}(\hat{V}) - \mathbb{V}(\hat{\tau}) = \dfrac{S^2(\tau)}{n} \geq 0,$$ com a igualdade acontecendo se $\tau_i = \tau$ $\forall i$.
+
+:::
+:::
+
+
+## Referências
+
+::: {.nonincremental}
+
+- Peng Ding (2023). A First Course in Causal Inference. Capítulo 4
+- Li, X., & Ding, P. (2017). General forms of finite population central limit theorems with applications to causal inference. Journal of the American Statistical Association, 112(520), 1759-1769.
+- Long, J. S., & Ervin, L. H. (2000). Using heteroscedasticity consistent standard errors in the linear regression model. The American Statistician, 54(3), 217-224.
+- https://www.causalconversations.com/post/randomization-based-inference/
+
+
+
+:::

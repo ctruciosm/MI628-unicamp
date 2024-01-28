@@ -1,0 +1,520 @@
+---
+title: "Inferência Causal"
+subtitle: "Resultados potenciais e experimentos randomizados"
+author: "Prof. Carlos Trucíos </br> ctrucios@unicamp.br"
+Email: "ctrucios@unicamp.br"
+institute: "Instituto de Matemática, Estatística e Computação Científica (IMECC), </br> Universidade Estadual de Campinas (UNICAMP)."
+toc: true
+toc-depth: 1
+toc-title: "Conteúdo"
+knitr:
+    opts_chunk: 
+      fig.align: 'center'
+execute:
+    message: false
+    warning: false
+format:
+    revealjs:
+        slide-number: true
+        show-slide-number: print
+        self-contained: false
+        chalkboard: true
+        width: 1600
+        height: 900
+        theme: [default, styles.scss]
+        incremental: true
+        code-fold: true
+        logo: "imagens/imecc.png"
+        footer: "Carlos Trucíos (IMECC/UNICAMP)  |  ME920/MI628 - Inferência Causal |  [ctruciosm.github.io](https://ctruciosm.github.io/)"
+        highlight-style: "a11y"
+        title-slide-attributes:
+            data-background-image: "imagens/unicamp.png"
+            data-background-size: 20%
+            data-background-position: 99% 5%
+            data-background-opacity: "1"
+---
+
+
+
+# Potential outcomes
+## Potential outcomes
+
+- Considere um estudo com $n$ unidades experimentais ($i= 1, 2, \cdots, n$).
+- Se forcarmos apenas em casos com dois níveis de tratamento (1: tratamento, 0: controle), para cada $i$, o resultado de interesse, $Y$, tem duas versões $$Y_i(1) \quad e \quad Y_i(0),$$ as quais são os resultados potenciais (*potential outcomes*) sob as intervenções 1 e 0, respectivamente.
+
+
+## Potential outcomes
+
+
+### Suposições
+
+1. **Sem interferência:** O resultado potencial da i-éssima unidade, não depende do tratamento em outras unidades.
+2. **Consistência:** Não existem outras versões do tratamento (níveis de tratamento bem definidos e sem ambiguedades).
+3. [**SUTVA** Suposições 1 e 2 acontecem.]{style="color:red;"}
+
+
+
+## Potential outcomes
+
+
+<center>
+
+![](imagens/duvida_econometrics.png){width=10%}
+</center>
+
+
+[**Pode pensar um caso em que a suposição 1 é violada?**]{style="color:blue;"}
+
+- Se alguns dos meus amigos são vacinados contra a gripe, minhas chances de contrair gripe diminuem, mesmo se eu não fui vacinado. O resultado é influenciado pelo tratamento nas outras unidades.
+
+
+. . . 
+
+
+[**Pode pensar um caso em que a suposição 2 é violada?**]{style="color:blue;"}
+
+- Ao estudar o efeito da educação superior sob o salário, o curso feito pode ser importante. Assim o tratamento (ter educação superior) não é unicamente determinado e exitem várias versões.
+
+
+## Potential outcomes
+
+Seja a matriz $n \times 2$ de resultados potenciais (conhecida como "The Science Table"):
+
+| i    |  $Y_i(1)$  | $Y_i(0)$    |
+|:----:|:----------:|:-----------:|
+| 1    | $Y_1(1)$   | $Y_1(0)$    |
+| 2    | $Y_2(1)$   | $Y_2(0)$    |
+| $\vdots$    | $\vdots$   | $\vdots$   |
+| n    | $Y_n(1)$   | $Y_n(0)$    |
+
+
+
+## Potential outcomes
+
+
+::: {.callout-tip}
+### Efeito causal individual e médio
+
+Para cada $i = 1, \cdots, n$, o efeito causal individual é dado por $$\tau_i = Y_i(1) - Y_i(0).$$
+
+O efeito causal médio, é dado por $$\tau = n^{-1} \displaystyle \sum_{i = 1}^n \{ Y_i(1) - Y_i(0) \}.$$
+
+
+
+
+:::
+
+
+## Potential outcomes
+
+
+Note que se tivermos, por exemplo, dois subgrupos definidos pela variável binária $X$, podemos definir o efeito causal do subgrupo como:
+
+$$\tau_x = \dfrac{\displaystyle \sum_{i = 1}^{n} I(X_i = x) \{Y_i(1) - Y_i(0)\}}{\displaystyle \sum_{i = 1}^n I(X_i = x)}, \quad \quad (x = 0, 1).$$
+
+Ademais, <center>$\tau = \pi_0 \tau_0 + \pi_1 \tau_1, \quad \text{com} \quad \pi_x = \displaystyle \sum_{i = 1}^n I(X_i = x) / n.$ </center>
+
+. . . 
+
+<center>
+[Note que se $\tau_0 > 0$ e $\tau_1 > 0$, então $\tau > 0$. Isto implica que o paradoxo de Simpson não acontece em efeitos causais.]{style="color:red;"}
+
+</center>
+
+
+## Potential outcomes
+
+- Seja $Z_i$ o indicador de tratamento ($Z_i = 1$ ou $0$) para a $i$-éssima unidade experimental.
+- O resultado observado (**observed outcome**) da $i$-éssima unidade experimental é função tanto dos resultados potenciais quanto do indicador de tratamento: $$Y_i =
+\left\{
+	\begin{array}{ll}
+		Y_i(1),  & \mbox{se } Z_i = 1\\
+		Y_i(0),  & \mbox{se } Z_i = 0 
+	\end{array}
+\right.$${#eq-1}
+
+. . . 
+
+Note que @eq-1 pode também ser escrita como:
+
+$$\begin{align}
+    Y_i & = Z_i Y_i(1) + (1 - Z_i)Y_i(0) \\
+        & = Y_i(0) + Z_i (Y_i(1) - Y_i(0)) \\
+        & = Y_i(0) + Z_i \tau_i
+\end{align}$$
+
+
+## Potential outcomes
+
+
+::: {.callout-important}
+### Observação:
+
+Antes do experimento, ambos resultados potenciais podem ser observados. Contudo, depois do experimento um resultado potencial torna-se o _resultado observado_ e o outro torna-se o _resultado contrafactual_.
+:::
+
+. . . 
+
+O mecanismo para atribuir o tratamento desempenha um papel importante para inferir efeitos causais. Veja o seguinte exemplo:
+
+
+## Potential outcomes
+
+::: {.callout-note}
+
+### Exemplo 1
+
+::: {.nonincremental}
+1. Simulamos resultados potenciais com efeito causal médio -0.5.
+
+```{r}
+#| echo: true
+n <- 500
+Y0 <- rnorm(n)
+tau <- rnorm(n, -0.5)
+Y1 <- Y0 + tau
+```
+
+2. Analisamos duas formas diferentes de atribuir os tratamentos.
+
+:::: {.columns}
+
+::: {.column width="50%"}
+![](imagens/medico_simpson_1.jpg){width=35% fig-align="center"}
+
+Atribuir o tratamento ao paciente se soubermos que $\tau_i \geq 0$
+:::
+
+
+::: {.column width="50%"}
+![](imagens/medico_simpson_2.jpg){width=35% fig-align="center"}
+
+Atribuir o tratamento ao paciente de forma aleatória (jogando uma moeda)
+:::
+
+::::
+
+:::
+
+:::
+
+
+## Potential outcomes
+
+:::: {.columns}
+
+::: {.column width="50%"}
+
+### Caso 1: 
+
+```{r}
+#| echo: true
+Z <- (tau >= 0)
+Y = Z * Y1 + (1 - Z) * Y0
+### Efeito causal médio
+mean(Y[Z == 1]) - mean(Y[Z == 0])
+```
+
+:::
+
+
+::: {.column width="50%"}
+
+### Caso 2:
+
+```{r}
+#| echo: true
+Z <- rbinom(n, 1, 0.5)
+Y = Z * Y1 + (1 - Z) * Y0
+### Efeito causal médio
+mean(Y[Z == 1]) - mean(Y[Z == 0])
+```
+
+:::
+
+::::
+
+**Note que a forma como o tratamento é atribuido, muda consideravelmente os resultados obtidos.** Por isso, é importante estudarmos diversos mecanismo de atribuição de tratamento (*i.e,* a distribuição de **Z**).
+
+
+# Experimentos randomizados
+
+## Experimentos randomizados
+
+<center>
+<h3>
+[Entender inferência causal em experimentos randomizados é essencial para entender inferêcia causal em estudos não experimentais.]{style="color:red;"}
+</h3>
+<center>
+
+
+## CRE: Completely Randomize Experiment
+
+Considere um experimento com $n$ unidades experimentais das quais $n_1$ recebem o tratamento (1) e $n_0$ recebem o placebo (0). 
+
+
+::: {.callout-tip}
+### CRE
+
+Sejam $n_1$ e $n_0$ com $n = n_1 + n_0$. Um CRE tem o mecanismo de atribuição de tratamento dado por: $$P(\textbf{Z} = \textbf{z}) = \dfrac{1}{\binom{n}{n_1}},$$ em que $\textbf{z} = (z_1, \cdots, z_n)$,  $\sum_{i = 1}^n z_i = n_1$ e $\sum_{i = 1}^n (1 - z_i) = n_0$. No CRE, o mecanismo de atribuição de tratamento é uma permutação de $n_1$ 1's e $n_0$ 0's.
+
+:::
+
+As vantagens da randomização são (Fisher, 1935):
+
+
+::: {nonincremental}
+1. Cria, em média, grupos de tratamento e controle comparáveis.
+2. Serve como fundamento para inferência estatística^[Fisher esta se referindo a um teste estatístico conhecido como Fisher Randomization Test (FRT)]
+
+:::
+
+
+## FRT: Fisher Randomization Test
+
+Estamos interessados em testar: $$H_{0F}: Y_i(1) = Y_i(0) \quad \forall i = 1, \cdots, n.$$
+
+<center>
+(se o efeito causal individual é nulo em todos os casos).
+</center>
+
+
+. . . 
+
+O FRT é da forma $$T = T(\textbf{Z}, \textbf{Y}).$${#eq-2} em que $\textbf{Y}$ é o vetor de resultados observado e $\textbf{Z}$ o vetor de tratamentos.
+
+. . . 
+
+Note que sob $H_{0F}$, $\textbf{Y}$ é fixo e a única componente aleatória em $T$ é $\textbf{Z}$.
+
+. . . 
+
+
+Ademais, a distribuição de $\textbf{Z}$ (*i.e,* o mecanismo de atribuição de tratamento) determina a distribuição de $T$ sob $H_{0F}$, que por sua vez é a base para calcular o p-valor.
+
+
+## FRT: Fisher Randomization Test
+
+Em um CRE, $\textbf{Z}$ é uniforme no conjunto $\{\textbf{z}^1, \cdots, \textbf{z}^M\}$, em que $M = \binom{n}{n_1}$ e os $\textbf{z}^m$s são todos os possíveis vetores com $n_1$ 1s e $n_0$ 0s.
+
+
+. . . 
+
+Consequentemente, $T$ é uniforme (com possíveis duplicações) no conjunto $\{T(\textbf{z}^1, \textbf{Y}), \cdots,  (\textbf{z}^M, \textbf{Y})\}$.
+
+. . . 
+
+
+Ou seja, a distribuição de $T$ é conhecida por causa do desenho CRE.
+
+. . . 
+
+Assim, o p-valor (unilateral) é dado por $$p = M^{-1} \displaystyle \sum_{m = 1}^M I\{ T(\textbf{z}^m, \textbf{Y}) \geq T(\textbf{Z}, \textbf{Y}) \}$$
+
+. . . 
+
+
+> Se quisermos um p-valor para um teste bilateral, uma possibilidade é utilizar o valor absoluto de T caso sua distribuição seja em volta de zero.
+
+
+## FRT: Fisher Randomization Test
+
+Na prática, M pode ser muito grande, tornando o cálculo do p-valor, mesmo para valores moderados de $M$, impraticável.
+
+```{r}
+library(kableExtra)
+n <- c(10, 20, 50, 100)
+n1 <- c(5, 10, 25, 50)
+M <- choose(n, n1)
+Table <- cbind(n, n1, M)
+knitr::kable(Table, col.names = c("n", "$n_1$", "M"), escape = FALSE, row.names = FALSE) %>% kable_styling(font_size = 16, full_width = TRUE)
+```
+
+
+Uma alternativa é utilizar $R$ amostras aleatórias dos possíveis valores do vetor de tratamentos (ou, equivalentemente, $R$ permutações aleatóriamente $\textbf{Z}$) e aproximar $p$ por $$\hat{p} = R^{-1} \displaystyle \sum_{r = 1}^R I\{ T(\textbf{z}^r, \textbf{Y}) \geq T(\textbf{Z}, \textbf{Y}) \}.$$
+
+
+. . . 
+
+Na prática, valores de $R = 10^4$ ou $R = 10^5$ costumam ser suficiente.
+
+
+## FRT: Fisher Randomization Test
+
+- Na @eq-2, não especificicamos qual teste estatístico utilizar.
+- A princípio, pode ser qualquer teste, mas a escolha deve ser feita de forma que traga informação sobre as violações de $H_{0F}$.
+
+. . . 
+
+<center>
+[**A seguir, veremos alguns exemplos com escolhas interessantes destes testes.**]{style="color:red;"}
+
+</center>
+
+## FRT: Fisher Randomization Test
+
+#### Caso 1: Diferença de médias.
+
+$$\text{Seja} \quad \tau = \hat{\bar{Y}}(1) -  \hat{\bar{Y}}(0),$$ em que $\hat{\bar{Y}}(1) = n_1^{-1} \displaystyle \sum_{Z_i = 1} Y_i = n_1^{-1} \displaystyle \sum_{i = 1}^n Z_i Y_i$ e $\hat{\bar{Y}}(0) = n_0^{-1} \displaystyle \sum_{Z_i = 0} Y_i = n_0^{-1} \displaystyle \sum_{i = 1}^n (1 - Z_i) Y_i$  são a média amostral sob tratamento (1) e controle (0), respectivamente.
+
+
+. . . 
+
+
+
+::: {.callout-important}
+
+### Lembrete: AAS
+Uma AAS de tamanho $n_1$ é um subconjunto finito da população de $n$ unidades indexadas por $i = 1, \cdots, n$. Seja $\textbf{Z} = (Z_1, \cdots, Z_n)$ um indicador de inclusão das $n$ unidades, com $Z_i = 1$ se a unidade $i$ é incluida na amostra e $Z_i = 0$ caso contrario. $\textbf{Z}$ pode assumir $\binom{n}{n_1}$ possíveis formas diferentes de um vetor com $n_1$ 1s e $n_0$ 0s. Assim, $$\mathbb{E}(Z_i) = \dfrac{n_1}{n}, \quad \mathbb{V}(Z_i) = \dfrac{n_1 n_0}{n^2} \quad e \quad \mathbb{C}ov(Z_i, Z_j) = - \dfrac{n_1 n_0}{n^2 (n - 1)}.$$
+
+Para mais informações, ver Cap 4.3 [aqui](https://amostragemcomr.github.io/livro/aas.html#amostragem-aleat%C3%B3ria-simples-sem-reposi%C3%A7%C3%A3o)
+
+
+:::
+
+
+## FRT: Fisher Randomization Test
+
+#### Caso 1: Diferença de médias.
+
+Sob $H_{0F}$, 
+
+- $\mathbb{E}(\tau) = 0$
+- $\mathbb{V}(\tau) = \dfrac{n}{n_1 n_0}S^2 = \dfrac{n}{n_1 n_0 (n-1)}\displaystyle \sum_{i = 1}^n (Y_i - \bar{Y})^2$
+- $\tau \Big / \sqrt{\dfrac{n}{n_1 n_0}S^2} \rightarrow N(0,1).$
+- Podemos utilizar $\tau \Big / \sqrt{\dfrac{n}{n_1 n_0}S^2}$ como estatística de teste no FRT e calcular o p-valor.
+
+
+## FRT: Fisher Randomization Test
+
+#### Caso 1: Diferença de médias.
+
+
+- $\mathbb{E}(\tau) = 0$ e $\mathbb{V}(\tau) = \dfrac{n}{n_1 n_0}S^2.$ **Demostração no quadro**
+- $\tau \Big / \sqrt{\dfrac{n}{n_1 n_0}S^2} \rightarrow N(0,1).$ Ver TCL para populações finitas.
+
+. . .
+
+
+<center>
+[O teste se parece aos testes para diferência de médias que aprendimos nos cursos básicos da graduação?]{style="color:red;"}
+
+</center>
+
+## FRT: Fisher Randomization Test
+
+#### Caso 1: Diferença de médias.
+
+Pense no clássico teste de diferencia de médias com variâncias desconhecidas e iguais.
+
+Sejam $X_1, \cdots, X_{n_x} \sim N(\mu_x, \sigma^2)$ e $Y_1, \cdots, Y_{n_y} \sim N(\mu_y, \sigma)$ e sejam as hipóteses $$H_0: \mu_x = \mu_y \quad vs. H_1: \mu_x \neq \mu_y.$$
+
+Então, a estatística de teste
+$$\dfrac{\bar{X} - \bar{Y}}{\sqrt{\Big[\dfrac{1}{n_x} + \dfrac{1}{n_y} \Big] \dfrac{\displaystyle \sum_{i = 1}^{n_x}(X_i - \bar{X})^2 + \sum_{j = 1}^{n_y}(Y_j - \bar{Y})^2}{n_x + n_y - 2}}} \sim t_{n_x + n_y -2}$$
+
+
+## FRT: Fisher Randomization Test
+
+#### Caso 1: Diferença de médias.
+
+- Pense nos $X_1, \cdots, X_{n_x}$ como os $\{Y_i: Z_i = 1\}$ e nos $Y_1, \cdots, Y_{n_x}$ como os $\{Y_i: Z_i = 0\}$.
+- Então, $n_x = n_1$, $n_y = n_0$ e $n_1 + n_0 = n$.
+- Note que $(n - 1)S^2 = \displaystyle \sum_{Z_i = 1} (Y_i - \hat{\bar{Y}}(1))^2 + \sum_{Z_i = 0} (Y_i - \hat{\bar{Y}}(0))^2 + \dfrac{n_1 n_0}{n} \tau^2$
+- Quando $n \rightarrow \infty$, $t_{n-2} \xrightarrow D N(0,1)$ e $\dfrac{n-1}{n-2} \rightarrow 1$.
+- Sob $H_{0F}$, $\dfrac{n_1 n_0}{n} \tau^2 \xrightarrow p 0$
+
+## FRT: Fisher Randomization Test
+
+#### Caso 1: Diferença de médias.
+
+Assim, $\sqrt{\Big[\frac{1}{n_x} + \frac{1}{n_y} \Big] \dfrac{\displaystyle \sum_{i = 1}^{n_x}(X_i - \bar{X})^2 + \sum_{j = 1}^{n_y}(Y_j - \bar{Y})^2}{n_x + n_y - 2}}$ e $\sqrt{\dfrac{n}{n_1 n_0}s^2}$ são assintóticamente equivalentes. Ou seja, o p-valor aproximado do **Caso 1: Diferença de médias** é próximo do clássico teste t para diferencia de médias quando as variâncias são desconhecidas e iguais!
+
+
+. . .
+
+Não apenas a diferencia de médias pode ser utilizada no contexto FRT. O teste de Wilcoxon e o teste de Kolmogorov-Smirnov são outros excelentes exemplos.
+
+
+## FRT: Fisher Randomization Test
+
+#### Caso 1: Diferença de médias.
+
+O _dataset_ `lalonde` do pacote `Matching` contém o vetor tratamento (treat) indicando se a unidade foi aleatoriamente atribuida a um treinamento ou não, bem como um vetor representando o salario em 1978 (re78). Queremos saber se a participação no treinamento teve efeito ou não no salario de algum dos trabalhadores.
+
+
+```{r}
+#| echo: true
+library(Matching)
+data(lalonde)
+z <- lalonde$treat
+y <- lalonde$re78
+
+n <- nrow(lalonde)
+n1 <- sum(z)
+n0 <- n - n1
+tau <- mean(y[z == 1]) - mean(y[z == 0])
+s2 = var(y)
+```
+
+
+## FRT: Fisher Randomization Test
+
+#### Caso 1: Diferença de médias.
+
+```{r}
+#| echo: true
+# FRT TCL
+est_teste_frt <- tau/sqrt(n*s2/(n1*n0))
+pvalor_frt_clt <- 2 - 2*pnorm(est_teste_frt) # Bilateral
+
+# FRT Monte Carlo
+mc <- 10^5
+est_teste_frt_mc <- rep(0, mc)
+for (i in 1:mc) {
+  zpermut <- sample(z)
+  tau_permut <- mean(y[zpermut == 1]) - mean(y[zpermut == 0])
+  est_teste_frt_mc[i] <- tau_permut/sqrt(n*s2/(n1*n0))
+}
+pvalor_frt_mc <- mean(abs(est_teste_frt_mc) > est_teste_frt)
+
+# FRT clássico teste t para dif medias 
+est_test_frt_classico_t <- t.test(y[z == 1], y[z == 0], var.equal = TRUE)$statistic
+pvalor_frt_classico_t <- t.test(y[z == 1], y[z == 0], var.equal = TRUE)$p.value
+
+# FRT MC via clássico teste t para dif medias 
+est_test_frt_classico_t_mc <- rep(0, mc)
+for (i in 1:mc) {
+  z_permut <- sample(z)
+  est_test_frt_classico_t_mc[i] <- t.test(y[z_permut == 1], y[z_permut == 0], var.equal = TRUE)$statistic
+}
+pvalor_frt_classico_t_mc <- mean(abs(est_test_frt_classico_t_mc) > est_test_frt_classico_t)
+```
+
+
+## FRT: Fisher Randomization Test
+
+#### Caso 1: Diferença de médias.
+
+
+```{r}
+#| echo: true
+c(pvalor_frt_clt,
+  pvalor_frt_mc,
+  pvalor_frt_classico_t,
+  pvalor_frt_classico_t_mc)
+```
+
+
+
+
+## Referências
+
+::: {.nonincremental}
+
+- Peng Ding (2023). A First Course in Causal Inference. Capítulos 2 e 3.
+- Hernán, Miguel A. e Robins, James, M. (2023). Causal Inference: What if?. Captítulo 3.
+- https://www.causalconversations.com/post/frt/
+
+
+
+:::
