@@ -1,0 +1,556 @@
+---
+title: "Inferência Causal"
+subtitle: "Estratificação e pós-estratificação"
+author: "Prof. Carlos Trucíos </br> ctrucios@unicamp.br"
+Email: "ctrucios@unicamp.br"
+institute: "Instituto de Matemática, Estatística e Computação Científica (IMECC), </br> Universidade Estadual de Campinas (UNICAMP)."
+toc: true
+toc-depth: 1
+toc-title: "Conteúdo"
+knitr:
+    opts_chunk: 
+      fig.align: 'center'
+execute:
+    message: false
+    warning: false
+format:
+    revealjs:
+        slide-number: true
+        show-slide-number: print
+        self-contained: false
+        chalkboard: true
+        width: 1600
+        height: 900
+        theme: [default, styles.scss]
+        incremental: true
+        code-fold: true
+        logo: "imagens/imecc.png"
+        footer: "Carlos Trucíos (IMECC/UNICAMP)  |  ME920/MI628 - Inferência Causal |  [ctruciosm.github.io](https://ctruciosm.github.io/)"
+        highlight-style: "a11y"
+        title-slide-attributes:
+            data-background-image: "imagens/unicamp.png"
+            data-background-size: 20%
+            data-background-position: 99% 5%
+            data-background-opacity: "1"
+---
+
+
+
+# Introdução
+## Introdução
+
+
+:::: {.columns}
+
+::: {.column width="30%"}
+![](imagens/George_Box.jpg)
+:::
+
+::: {.column width="70%"}
+
+
+<center>
+<h3>
+["Block what you can and randomize what you cannot".]{style="color:red;"} </h3>
+_Box et al. (1978, pag 103)_
+
+</center>
+
+:::
+
+::::
+
+
+
+# Estratificação
+
+## Estratificação
+
+Um CRE pode, ao acaso, gerar uma alocação do tratamento de forma indesejada.
+
+. . .
+
+
+Por exemplo, pense num CRE com covariavel discreta $X \in \{1, \cdots, K\}$ e defina $$n_{[k]} = \# \{i: X_i = k \}, \quad \pi_{[k]} = n_{[k]}/n,$$ como o número e a proporção de unidades na categoria (estrato) $k$. 
+
+. . . 
+
+Um CRE atribui $n_1$ unidades ao tratamento e $n_0$ ao controle (placebo). Assim, $$n_{[k]1} = \# \{ i: X_i = k, Z_i = 1\} \quad e \quad n_{[k]0} = \# \{ i: X_i = k, Z_i = 0\},$$ são o número de unidades nos grupos de tratamento e controle no estrato $k$, respectivamente.
+
+. . . 
+
+
+Para algum $k$, é possível, com alta probabilidade, que $\dfrac{n_{[k]1}}{n} - \dfrac{n_{[k]0}}{n}$ seja grande.
+
+
+## Estratificação
+
+<center>
+[**Qual o problema em termos, para algum estrato $k$, $n_{[k]1} \big / n - n_{[k]0} \big / n$ grande?**]{style="color:blue;"}
+</center>
+
+. . . 
+
+
+- Dados desbalanceados para essa covariável.
+- Dados desbalanceados deterioram a qualidade do experimento.
+- Dados desbalanceados dificultam a interpretação dos resultados, pois a diferença nos resultados podem ser atribuidos ao tratamento ou ao desbalanceamento.
+
+
+
+. . . 
+
+
+<center>
+![**E agora, José?**](imagens/chaves.jpg){width="27%"}
+</center>
+
+
+
+## Estratificação
+
+
+**Como podemos evitar o problema de desbalanceamento?**
+
+
+. . . 
+
+<center>
+<h2>
+[**SRE: Stratified Randomized Experiments**]{style="color:red;"}
+</h2>
+</center>
+
+. . . 
+
+::: {.callout-tip}
+
+### Definição: SRE
+
+Fixando os $n_{[k]1}$s ou $n_{[k]0}$s. Realizamos $K$ CREs independetes dentro de cada um dos $K$ estratos da covariável discreta $X$.
+
+:::
+
+
+Note que, pelo princípio básico de contagem, o número total de configurações sob SRE é $$\prod_{k = 1}^K \binom{n[k]}{n_{[k]1}},$$
+
+em que cada configuração tem a mesma probabilidade.
+
+
+<aside>
+_Stratified Randomized Experiments_ também é conhecido como _Randomized Block Design_
+</aside>
+
+## Estratificação
+
+Dentro de cada estrato $k$, a proporção de unidades recebendo o tratamento é dada por $$e_{[k]} = \dfrac{n_{[k]1}}{n_{[k]}},$$
+quantidade conhecida como _propensity score_.
+
+. . . 
+
+
+#### Qual a diferença entre SRE e CRE?
+
+1. $\prod_{k = 1}^K \binom{n[k]}{n_{[k]1}} < \binom{n}{n_1}.$
+2. $e_{[k]}$ é fixo no SRE mas aleatório no CRE.
+
+
+## Estratificação
+
+Para cada unidade $i$, temos:
+
+- Resultados potenciais: $Y_i(1)$ e $Y_i(0)$.
+- Efeito causal individual: $\tau_i = Y_i(1) - Y_i(0)$.
+
+. . . 
+
+Para cada estrato $k$, temos:
+
+- Efeito causal médio (especifico de cada estrato): $\tau_{[k]} = n_{[k]}^{-1} \displaystyle \sum_{X_i = k} \tau_i$.
+
+. . . 
+
+
+Assim, o efeito causal médio é dado por: $$\tau = n^{-1} \displaystyle \sum_{i = 1}^n \tau_i = n^{-1} \sum_{k = 1}^K \sum_{X_i = k} \tau_i = \sum_{k = 1}^K \pi_{[k]}\tau_{[k]}.$$
+
+
+# Inferência sob SRE
+
+## FRT sob SRE
+
+Seja $$H_{0F}: Y_i(1) = Y_i(0), \quad \forall i = 1, \cdots, n.$$
+
+. . . 
+
+A ideia fundamenta do FRT pode ser aplicada a qualquer experimento randomizado.
+
+. . .
+
+Seja a estatística $$T = T(\textbf{Z}, \textbf{Y}, \textbf{X}),$$ em que $\textbf{Z}$ é o vetor indicador de tratamento, $\textbf{Y}$ é o vetor de resultados observados e $\textbf{X}$ é a covariável (ou matriz de covariáveis). 
+
+
+. . . 
+
+
+Note que sob SRE, é importante notar que no vetor de tratamentos ($\textbf{Z}$) a permutação aleatória deve ser feita dentro de cada estrato (motivo pelo qual o teste é muitas vezes chamado de _Conditional Randomization Test_ ou _Conditional Permutation Test_). Ademais, a estatística utilizada deve evidenciar a natureza do SRE.
+
+
+
+## FRT sob SRE
+
+
+#### Exemplo 1 (Estimador Estratificado)
+
+$$\hat{\tau}_S = \displaystyle \sum_{k = 1}^K \pi_{[k]}\hat{\tau}_{[k]},$$ em que $\hat{\tau}_{[k]} = n_{[k]1}^{-1} \displaystyle \sum_{i = 1}^n I(X_i = k, Z_i = 1)Y_i - n_{[k]0}^{-1} \sum_{i = 1}^n I(X_i = k, Z_i = 0)Y_i$.
+
+. . . 
+
+
+
+## FRT sob SRE
+
+
+#### Exemplo 1 (Estimador Estratificado)
+
+Implementação:
+
+```{r}
+#| echo: true
+ee <- function(y, z, x) {
+  x_levels <- unique(x)
+  K <- length(x_levels)
+  pi_k <- rep(0, K)
+  tau_k <- rep(0, K)
+  n <- length(z)
+  for (k in 1:K) {
+    x_k <- x_levels[k]
+    z_k <- z[x == x_k]
+    y_k <- y[x == x_k]
+    pi_k[k] <- length(z_k)/n
+    tau_k[k] <- mean(y_k[z_k == 1]) - mean(y_k[z_k == 0])
+  }
+  tau_S <- sum(pi_k * tau_k)
+  return(tau_S)
+}
+```
+
+
+
+## FRT sob SRE
+
+
+#### Exemplo 2 (Combinação da estatística de postos de Wilcoxon)
+
+$$W_S = \displaystyle \sum_{k = 1}^K c_{[k]} W_{[k]},$$ em que $W_{[k]}$ é a estatistoca soma de postos de Wilcoxon para o estrato $k$, e escolhas comuns para $c_{[k]}$ são $$c_{[k]} = \dfrac{1}{n_{[k]1} n_{[k]0}} \quad ou \quad c_{[k]} = \dfrac{1}{n_{[k]} + 1}$$
+
+
+## FRT sob SRE
+
+#### Exemplo 2 (Combinação da estatística de postos de Wilcoxon)
+
+Implementação
+
+```{r}
+#| echo: true
+comb_wilcoxon <- function(y, z, x) {
+  x_levels <- unique(x)
+  K <- length(x_levels)
+  c_k <- rep(0, K)
+  w_k <- rep(0, K)
+  for (k in 1:K) {
+    x_k <- x_levels[k]
+    z_k <- z[x == x_k]
+    y_k <- y[x == x_k]
+    c_k[k] <- 1 / (length(z_k) + 1)
+    w_k[k] <- wilcox.test(y_k[z_k == 1], y_k[z_k == 0])$statistic
+  }
+  w_S <- sum(c_k * w_k)
+  return(w_S)
+}
+```
+
+
+
+## FRT sob SRE
+
+
+#### Exemplo 3 (Estimador Estratificado Studentizado)
+
+$$t_S = \dfrac{\hat{\tau}_S}{\sqrt{\hat{V}_S}},$$ em que $\hat{V}_S = \displaystyle \sum_{k = 1}^K \pi_{[k]}^2 \Big (\dfrac{\hat{S}^2_{[k]}(1)}{n_{[k]1}} + \dfrac{\hat{S}^2_{[k]}(0)}{n_{[k]0}} \Big ),$ com $\hat{S}^2_{[k]}(1)$ e $\hat{S}^2_{[k]}(0)$ sendo as variâncias amostrais para o estrato $k$ sob tratamento e controle, respectivamente.
+
+
+## FRT sob SRE: Aplicação
+
+No seguinte [link](https://gdcc.github.io/dataverse-previewers/previewers/v1.3/TextPreview.html?fileid=7440282&siteUrl=https://dataverse.harvard.edu&datasetid=7440194&datasetversion=3.0&locale=en) encontra-se o _dataset_ utilizado em Koenker e Xiao (2002). Nele, temos informação a respeito da participação (ou não) em um programa de treinamento profissional (treatment), estrato (quarter) e duração antes do emprego (duration) em escala logaritmica.
+
+. . .
+
+Utilizaremos FRT com as estatísticas dos exemplos 1 (estimador estratificado) e 2 (Wilcoxon) para testar $$H_{0F}: Y_i(1) = Y_i(0), \quad \forall i$$
+
+
+## FRT sob SRE: Aplicação
+
+
+Os dados:
+
+```{r}
+#| echo: true
+dados <- read.table("datasets/Penn46_ascii.txt")
+z <- dados$treatment
+x <- dados$quarter
+y <- log(dados$duration)
+```
+
+. . . 
+
+Calculando os p-valores:
+```{r}
+#| echo: true
+z_permuta_SRE <- function(z, x) {
+  x_levels <- unique(x)
+  K <- length(x_levels)
+  z_perm <- z
+  for (k in 1:K) {
+    x_k <- x_levels[k]
+    z_perm[x == x_k] <- sample(z[x == x_k])
+  }
+  return(z_perm)
+}
+```
+
+## FRT sob SRE: Aplicação
+
+
+Calculando os p-valores:
+
+```{r}
+mc <- 10^4
+estatisticas <- matrix(NA, ncol = 2, nrow = mc)
+for (i in 1:mc) {
+  z_perm <- z_permuta_SRE(z, x)
+  estatisticas[i, 1] <- ee(y, z_perm, x)
+  estatisticas[i, 2] <- comb_wilcoxon(y, z_perm, x)
+}
+```
+
+
+```{r}
+#| echo: true
+# Unilateral p-values
+ee_obs <- ee(y, z, x)
+wilcoxon_obs <- comb_wilcoxon(y, z, x)
+mean(estatisticas[, 1] < ee_obs)
+mean(estatisticas[, 2] < wilcoxon_obs)
+```
+
+## Neyman sob SRE
+
+Inferência estatística num contexto SRE é construida baseada no fato de que SRE consiste em $K$ CRE independentes (um para cada estrato).
+
+. . . 
+
+
+Para cada estrato, $\hat{\tau}_{[k]}$ é não viesado para $\tau_{[k]}$, com variância $$\mathbb{V}(\hat{\tau}_{[k]}) = \dfrac{S^2_{[k]}(1)}{n_{[k]1}} + \dfrac{S^2_{[k]}(0)}{n_{[k]0}} - \dfrac{S^2_{[k]}(\tau)}{n_{[k]}},$$ em que $S^2_{[k]}(1)$, $S^2_{[k]}(0)$ e $S^2_{[k]}(\tau)$ são as variâncias dos resultados potenciais e do efeito causal individual para o $k$-éssimo estrato.
+
+. . . 
+
+Assim, o estimador $\hat{\tau}_S = \displaystyle \sum_{k = 1}^K \pi_{[k]} \hat{\tau}_{[k]}$ é não viesado para $\tau = \displaystyle \sum_{k = 1}^K \pi_{[k]} \tau_{[k]}$ e tem variância <center>$\mathbb{V}(\hat{\tau}_S) = \displaystyle \sum_{k = 1}^K \pi_{[k]}^2 \mathbb{V}(\hat{\tau}_{[k]}).$</center>
+
+
+## Neyman sob SRE
+
+Um estimador (conservador) para $\mathbb{V}(\hat{\tau}_S)$ é dado por:
+
+. . . 
+
+
+$$\hat{V}_S = \displaystyle \sum_{k = 1}^K \pi_{[k]}^2 \Big(\dfrac{\hat{S}^2_{[k]}(1)}{n_{[k]1}} + \dfrac{\hat{S}^2_{[k]}(0)}{n_{[k]0}}  \Big),$$ em que $\hat{S}^2_{[k]}(1)$ e $\hat{S}^2_{[k]}(0)$ são as variâncias amostrais dos resultados sob tratamento e controle no estrato $k$.
+
+. . . 
+
+
+Seguindo a mesma lógica, um intervalo de confiança (conservador) para $\tau$ é dado por $$\hat{\tau}_S \pm z_{1-\alpha/2} \sqrt{\hat{V}_S},$$ e podemos utilizar $\hat{\tau}_S \big / \sqrt{\hat{V}_S} \xrightarrow D N(0,1)$ (sob $H_0$) para testar $H_{0N}$.
+
+## Neyman sob SRE
+
+Implementação
+
+```{r}
+#| echo: true
+neyman_sre <- function(y, z, x) {
+  x_levels <- unique(x)
+  K <- length(x_levels)
+  pi_k <- rep(0, K)
+  tau_k <- rep(0, K)
+  v_k <- rep(0, K)
+  n <- length(z)
+  for (k in 1:K) {
+    x_k <- x_levels[k]
+    z_k <- z[x == x_k]
+    y_k <- y[x == x_k]
+    pi_k[k] <- length(z_k)/n
+    tau_k[k] <- mean(y_k[z_k == 1]) - mean(y_k[z_k == 0])
+    v_k[k] <- var(y_k[z_k == 1]) / sum(z_k) + var(y_k[z_k == 0]) / sum(1 - z_k)
+  }
+  tau_s <- sum(pi_k * tau_k)
+  v_s <- sum(pi_k^2 * v_k) 
+  return(c(tau_s, v_s))
+}
+```
+
+
+## Neyman sob SRE: Aplicação
+
+Uttilizaremos o mesmo conjunto de dados utilizado na aplicação do FRT sob SRE, mas neste caso $$H_{0N}: \tau = 0$$
+
+```{r}
+#| echo: true
+est_neyman <- neyman_sre(y, z, x)
+lim_inf <- est_neyman[1] - 1.96*sqrt(est_neyman[2])
+lim_sup <- est_neyman[1] + 1.96*sqrt(est_neyman[2])
+c(lim_inf, lim_sup)
+```
+
+. . . 
+
+O programa de treinamento profissional dimiuiu (em log) o tempo de duração antes do emprego.
+
+
+# Pós-estratificação no CRE
+## Pós-estratificação no CRE
+
+- No CRE com covarável discreta $X$, o número de unidades que recebem o tratamento e o controle dentro de cada estrato é aleatório. Já no SRE estas quantidades são fixas.
+- Se fizermos inferência condicionando em $\textbf{n} = \{n_{[k]1}, n_{[k]0} \}_{k = 1}^K$, então CRE torna-se SRE. De fato, se nenhum das componentes de $\textbf{n}$ for zero, temos que $$P_{CRE}(\textbf{Z} = \textbf{z}| \textbf{n}) = \dfrac{1}{\prod_{k=1}^K \binom{n_{[k]}}{n_{[k]1}}}=P_{SRE}(\textbf{Z} = \textbf{z}).$$
+- Ou seja, condicionado em $\textbf{n}$, podemos analisar CRE com covariável discreta da mesma forma que analisamos SRE.
+- FRT torna-se _conditional_ FRT.
+
+## Pós-estratificação no CRE
+
+- Abordagem de Neyman torna-se pós-estratificação, $$\hat{\tau}_{ps} = \displaystyle \sum_{k = 1}^K \pi_{[k]} \hat{\tau}_{[k]},$$ que é exatamente igual a $\hat{\tau}_s$. Ademais, $\mathbb{V}_{CRE}(\hat{\tau}_{ps} | \textbf{n}) = \mathbb{V}_{SRE}(\hat{\tau}_s).$
+
+. . . 
+
+Em geral, se $X$ for preditiva para $Y$ e os estratos são grandes, _conditional_ FRT é mais poderoso do que FRT (Hennessy et al. (2016)) e em muitos casos, pós-estratificação melhora a eficiência comparado com $\hat{\tau}$ (Maritrix et al. (2013)).
+
+. . . 
+
+Contudo, devemos ter cuidado com valores de $K$ muito grandes, pois isto aumenta a chance que $n_{[k]1}$ ou $n_{[k]0}$ sejam zero (ou muito pequenos), o que reduz o poder do teste.
+
+
+## Pós-estratificação no CRE
+
+::: {.callout-important}
+### Observação
+Estratificação utiliza $X$ na etapa do planejamento, já pós-estratificação utiliza $X$ na etapa de análise. Asintóticamente, a diferença é pequena com grandes estratos.
+:::
+
+. . . 
+
+
+
+::: {.callout-note}
+### Exemplo
+Chong et al. (2016) realizaram um SRE em 219 estudantes do ensino médio da área rual de Cajamarca (Peru) durante o 2009. Eles fornecerem suplemento de ferro ao hospital da região e capacitaram a equipe hospitalar para distribuir um comprimido a qualquer adolescente que o solicita-se pessoalmente. Eles, então, atribuem aleatoriamente esses adolescentes em três grupos, cada um dos quais é submetido a um tipo diferente de video motivacional.
+
+::: {.nonincremental}
+
+- No primeiro video, um famoso jogador de futebol os motiva a utilizar o suplemento de ferro para ter mais energia. 
+- No segundo video, um físico os motiva a utilizar o suplemento de ferro para melhorar a saude.
+- No terceiro video (controle), não se faz menção alguma ao suplemento de ferro.
+
+:::
+
+O pesquisador faz estratificação considerando o nível escolar (1--5) (`class_level`). O conjunto de dados está disponível [aqui](https://dataverse.harvard.edu/file.xhtml?fileId=7440196&version=3.0).
+
+:::
+
+
+
+## Pós-estratificação no CRE
+
+```{r}
+#| echo: true
+library(foreign)
+dados <- read.dta("datasets/chong.dta")
+table(dados$treatment, dados$class_level)
+```
+
+. . . 
+
+
+Um dos resultados de interesse é a nota média no terceiro e quarto trimestre de 2009 (`gradesq34`). O pesquisador, após a coleta dos dados, menciona que uma importante covariável é se o indíviduo tem ou não anemia (`anemic_base_re`). Com fins ilustrativos vamos apenas considerar os videos 2 e 3.
+
+```{r}
+#| echo: true
+dados <- dados |> dplyr::select(treatment, gradesq34, class_level, anemic_base_re) |> 
+                   dplyr::filter(treatment != "Soccer Player")
+z <- (dados$treatment == "Physician")
+y <- dados$gradesq34
+x <- dados$class_level
+```
+
+
+
+
+## Pós-estratificação no CRE
+
+```{r}
+#| echo: true
+# Estraificação
+est <- neyman_sre(y, z, x)
+tau_s <- est[1]
+v_s <- est[2]
+c(tau_s, v_s)
+```
+. . .
+
+Como podemos incluir a outra covariável? Pós-estratificação!
+
+```{r}
+#| echo: true
+# Estratificação + Pós-estratificação
+anemia <- dados$anemic_base_re
+sps <- interaction(x, anemia)
+est <- neyman_sre(y, z, sps)
+tau_sps <- est[1]
+v_sps <- est[2]
+c(tau_sps, v_sps)
+```
+
+
+. . .
+
+```{r}
+#| echo: true
+est_s <- tau_s / sqrt(v_s)
+est_sps <- tau_sps / sqrt(v_sps)
+pvalor_s <- 2 - 2*pnorm(abs(est_s))       # Bilateral
+pvalor_sps <- 2 - 2*pnorm(abs(est_sps))   # Bilateral
+c(est_s, pvalor_s, est_sps, pvalor_sps)
+```
+
+
+# Comentários Finais
+## Comentários Finais
+
+Qual a vantagem de utilizar SRE comparado com CRE?
+
+- Em geral, os ganho é na estimação da variância. Por exemplo, pode-se mostrar que, se $e_{[k]} = e$ $\forall k$, $$\mathbb{V}_{CRE}(\hat{\tau}) \geq \mathbb{V}_{SRE}(\hat{\tau}_S).$$
+- Se a covariável for preditiva para os resultados potenciais, o ganho na eficiência do SRE em comparação com CRE é claro.
+- No caso extremo de que a covariável não for preditiva para os resultados potenciais, em grandes amostras o ganho é zero. Ademais, em pequenas amostras, CRE pode ser mais eficiente do que SRE (este é o sentido da frase do Box mostrada no início da aula).
+
+
+## Referências
+
+::: {.nonincremental}
+
+- Peng Ding (2023). A First Course in Causal Inference. Capítulo 5
+- Box, G. E., Hunter, W. H., & Hunter, S. (1978). Statistics for Experimenters: An Introduction to Design Analysis, and Model Building. New York: John Wiley and Sons.
+- Koenker, R., & Xiao, Z. (2002). Inference on the quantile regression process. Econometrica, 70(4), 1583-1612.
+- Hennessy, J., Dasgupta, T., Miratrix, L., Pattanayak, C., & Sarkar, P. (2016). A conditional randomization test to account for covariate imbalance in randomized experiments. Journal of Causal Inference, 4(1), 61-80.
+- Miratrix, L. W., Sekhon, J. S., & Yu, B. (2013). Adjusting treatment effect estimates by post-stratification in randomized experiments. Journal of the Royal Statistical Society Series B: Statistical Methodology, 75(2), 369-396.
+- Chong, A., Cohen, I., Field, E., Nakasone, E., & Torero, M. (2016). Iron deficiency and schooling attainment in Peru. American Economic Journal: Applied Economics, 8(4), 222-255.
+
+
+
+:::
