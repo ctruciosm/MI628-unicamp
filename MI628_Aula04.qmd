@@ -64,6 +64,7 @@ _Box et al. (1978, pag 103)_
 
 # Estratificação
 
+
 ## Estratificação
 
 Um CRE pode, ao acaso, gerar uma alocação do tratamento de forma indesejada.
@@ -123,6 +124,15 @@ Para algum $k$, é possível, com alta probabilidade, que $\dfrac{n_{[k]1}}{n} -
 
 . . . 
 
+
+<center>
+No SRE, as unidades são agrupadas em estratos segundo alguma caracteristica (pre-tratamento). Dentro de cada estrato, um CRE é aplicado. Isto faz com que os métodos para CRE possam ser aplicados dentro de cada estrato. Contudo, o objetivo não está em testar as hipóteses dentro de cada estrato, mas para o conjunto de dados como um todo.
+</center>
+
+
+## Estratificação
+
+
 ::: {.callout-tip}
 
 ### Definição: SRE
@@ -153,6 +163,8 @@ quantidade conhecida como _propensity score_.
 
 1. $\prod_{k = 1}^K \binom{n[k]}{n_{[k]1}} < \binom{n}{n_1}.$
 2. $e_{[k]}$ é fixo no SRE mas aleatório no CRE.
+
+
 
 
 ## Estratificação
@@ -538,6 +550,7 @@ Qual a vantagem de utilizar SRE comparado com CRE?
 - Em geral, os ganho é na estimação da variância. Por exemplo, pode-se mostrar que, se $e_{[k]} = e$ $\forall k$, $$\mathbb{V}_{CRE}(\hat{\tau}) \geq \mathbb{V}_{SRE}(\hat{\tau}_S).$$
 - Se a covariável for preditiva para os resultados potenciais, o ganho na eficiência do SRE em comparação com CRE é claro.
 - No caso extremo de que a covariável não for preditiva para os resultados potenciais, em grandes amostras o ganho é zero. Ademais, em pequenas amostras, CRE pode ser mais eficiente do que SRE (este é o sentido da frase do Box mostrada no início da aula).
+- A variável utilizada como estrato não é afetado pelo tratamento.
 
 
 ## Referências

@@ -488,6 +488,13 @@ Prof.&nbsp;Carlos Trucíos <br> ctrucios@unicamp.br
 </center>
 </div>
 <div class="fragment">
+<center>
+No SRE, as unidades são agrupadas em estratos segundo alguma caracteristica (pre-tratamento). Dentro de cada estrato, um CRE é aplicado. Isto faz com que os métodos para CRE possam ser aplicados dentro de cada estrato. Contudo, o objetivo não está em testar as hipóteses dentro de cada estrato, mas para o conjunto de dados como um todo.
+</center>
+</div>
+</section>
+<section id="estratificação-4" class="slide level2">
+<h2>Estratificação</h2>
 <div class="callout callout-tip callout-captioned callout-style-default">
 <div class="callout-body">
 <div class="callout-caption">
@@ -504,11 +511,10 @@ Prof.&nbsp;Carlos Trucíos <br> ctrucios@unicamp.br
 <p>Note que, pelo princípio básico de contagem, o número total de configurações sob SRE é <span class="math display">\[\prod_{k = 1}^K \binom{n[k]}{n_{[k]1}},\]</span></p>
 <p>em que cada configuração tem a mesma probabilidade.</p>
 
-</div>
 <aside><div>
 <em>Stratified Randomized Experiments</em> também é conhecido como <em>Randomized Block Design</em>
 </div></aside></section>
-<section id="estratificação-4" class="slide level2">
+<section id="estratificação-5" class="slide level2">
 <h2>Estratificação</h2>
 <p>Dentro de cada estrato <span class="math inline">\(k\)</span>, a proporção de unidades recebendo o tratamento é dada por <span class="math display">\[e_{[k]} = \dfrac{n_{[k]1}}{n_{[k]}},\]</span> quantidade conhecida como <em>propensity score</em>.</p>
 <div class="fragment">
@@ -519,7 +525,7 @@ Prof.&nbsp;Carlos Trucíos <br> ctrucios@unicamp.br
 </ol>
 </div>
 </section>
-<section id="estratificação-5" class="slide level2">
+<section id="estratificação-6" class="slide level2">
 <h2>Estratificação</h2>
 <p>Para cada unidade <span class="math inline">\(i\)</span>, temos:</p>
 <ul>
@@ -673,14 +679,14 @@ Prof.&nbsp;Carlos Trucíos <br> ctrucios@unicamp.br
 <span id="cb5-4"><a href="#cb5-4"></a><span class="fu">mean</span>(estatisticas[, <span class="dv">1</span>] <span class="sc">&lt;</span> ee_obs)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.0013</code></pre>
+<pre><code>[1] 0.0016</code></pre>
 </div>
 <details>
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1"></a><span class="fu">mean</span>(estatisticas[, <span class="dv">2</span>] <span class="sc">&lt;</span> wilcoxon_obs)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 3e-04</code></pre>
+<pre><code>[1] 2e-04</code></pre>
 </div>
 </div>
 </section>
@@ -911,6 +917,7 @@ Assim, o estimador <span class="math inline">\(\hat{\tau}_S = \displaystyle \sum
 <li class="fragment">Em geral, os ganho é na estimação da variância. Por exemplo, pode-se mostrar que, se <span class="math inline">\(e_{[k]} = e\)</span> <span class="math inline">\(\forall k\)</span>, <span class="math display">\[\mathbb{V}_{CRE}(\hat{\tau}) \geq \mathbb{V}_{SRE}(\hat{\tau}_S).\]</span></li>
 <li class="fragment">Se a covariável for preditiva para os resultados potenciais, o ganho na eficiência do SRE em comparação com CRE é claro.</li>
 <li class="fragment">No caso extremo de que a covariável não for preditiva para os resultados potenciais, em grandes amostras o ganho é zero. Ademais, em pequenas amostras, CRE pode ser mais eficiente do que SRE (este é o sentido da frase do Box mostrada no início da aula).</li>
+<li class="fragment">A variável utilizada como estrato não é afetado pelo tratamento.</li>
 </ul>
 </section>
 <section id="referências" class="slide level2">
