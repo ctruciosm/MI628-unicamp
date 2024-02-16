@@ -1,0 +1,137 @@
+---
+title: "Inferência Causal"
+subtitle: "MPE: Matched-Pairs Experiment"
+author: "Prof. Carlos Trucíos </br> ctrucios@unicamp.br"
+Email: "ctrucios@unicamp.br"
+institute: "Instituto de Matemática, Estatística e Computação Científica (IMECC), </br> Universidade Estadual de Campinas (UNICAMP)."
+toc: true
+toc-depth: 1
+toc-title: "Conteúdo"
+knitr:
+    opts_chunk: 
+      fig.align: 'center'
+execute:
+    message: false
+    warning: false
+format:
+    revealjs:
+        slide-number: true
+        show-slide-number: print
+        self-contained: false
+        chalkboard: true
+        width: 1600
+        height: 900
+        theme: [default, styles.scss]
+        incremental: true
+        code-fold: true
+        logo: "imagens/imecc.png"
+        footer: "Carlos Trucíos (IMECC/UNICAMP)  |  ME920/MI628 - Inferência Causal |  [ctruciosm.github.io](https://ctruciosm.github.io/)"
+        highlight-style: "a11y"
+        title-slide-attributes:
+            data-background-image: "imagens/unicamp.png"
+            data-background-size: 20%
+            data-background-position: 99% 5%
+            data-background-opacity: "1"
+---
+
+
+# Introdução
+## Introdução
+
+- MPE é a versão mais extrema do SRE.
+- No MPE, temos apenas uma unidade de tratamento e uma de controle em cada estrato (por isso, neste caso, os estratos são também chamados de _pairs_)
+- Apesar de que MPE é um caso particular do SRE, tem seu próprio método de estimação e inferência (foco da aula de hoje).
+- Podemos formar pares baseados na similariedade da covariáveis.
+    * Com covariável contínua, podemos ordenar as unidades segundo a covariável e formar os pares baseados nas unidades adjacentes.
+    * Com muitas covariáveis, podemos definir distâncias por pares e formar pares baseados nessas distâncias.
+
+## Introdução
+
+<center>
+
+![Fonte: https://toolbox.eupati.eu/resources/clinical-trial-designs](imagens/MPE.png)
+
+</center>
+
+# MPE
+## MPE
+
+- Consideremos $2n$ unidades, as quais são divididas em $n$ pares (formados com base nas covariáveis).
+- Seja $(i, j)$ o index da unidade $j$ no par $i$, em que $i = 1, \cdots, n$ e $j = 1, 2$. 
+- Assim, $(i, j)$ tem resultados potenciais $Y_{ij}(1)$ (tratemento) e $Y_{ij}(0)$ (controle).
+- Dentro de cada par, escolhemos aleatoriamente uma unidade para receber o tratamento (e a outra receberá o controle). Seja \begin{equation}
+Z_i = \begin{cases}
+1, \quad \text{se a primeira unidade recebe o tratamento} \\
+0, \quad \text{se a segunda unidade recebe o tratamento}
+\end{cases}
+\end{equation}
+
+## MPE
+
+
+::: {.callout-tip}
+### Definição (MPE): 
+
+Um MPE tem mecanismo de atribuição de tratamento dado por $$\{Z_i\}_{i = 1}^n \sim Bernoulli(0.5),$$ {#eq-z_bernoulli} com resultados potenciais dentro do par dados por $$Y_{i1} = Z_i Y_{i1}(1) + (1-Z_i)Y_{i1}(0) \quad e \quad Y_{i2} = Z_i Y_{i2}(0) + (1-Z_i)Y_{i2}(1) \quad (i = 1, \cdots, n).$$
+
+Assim, os dados observados são $(Z_i, Y_{i1}, Y_{i2})_{i = 1}^n.$
+
+:::
+
+- Se $Z_i = 1$, a primeira unidade ($j = 1$) recebe o tratamento, então o resultado observado da unidade $j = 1$ será igual ao resultado potencial $Y_{i1}(1)$.
+- Se $Z_i = 0$, a segunda unidade ($j = 2$) recebe o tratamento, então o resultado observado da unidade $j = 2$ será igual ao resultado potencial $Y_{i2}(1)$.
+
+# FRT
+## FRT
+
+De forma semelhantes como temos feitos nos outros casos, sempre podemos utilizar FRT para testar a hipóteses nula forte: $$H_{0F}: Y_{ij}(1) = Y_{ij}(0), \quad \forall i = 1, \cdots, n, \text{ e } j =1, 2.$$
+
+. . . 
+
+Para realizar o FRT corretamente, devemos simular $\textbf{Z} = (Z_1, \cdots, Z_n)$ de forma que seja compatível com @eq-z_bernoulli.
+
+. . . 
+
+Antes de discutir algumas escolhas interessantes para a esatística de teste, definiremos primeiro a diferença (dentro de cada par) entre tratamento e controle, $$\hat{\tau}_i = \text{Resultados sob Tratamento} - \text{Resultado sob controle} \quad \text{(no par }i).$$
+
+
+## FRT
+
+$$\hat{\tau}_i = \text{Resultados sob Tratamento} - \text{Resultado sob controle} \quad \text{(no par }i).$$
+
+- Se $Z_i = 1 \rightarrow Y_{i1}(1) - Y_{i2}(0) = Y_{i1} - Y_{i2}$.
+- Se $Z_i = 0 \rightarrow Y_{i2}(1) - Y_{i1}(0) = Y_{i2} - Y_{i1}$.
+
+. . . 
+
+\begin{align}
+\hat{\tau}_i = \text{Resultados sob Tratamento} &- \text{Resultado sob controle} \quad \text{(no par }i) \\
+\hat{\tau}_i = \underbrace{(2Z_i - 1)}_{S_i}& (Y_{i1} - Y_{i2}),
+\end{align} em que $S_i$ é IID com $$\mathbb{E}(S_i) = \mathbb{E}(2 Z_i - 1) = 2\underbrace{\mathbb{E}(Z_i)}_{1/2} - 1 = 0 \quad e \quad \mathbb{V}(S_i) = \mathbb{V}(2 Z_i) = 4 \underbrace{\mathbb{V}(Z_i)}_{1/4} = 1$$. 
+
+## FRT
+
+
+::: {.callout-note}
+### Exemplo 1
+
+- Definimos a média das diferenças entre os pares como $\hat{\tau} = n^{-1}\displaystyle \sum_{i = 1}^n \hat{\tau}_i$.
+- Sob $H_{0F}$, $\mathbb{E}(\hat{\tau}) = 0 \quad e \quad \mathbb{V}(\hat{\tau}) = n^{-2} \displaystyle \sum_{i = 1}^n \mathbb{V}(S_i)(Y_{i1} - Y_{i2})^2 = n^{-2} \displaystyle \sum_{i = 1}^n \hat{\tau}_i^2$
+- Pelo TCL, $$\dfrac{\hat{\tau}}{\sqrt{n^{-2}\displaystyle \sum_{i = 1}^n \hat{\tau}_i^2}} \xrightarrow D N(0, 1).$$
+
+
+
+:::
+
+
+
+
+## Referências
+
+::: {.nonincremental}
+
+- Peng Ding (2023). A First Course in Causal Inference. Capítulo 7.
+
+
+
+:::

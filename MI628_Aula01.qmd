@@ -185,10 +185,6 @@ format:
 </center>
 
 
-. . . 
-
-
-#### Inferência Causal ou Econometria?
 
 
 # Paradoxo de Simpson
@@ -449,7 +445,7 @@ Se resumimos os dados observados em uma Tabela de contingência
 | $Z = 0$ | $n_{01}$ | $n_{00}$   |
 
 
-em que $n_{zy} = \# \{i: Z_i = z, Y_i = y \}$. Podemos estimar RD, RR e OR, substituindo $p_zy$ por $\hat{p}_{zy} = n_{zy}/n$ com $n$ sendo o total de observações.
+em que $n_{zy} = \# \{i: Z_i = z, Y_i = y \}$. Podemos estimar RD, RR e OR, substituindo $p_{zy}$ por $\hat{p}_{zy} = n_{zy}/n$ com $n$ sendo o total de observações.
 
 :::
 
@@ -664,59 +660,57 @@ Usualmente, comparamos o resultado quando uma determinada ação **A** é realiz
 
 ## Definições básicas
 
-- Sejam **A** e $Y$, duas variáveis aleatorias binárias: **A** (1: tratamento, 0: controle) e $Y$ (1: morte, 0: sobrevive).
-- Seja $Y^{a = 1}$ a variável resultado que teria sido observada se $a = 1$ e seja $Y^{a = 0}$ a variável resultado que teria sido observada se $a = 0$.
-- Juan tem $Y^{a = 1} = 1$ e $Y^{a = 0} = 0$.
-- Maria tem $Y^{a = 1} = 0$ e $Y^{a = 0} = 0$
 
 
-. . . 
+- Considere um estudo com $n$ unidades experimentais ($i = 1, \cdots, n$).
+-  Considere também uma intervenção **A** com dois níveis (1: tratamento, 0: controle).
+- Para cada unidade experimental $i$, o resultado de interesse, $Y_i$, tem dois versões $$Y_i(1) \quad e \quad Y_i(0),$$ sob as intervenções 1 (tratamento) e 0 (controle), respectivamente.
+- No nosso exemplo temos:
+  * Juan tem $Y(1) = 1$ e $Y(0) = 0$.
+  * Maria tem $Y(1) = 0$ e $Y(0) = 0$
+
+
+## Definições básicas
+
 
 ::: {.callout-tip}
 ## Definição: efeito causal individual
 
-O tratamento **A** tem um efeito causal no resultado de um indivíduo $Y$ se $$Y^{a = 1} \neq Y^{a = 0}.$$
+A intervenção **A** tem um efeito causal no resultado do $i$-éssimo individuo se $$Y_i(1) \neq Y_i(0).$$
 :::
-
-
-## Definições básicas
-
-As variáveis $Y^{a = 1}$ e $Y^{a = 0}$ são conhecidas como **potential outcomes** ou **counterfactual outcomes**. Aquela que corresponde ao valor do tratamento que o indivíduo de fato recebeu é chamada de **factual**.
-
-
-
-. . . 
-
-Para definir o efeito causal de um indivíduo precisamos:
-
-::: {.nonincremental}
-
-1. Um resultado de interesse, 
-2. As ações $a = 1$ e $a = 0$ a ser comparadas, e
-3. O indivíduo cujos resultados contrafactuais (_counterfactual outcomes_) $Y^{a = 0}$ d $Y^{a = 1}$ serão comparados.
-
-:::
-
-
-## Definições básicas
-
-
-Identificar efeitos causais individuais não é geralmente possível. Assim, devemos olhar para o  **efeito causal médio** numa população de indivíduos.
 
 
 . . . 
 
 
-Para definir o efeito causal médio, precisamos de:
+$Y_i(1)$ e $Y_i(0)$ são conhecidas como **potential outcomes** ou **counterfactual outcomes** para a $i$-éssima unidade. Aquela que corresponde ao valor da intervenção que o indivíduo de fato recebeu é chamada de **factual** e a outra de **contrafactual**.
 
 
-::: {.nonincremental}
 
-1. Um resultado de interesse, 
-2. As ações $a = 1$ e $a = 0$ a ser comparadas, e
-3. Uma população bem definida de individuos cujos resultados $Y^{a = 0}$ e $Y^{a = 1}$ serão comparados
+
+## Definições básicas
+
+
+- Identificarmos efeitos causais individuais não é geralmente possível (Por quê?). 
+- Assim, devemos olhar para o  **efeito causal médio** (*average causal effect*) chamado também de _average treatment effect_ (ATE).
+
+. . . 
+
+
+::: {.callout-tip}
+
+## Definição: efeito causal médio 
+
+O efeito causal médio da intervenção **A** sob o resultado $Y$ esta presente se $$\mathbb{E}[Y(1)] \neq \mathbb{E}[Y(0)].$$ 
 
 :::
+ 
+. . . 
+
+<center>
+[Ausência do efeito causal médio não implica ausência do efeito causal individual.]{style="color:red;"}
+</center>
+
 
 
 ## Definições básicas
@@ -726,7 +720,7 @@ Para definir o efeito causal médio, precisamos de:
 
 ### Exemplo 6
 
-Pensemos na familia do Juan como nossa população de interesse e vejamos os resultados contrafactuais sobre $a = 1$ e $a = 0$
+Pensemos na familia do Juan como nossa população de interesse e vejamos os resultados contrafactuais sobre as intervenções $a = 1$ e $a = 0$
 
 
 :::: {.columns}
@@ -739,17 +733,19 @@ table <- data.frame(Ya0 = c(0, 1, 0, 0, 0, 1, 0, 0, 1, 1, 0, 1 ,1, 0, 0, 0, 1, 1
                     Ya1 = c(1, 0, 0, 0, 0, 0, 0, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0))
 row.names(table) <- c("Carlos", "Daniela", "Luiz", "Maria", "Roberto", "Rosa", "Eric", "Manuella", "Julio", "Laura",
                "Cezar", "Guilherme", "Sandra", "Monica", "Ana", "Augusto", "Wanderlei", "Sheila", "Alex", "Tatiane")
-knitr::kable(table, col.names = c("$Y^{a = 0}$", "$Y^{a = 1}$"), escape = FALSE, row.names = TRUE) %>% kable_styling(font_size = 16, full_width = TRUE)
+knitr::kable(table, col.names = c("Y(0)", "Y(1)"), escape = FALSE, row.names = TRUE) %>% kable_styling(font_size = 16, full_width = TRUE)
 ```
 
 :::
 
 ::: {.column width="65%"}
 
-- [Quantos elementos da população teriam morto se tivessem recebido o transplante ($Y^{a = 1} = 1$)?]{style="color:red;"}
-- $Pr[Y^{a = 1} = 1] = 10/20 = 0.5$
-- [Quantos elementos da população teriam morto se não tivessem recebido o transplante ($Y^{a = 0} = 1$)?]{style="color:red;"}
-- $Pr[Y^{a = 0} = 1] = 10/20 = 0.5$
+
+- [Em quais casos existe um efeito causal individual?]{style="color:red;"}
+- [Quantos elementos da população teriam morto se tivessem recebido o transplante ($Y(1) = 1$)?]{style="color:red;"}
+- 50\%
+- [Quantos elementos da população teriam morto se não tivessem recebido o transplante ($Y(0) = 1$)?]{style="color:red;"}
+- 50\%
 - [O transplante teve ou não teve um efeito causal médio?]{style="color:blue;"}
 
 :::
@@ -764,44 +760,26 @@ knitr::kable(table, col.names = c("$Y^{a = 0}$", "$Y^{a = 1}$"), escape = FALSE,
 ## Definições básicas
 
 
-::: {.callout-tip}
 
-## Definição: efeito causal médio 
+O efeito causal médio é comumente chamado apenas de **efeito causal** e a hipótese nula de **não efeito médio causal** é chamada simplesmente de **hipótese causal nula**.
 
-O efeito causal médio do tratamento A sobre o resultado $Y$ esta presente se $$Pr[Y^{a = 1} = 1] \neq Pr[Y^{a = 0} = 1],$$
+. . .
 
-ou, equivalentemente, se $$\mathbb{E}(Y^{a = 1}) \neq \mathbb{E}(Y^{a = a}),$$ em que a última definição pode ser utilizada seja $Y$ binária ou não.
+Se o resultado de interesse for dicotomico, a ausência do efeito causal médio também pode ser medido através de:
 
-:::
- 
- 
-. . . 
-
-
-<center>
-[Ausência do efeito causal média não implica ausência do efeito causal individual.]{style="color:red;"}
-</center>
-
+- $Pr(Y(1) = 1) - Pr(Y(0) = 1) = 0$
+- $\dfrac{Pr(Y(1) = 1)}{Pr(Y(0) = 1)} = 1$
+- $\dfrac{Pr(Y(1) = 1) \big / Pr(Y(1) = 0)}{Pr(Y(0) = 1) \big / Pr(Y(0) = 0)} = 1$
 
 . . . 
 
-Como o efeito causal médio é comumente chamado de **efeito causal** e a hipótese nula de **não efeito médio causal** é chamada simplesmente de **hipótese causal nula**.
 
-
-## Definições básicas
-
-
-Note que a ausência (ou não) do efeito causal média pode também ser medida através de:
-
-- $Pr(Y^{a = 1} = 1) - Pr(Y^{a = 0} = 1) = 0$
-- $\dfrac{Pr(Y^{a = 1} = 1)}{Pr(Y^{a = 0} = 1)} = 1$
-- $\dfrac{Pr(Y^{a = 1} = 1) \big / Pr(Y^{a = 1} = 0)}{Pr(Y^{a = 0} = 1) \big / Pr(Y^{a = 0} = 0)} = 1$
-
+Em que $Pr(\cdot)$ é a proporção de individuos na população.
 
 ## Definições básicas
 
-- Na prática, nunca temos temos a Tabela como no exemplo da familia do Juan (ou observamos $Y^{a = 1}$ ou $Y^{a = 0}$, nunca ambos).
-- Na prática, observamos o nível do tratamento ($A$) e o resultado obtido ($Y$).
+- Na prática, nunca temos temos a Tabela como no exemplo da familia do Juan (ou observamos $Y(1)$ ou  observamos $Y(0)$, nunca ambos).
+- Na prática, observamos qual foi a intervenção **A** (1 ou 0) e o resultado observado ($Y$).
 
 . . . 
 
@@ -815,7 +793,7 @@ knitr::kable(table)
 . . . 
 
 
-Quando a proporção de indivíduos que $Y = 1$ no grupo de tratamento e no de controle são iguais, ou seja, $$P(Y = 1 | A = 1) = P(Y = 1 | A = 0),$$
+Quando a proporção de indivíduos que $Y = 1$ no grupo de tratamento e no de controle são iguais, ou seja, $$Pr(Y = 1 | A = 1) = Pr(Y = 1 | A = 0),$$
 dizemos que $A$ e $Y$ são independentes ($A \perp\!\!\!\perp Y$), não associados ou que A não predize $Y$. Caso contrário dizemos que $A$ e $Y$ são dependentes ou associadas.
 
 
@@ -826,9 +804,9 @@ Outras definições equivalentes:
 
 ::: {.nonincremental}
 
-- $P(Y = 1 | A = 1) - P(Y = 1 | A = 0) = 0$
-- $\dfrac{P(Y = 1 | A = 1)}{P(Y = 1 | A = 0)} = 1$
-- $\dfrac{P(Y = 1 | A = 1) \big / P(Y = 0| A = 1)}{P(Y = 1 | A = 0) \big / P(Y = 0| A = 0)} = 1$
+- $Pr(Y = 1 | A = 1) - Pr(Y = 1 | A = 0) = 0$
+- $\dfrac{Pr(Y = 1 | A = 1)}{Pr(Y = 1 | A = 0)} = 1$
+- $\dfrac{Pr(Y = 1 | A = 1) \big / Pr(Y = 0| A = 1)}{Pr(Y = 1 | A = 0) \big / Pr(Y = 0| A = 0)} = 1$
 
 :::
 
@@ -860,7 +838,7 @@ $$P(Y = 1 | A = 1) = 7/13 \neq P(Y = 1 | A = 0) = 3/7$$
 ## Causalidade ou associação
 
 <center>
-![Fonte: "Causal Infernce: What if?"](imagens/what_if.png)
+![Fonte: "Causal Inference: What if?"](imagens/what_if.png)
 </center>
 
 ## Causalidade ou associação
@@ -893,7 +871,7 @@ $$P(Y = 1 | A = 1) = 7/13 \neq P(Y = 1 | A = 0) = 3/7$$
 
 
 <center>
-[Inferencia causal requer dados como na Tabela hipotética (Exemplo 6), mas na prática apenas temos Tabelas como a última (em que apenas temos $A$ e $Y$). A pergunta que será respondida ao longo desta disciplina é, sob quais circusntancias dados reais podem ser utilizados para fazer inferência causal?]{style="color:red;"}
+[Inferencia causal requer dados como na Tabela hipotética (Exemplo 6), mas na prática apenas temos Tabelas como a última (em que apenas temos $A$ e $Y$). A pergunta que será respondida ao longo desta disciplina é, sob quais circunstancias, dados reais podem ser utilizados para fazer inferência causal?]{style="color:red;"}
 </center>
 
 
@@ -904,7 +882,9 @@ $$P(Y = 1 | A = 1) = 7/13 \neq P(Y = 1 | A = 0) = 3/7$$
 ::: {.nonincremental}
 
 - Peng Ding (2023). A First Course in Causal Inference. Capítulo 1.
+- Peng Ding (2023). A First Course in Causal Inference. Capítulo 2.
 - Hernán, Miguel A. e Robins, James, M. (2023). Causal Inference: What if?. Captítulo 1.
+- [Rubin, D. B. (2005). Causal inference using potential outcomes: Design, modeling, decisions. Journal of the American Statistical Association, 100(469), 322-331.](https://www.tandfonline.com/doi/pdf/10.1198/016214504000001880?casa_token=1szoe44b0zcAAAAA:-Y2L8ffrkvszzCVwtcOZPQWPmZtV4OGyklpNXCvLqCD8UdMQ3ypsk7GKLIrMx1VQHf7BmY_UMvPkhQ) **[Leitura recomendada]**
 
 
 

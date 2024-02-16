@@ -42,7 +42,7 @@ format:
 - Estratificação e pós-estratificação são duais para covariável discreta no planejamento e análise de experimentos randomizados.
 - Mas como lidar com covariáveis multidimensionais e/ou contínuas?
 - Categorizar poderia ser uma respostas mas é longe de ser uma solução ótima `r emo::ji("sad")`.
-- Rerandomizar e juste de regressão são o caminho a seguir `r emo::ji("smile")`.
+- Rerandomizar e ajuste de regressão são o caminho a seguir `r emo::ji("smile")`.
 
 . . . 
 
@@ -57,25 +57,36 @@ format:
 # Rerandomizar
 ## Rerandomizar
 
-Considere uma polulação com $n$ unidades experimentais, das quais $n_1$ recebem o tratamento e $n_0$ o controle e seja $\textbf{Z} = (Z_1, \cdots, Z_n)$ o vetor indicador de tratamento.
-
-. . .
-
-Para cada $i$, seja $X_i \in \mathbb{R}^K$ o vetor de covariáveis (discretas ou contínuas). Então, $\textbf{X}_{n \times K} = (X_1, \cdots, X_n)'$ que, por simplicidade, vamos assumir com média zero.
+- Considere uma polulação com $n$ unidades experimentais, das quais $n_1$ recebem o tratamento e $n_0$ o controle e seja $\textbf{Z} = (Z_1, \cdots, Z_n)$ o vetor indicador de tratamento.
+- Para cada $i$, seja $X_i \in \mathbb{R}^K$ o vetor de covariáveis (discretas ou contínuas). 
+- Denote, $\textbf{X}_{n \times K} = (X_1, \cdots, X_n)'$ e por simplicidade que $n^{-1} \displaystyle \sum_{i = 1}^n X_i = 0.$
 
 . . . 
 
-Sob CRE, a diferença de médias das covariáveis, $$\hat{\tau}_X = n_1^{-1} \displaystyle \sum_{i = 1}^n Z_i X_i - n_0^{-1}\sum_{i = 1}^n (1- Z_i) X_i,$$ tem $\mathbb{E}(\hat{\tau}_X) = 0$
+Sob CRE, a diferença de médias das covariáveis, $$\hat{\tau}_X = n_1^{-1} \displaystyle \sum_{i = 1}^n Z_i X_i - n_0^{-1}\sum_{i = 1}^n (1- Z_i) X_i,$$ tem $\mathbb{E}(\hat{\tau}_X) = 0$ e $\mathbb{V}(\hat{\tau}_X) = \dfrac{n}{n_1 n_0}S^2_X$, em que $S^2_X = (n - 1)^{-1} \displaystyle \sum_{i = 1}^nX_i X_i'.$
 
-. . . 
-
-
-[Embora um CRE equilibra as covariáveis nos grupos de controle e tratamento. O valor realizado de $\hat{\tau}_X$ é frequentemente $\neq 0$, resultando em um indesejado desbalanceamento.]{style="color:red;"}
 
 
 ## Rerandomizar
 
-A distância de Mahalanobis $$M = \hat{\tau}_X' \Big (\underbrace{\dfrac{n}{n_1n_0}S^2_X}_{\mathbb{Cov}(\hat{\tau}_X)} \Big )^{-1}\hat{\tau}_X,$$ com $S^2_X = (n - 1)^{-1} \displaystyle \sum_{i = 1}^n X_i X_i',$ mede a diferença entre os grupos de tratamento e controle. 
+- Randomizar, em média, equilibra as covariáveis.
+- Contudo, na alocação tratamento-controle realizada, é possível que covariáveis ainda sejam desbalanceadas, comprometendo a validade dos resultados.
+- Para evitar este desbalancemento, rerandomizamos.
+- Rerandomizar consite em refazer a randomização até que algum critério pre-especificado de equilibrio das covariáves seja atingido.
+- Este procedimento é computacionalmente caro (comparado com estratificar, por exemplo), mas hoje em dia isto não é mais um problema.
+
+
+
+
+
+## Rerandomizar
+
+Uma forma de avaliar a diferença entre os grupos de tratamento e controle é através da distância de Mahalanobis:
+
+$$M = \hat{\tau}_X' \Big (\underbrace{\dfrac{n}{n_1n_0}S^2_X}_{\mathbb{V}(\hat{\tau}_X)} \Big )^{-1}\hat{\tau}_X.$$
+
+
+. . . 
 
 ::: {.callout-tip}
 #### Lema
@@ -84,9 +95,14 @@ $M$ permanece o mesmo se transformamos $X_i$ em $b_0 + B X_i$ para todas as unid
 :::
 
 
+. . . 
+
+
+Para valores grandes de $n$, $M \sim \chi^2_K.$ Assim, $M$ pode ter valores realizados grandes, afinal, $M$ tem média $K$ e variância $2K$.
+
 ## Rerandomizar
 
-O TCL para populações finitas garante que, sob CRE e para valores grandes de $n$, $M \sim \chi^2_K.$ 
+
 
 
 ```{r}
@@ -104,15 +120,28 @@ boxplot(chi2_simul, main = "Dados simulados Chi2")
 ```
 
 
-. . . 
-
-Assim, $M$ pode ter valores realizados grandes, afinal, o PGD tem média $K$ e variância $2K$.
 
 ## Rerandomizar
 
-- Rerandomizar evita o desvalanceamento das covariáveis.
-- Isto e feito descartando as alocações de tratamento ($\textbf{z}$) nas quais $M$ é grande.
-- Formalmente:
+```{r}
+#| echo: true
+mahalanobis2 = function(z, x) {
+  x1 <- x[z == 1, ]
+  x0 <- x[z == 0, ]
+  n1 <- nrow(x1)
+  n0 <- nrow(x0)
+  diff <- apply(x1, 2, mean) - apply(x0, 2, mean)
+  covar <- (n1 + n0)/(n1 * n0) * cov(x)
+  M <- t(diff) %*% solve(covar) %*% diff
+  return(M)
+}
+
+```
+
+
+## Rerandomizar
+
+- Rerandomizar evita o desbalanceamento das covariáveis descartando as alocações de tratamento ($\textbf{z}$) nas quais $M$ é grande. 
 
 . . . 
 
@@ -130,7 +159,24 @@ Selecione $\textbf{Z}$ de um CRE e aceite este sss $$M \leq a,$$ para algum valo
 
 . . . 
 
-Uma prática comúm é escolher $a$ como algum quantil superior da $\chi^2_K$.
+Uma prática comúm é escolher $a$ como algum quantil da $\chi^2_K$.
+
+
+## Rerandomizar
+
+```{r}
+#| echo: true
+rem <- function(x, n1, n0, a) {
+  z     <- sample(c(rep(1, n1), rep(0, n0)))
+  M     <- mahalanobis2(z, x)
+  while (M > a) {
+    z <- sample(z)
+    M <- mahalanobis2(z, x)
+  }
+  return(z)
+}
+```
+
 
 ## Rerandomizar
 
@@ -159,16 +205,16 @@ Sob ReM com $M \leq a$, quando $n \rightarrow \infty$ e se as condições (1)--(
 #### Condições:
 
 ::: {.nonincremental}
-1. $n_1/n \rightarrow k_1$ e $n_1/n \rightarrow k_2$ com $0 \leq k_1, k_0 < \infty$.
+1. $n_1/n \rightarrow k_1$ e $n_1/n \rightarrow k_2$ com $0 \leq k_1, k_2 < \infty$.
 2. $\{X_i, Y_i(1), Y_i(0), \tau_i \}$ tem variância finita.
-3. $\max_{1 \leq i \leq n} \{Y_i(1)-\bar{Y}(1) \}^2 \rightarrow 0$, $\max_{1 \leq i \leq n} \{Y_i(0)-\bar{Y}(0) \}^2 \rightarrow 0$ e $\max_{1 \leq i \leq n} X_i'X_i / n \rightarrow 0$.
+3. $\max_{1 \leq i \leq n} \{Y_i(1)-\bar{Y}(1) \}^2 / n \rightarrow 0$, $\max_{1 \leq i \leq n} \{Y_i(0)-\bar{Y}(0) \}^2 / n \rightarrow 0$ e $\max_{1 \leq i \leq n} X_i'X_i / n \rightarrow 0$.
 
 :::
 
 :::
 
 - Quando $a = \infty$, $\hat{\tau}- \tau \sim \sqrt{\mathbb{V}(\hat{\tau})}\varepsilon$.
-- Quando $a = 0$,  $\hat{\tau}- \tau \sim \sqrt{\mathbb{V}(\hat{\tau})(1 - R^2)}\varepsilon$.
+- Quando $a \rightarrow 0$,  $\hat{\tau}- \tau \sim \sqrt{\mathbb{V}(\hat{\tau})(1 - R^2)}\varepsilon$.
 
 
 ## Rerandomizar
@@ -177,7 +223,7 @@ Quando $0<a<\infty$, a distribuição de $\hat{\tau}$ é bem mais complexa mas �
 
 . . . 
 
-> **Observação:** Se ignorarmos o ReM e ainda utilizamors o intervalo de confiança baseado na fórmula de variância de Neyman (1923) e na aproximação Normal, este será **excessivamente** conservador e cobre $\tau$ mesmo se os efeitos individuais forem constantes.
+> **Observação:** Se ignorarmos o ReM e ainda utilizarmos o intervalo de confiança baseado na fórmula de variância de Neyman (1923) e na aproximação Normal, este será **excessivamente** conservador e cobre $\tau$ mesmo se os efeitos individuais forem constantes.
 
 
 
@@ -186,26 +232,41 @@ Quando $0<a<\infty$, a distribuição de $\hat{\tau}$ é bem mais complexa mas �
 
 
 <center>
-[**O que acontece se não fizemos uma rerandomização na etapa de planejamento mas queremos ajustar pela desbalanceamento das covariáveis?**]{style="color:red;"}
+[**O que acontece se não fizemos uma rerandomização na etapa de planejamento mas queremos _lidar_ com o  desbalanceamento das covariáveis?**]{style="color:red;"}
 </center>
 
 
 . . . 
 
 
+<center>
+![](imagens/marty.avif){width=50%}
+</center>
+
+Obviamente não somos Marty McFly e não podemos voltar no tempo para utilizar rerandomização. Contudo, não todo está perdido e é aqui que _ajuste de regressão_ entra no jogo.
+
+
+
+## Ajuste de regressão
+
+
+
 ### FRT ajustado por covariável
 
 As covariáveis $\textbf{X}$ são todas fixas e, sob $H_{0F}$, os resultados observados também são fixos. Assim, podemos simular a distribuição de qualquer test $T = T(\textbf{Y}, \textbf{Z}, \textbf{X})$ e calcular p-valores. A ideia central do FRT continua a mesma na presença de covariáveis.
 
-## Ajuste de regressão
-
-Duas formas de abordar o problem são as seguintes:
 
 . . . 
 
+Existem duas estratégias gerais para construir a estatística de teste, as quais são apresentadas a seguir: 
+
+
+## Ajuste de regressão
+
+
 ::: {.callout-tip}
 ### Definição: estratégia de pseudo-resultado
-Podemos construir a estatística de testes baseados nos residuos ($\hat{\varepsilon}$) do modelo ajustado (considerando $\textbf{Y}$ como variável dependente e $\textbf{X}$ como independentes) e utilizar os resíduos como o pseudo-resultado para construir o teste.
+Podemos construir a estatística de teste baseados nos residuos ($\hat{\varepsilon}$) do modelo ajustado (considerando $\textbf{Y}$ como variável dependente e $\textbf{X}$ como independentes) e utilizar os resíduos como o pseudo-resultado para construir o teste.
 :::
 
 
@@ -218,7 +279,12 @@ Podemos ajustar o modelo (considerando $\textbf{Y}$ como variável dependente e 
 
 . . . 
 
-Um dos **modelos ajustados** mais utilizados é **regressão** linear, mas nada impede que outras abordagens tais como regressão logística ou mesmo modelos de _machine learning_ sejam utilizados.
+
+Na primeira estratégia, precisamos rodar o modelo de regressão apenas uma vez. Já na segunda estratégia precisamos rodar o modelo várias vezes.
+
+. . . 
+
+> Observação: Um dos **modelos ajustados** mais utilizados é **regressão** linear (por MQO), mas nada impede que outras abordagens tais como regressão logística ou mesmo modelos de _machine learning_ sejam utilizados. 
 
 
 
@@ -240,11 +306,11 @@ Os seguintes métodos focam na estiação do efeito médio causal, $\tau$
 ::: {.callout-warning}
 ### Freedman
 
-David Freedman reanalisou ANCOVA sob o olhar dos resultados potenciais e encontrou o seguinte:
+David Freedman (2008) reanalisou ANCOVA sob o olhar dos resultados potenciais e encontrou o seguinte:
 
 1. $\hat{\tau}_F$ é viesado mas a simple diferença de médias, $\hat{\tau}$, é não viesado.
 2. A variância assintótica de $\hat{\tau}_F$ pode ser ainda maior do que a de $\hat{\tau}$ quando $n_1 \neq n_0$.
-3. O erro padrão do MQO é inconsistente para o verdadeiro erro padrão de $\hat{\tau}$ sob CRE.
+3. O erro padrão do MQO é inconsistente para o verdadeiro erro padrão de $\hat{\tau}_F$ sob CRE.
 
 :::
 
@@ -253,7 +319,7 @@ David Freedman reanalisou ANCOVA sob o olhar dos resultados potenciais e encontr
 
 ::: {.callout-warning}
 ### Lin
-[Winston Lin](https://www.stat.berkeley.edu/~winston/) na sua tese doutoral (2013), respondeu a algumas das críticas do Freedman e econtrou o seguinte:
+[Winston Lin](https://www.stat.berkeley.edu/~winston/) na sua tese doutoral (2013), respondeu a algumas das críticas do Freedman e encontrou o seguinte:
 
 1. O vies de $\hat{\tau}_F$ é pequeno em grandes amostras a quando $n \rightarrow \infty$, o vies $\rightarrow 0$.
 2. A eficiência assintótica de $\hat{\tau}_F$ pode ser melhorada utilizando o coeficiente de $Z_i$ resultante da regressão de $\textbf{Y}$ sob $(1, \textbf{Z}, \textbf{X}, \textbf{Z} \times \textbf{X})$, denotaremos o estimador por $\hat{\tau}_L$. Além disso, o erro padrão EHW é um estimador conservador do verdadeiro erro padrão de $\hat{\tau}_L$ sob CRE.
@@ -269,6 +335,160 @@ David Freedman reanalisou ANCOVA sob o olhar dos resultados potenciais e encontr
 
 Pode ser o caso de termos um SRE, estratificado numa variável discreta $C$ e também termos outras covariáveis $X$. Se todos os estratos são grandes, podemos obter um estimador de Lin como $$\hat{\tau}_{L,S} = \displaystyle \sum_{k = 1}^K \pi_{[k]} \hat{\tau}_{L,[k]},$$ e um estimador (conservador) de $\mathbb{V}(\hat{\tau}_{L,S})$ dado por $$\hat{V}_{L,S} = \displaystyle \sum_{k = 1}^K \pi_{[k]}^2 \hat{V}_{EHW, [k]}$$
 
+# Exemplo
+
+## Exemplo
+
+::: {.callout-note}
+### [Angrist et al. (2009)]
+
+- Os dados vem de um experimento avaliando diferentes estratégias para melhorar o desempenho acadêmico nos calouros em uma universidade do Canada. 
+- Por simplicidade, vamos focar apenas no grupo controle (`control`) e no tratamento que consiste em serviços de apoio acadêmico e incentivos financeiros (`sfsp`).
+- O resultado de interesse é o CR no final do primero ano (`GPA_year1`).
+- Dados faltantes são imputados com a média.
+- As covariáveis são genero (`gender`) e nota do vestibular (`gpa0`)
+- Os dados estão disponíveis [aqui](https://dataverse.harvard.edu/file.xhtml?fileId=7440219&version=3.0)
+
+:::
+
+
+## Exemplo
+
+::: {.callout-note}
+### [Angrist et al. (2009)]
+```{r}
+#| echo: true
+#| message: false
+#| warning: false
+library(foreign)
+library(dplyr)
+library(car)
+dados <- read.dta("datasets/star.dta")
+dados <- dados |> 
+  filter(control == 1 | sfsp == 1) |> 
+  mutate(GPA_year1 = ifelse(is.na(GPA_year1), mean(GPA_year1, na.rm = TRUE), GPA_year1)) |> 
+  select(GPA_year1, sfsp, female, gpa0)
+y <- dados$GPA_year1
+z <- dados$sfsp
+x <- dados[, c("female", "gpa0")]
+
+# Unadjusted estimator (Neyman)
+modelo_unadj <- lm(y ~ z)
+ace_unadj <- coef(modelo_unadj)[2]
+se_unadj <- sqrt(hccm(modelo_unadj, type = "hc2")[2, 2])
+c(ace_unadj, se_unadj)
+```
+:::
+
+
+## Exemplo
+
+::: {.callout-note}
+### [Angrist et al. (2009)]
+```{r}
+#| echo: true
+
+# Regression adjustment (Lin)
+x <- scale(x)
+modelo_adj <- lm(y ~ z*x)
+ace_adj <- coef(modelo_adj)[2]
+se_adj <- sqrt(hccm(modelo_adj, type = "hc2")[2, 2]) # apenas para manter coerencia com o ajuste anterior
+c(ace_adj, se_adj) 
+```
+
+:::
+
+## Exemplo
+
+::: {.callout-note}
+### [Angrist et al. (2009)]
+```{r}
+#| echo: true
+# Calculamo os p-valores
+pvalor_unadj <- 2 - 2*pnorm(abs(ace_unadj/se_unadj))
+pvalor_adj <- 2 - 2*pnorm(abs(ace_adj/se_adj))
+c(pvalor_unadj, pvalor_adj)
+```
+
+:::
+
+
+# Simulação
+## Simulação
+
+```{r}
+#| echo: true
+#| warning: false
+#| message: false
+library(ggplot2)
+x2       <- cbind(x, x[, 2]^2)
+dados_sim    <- data.frame(y = y, z = z, x2 = x2)
+y1lm     <- lm(y ~ x2, weights = z, data = dados_sim)
+sigma1   <- summary(y1lm)$sigma 
+y0lm     <- lm(y ~ x2, weights = 1 - z, data = dados_sim)
+sigma0   <- summary(y0lm)$sigma 
+
+a  <- 0.05
+mc <- 2000
+n1 <- sum(z)
+n0 <- sum(1 - z)
+n <-  n1 + n0
+
+rescale <- 0.2
+y1_sim <- predict(y1lm, data = dados_sim) + rnorm(n)*sigma1*rescale
+y0_sim <- predict(y0lm, data = dados_sim) + rnorm(n)*sigma0*rescale
+tau <- mean(y1_sim - y0_sim)
+
+tau_hat_cre <- rep(0, mc)
+tau_hat_lim <- rep(0, mc)
+tau_hat_rem <- rep(0, mc)
+tau_hat_rem_lim <- rep(0, mc)
+
+for (i in 1:mc) {
+  ## CRE
+  z_cre <- sample(z)
+  y_cre <- z_cre * y1_sim + (1 - z_cre) * y0_sim
+  tau_hat_cre[i] <- mean(y_cre[z_cre == 1]) - mean(y_cre[z_cre == 0])
+  ## Regression Adjustement (Lim)
+  tau_hat_lim[i] <- lm(y_cre ~ z_cre * x)$coef[2]
+  ## ReM
+  z_rem <- rem(x, n1, n0, a)
+  y_rem <- z_rem * y1_sim + (1 - z_rem) * y0_sim
+  tau_hat_rem[i] <- mean(y_rem[z_rem == 1]) - mean(y_rem[z_rem == 0])
+  tau_hat_rem_lim[i] = lm(y_rem ~ z_rem * x)$coef[2]
+}
+```
+
+
+## Simulação
+
+```{r}
+#| echo: true
+#| warning: false
+#| message: false
+data_plot <- data.frame(Est = c(tau_hat_cre, tau_hat_lim, tau_hat_rem, tau_hat_rem_lim),
+                        Metodo = rep(c("CRE", "Lim", "ReM", "ReM-Lim"), each = mc))
+ggplot(data_plot) + geom_boxplot(aes(x = Metodo, y = Est, fill = Metodo))
+```
+
+
+## Simulação
+
+::: {.callout-warning}
+### Observação:
+
+No experimento de simulação temos, além dos métodos vistos na aula de hoje, utilizado o estimador de Lim num contexto de rerandomização. De fato, Li e Ding (2020), mostram que é possível fazer isto e que, em geral, está combinação melhora o equilibrio da covariável tanto na parte do desenho amostral quando na parte de análise, dando uma maior eficiencia.
+
+:::
+
+. . . 
+
+```{r}
+#| echo: true
+c(sd(tau_hat_cre), sd(tau_hat_lim), sd(tau_hat_rem), sd(tau_hat_rem_lim))
+```
+
+
 
 ## Referências
 
@@ -276,6 +496,8 @@ Pode ser o caso de termos um SRE, estratificado numa variável discreta $C$ e ta
 
 - Peng Ding (2023). A First Course in Causal Inference. Capítulo 6.
 - Morgan, K. L., & Rubin, D. B. (2012). Rerandomization to improve covariate balance in experiments.
+- Angrist, J., Lang, D., & Oreopoulos, P. (2009). Incentives and services for college achievement: Evidence from a randomized trial. American Economic Journal: Applied Economics, 1(1), 136-163.
+- Li, X., & Ding, P. (2020). Rerandomization and regression adjustment. Journal of the Royal Statistical Society Series B: Statistical Methodology, 82(1), 241-268.
 
 
 :::

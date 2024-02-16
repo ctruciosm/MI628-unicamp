@@ -126,7 +126,7 @@ Para algum $k$, é possível, com alta probabilidade, que $\dfrac{n_{[k]1}}{n} -
 
 
 <center>
-No SRE, as unidades são agrupadas em estratos segundo alguma caracteristica (pre-tratamento). Dentro de cada estrato, um CRE é aplicado. Isto faz com que os métodos para CRE possam ser aplicados dentro de cada estrato. Contudo, o objetivo não está em testar as hipóteses dentro de cada estrato, mas para o conjunto de dados como um todo.
+No SRE, as unidades são agrupadas em estratos segundo alguma caracteristica (pre-tratamento). Dentro de cada estrato, um CRE é aplicado. Isto faz com que os métodos para CRE possam ser aplicados dentro de cada estrato. Contudo, o objetivo não está em testar as hipóteses dentro de cada estrato, mas para a população toda.
 </center>
 
 
@@ -146,10 +146,10 @@ Note que, pelo princípio básico de contagem, o número total de configuraçõe
 
 em que cada configuração tem a mesma probabilidade.
 
+. . . 
 
-<aside>
-_Stratified Randomized Experiments_ também é conhecido como _Randomized Block Design_
-</aside>
+> _Stratified Randomized Experiments_ também é conhecido como _Randomized Block Design_
+
 
 ## Estratificação
 
@@ -253,7 +253,7 @@ ee <- function(y, z, x) {
 
 #### Exemplo 2 (Combinação da estatística de postos de Wilcoxon)
 
-$$W_S = \displaystyle \sum_{k = 1}^K c_{[k]} W_{[k]},$$ em que $W_{[k]}$ é a estatistoca soma de postos de Wilcoxon para o estrato $k$, e escolhas comuns para $c_{[k]}$ são $$c_{[k]} = \dfrac{1}{n_{[k]1} n_{[k]0}} \quad ou \quad c_{[k]} = \dfrac{1}{n_{[k]} + 1}$$
+$$W_S = \displaystyle \sum_{k = 1}^K c_{[k]} W_{[k]},$$ em que $W_{[k]}$ é a estatística soma de postos de Wilcoxon para o estrato $k$, e escolhas comuns para $c_{[k]}$ são $$c_{[k]} = \dfrac{1}{n_{[k]1} n_{[k]0}} \quad ou \quad c_{[k]} = \dfrac{1}{n_{[k]} + 1}$$
 
 
 ## FRT sob SRE
@@ -336,6 +336,7 @@ z_permuta_SRE <- function(z, x) {
 Calculando os p-valores:
 
 ```{r}
+#| echo: true
 mc <- 10^4
 estatisticas <- matrix(NA, ncol = 2, nrow = mc)
 for (i in 1:mc) {
@@ -413,7 +414,7 @@ neyman_sre <- function(y, z, x) {
 
 ## Neyman sob SRE: Aplicação
 
-Uttilizaremos o mesmo conjunto de dados utilizado na aplicação do FRT sob SRE, mas neste caso $$H_{0N}: \tau = 0$$
+Utilizaremos o mesmo conjunto de dados utilizado na aplicação do FRT sob SRE, mas neste caso queremos testar $$H_{0N}: \tau = 0$$
 
 ```{r}
 #| echo: true
@@ -425,31 +426,57 @@ c(lim_inf, lim_sup)
 
 . . . 
 
-O programa de treinamento profissional dimiuiu (em log) o tempo de duração antes do emprego.
+O programa de treinamento profissional diminuiu (em log) o tempo de duração antes do emprego.
+
+## Estratificação: Resumo
+
+- Estratificação evita o desbalanceamento (e inclussive, evita que $n_{[k]1}$ ou $n_{[k]0}$ sejam zero).
+- Ambos abordagens, FRT e Neyman, podem ser facilmente calculadas sob SRE.
+- Estratificação requer que, pre-tratamento, o desenho de estratificação seja especificado. Isto implica que desde o começo deve-se tratar o estudo com muito cuidado e atenção.
 
 
-# Pós-estratificação no CRE
-## Pós-estratificação no CRE
+
+# Pós-estratificação
+## Pós-estratificação
+
+- Pós-estratificação é uma alternativa à estratificação quando esta última não é possível.
+- Quando estratificação não é realizada, uma prática comúm é ajustar por covariáveis.
+- Pós-estratificação é uma forma simples de justar por covariáveis.
+    * O pesquisador estratifica unidades experimentais com uma covariável de pré-tratamento, 
+    * estima os efeitos do tratamento dentro dos estratos,
+    * usa a média ponderada para estimar a média geral do efeito do tratamento.
+- Pós-estratificaçao pode também reduzir a variância.
+- Em amostras pequenas, a pós-estratificação pode ser prejudicial, especialmente se o número de estratos for grande e a variável de estratificação for mal escolhida.
+
+
+
+## Pós-estratificação
 
 - No CRE com covarável discreta $X$, o número de unidades que recebem o tratamento e o controle dentro de cada estrato é aleatório. Já no SRE estas quantidades são fixas.
 - Se fizermos inferência condicionando em $\textbf{n} = \{n_{[k]1}, n_{[k]0} \}_{k = 1}^K$, então CRE torna-se SRE. De fato, se nenhum das componentes de $\textbf{n}$ for zero, temos que $$P_{CRE}(\textbf{Z} = \textbf{z}| \textbf{n}) = \dfrac{1}{\prod_{k=1}^K \binom{n_{[k]}}{n_{[k]1}}}=P_{SRE}(\textbf{Z} = \textbf{z}).$$
 - Ou seja, condicionado em $\textbf{n}$, podemos analisar CRE com covariável discreta da mesma forma que analisamos SRE.
 - FRT torna-se _conditional_ FRT.
 
-## Pós-estratificação no CRE
+## Pós-estratificação
 
-- Abordagem de Neyman torna-se pós-estratificação, $$\hat{\tau}_{ps} = \displaystyle \sum_{k = 1}^K \pi_{[k]} \hat{\tau}_{[k]},$$ que é exatamente igual a $\hat{\tau}_s$. Ademais, $\mathbb{V}_{CRE}(\hat{\tau}_{ps} | \textbf{n}) = \mathbb{V}_{SRE}(\hat{\tau}_s).$
+- Abordagem de Neyman torna-se pós-estratificação, $$\hat{\tau}_{ps} = \displaystyle \sum_{k = 1}^K \pi_{[k]} \hat{\tau}_{[k]},$$ que é exatamente igual a $\hat{\tau}_s$ mas na estratificação os $\pi_{[k]}$ são fixos e na  pós-estratificação são aleatórios. Ademais, $\mathbb{V}_{CRE}(\hat{\tau}_{ps} | \textbf{n}) = \mathbb{V}_{SRE}(\hat{\tau}_s).$
 
 . . . 
 
+
+::: {.callout-warning}
+### Observação:
+
 Em geral, se $X$ for preditiva para $Y$ e os estratos são grandes, _conditional_ FRT é mais poderoso do que FRT (Hennessy et al. (2016)) e em muitos casos, pós-estratificação melhora a eficiência comparado com $\hat{\tau}$ (Maritrix et al. (2013)).
+
+:::
 
 . . . 
 
 Contudo, devemos ter cuidado com valores de $K$ muito grandes, pois isto aumenta a chance que $n_{[k]1}$ ou $n_{[k]0}$ sejam zero (ou muito pequenos), o que reduz o poder do teste.
 
 
-## Pós-estratificação no CRE
+## Pós-estratificação
 
 ::: {.callout-important}
 ### Observação
@@ -478,7 +505,7 @@ O pesquisador faz estratificação considerando o nível escolar (1--5) (`class_
 
 
 
-## Pós-estratificação no CRE
+## Pós-estratificação
 
 ```{r}
 #| echo: true
@@ -504,7 +531,7 @@ x <- dados$class_level
 
 
 
-## Pós-estratificação no CRE
+## Pós-estratificação
 
 ```{r}
 #| echo: true
@@ -542,14 +569,34 @@ c(est_s, pvalor_s, est_sps, pvalor_sps)
 ```
 
 
+## Pós-estratificação
+
+
+#### Como saber se devo ou não estratificar (pós-estratificar)?
+
+
+<center>
+![](imagens/dica_ouro.jpg)
+</center>
+
+
+
+<center>
+Se $X$ estiver associada a $Y$ e se $X$ não é afetada pelo tratamento, então estratificação (pós-estratificação) trará ganhos quandos comparados com CRE!.
+</center>
+
+
+
+
+
 # Comentários Finais
 ## Comentários Finais
 
 Qual a vantagem de utilizar SRE comparado com CRE?
 
-- Em geral, os ganho é na estimação da variância. Por exemplo, pode-se mostrar que, se $e_{[k]} = e$ $\forall k$, $$\mathbb{V}_{CRE}(\hat{\tau}) \geq \mathbb{V}_{SRE}(\hat{\tau}_S).$$
+- Em geral, o ganho é na estimação da variância (se bem conduzida, estratificação reduz a variância). Por exemplo, pode-se mostrar que, se $e_{[k]} = e$ $\forall k$, $$\mathbb{V}_{CRE}(\hat{\tau}) \geq \mathbb{V}_{SRE}(\hat{\tau}_S).$$
 - Se a covariável for preditiva para os resultados potenciais, o ganho na eficiência do SRE em comparação com CRE é claro.
-- No caso extremo de que a covariável não for preditiva para os resultados potenciais, em grandes amostras o ganho é zero. Ademais, em pequenas amostras, CRE pode ser mais eficiente do que SRE (este é o sentido da frase do Box mostrada no início da aula).
+- No caso extremo de que a covariável não for preditiva para os resultados potenciais, em grandes amostras o ganho é zero. Em pequenas amostras, CRE pode ser mais eficiente do que SRE (este é o sentido da frase do Box mostrada no início da aula).
 - A variável utilizada como estrato não é afetado pelo tratamento.
 
 

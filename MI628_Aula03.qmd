@@ -1,6 +1,6 @@
 ---
 title: "Inferência Causal"
-subtitle: "CRE: Abordagem de Neyman"
+subtitle: "Abordagem de Neyman"
 author: "Prof. Carlos Trucíos </br> ctrucios@unicamp.br"
 Email: "ctrucios@unicamp.br"
 institute: "Instituto de Matemática, Estatística e Computação Científica (IMECC), </br> Universidade Estadual de Campinas (UNICAMP)."
@@ -47,8 +47,9 @@ format:
 # Neyman
 ## Neyman
 
-- Neyman (1923) propõe um método para fazer inferência para o efeito causal médio (ACE: **A**verage **C**ausal **E**ffect).
+- Neyman (1923) propõe um método para fazer inferência para o efeito causal médio (ACE: **A**verage **C**ausal **E**ffect, também chamado de ATE: **A**verage **T**reatment **E**ffect).
 - Diferente da abordagem de Fisher (p-valor), Neyman propõe um estimador pontual não viesado e, baseado na distribuição amostral do estimador pontual, intervalos de confiança.
+- O teste de hipóteses é feito através da relação intervalo de confiança -- teste de hipóteses.
 
 
 ## Neyman
@@ -76,14 +77,14 @@ $$2 S(1, 0) = S^2(1) + S^2(0) - S^2(\tau).$$
 
 . . . 
 
-> Estamos interessados em estimar o efeito causal médio (ACE), $\tau$, baseados em $(Z_i, Y_i)_{i = 1}^n$ sob CRE.
+> Estamos interessados em estimar $\tau$, baseados em $(Z_i, Y_i)_{i = 1}^n$ sob CRE.
 
 
 
 ## Teorema de Neyman
 
 
-Utilizando os resultados observados ($Y_i$), podemos calcular aa médiaa e variâncias amostrais como:
+Utilizando os resultados observados ($Y_i$), podemos calcular as médias e variâncias amostrais como:
 
 $$\hat{\bar{Y}}(1) = \displaystyle \sum_{i = 1}^n Z_i Y_i \Big /n_1 \quad  e \quad \hat{\bar{Y}}(0) = \displaystyle \sum_{i = 1}^n (1 - Z_i) Y_i \Big /n_0$$
 
@@ -95,7 +96,7 @@ $$\hat{S}^2(1) = \displaystyle \sum_{i = 1}^n Z_i (Y_i - \hat{\bar{Y}}(1))^2 \Bi
 
 . . . 
 
-[Nenhuma!. Não existe versões amostrais de $S(1, 0)$ nem $S^2(\tau)$ pois os resultados potenciais $Y_i(1)$ e $Y_i(0)$ nunca são observados simultaneamente para cada unidade $i$.]{style="color:red;"}
+[Nenhuma!. Não existem versões amostrais de $S(1, 0)$ nem $S^2(\tau)$ pois os resultados potenciais $Y_i(1)$ e $Y_i(0)$ nunca são observados simultaneamente para cada unidade $i$.]{style="color:red;"}
 
 
 
@@ -122,7 +123,7 @@ Sob CRE:
 
 ## Teorema de Neyman
 
-- Repare que apenas $Z_1, \cdots, Z_n$ é aleatório (mas os resultados potenciais são todos fixos).
+- Repare que apenas $Z_1, \cdots, Z_n$ é aleatório.
 - Assim, $\mathbb{E}(\cdot)$ e  $\mathbb{V}(\cdot)$ são em $Z_1, \cdots, Z_n$, que são permutações aleatórias de $n_1$ 1s e $n_0$ 0s.
 - $\hat{\tau}$ tem uma distribuição discreta sob $\hat{\tau}^1, \cdots, \hat{\tau}^M$, com $M = \binom{n}{n_1}$.
 
@@ -163,7 +164,8 @@ Sob CRE:
 
 - FRT funciona para qualquer teste, já o teorema Neyman apenas fornece resultados para a diferença de médias.
 - No FRT, $\textbf{Y}$ é fixo, já na abordagem de Neyman $\textbf{Y}(\textbf{z}^m)$ muda com mudanças de $\textbf{z}^m$.
-- No FRT, todos os $T(\textbf{z}^m, \textbf{Y})$ são calculáveis, já na abordagem de Neyman, os $\hat{\tau}^m$ são valores hipotéticos pois não todos os resultados potenciais são conhecidos (apenas conhecemos os resultados observados).
+- No FRT, todos os $T(\textbf{z}^m, \textbf{Y})$ são calculáveis, já na abordagem de Neyman, os $\hat{\tau}^m$ são apenas valores hipotéticos. Isto, pois não todos os resultados potenciais são conhecidos (apenas conhecemos os resultados observados).
+- [Eles testam coisas diferentes.]{style="color:blue;"}
 
 
 
@@ -188,7 +190,7 @@ A prova do teorema é bastante técnica e está em [Li e Peng (2017).](https://w
 
 ## Teorema de Neyman
 
-O teorema garante a normalidade e, ao mesmo tempo, que o estimador da variância, $\hat{V} = \frac{\hat{S}^2(1)}{n_1} + \frac{\hat{S}^2(0)}{n_0}$, é maior (em probabilidade) do que $\mathbb{V}(\hat{\tau}) = \frac{S^2(1)}{n_1} + \frac{S^2(0)}{n_0} - \frac{S^2(\tau)}{n}$, o que permite calcular intervalos de confiança conservadores (*i.e,* de tamanho maior): $$\hat{\tau} \pm z_{1-\alpha/2} \sqrt{\hat{V}}.$$
+O teorema garante a normalidade e, ao mesmo tempo, que o estimador da variância, $\hat{V} = \frac{\hat{S}^2(1)}{n_1} + \frac{\hat{S}^2(0)}{n_0}$, é maior (em probabilidade) do que $\mathbb{V}(\hat{\tau}) = \frac{S^2(1)}{n_1} + \frac{S^2(0)}{n_0} - \frac{S^2(\tau)}{n}$, o que permite calcular intervalos de confiança conservadores (*i.e,* de maior amplitude): $$\hat{\tau} \pm z_{1-\alpha/2} \sqrt{\hat{V}}.$$
 
 
 . . . 
@@ -252,7 +254,7 @@ V_hat <- var(y1[z == 1]) / n1 + var(y0[z == 0]) / n0
 V_hat
 intervalo_confianca <- c(tau_hat - 1.96 * sqrt(V_hat), tau_hat + 1.96 * sqrt(V_hat))
 intervalo_confianca
-var_hat_tau <- n0 * var(y1) / (n1 * n) + n1 * var(y0) / (n0 * n) + 2*cov(y1, y0) / n
+var_hat_tau <- var(y1) / n1 + var(y0) / n0 - var(y1 - y0) / n
 var_hat_tau
 ```
 :::
@@ -326,6 +328,8 @@ Repetiremos o experimento mas mudando os resultados potenciais:
 ```{r}
 #| echo: true
 y0 <- sort(y0, decreasing = FALSE)
+var_hat_tau <- var(y1) / n1 + var(y0) / n0 - var(y1 - y0) / n
+var_hat_tau
 ```
 
 ```{r}
@@ -344,7 +348,7 @@ for (i in 1:10^4) {
   cobertura[i] <- ifelse(lim_inf[i] < tau && tau < lim_sup[i], 1, 0)
   est[i] <- (tau_hat_p[i] - tau) / sqrt(V_hat_p[i])
 }
-mean(cobertura)
+c(mean(V_hat_p), mean(cobertura))
 ```
 
 :::
@@ -379,6 +383,8 @@ Repetiremos o experimento mas mudando os resultados potenciais:
 ```{r}
 #| echo: true
 y0 <- sample(y0)
+var_hat_tau <- var(y1) / n1 + var(y0) / n0 - var(y1 - y0) / n
+var_hat_tau
 ```
 
 ```{r}
@@ -397,7 +403,6 @@ for (i in 1:10^4) {
   cobertura[i] <- ifelse(lim_inf[i] < tau && tau < lim_sup[i], 1, 0)
   est[i] <- (tau_hat_p[i] - tau) / sqrt(V_hat_p[i])
 }
-mean(cobertura)
 ```
 
 :::
@@ -417,10 +422,24 @@ O que implica fazermos "y0 = sample(y0)"?
 hist(est)
 ```
 
+
 :::
 
 
+## Ilustração
 
+
+-  Quando $\tau_i = \tau$, $\mathbb{V}(\hat{\tau}) = \mathbb{E}(\hat{V})$. Nas nossas simulações os resultados são bem próximos.
+- Em todos os outros casos temos que $\mathbb{E}(\hat{V}) > \mathbb{V}(\hat{\tau})$.
+- Note que como estamos utilizamos MC = 10^4 e não todas as possíveis permutações, os resultados não são exatos mas sim aproximados.
+
+
+. . . 
+
+
+<center>
+[O que acontece se, as suposições necessárias para o teste de Neyman não forem verificadas?]{style="color:red;"}
+</center>
 
 ## Ilustração
 
@@ -452,7 +471,6 @@ for (i in 1:10^4) {
   cobertura[i] <- ifelse(lim_inf[i] < tau && tau < lim_sup[i], 1, 0)
   est[i] <- (tau_hat_p[i] - tau) / sqrt(V_hat_p[i])
 }
-mean(cobertura)
 ```
 :::
 
@@ -467,6 +485,24 @@ mean(cobertura)
 hist(est)
 ```
 
+
+```{r}
+#| echo: true
+c(mean(V_hat_p), mean(cobertura))
+```
+
+
+## Ilustração
+
+
+::: {.callout-note}
+### Simulação
+```{r}
+#| echo: true
+dados <- data.frame(lim_inf = lim_inf,  tau = 1, lim_sup = lim_sup)
+dados
+```
+
 :::
 
 # Aplicação
@@ -475,7 +511,7 @@ hist(est)
 
 - Suponha que estamos em um CRE.
 - Temos $Y_i$ (os resultados observados) e $Z_i$ (o vetor de indicador de tratamento).
-- O objetivo é determinar se o uso do tratamento causa algum efeito em $Y_i$.
+- O objetivo é determinar se o uso do tratamento causa algum efeito médio em $Y_i$.
 - Seu colega, quase que imediatamente, resolve ajustar um modelo de regressão do tipo $$Y_i = \beta_0 + \beta_1 Z_i + \epsilon_i.$$
 
 . . .
@@ -554,7 +590,7 @@ c(tau_hat, V_hat, se_hat)
 
 ## Aplicação
 
-Vejamo o que acontece se ajustarmos um modelo de regressão por MQO.
+Vejamos o que acontece se ajustarmos um modelo de regressão por MQO.
 
 . . . 
 
@@ -594,14 +630,20 @@ $$H_{0N}: \tau = 0$$
 Estatística de teste:
 
 ::: {.nonincremental}
-- $\dfrac{\hat{\tau}-\tau}{\sqrt{\hat{V}}} = \dfrac{1794.3431}{670.9967} = 2.674146 \quad , \quad \dfrac{\hat{\tau}-\tau}{\sqrt{\hat{V}_{MQO}}} = \dfrac{1794.3431}{632.8536} = 2.835321$
-- $\dfrac{\hat{\tau}-\tau}{\sqrt{\hat{V}_{EHW}}} = \dfrac{1794.3431}{669.3155} = 2.680863 \quad , \quad \dfrac{\hat{\tau}-\tau}{\sqrt{\hat{V}_{HC2}}} = \dfrac{1794.3431}{670.9967} = 2.674146$
+- $\frac{\hat{\tau}-\tau}{\sqrt{\hat{V}}} = \frac{1794.3431}{670.9967} = 2.674146 \quad , \quad \frac{\hat{\tau}-\tau}{\sqrt{\hat{V}_{MQO}}} = \frac{1794.3431}{632.8536} = 2.835321$
+- $\frac{\hat{\tau}-\tau}{\sqrt{\hat{V}_{EHW}}} = \frac{1794.3431}{669.3155} = 2.680863 \quad , \quad \frac{\hat{\tau}-\tau}{\sqrt{\hat{V}_{HC2}}} = \frac{1794.3431}{670.9967} = 2.674146$
 :::
 
 ```{r}
 #| echo: true
 c(qnorm(0.975), qnorm(0.995), qnorm(0.9975))
 ```
+
+. . . 
+
+
+Mesmo a um nível de significância de 0.5\% (o que não é tão inusual na área de saúde), se utilizarmos regressão por MQO rejeitariamos $H_{0N}$. A mesma conclusão não é obtida se utilizamor as correções EHW ou mesmo HC2 `r emo::ji("lol")`.
+
 
 
 # Demostração

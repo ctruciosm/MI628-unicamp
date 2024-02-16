@@ -426,7 +426,8 @@ Prof.&nbsp;Carlos Trucíos <br> ctrucios@unicamp.br
 <h2>Potential outcomes</h2>
 <ul>
 <li class="fragment">Considere um estudo com <span class="math inline">\(n\)</span> unidades experimentais (<span class="math inline">\(i= 1, 2, \cdots, n\)</span>).</li>
-<li class="fragment">Se forcarmos apenas em casos com dois níveis de tratamento (1: tratamento, 0: controle), para cada <span class="math inline">\(i\)</span>, o resultado de interesse, <span class="math inline">\(Y\)</span>, tem duas versões <span class="math display">\[Y_i(1) \quad e \quad Y_i(0),\]</span> as quais são os resultados potenciais (<em>potential outcomes</em>) sob as intervenções 1 e 0, respectivamente.</li>
+<li class="fragment">Se focarmos apenas em casos com dois níveis de tratamento (1: tratamento, 0: controle), para cada <span class="math inline">\(i\)</span>, o resultado de interesse, <span class="math inline">\(Y\)</span>, tem duas versões <span class="math display">\[Y_i(1) \quad e \quad Y_i(0),\]</span> as quais são os resultados potenciais (<em>potential outcomes</em>) sob as intervenções 1 e 0, respectivamente.</li>
+<li class="fragment">Resultados poteciais (<em>potential outcomes</em>) são também conhecidos como <em>counterfactual outcomes</em>.</li>
 </ul>
 </section>
 <section id="potential-outcomes-2" class="slide level2">
@@ -437,6 +438,11 @@ Prof.&nbsp;Carlos Trucíos <br> ctrucios@unicamp.br
 <li class="fragment"><strong>Consistência:</strong> Não existem outras versões do tratamento (níveis de tratamento bem definidos e sem ambiguedades).</li>
 <li class="fragment"><span style="color:red;"><strong>SUTVA</strong> Suposições 1 e 2 acontecem.</span></li>
 </ol>
+<div class="fragment">
+<blockquote>
+<p>SUTVA: Stable Unit Treatment Value Assumption.</p>
+</blockquote>
+</div>
 </section>
 <section id="potential-outcomes-3" class="slide level2">
 <h2>Potential outcomes</h2>
@@ -488,6 +494,12 @@ Prof.&nbsp;Carlos Trucíos <br> ctrucios@unicamp.br
 </tr>
 </tbody>
 </table>
+<div class="fragment">
+<p><strong>Qual a interpretação de <span class="math inline">\(Y_i(1)\)</span>?</strong></p>
+</div>
+<div class="fragment">
+<p>Em geral, <span class="math inline">\(Y_i(j)\)</span> (<span class="math inline">\(i = 1, \cdots, n\)</span>, <span class="math inline">\(j = 0, 1\)</span>) representa o resultado potencial da <span class="math inline">\(i\)</span>-éssima observação sob a intervenção <span class="math inline">\(j\)</span> (que pode ser tratamento (1) ou controle (0)).</p>
+</div>
 </section>
 <section id="potential-outcomes-5" class="slide level2">
 <h2>Potential outcomes</h2>
@@ -501,7 +513,7 @@ Prof.&nbsp;Carlos Trucíos <br> ctrucios@unicamp.br
 </div>
 <div class="callout-content">
 <p>Para cada <span class="math inline">\(i = 1, \cdots, n\)</span>, o efeito causal individual é dado por <span class="math display">\[\tau_i = Y_i(1) - Y_i(0).\]</span></p>
-<p>O efeito causal médio, é dado por <span class="math display">\[\tau = n^{-1} \displaystyle \sum_{i = 1}^n \{ Y_i(1) - Y_i(0) \}.\]</span></p>
+<p>Por outro lado, o efeito causal médio (ACE: <em>Average Causal Effect</em>) ou <em>average treatment effect</em> (ATE), é dado por <span class="math display">\[\tau = n^{-1} \displaystyle \sum_{i = 1}^n \{ Y_i(1) - Y_i(0) \}.\]</span></p>
 </div>
 </div>
 </div>
@@ -528,12 +540,12 @@ Ademais,
 \left\{
   \begin{array}{ll}
       Y_i(1),  &amp; \mbox{se } Z_i = 1\\
-      Y_i(0),  &amp; \mbox{se } Z_i = 0
+      Y_i(0),  &amp; \mbox{se } Z_i = 0.
   \end{array}
 \right. \qquad(1)\]</span></span></li>
 </ul>
 <div class="fragment">
-<p>Note que <a href="#/eq-1">Equation&nbsp;1</a> pode também ser escrita como:</p>
+<p><a href="#/eq-1">Equation&nbsp;1</a> pode também ser escrita como:</p>
 <p><span class="math display">\[\begin{align}
     Y_i &amp; = Z_i Y_i(1) + (1 - Z_i)Y_i(0) \\
         &amp; = Y_i(0) + Z_i (Y_i(1) - Y_i(0)) \\
@@ -623,7 +635,7 @@ Ademais,
 <span id="cb2-4"><a href="#cb2-4"></a><span class="fu">mean</span>(Y[Z <span class="sc">==</span> <span class="dv">1</span>]) <span class="sc">-</span> <span class="fu">mean</span>(Y[Z <span class="sc">==</span> <span class="dv">0</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.7511998</code></pre>
+<pre><code>[1] 0.7122405</code></pre>
 </div>
 </div>
 </div><div class="column" style="width:50%;">
@@ -637,12 +649,12 @@ Ademais,
 <span id="cb4-4"><a href="#cb4-4"></a><span class="fu">mean</span>(Y[Z <span class="sc">==</span> <span class="dv">1</span>]) <span class="sc">-</span> <span class="fu">mean</span>(Y[Z <span class="sc">==</span> <span class="dv">0</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] -0.5963044</code></pre>
+<pre><code>[1] -0.3799159</code></pre>
 </div>
 </div>
 </div>
 </div>
-<p><strong>Note que a forma como o tratamento é atribuido, muda consideravelmente os resultados obtidos.</strong> Por isso, é importante estudarmos diversos mecanismo de atribuição de tratamento (<em>i.e,</em> a distribuição de <strong>Z</strong>).</p>
+<p><strong>Note que a forma como o tratamento é atribuido, muda completamente os resultados obtidos.</strong> Por isso, é importante estudarmos diversos mecanismos de atribuição de tratamento (<em>i.e,</em> a distribuição de <strong>Z</strong>).</p>
 </section></section>
 <section>
 <section id="experimentos-randomizados" class="title-slide slide level1 center">
@@ -653,13 +665,13 @@ Ademais,
 <h2>Experimentos randomizados</h2>
 <center>
 <h3>
-<span style="color:red;">Entender inferência causal em experimentos randomizados é essencial para entender inferêcia causal em estudos não experimentais.</span>
+<span style="color:red;">Entender inferência causal em experimentos randomizados é essencial para entender inferência causal em estudos não experimentais.</span>
 </h3>
 <center>
 </center></center></section>
 <section id="cre-completely-randomize-experiment" class="slide level2">
 <h2>CRE: Completely Randomize Experiment</h2>
-<p>Considere um experimento com <span class="math inline">\(n\)</span> unidades experimentais das quais <span class="math inline">\(n_1\)</span> recebem o tratamento (1) e <span class="math inline">\(n_0\)</span> recebem o placebo (0).</p>
+<p>Considere um experimento com <span class="math inline">\(n\)</span> unidades experimentais das quais <span class="math inline">\(n_1\)</span> recebem o tratamento (1) e <span class="math inline">\(n_0\)</span> recebem o controle (0).</p>
 <div class="callout callout-tip callout-captioned callout-style-default">
 <div class="callout-body">
 <div class="callout-caption">
@@ -673,14 +685,10 @@ Ademais,
 </div>
 </div>
 </div>
-<p>As vantagens da randomização são (Fisher, 1935):</p>
-<div class="{nonincremental}">
-<ol type="1">
-<li class="fragment">Cria, em média, grupos de tratamento e controle comparáveis.</li>
-<li class="fragment">Serve como fundamento para inferência estatística<sup>1</sup></li>
-</ol>
+<div class="fragment">
+<p><span style="color:blue;">Existem vários outros mecanismos de atribuição de tratamento, mas por enquanto focaremos no CRE.</span></p>
 </div>
-<aside><ol class="aside-footnotes"><li id="fn1"><p>Fisher esta se referindo a um teste estatístico conhecido como Fisher Randomization Test (FRT)</p></li></ol></aside></section></section>
+</section></section>
 <section>
 <section id="fisher-randomization-test-frt" class="title-slide slide level1 center">
 <h1>Fisher Randomization Test (FRT)</h1>
@@ -688,18 +696,27 @@ Ademais,
 </section>
 <section id="frt-fisher-randomization-test" class="slide level2">
 <h2>FRT: Fisher Randomization Test</h2>
-<p>Estamos interessados em testar: <span class="math display">\[H_{0F}: Y_i(1) = Y_i(0) \quad \forall i = 1, \cdots, n.\]</span></p>
-<center>
-(se o efeito causal individual é nulo em todos os casos).
-</center>
+<p>Estamos interessados em testar se o efeito causal individual é nulo em todos os casos, ou seja, <span class="math display">\[H_{0F}: Y_i(1) = Y_i(0) \quad \forall i = 1, \cdots, n.\]</span></p>
 <div class="fragment">
 <p>O FRT é da forma <span id="eq-2"><span class="math display">\[T = T(\textbf{Z}, \textbf{Y}). \qquad(2)\]</span></span> em que <span class="math inline">\(\textbf{Y}\)</span> é o vetor de resultados observado e <span class="math inline">\(\textbf{Z}\)</span> o vetor de tratamentos.</p>
 </div>
 <div class="fragment">
-<p>Note que sob <span class="math inline">\(H_{0F}\)</span>, <span class="math inline">\(\textbf{Y}\)</span> é fixo e a única componente aleatória em <span class="math inline">\(T\)</span> é <span class="math inline">\(\textbf{Z}\)</span>.</p>
+<div class="callout callout-warning callout-captioned callout-style-default">
+<div class="callout-body">
+<div class="callout-caption">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
 </div>
-<div class="fragment">
-<p>Ademais, a distribuição de <span class="math inline">\(\textbf{Z}\)</span> (<em>i.e,</em> o mecanismo de atribuição de tratamento) determina a distribuição de <span class="math inline">\(T\)</span> sob <span class="math inline">\(H_{0F}\)</span>, que por sua vez é a base para calcular o p-valor.</p>
+<p><strong>Observação:</strong></p>
+</div>
+<div class="callout-content">
+<ul>
+<li class="fragment">Sob <span class="math inline">\(H_{0F}\)</span>, a única componente aleatória em <span class="math inline">\(T\)</span> é <span class="math inline">\(\textbf{Z}\)</span>.</li>
+<li class="fragment">A distribuição de <span class="math inline">\(\textbf{Z}\)</span> (<em>i.e,</em> o mecanismo de atribuição de tratamento) determina a distribuição de <span class="math inline">\(T\)</span> sob <span class="math inline">\(H_{0F}\)</span>, que por sua vez é a base para calcular o p-valor.</li>
+</ul>
+</div>
+</div>
+</div>
 </div>
 </section>
 <section id="frt-fisher-randomization-test-1" class="slide level2">
@@ -760,7 +777,7 @@ Ademais,
 
 </div>
 </div>
-<p>Uma alternativa é utilizar <span class="math inline">\(R\)</span> amostras aleatórias dos possíveis valores do vetor de tratamentos (ou, equivalentemente, <span class="math inline">\(R\)</span> permutações aleatóriamente <span class="math inline">\(\textbf{Z}\)</span>) e aproximar <span class="math inline">\(p\)</span> por <span class="math display">\[\hat{p} = R^{-1} \displaystyle \sum_{r = 1}^R I\{ T(\textbf{z}^r, \textbf{Y}) \geq T(\textbf{Z}, \textbf{Y}) \}.\]</span></p>
+<p>Uma alternativa é utilizar <span class="math inline">\(R\)</span> amostras aleatórias dos possíveis valores do vetor de tratamentos (ou, equivalentemente, <span class="math inline">\(R\)</span> permutações aleatórias de <span class="math inline">\(\textbf{Z}\)</span>) e aproximar <span class="math inline">\(p\)</span> por <span class="math display">\[\hat{p} = R^{-1} \displaystyle \sum_{r = 1}^R I\{ T(\textbf{z}^r, \textbf{Y}) \geq T(\textbf{Z}, \textbf{Y}) \}.\]</span></p>
 <div class="fragment">
 <p>Na prática, valores de <span class="math inline">\(R = 10^4\)</span> ou <span class="math inline">\(R = 10^5\)</span> costumam ser suficiente.</p>
 </div>
@@ -826,7 +843,7 @@ Ademais,
 <h2>FRT: Fisher Randomization Test</h2>
 <h4 id="caso-1-diferença-de-médias.-3">Caso 1: Diferença de médias.</h4>
 <p>Pense no clássico teste de diferencia de médias com variâncias desconhecidas e iguais.</p>
-<p>Sejam <span class="math inline">\(X_1, \cdots, X_{n_x} \sim N(\mu_x, \sigma^2)\)</span> e <span class="math inline">\(Y_1, \cdots, Y_{n_y} \sim N(\mu_y, \sigma)\)</span> e sejam as hipóteses <span class="math display">\[H_0: \mu_x = \mu_y \quad vs. H_1: \mu_x \neq \mu_y.\]</span></p>
+<p>Sejam <span class="math inline">\(X_1, \cdots, X_{n_x} \sim N(\mu_x, \sigma^2)\)</span> e <span class="math inline">\(Y_1, \cdots, Y_{n_y} \sim N(\mu_y, \sigma)\)</span> e sejam as hipóteses <span class="math display">\[H_0: \mu_x = \mu_y \quad vs. \quad H_1: \mu_x \neq \mu_y.\]</span></p>
 <p>Então, a estatística de teste <span class="math display">\[\dfrac{\bar{X} - \bar{Y}}{\sqrt{\Big[\dfrac{1}{n_x} + \dfrac{1}{n_y} \Big] \dfrac{\displaystyle \sum_{i = 1}^{n_x}(X_i - \bar{X})^2 + \sum_{j = 1}^{n_y}(Y_j - \bar{Y})^2}{n_x + n_y - 2}}} \sim t_{n_x + n_y -2}\]</span></p>
 </section>
 <section id="frt-fisher-randomization-test-8" class="slide level2">
@@ -837,13 +854,13 @@ Ademais,
 <li class="fragment">Então, <span class="math inline">\(n_x = n_1\)</span>, <span class="math inline">\(n_y = n_0\)</span> e <span class="math inline">\(n_1 + n_0 = n\)</span>.</li>
 <li class="fragment">Note que <span class="math inline">\((n - 1)S^2 = \displaystyle \sum_{Z_i = 1} (Y_i - \hat{\bar{Y}}(1))^2 + \sum_{Z_i = 0} (Y_i - \hat{\bar{Y}}(0))^2 + \dfrac{n_1 n_0}{n} \tau^2\)</span></li>
 <li class="fragment">Quando <span class="math inline">\(n \rightarrow \infty\)</span>, <span class="math inline">\(t_{n-2} \xrightarrow D N(0,1)\)</span> e <span class="math inline">\(\dfrac{n-1}{n-2} \rightarrow 1\)</span>.</li>
-<li class="fragment">Sob <span class="math inline">\(H_{0F}\)</span>, <span class="math inline">\(\dfrac{n_1 n_0}{n} \tau^2 \xrightarrow p 0\)</span></li>
+<li class="fragment">Sob <span class="math inline">\(H_{0F}\)</span>, <span class="math inline">\(\dfrac{n_1 n_0}{n} \tau^2 \rightarrow 0\)</span></li>
 </ul>
 </section>
 <section id="frt-fisher-randomization-test-9" class="slide level2">
 <h2>FRT: Fisher Randomization Test</h2>
 <h4 id="caso-1-diferença-de-médias.-5">Caso 1: Diferença de médias.</h4>
-<p>Assim, <span class="math inline">\(\sqrt{\Big[\frac{1}{n_x} + \frac{1}{n_y} \Big] \dfrac{\displaystyle \sum_{i = 1}^{n_x}(X_i - \bar{X})^2 + \sum_{j = 1}^{n_y}(Y_j - \bar{Y})^2}{n_x + n_y - 2}}\)</span> e <span class="math inline">\(\sqrt{\dfrac{n}{n_1 n_0}s^2}\)</span> são assintóticamente equivalentes. Ou seja, o p-valor aproximado do <strong>Caso 1: Diferença de médias</strong> é próximo do clássico teste t para diferencia de médias quando as variâncias são desconhecidas e iguais!</p>
+<p>Assim, <span class="math inline">\(\sqrt{\Big[\frac{1}{n_x} + \frac{1}{n_y} \Big] \dfrac{\displaystyle \sum_{i = 1}^{n_x}(X_i - \bar{X})^2 + \sum_{j = 1}^{n_y}(Y_j - \bar{Y})^2}{n_x + n_y - 2}}\)</span> e <span class="math inline">\(\sqrt{\dfrac{n}{n_1 n_0}s^2}\)</span> são assintóticamente equivalentes. Ou seja, o p-valor aproximado do <strong>Caso 1: Diferença de médias</strong> é próximo do obtido através do clássico teste t para diferencia de médias quando as variâncias são desconhecidas e iguais!</p>
 <div class="fragment">
 <p>Não apenas a diferencia de médias pode ser utilizada no contexto FRT. O teste de Wilcoxon e o teste de Kolmogorov-Smirnov são outros excelentes exemplos.</p>
 </div>
@@ -851,7 +868,7 @@ Ademais,
 <section id="frt-fisher-randomization-test-10" class="slide level2">
 <h2>FRT: Fisher Randomization Test</h2>
 <h4 id="caso-1-diferença-de-médias.-6">Caso 1: Diferença de médias.</h4>
-<p>O <em>dataset</em> <code>lalonde</code> do pacote <code>Matching</code> contém o vetor tratamento (treat) indicando se a unidade foi aleatoriamente atribuida a um treinamento ou não, bem como um vetor representando o salario em 1978 (re78). Queremos saber se a participação no treinamento teve efeito ou não no salario de algum dos trabalhadores.</p>
+<p>O <em>dataset</em> <code>lalonde</code> do pacote <code>Matching</code> contém o vetor tratamento (treat) indicando se a unidade foi, aleatoriamente, atribuida a um treinamento ou não, bem como um vetor representando o salario em 1978 (re78). Queremos saber se a participação no treinamento teve efeito ou não no salario de algum dos trabalhadores.</p>
 <div class="cell" data-layout-align="center">
 <details>
 <summary>Code</summary>
@@ -914,7 +931,7 @@ Ademais,
 <span id="cb8-4"><a href="#cb8-4"></a>  pvalor_frt_classico_t_mc)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.004906490 0.004140000 0.004787524 0.004320000</code></pre>
+<pre><code>[1] 0.004906490 0.004560000 0.004787524 0.004160000</code></pre>
 </div>
 </div>
 </section>
@@ -932,7 +949,6 @@ Ademais,
 <p>Carlos Trucíos (IMECC/UNICAMP) | ME920/MI628 - Inferência Causal | <a href="https://ctruciosm.github.io/">ctruciosm.github.io</a></p>
 </div>
 </section></section>
-
     </div>
   </div>
 

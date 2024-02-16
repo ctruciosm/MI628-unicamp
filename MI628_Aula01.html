@@ -441,9 +441,6 @@ Prof.&nbsp;Carlos Trucíos <br> ctrucios@unicamp.br
 <center>
 <span style="color:red;">Nesta matéria (ME920/MI626) aprenderemos diversas técnicas que nos permitirão tirar conclusões do tipo causa-efeito.</span>
 </center>
-<div class="fragment">
-<h4 id="inferência-causal-ou-econometria">Inferência Causal ou Econometria?</h4>
-</div>
 </section></section>
 <section>
 <section id="paradoxo-de-simpson" class="title-slide slide level1 center">
@@ -769,7 +766,7 @@ Devemos olhar para os dados agregados ou desagregados?
 </tr>
 </tbody>
 </table>
-<p>em que <span class="math inline">\(n_{zy} = \# \{i: Z_i = z, Y_i = y \}\)</span>. Podemos estimar RD, RR e OR, substituindo <span class="math inline">\(p_zy\)</span> por <span class="math inline">\(\hat{p}_{zy} = n_{zy}/n\)</span> com <span class="math inline">\(n\)</span> sendo o total de observações.</p>
+<p>em que <span class="math inline">\(n_{zy} = \# \{i: Z_i = z, Y_i = y \}\)</span>. Podemos estimar RD, RR e OR, substituindo <span class="math inline">\(p_{zy}\)</span> por <span class="math inline">\(\hat{p}_{zy} = n_{zy}/n\)</span> com <span class="math inline">\(n\)</span> sendo o total de observações.</p>
 </div>
 </div>
 </div>
@@ -1026,12 +1023,18 @@ Devemos olhar para os dados agregados ou desagregados?
 <section id="definições-básicas-3" class="slide level2">
 <h2>Definições básicas</h2>
 <ul>
-<li class="fragment">Sejam <strong>A</strong> e <span class="math inline">\(Y\)</span>, duas variáveis aleatorias binárias: <strong>A</strong> (1: tratamento, 0: controle) e <span class="math inline">\(Y\)</span> (1: morte, 0: sobrevive).</li>
-<li class="fragment">Seja <span class="math inline">\(Y^{a = 1}\)</span> a variável resultado que teria sido observada se <span class="math inline">\(a = 1\)</span> e seja <span class="math inline">\(Y^{a = 0}\)</span> a variável resultado que teria sido observada se <span class="math inline">\(a = 0\)</span>.</li>
-<li class="fragment">Juan tem <span class="math inline">\(Y^{a = 1} = 1\)</span> e <span class="math inline">\(Y^{a = 0} = 0\)</span>.</li>
-<li class="fragment">Maria tem <span class="math inline">\(Y^{a = 1} = 0\)</span> e <span class="math inline">\(Y^{a = 0} = 0\)</span></li>
+<li class="fragment">Considere um estudo com <span class="math inline">\(n\)</span> unidades experimentais (<span class="math inline">\(i = 1, \cdots, n\)</span>).</li>
+<li class="fragment">Considere também uma intervenção <strong>A</strong> com dois níveis (1: tratamento, 0: controle).</li>
+<li class="fragment">Para cada unidade experimental <span class="math inline">\(i\)</span>, o resultado de interesse, <span class="math inline">\(Y_i\)</span>, tem dois versões <span class="math display">\[Y_i(1) \quad e \quad Y_i(0),\]</span> sob as intervenções 1 (tratamento) e 0 (controle), respectivamente.</li>
+<li class="fragment">No nosso exemplo temos:
+<ul>
+<li class="fragment">Juan tem <span class="math inline">\(Y(1) = 1\)</span> e <span class="math inline">\(Y(0) = 0\)</span>.</li>
+<li class="fragment">Maria tem <span class="math inline">\(Y(1) = 0\)</span> e <span class="math inline">\(Y(0) = 0\)</span></li>
+</ul></li>
 </ul>
-<div class="fragment">
+</section>
+<section id="definições-básicas-4" class="slide level2">
+<h2>Definições básicas</h2>
 <div class="callout callout-tip callout-captioned callout-style-default">
 <div class="callout-body">
 <div class="callout-caption">
@@ -1041,38 +1044,39 @@ Devemos olhar para os dados agregados ou desagregados?
 <p><strong>Definição: efeito causal individual</strong></p>
 </div>
 <div class="callout-content">
-<p>O tratamento <strong>A</strong> tem um efeito causal no resultado de um indivíduo <span class="math inline">\(Y\)</span> se <span class="math display">\[Y^{a = 1} \neq Y^{a = 0}.\]</span></p>
+<p>A intervenção <strong>A</strong> tem um efeito causal no resultado do <span class="math inline">\(i\)</span>-éssimo individuo se <span class="math display">\[Y_i(1) \neq Y_i(0).\]</span></p>
 </div>
 </div>
 </div>
-</div>
-</section>
-<section id="definições-básicas-4" class="slide level2">
-<h2>Definições básicas</h2>
-<p>As variáveis <span class="math inline">\(Y^{a = 1}\)</span> e <span class="math inline">\(Y^{a = 0}\)</span> são conhecidas como <strong>potential outcomes</strong> ou <strong>counterfactual outcomes</strong>. Aquela que corresponde ao valor do tratamento que o indivíduo de fato recebeu é chamada de <strong>factual</strong>.</p>
 <div class="fragment">
-<p>Para definir o efeito causal de um indivíduo precisamos:</p>
-<div>
-<ol type="1">
-<li>Um resultado de interesse,</li>
-<li>As ações <span class="math inline">\(a = 1\)</span> e <span class="math inline">\(a = 0\)</span> a ser comparadas, e</li>
-<li>O indivíduo cujos resultados contrafactuais (<em>counterfactual outcomes</em>) <span class="math inline">\(Y^{a = 0}\)</span> d <span class="math inline">\(Y^{a = 1}\)</span> serão comparados.</li>
-</ol>
-</div>
+<p><span class="math inline">\(Y_i(1)\)</span> e <span class="math inline">\(Y_i(0)\)</span> são conhecidas como <strong>potential outcomes</strong> ou <strong>counterfactual outcomes</strong> para a <span class="math inline">\(i\)</span>-éssima unidade. Aquela que corresponde ao valor da intervenção que o indivíduo de fato recebeu é chamada de <strong>factual</strong> e a outra de <strong>contrafactual</strong>.</p>
 </div>
 </section>
 <section id="definições-básicas-5" class="slide level2">
 <h2>Definições básicas</h2>
-<p>Identificar efeitos causais individuais não é geralmente possível. Assim, devemos olhar para o <strong>efeito causal médio</strong> numa população de indivíduos.</p>
+<ul>
+<li class="fragment">Identificarmos efeitos causais individuais não é geralmente possível (Por quê?).</li>
+<li class="fragment">Assim, devemos olhar para o <strong>efeito causal médio</strong> (<em>average causal effect</em>) chamado também de <em>average treatment effect</em> (ATE).</li>
+</ul>
 <div class="fragment">
-<p>Para definir o efeito causal médio, precisamos de:</p>
-<div>
-<ol type="1">
-<li>Um resultado de interesse,</li>
-<li>As ações <span class="math inline">\(a = 1\)</span> e <span class="math inline">\(a = 0\)</span> a ser comparadas, e</li>
-<li>Uma população bem definida de individuos cujos resultados <span class="math inline">\(Y^{a = 0}\)</span> e <span class="math inline">\(Y^{a = 1}\)</span> serão comparados</li>
-</ol>
+<div class="callout callout-tip callout-captioned callout-style-default">
+<div class="callout-body">
+<div class="callout-caption">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
 </div>
+<p><strong>Definição: efeito causal médio</strong></p>
+</div>
+<div class="callout-content">
+<p>O efeito causal médio da intervenção <strong>A</strong> sob o resultado <span class="math inline">\(Y\)</span> esta presente se <span class="math display">\[\mathbb{E}[Y(1)] \neq \mathbb{E}[Y(0)].\]</span></p>
+</div>
+</div>
+</div>
+</div>
+<div class="fragment">
+<center>
+<span style="color:red;">Ausência do efeito causal médio não implica ausência do efeito causal individual.</span>
+</center>
 </div>
 </section>
 <section id="definições-básicas-6" class="slide level2">
@@ -1086,7 +1090,7 @@ Devemos olhar para os dados agregados ou desagregados?
 <p><strong>Exemplo 6</strong></p>
 </div>
 <div class="callout-content">
-<p>Pensemos na familia do Juan como nossa população de interesse e vejamos os resultados contrafactuais sobre <span class="math inline">\(a = 1\)</span> e <span class="math inline">\(a = 0\)</span></p>
+<p>Pensemos na familia do Juan como nossa população de interesse e vejamos os resultados contrafactuais sobre as intervenções <span class="math inline">\(a = 1\)</span> e <span class="math inline">\(a = 0\)</span></p>
 <div class="columns">
 <div class="column" style="width:35%;">
 <div class="cell" data-layout-align="center">
@@ -1096,8 +1100,8 @@ Devemos olhar para os dados agregados ou desagregados?
  <thead>
   <tr>
    <th style="text-align:left;">   </th>
-   <th style="text-align:right;"> $Y^{a = 0}$ </th>
-   <th style="text-align:right;"> $Y^{a = 1}$ </th>
+   <th style="text-align:right;"> Y(0) </th>
+   <th style="text-align:right;"> Y(1) </th>
   </tr>
  </thead>
 <tbody>
@@ -1208,10 +1212,11 @@ Devemos olhar para os dados agregados ou desagregados?
 </div>
 </div><div class="column" style="width:65%;">
 <ul>
-<li class="fragment"><span style="color:red;">Quantos elementos da população teriam morto se tivessem recebido o transplante (<span class="math inline">\(Y^{a = 1} = 1\)</span>)?</span></li>
-<li class="fragment"><span class="math inline">\(Pr[Y^{a = 1} = 1] = 10/20 = 0.5\)</span></li>
-<li class="fragment"><span style="color:red;">Quantos elementos da população teriam morto se não tivessem recebido o transplante (<span class="math inline">\(Y^{a = 0} = 1\)</span>)?</span></li>
-<li class="fragment"><span class="math inline">\(Pr[Y^{a = 0} = 1] = 10/20 = 0.5\)</span></li>
+<li class="fragment"><span style="color:red;">Em quais casos existe um efeito causal individual?</span></li>
+<li class="fragment"><span style="color:red;">Quantos elementos da população teriam morto se tivessem recebido o transplante (<span class="math inline">\(Y(1) = 1\)</span>)?</span></li>
+<li class="fragment">50%</li>
+<li class="fragment"><span style="color:red;">Quantos elementos da população teriam morto se não tivessem recebido o transplante (<span class="math inline">\(Y(0) = 1\)</span>)?</span></li>
+<li class="fragment">50%</li>
 <li class="fragment"><span style="color:blue;">O transplante teve ou não teve um efeito causal médio?</span></li>
 </ul>
 </div>
@@ -1222,43 +1227,24 @@ Devemos olhar para os dados agregados ou desagregados?
 </section>
 <section id="definições-básicas-7" class="slide level2">
 <h2>Definições básicas</h2>
-<div class="callout callout-tip callout-captioned callout-style-default">
-<div class="callout-body">
-<div class="callout-caption">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<p><strong>Definição: efeito causal médio</strong></p>
-</div>
-<div class="callout-content">
-<p>O efeito causal médio do tratamento A sobre o resultado <span class="math inline">\(Y\)</span> esta presente se <span class="math display">\[Pr[Y^{a = 1} = 1] \neq Pr[Y^{a = 0} = 1],\]</span></p>
-<p>ou, equivalentemente, se <span class="math display">\[\mathbb{E}(Y^{a = 1}) \neq \mathbb{E}(Y^{a = a}),\]</span> em que a última definição pode ser utilizada seja <span class="math inline">\(Y\)</span> binária ou não.</p>
-</div>
-</div>
+<p>O efeito causal médio é comumente chamado apenas de <strong>efeito causal</strong> e a hipótese nula de <strong>não efeito médio causal</strong> é chamada simplesmente de <strong>hipótese causal nula</strong>.</p>
+<div class="fragment">
+<p>Se o resultado de interesse for dicotomico, a ausência do efeito causal médio também pode ser medido através de:</p>
+<ul>
+<li class="fragment"><span class="math inline">\(Pr(Y(1) = 1) - Pr(Y(0) = 1) = 0\)</span></li>
+<li class="fragment"><span class="math inline">\(\dfrac{Pr(Y(1) = 1)}{Pr(Y(0) = 1)} = 1\)</span></li>
+<li class="fragment"><span class="math inline">\(\dfrac{Pr(Y(1) = 1) \big / Pr(Y(1) = 0)}{Pr(Y(0) = 1) \big / Pr(Y(0) = 0)} = 1\)</span></li>
+</ul>
 </div>
 <div class="fragment">
-<center>
-<span style="color:red;">Ausência do efeito causal média não implica ausência do efeito causal individual.</span>
-</center>
-</div>
-<div class="fragment">
-<p>Como o efeito causal médio é comumente chamado de <strong>efeito causal</strong> e a hipótese nula de <strong>não efeito médio causal</strong> é chamada simplesmente de <strong>hipótese causal nula</strong>.</p>
+<p>Em que <span class="math inline">\(Pr(\cdot)\)</span> é a proporção de individuos na população.</p>
 </div>
 </section>
 <section id="definições-básicas-8" class="slide level2">
 <h2>Definições básicas</h2>
-<p>Note que a ausência (ou não) do efeito causal média pode também ser medida através de:</p>
 <ul>
-<li class="fragment"><span class="math inline">\(Pr(Y^{a = 1} = 1) - Pr(Y^{a = 0} = 1) = 0\)</span></li>
-<li class="fragment"><span class="math inline">\(\dfrac{Pr(Y^{a = 1} = 1)}{Pr(Y^{a = 0} = 1)} = 1\)</span></li>
-<li class="fragment"><span class="math inline">\(\dfrac{Pr(Y^{a = 1} = 1) \big / Pr(Y^{a = 1} = 0)}{Pr(Y^{a = 0} = 1) \big / Pr(Y^{a = 0} = 0)} = 1\)</span></li>
-</ul>
-</section>
-<section id="definições-básicas-9" class="slide level2">
-<h2>Definições básicas</h2>
-<ul>
-<li class="fragment">Na prática, nunca temos temos a Tabela como no exemplo da familia do Juan (ou observamos <span class="math inline">\(Y^{a = 1}\)</span> ou <span class="math inline">\(Y^{a = 0}\)</span>, nunca ambos).</li>
-<li class="fragment">Na prática, observamos o nível do tratamento (<span class="math inline">\(A\)</span>) e o resultado obtido (<span class="math inline">\(Y\)</span>).</li>
+<li class="fragment">Na prática, nunca temos temos a Tabela como no exemplo da familia do Juan (ou observamos <span class="math inline">\(Y(1)\)</span> ou observamos <span class="math inline">\(Y(0)\)</span>, nunca ambos).</li>
+<li class="fragment">Na prática, observamos qual foi a intervenção <strong>A</strong> (1 ou 0) e o resultado observado (<span class="math inline">\(Y\)</span>).</li>
 </ul>
 <div class="fragment">
 <div class="cell" data-layout-align="center">
@@ -1319,24 +1305,24 @@ Devemos olhar para os dados agregados ou desagregados?
 </div>
 </div>
 <div class="fragment">
-<p>Quando a proporção de indivíduos que <span class="math inline">\(Y = 1\)</span> no grupo de tratamento e no de controle são iguais, ou seja, <span class="math display">\[P(Y = 1 | A = 1) = P(Y = 1 | A = 0),\]</span> dizemos que <span class="math inline">\(A\)</span> e <span class="math inline">\(Y\)</span> são independentes (<span class="math inline">\(A \perp\!\!\!\perp Y\)</span>), não associados ou que A não predize <span class="math inline">\(Y\)</span>. Caso contrário dizemos que <span class="math inline">\(A\)</span> e <span class="math inline">\(Y\)</span> são dependentes ou associadas.</p>
+<p>Quando a proporção de indivíduos que <span class="math inline">\(Y = 1\)</span> no grupo de tratamento e no de controle são iguais, ou seja, <span class="math display">\[Pr(Y = 1 | A = 1) = Pr(Y = 1 | A = 0),\]</span> dizemos que <span class="math inline">\(A\)</span> e <span class="math inline">\(Y\)</span> são independentes (<span class="math inline">\(A \perp\!\!\!\perp Y\)</span>), não associados ou que A não predize <span class="math inline">\(Y\)</span>. Caso contrário dizemos que <span class="math inline">\(A\)</span> e <span class="math inline">\(Y\)</span> são dependentes ou associadas.</p>
 </div>
 </section>
-<section id="definições-básicas-10" class="slide level2">
+<section id="definições-básicas-9" class="slide level2">
 <h2>Definições básicas</h2>
 <p>Outras definições equivalentes:</p>
 <div>
 <ul>
-<li><span class="math inline">\(P(Y = 1 | A = 1) - P(Y = 1 | A = 0) = 0\)</span></li>
-<li><span class="math inline">\(\dfrac{P(Y = 1 | A = 1)}{P(Y = 1 | A = 0)} = 1\)</span></li>
-<li><span class="math inline">\(\dfrac{P(Y = 1 | A = 1) \big / P(Y = 0| A = 1)}{P(Y = 1 | A = 0) \big / P(Y = 0| A = 0)} = 1\)</span></li>
+<li><span class="math inline">\(Pr(Y = 1 | A = 1) - Pr(Y = 1 | A = 0) = 0\)</span></li>
+<li><span class="math inline">\(\dfrac{Pr(Y = 1 | A = 1)}{Pr(Y = 1 | A = 0)} = 1\)</span></li>
+<li><span class="math inline">\(\dfrac{Pr(Y = 1 | A = 1) \big / Pr(Y = 0| A = 1)}{Pr(Y = 1 | A = 0) \big / Pr(Y = 0| A = 0)} = 1\)</span></li>
 </ul>
 </div>
 <div class="fragment">
 <p>Se <span class="math inline">\(Y\)</span> for contínua, definimos a independência média entre <span class="math inline">\(A\)</span> e <span class="math inline">\(Y\)</span> como <span class="math display">\[\mathbb{E}(Y | A = 1) = \mathbb{E}(Y | A = 0)\]</span></p>
 </div>
 </section>
-<section id="definições-básicas-11" class="slide level2">
+<section id="definições-básicas-10" class="slide level2">
 <h2>Definições básicas</h2>
 <p>Voltando a exemplo, são <span class="math inline">\(A\)</span> e <span class="math inline">\(Y\)</span> associados?</p>
 <div class="cell" data-layout-align="center">
@@ -1411,7 +1397,7 @@ Devemos olhar para os dados agregados ou desagregados?
 <div class="quarto-figure quarto-figure-center">
 <figure>
 <p><img data-src="imagens/what_if.png"></p>
-<p></p><figcaption>Fonte: “Causal Infernce: What if?”</figcaption><p></p>
+<p></p><figcaption>Fonte: “Causal Inference: What if?”</figcaption><p></p>
 </figure>
 </div>
 </center>
@@ -1437,7 +1423,7 @@ Devemos olhar para os dados agregados ou desagregados?
 </div>
 <div class="fragment">
 <center>
-<span style="color:red;">Inferencia causal requer dados como na Tabela hipotética (Exemplo 6), mas na prática apenas temos Tabelas como a última (em que apenas temos <span class="math inline">\(A\)</span> e <span class="math inline">\(Y\)</span>). A pergunta que será respondida ao longo desta disciplina é, sob quais circusntancias dados reais podem ser utilizados para fazer inferência causal?</span>
+<span style="color:red;">Inferencia causal requer dados como na Tabela hipotética (Exemplo 6), mas na prática apenas temos Tabelas como a última (em que apenas temos <span class="math inline">\(A\)</span> e <span class="math inline">\(Y\)</span>). A pergunta que será respondida ao longo desta disciplina é, sob quais circunstancias, dados reais podem ser utilizados para fazer inferência causal?</span>
 </center>
 </div>
 </section>
@@ -1446,7 +1432,9 @@ Devemos olhar para os dados agregados ou desagregados?
 <div>
 <ul>
 <li>Peng Ding (2023). A First Course in Causal Inference. Capítulo 1.</li>
+<li>Peng Ding (2023). A First Course in Causal Inference. Capítulo 2.</li>
 <li>Hernán, Miguel A. e Robins, James, M. (2023). Causal Inference: What if?. Captítulo 1.</li>
+<li><a href="https://www.tandfonline.com/doi/pdf/10.1198/016214504000001880?casa_token=1szoe44b0zcAAAAA:-Y2L8ffrkvszzCVwtcOZPQWPmZtV4OGyklpNXCvLqCD8UdMQ3ypsk7GKLIrMx1VQHf7BmY_UMvPkhQ">Rubin, D. B. (2005). Causal inference using potential outcomes: Design, modeling, decisions. Journal of the American Statistical Association, 100(469), 322-331.</a> <strong>[Leitura recomendada]</strong></li>
 </ul>
 </div>
 

@@ -40,7 +40,8 @@ format:
 ## Potential outcomes
 
 - Considere um estudo com $n$ unidades experimentais ($i= 1, 2, \cdots, n$).
-- Se forcarmos apenas em casos com dois níveis de tratamento (1: tratamento, 0: controle), para cada $i$, o resultado de interesse, $Y$, tem duas versões $$Y_i(1) \quad e \quad Y_i(0),$$ as quais são os resultados potenciais (*potential outcomes*) sob as intervenções 1 e 0, respectivamente.
+- Se focarmos apenas em casos com dois níveis de tratamento (1: tratamento, 0: controle), para cada $i$, o resultado de interesse, $Y$, tem duas versões $$Y_i(1) \quad e \quad Y_i(0),$$ as quais são os resultados potenciais (*potential outcomes*) sob as intervenções 1 e 0, respectivamente.
+- Resultados poteciais (*potential outcomes*) são também conhecidos como _counterfactual outcomes_.
 
 
 ## Potential outcomes
@@ -51,6 +52,10 @@ format:
 1. **Sem interferência:** O resultado potencial da i-éssima unidade, não depende do tratamento em outras unidades.
 2. **Consistência:** Não existem outras versões do tratamento (níveis de tratamento bem definidos e sem ambiguedades).
 3. [**SUTVA** Suposições 1 e 2 acontecem.]{style="color:red;"}
+
+. . . 
+
+> SUTVA: Stable Unit Treatment Value Assumption.
 
 
 
@@ -88,6 +93,15 @@ Seja a matriz $n \times 2$ de resultados potenciais (conhecida como "The Science
 | n    | $Y_n(1)$   | $Y_n(0)$    |
 
 
+. . . 
+
+**Qual a interpretação de $Y_i(1)$?**
+
+
+. . . 
+
+Em geral, $Y_i(j)$ ($i = 1, \cdots, n$, $j = 0, 1$) representa o resultado potencial da $i$-éssima observação sob a intervenção $j$ (que pode ser tratamento (1) ou controle (0)).
+
 
 ## Potential outcomes
 
@@ -97,7 +111,7 @@ Seja a matriz $n \times 2$ de resultados potenciais (conhecida como "The Science
 
 Para cada $i = 1, \cdots, n$, o efeito causal individual é dado por $$\tau_i = Y_i(1) - Y_i(0).$$
 
-O efeito causal médio, é dado por $$\tau = n^{-1} \displaystyle \sum_{i = 1}^n \{ Y_i(1) - Y_i(0) \}.$$
+Por outro lado, o efeito causal médio (ACE: _Average Causal Effect_) ou _average treatment effect_ (ATE), é dado por $$\tau = n^{-1} \displaystyle \sum_{i = 1}^n \{ Y_i(1) - Y_i(0) \}.$$
 
 
 
@@ -129,13 +143,13 @@ Ademais, <center>$\tau = \pi_0 \tau_0 + \pi_1 \tau_1, \quad \text{com} \quad \pi
 \left\{
 	\begin{array}{ll}
 		Y_i(1),  & \mbox{se } Z_i = 1\\
-		Y_i(0),  & \mbox{se } Z_i = 0 
+		Y_i(0),  & \mbox{se } Z_i = 0. 
 	\end{array}
 \right.$${#eq-1}
 
 . . . 
 
-Note que @eq-1 pode também ser escrita como:
+@eq-1 pode também ser escrita como:
 
 $$\begin{align}
     Y_i & = Z_i Y_i(1) + (1 - Z_i)Y_i(0) \\
@@ -234,7 +248,7 @@ mean(Y[Z == 1]) - mean(Y[Z == 0])
 
 ::::
 
-**Note que a forma como o tratamento é atribuido, muda consideravelmente os resultados obtidos.** Por isso, é importante estudarmos diversos mecanismo de atribuição de tratamento (*i.e,* a distribuição de **Z**).
+**Note que a forma como o tratamento é atribuido, muda completamente os resultados obtidos.** Por isso, é importante estudarmos diversos mecanismos de atribuição de tratamento (*i.e,* a distribuição de **Z**).
 
 
 # Experimentos randomizados
@@ -243,14 +257,14 @@ mean(Y[Z == 1]) - mean(Y[Z == 0])
 
 <center>
 <h3>
-[Entender inferência causal em experimentos randomizados é essencial para entender inferêcia causal em estudos não experimentais.]{style="color:red;"}
+[Entender inferência causal em experimentos randomizados é essencial para entender inferência causal em estudos não experimentais.]{style="color:red;"}
 </h3>
 <center>
 
 
 ## CRE: Completely Randomize Experiment
 
-Considere um experimento com $n$ unidades experimentais das quais $n_1$ recebem o tratamento (1) e $n_0$ recebem o placebo (0). 
+Considere um experimento com $n$ unidades experimentais das quais $n_1$ recebem o tratamento (1) e $n_0$ recebem o controle (0). 
 
 
 ::: {.callout-tip}
@@ -260,24 +274,16 @@ Sejam $n_1$ e $n_0$ com $n = n_1 + n_0$. Um CRE tem o mecanismo de atribuição 
 
 :::
 
-As vantagens da randomização são (Fisher, 1935):
+. . . 
 
 
-::: {nonincremental}
-1. Cria, em média, grupos de tratamento e controle comparáveis.
-2. Serve como fundamento para inferência estatística^[Fisher esta se referindo a um teste estatístico conhecido como Fisher Randomization Test (FRT)]
-
-:::
+[Existem vários outros mecanismos de atribuição de tratamento, mas por enquanto focaremos no CRE.]{style="color:blue;"}
 
 # Fisher Randomization Test (FRT)
 
 ## FRT: Fisher Randomization Test
 
-Estamos interessados em testar: $$H_{0F}: Y_i(1) = Y_i(0) \quad \forall i = 1, \cdots, n.$$
-
-<center>
-(se o efeito causal individual é nulo em todos os casos).
-</center>
+Estamos interessados em testar se o efeito causal individual é nulo em todos os casos, ou seja, $$H_{0F}: Y_i(1) = Y_i(0) \quad \forall i = 1, \cdots, n.$$
 
 
 . . . 
@@ -286,12 +292,14 @@ O FRT é da forma $$T = T(\textbf{Z}, \textbf{Y}).$${#eq-2} em que $\textbf{Y}$ 
 
 . . . 
 
-Note que sob $H_{0F}$, $\textbf{Y}$ é fixo e a única componente aleatória em $T$ é $\textbf{Z}$.
 
-. . . 
+::: {.callout-warning}
+### Observação:
 
+- Sob $H_{0F}$, a única componente aleatória em $T$ é $\textbf{Z}$.
+-  A distribuição de $\textbf{Z}$ (*i.e,* o mecanismo de atribuição de tratamento) determina a distribuição de $T$ sob $H_{0F}$, que por sua vez é a base para calcular o p-valor.
 
-Ademais, a distribuição de $\textbf{Z}$ (*i.e,* o mecanismo de atribuição de tratamento) determina a distribuição de $T$ sob $H_{0F}$, que por sua vez é a base para calcular o p-valor.
+:::
 
 
 ## FRT: Fisher Randomization Test
@@ -332,7 +340,7 @@ knitr::kable(Table, col.names = c("n", "$n_1$", "M"), escape = FALSE, row.names 
 ```
 
 
-Uma alternativa é utilizar $R$ amostras aleatórias dos possíveis valores do vetor de tratamentos (ou, equivalentemente, $R$ permutações aleatóriamente $\textbf{Z}$) e aproximar $p$ por $$\hat{p} = R^{-1} \displaystyle \sum_{r = 1}^R I\{ T(\textbf{z}^r, \textbf{Y}) \geq T(\textbf{Z}, \textbf{Y}) \}.$$
+Uma alternativa é utilizar $R$ amostras aleatórias dos possíveis valores do vetor de tratamentos (ou, equivalentemente, $R$ permutações aleatórias de $\textbf{Z}$) e aproximar $p$ por $$\hat{p} = R^{-1} \displaystyle \sum_{r = 1}^R I\{ T(\textbf{z}^r, \textbf{Y}) \geq T(\textbf{Z}, \textbf{Y}) \}.$$
 
 
 . . . 
@@ -408,7 +416,7 @@ Sob $H_{0F}$,
 
 Pense no clássico teste de diferencia de médias com variâncias desconhecidas e iguais.
 
-Sejam $X_1, \cdots, X_{n_x} \sim N(\mu_x, \sigma^2)$ e $Y_1, \cdots, Y_{n_y} \sim N(\mu_y, \sigma)$ e sejam as hipóteses $$H_0: \mu_x = \mu_y \quad vs. H_1: \mu_x \neq \mu_y.$$
+Sejam $X_1, \cdots, X_{n_x} \sim N(\mu_x, \sigma^2)$ e $Y_1, \cdots, Y_{n_y} \sim N(\mu_y, \sigma)$ e sejam as hipóteses $$H_0: \mu_x = \mu_y \quad vs. \quad H_1: \mu_x \neq \mu_y.$$
 
 Então, a estatística de teste
 $$\dfrac{\bar{X} - \bar{Y}}{\sqrt{\Big[\dfrac{1}{n_x} + \dfrac{1}{n_y} \Big] \dfrac{\displaystyle \sum_{i = 1}^{n_x}(X_i - \bar{X})^2 + \sum_{j = 1}^{n_y}(Y_j - \bar{Y})^2}{n_x + n_y - 2}}} \sim t_{n_x + n_y -2}$$
@@ -422,13 +430,13 @@ $$\dfrac{\bar{X} - \bar{Y}}{\sqrt{\Big[\dfrac{1}{n_x} + \dfrac{1}{n_y} \Big] \df
 - Então, $n_x = n_1$, $n_y = n_0$ e $n_1 + n_0 = n$.
 - Note que $(n - 1)S^2 = \displaystyle \sum_{Z_i = 1} (Y_i - \hat{\bar{Y}}(1))^2 + \sum_{Z_i = 0} (Y_i - \hat{\bar{Y}}(0))^2 + \dfrac{n_1 n_0}{n} \tau^2$
 - Quando $n \rightarrow \infty$, $t_{n-2} \xrightarrow D N(0,1)$ e $\dfrac{n-1}{n-2} \rightarrow 1$.
-- Sob $H_{0F}$, $\dfrac{n_1 n_0}{n} \tau^2 \xrightarrow p 0$
+- Sob $H_{0F}$, $\dfrac{n_1 n_0}{n} \tau^2 \rightarrow 0$
 
 ## FRT: Fisher Randomization Test
 
 #### Caso 1: Diferença de médias.
 
-Assim, $\sqrt{\Big[\frac{1}{n_x} + \frac{1}{n_y} \Big] \dfrac{\displaystyle \sum_{i = 1}^{n_x}(X_i - \bar{X})^2 + \sum_{j = 1}^{n_y}(Y_j - \bar{Y})^2}{n_x + n_y - 2}}$ e $\sqrt{\dfrac{n}{n_1 n_0}s^2}$ são assintóticamente equivalentes. Ou seja, o p-valor aproximado do **Caso 1: Diferença de médias** é próximo do clássico teste t para diferencia de médias quando as variâncias são desconhecidas e iguais!
+Assim, $\sqrt{\Big[\frac{1}{n_x} + \frac{1}{n_y} \Big] \dfrac{\displaystyle \sum_{i = 1}^{n_x}(X_i - \bar{X})^2 + \sum_{j = 1}^{n_y}(Y_j - \bar{Y})^2}{n_x + n_y - 2}}$ e $\sqrt{\dfrac{n}{n_1 n_0}s^2}$ são assintóticamente equivalentes. Ou seja, o p-valor aproximado do **Caso 1: Diferença de médias** é próximo do obtido através do clássico teste t para diferencia de médias quando as variâncias são desconhecidas e iguais!
 
 
 . . .
@@ -440,7 +448,7 @@ Não apenas a diferencia de médias pode ser utilizada no contexto FRT. O teste 
 
 #### Caso 1: Diferença de médias.
 
-O _dataset_ `lalonde` do pacote `Matching` contém o vetor tratamento (treat) indicando se a unidade foi aleatoriamente atribuida a um treinamento ou não, bem como um vetor representando o salario em 1978 (re78). Queremos saber se a participação no treinamento teve efeito ou não no salario de algum dos trabalhadores.
+O _dataset_ `lalonde` do pacote `Matching` contém o vetor tratamento (treat) indicando se a unidade foi, aleatoriamente, atribuida a um treinamento ou não, bem como um vetor representando o salario em 1978 (re78). Queremos saber se a participação no treinamento teve efeito ou não no salario de algum dos trabalhadores.
 
 
 ```{r}
