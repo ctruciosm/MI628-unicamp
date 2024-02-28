@@ -97,6 +97,7 @@ format:
 
 ## Introdução
 
+Algumas vezes, correlação pode implicar causalidade, mas outras....
 
 <center>
 

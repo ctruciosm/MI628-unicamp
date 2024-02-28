@@ -81,13 +81,13 @@ Um CRE atribui $n_1$ unidades ao tratamento e $n_0$ ao controle (placebo). Assim
 . . . 
 
 
-Para algum $k$, é possível, com alta probabilidade, que $\dfrac{n_{[k]1}}{n} - \dfrac{n_{[k]0}}{n}$ seja grande.
+Para algum $k$, é possível, com alta probabilidade, que $\dfrac{n_{[k]1}}{n_1} - \dfrac{n_{[k]0}}{n_0}$ seja grande.
 
 
 ## Estratificação
 
 <center>
-[**Qual o problema em termos, para algum estrato $k$, $n_{[k]1} \big / n - n_{[k]0} \big / n$ grande?**]{style="color:blue;"}
+[**Qual o problema em termos, para algum estrato $k$, $n_{[k]1} \big / n_1 - n_{[k]0} \big / n_0$ grande?**]{style="color:blue;"}
 </center>
 
 . . . 
@@ -184,6 +184,7 @@ Para cada estrato $k$, temos:
 
 
 Assim, o efeito causal médio é dado por: $$\tau = n^{-1} \displaystyle \sum_{i = 1}^n \tau_i = n^{-1} \sum_{k = 1}^K \sum_{X_i = k} \tau_i = \sum_{k = 1}^K \pi_{[k]}\tau_{[k]}.$$
+
 
 
 # Inferência sob SRE
@@ -441,7 +442,7 @@ O programa de treinamento profissional diminuiu (em log) o tempo de duração an
 
 - Pós-estratificação é uma alternativa à estratificação quando esta última não é possível.
 - Quando estratificação não é realizada, uma prática comúm é ajustar por covariáveis.
-- Pós-estratificação é uma forma simples de justar por covariáveis.
+- Pós-estratificação é uma forma simples de ajustar por covariáveis.
     * O pesquisador estratifica unidades experimentais com uma covariável de pré-tratamento, 
     * estima os efeitos do tratamento dentro dos estratos,
     * usa a média ponderada para estimar a média geral do efeito do tratamento.

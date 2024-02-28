@@ -1,0 +1,275 @@
+---
+title: "Inferência Causal"
+subtitle: "Experimentos Randomizados"
+author: "Prof. Carlos Trucíos </br> ctrucios@unicamp.br"
+Email: "ctrucios@unicamp.br"
+institute: "Instituto de Matemática, Estatística e Computação Científica (IMECC), </br> Universidade Estadual de Campinas (UNICAMP)."
+toc: true
+toc-depth: 1
+toc-title: "Conteúdo"
+knitr:
+    opts_chunk: 
+      fig.align: 'center'
+execute:
+    message: false
+    warning: false
+format:
+    revealjs:
+        slide-number: true
+        show-slide-number: print
+        self-contained: false
+        chalkboard: true
+        width: 1600
+        height: 900
+        theme: [default, styles.scss]
+        incremental: true
+        code-fold: true
+        logo: "imagens/imecc.png"
+        footer: "Carlos Trucíos (IMECC/UNICAMP)  |  ME920/MI628 - Inferência Causal |  [ctruciosm.github.io](https://ctruciosm.github.io/)"
+        highlight-style: "a11y"
+        title-slide-attributes:
+            data-background-image: "imagens/unicamp.png"
+            data-background-size: 20%
+            data-background-position: 99% 5%
+            data-background-opacity: "1"
+---
+
+
+
+amsmath'
+
+
+
+# Introdução
+## Introdução
+
+
+- Já estudamos as abordagens de Fisher e Neyman sob diferentes mecanismos de atribuição de tratamento (CRE, SRE, rerandomização, MPE).
+- Vimos as diferenças entre ambas as abordagens (FRT vs. Neyman).
+- Existe um acalorda discussão de FRT vs. Neyman (ver [Sabbaghi e Rubin (2014)](https://projecteuclid.org/journals/statistical-science/volume-29/issue-2/Comments-on-the-NeymanFisher-Controversy-and-Its-Consequences/10.1214/13-STS454.full)).
+
+
+# Unificando
+## Unificando
+
+- Hipótese nula forte: $H_{0F}: Y_i(1) = Y_i(0), \quad \forall i = 1, \cdots, n.$
+- Hipótese nula fraca: $H_{0N}: \bar{Y}(1) = \bar{Y}(0) \quad (\text{equivalentemente} \quad H_{0N}:  \tau = 0)$
+
+. . . 
+
+
+Existem diversas escolhas de estatística de teste para o FRT. Contudo, existe uma vantagem de se utilizar a estatística $t$ Studentizada, $$t = \dfrac{\hat{\tau}}{\sqrt{\hat{V}}}.$$
+
+. . . 
+
+
+::: {.callout-important}
+### Resultado
+[Ding e Dasgupta (2017)](https://academic.oup.com/biomet/article/105/1/45/4582744) mostram que quando utilizado o FRT com estatística $t$ Studentizada:
+
+::: {.nonincremental}
+- $p_{FRT}$ exato sob $H_{0F}$
+- $p_{FRT}$ asintóticamente conservador sob $H_{0N}$
+:::
+
+:::
+
+
+## Unificando
+
+**Importante**
+
+- O resultado anterior só é valido apenas quando a estatística $t$ Studentizada é utilizada.
+- Utilizar outras estatísticas não fornece o resultado anteior.
+- Por exemplo, FRT com $\hat{\tau}$, será asintóticamente anti-conservador sob $H_{0N}$.
+
+
+. . . 
+
+
+
+:::: {.columns}
+
+::: {.column width="40%"}
+![](imagens/duvida_ds.jpg)
+:::
+
+::: {.column width="60%"}
+
+<center>
+["Quando utilizo a estatística $t$ Studentizada, o $p_{FRT}$ será asintóticamente conservador sob $H_{0N}$"]{style="color:red;"}
+</center>
+
+::: {.nonincremental}
+- Alguém entendeu o que isso significa?
+- Alguém entendeu como isso é possível?
+:::
+:::
+
+::::
+
+
+
+
+
+
+## Unificando
+
+Seja 
+
+$$t = \dfrac{\hat{\tau}}{\sqrt{\hat{V}}} = \dfrac{\sqrt{\mathbb{V}(\hat{\tau})}}{\sqrt{\hat{V}}} \dfrac{\hat{\tau}}{\sqrt{\mathbb{V}(\hat{\tau})}},$$
+
+- Sob $H_{0N}$: $\dfrac{\hat{\tau}}{\sqrt{\mathbb{V}(\hat{\tau})}} \xrightarrow D N(0,1)$
+- $\dfrac{\sqrt{\mathbb{V}(\hat{\tau})}}{\sqrt{\hat{V}}} \rightarrow C$
+- $t \xrightarrow D N(0, C^2)$
+
+. . . 
+
+Em que $C \leq 1$, com a igualdade acontecendo se $\tau_i = \tau, \quad \forall i$.  
+
+## Unificando
+
+No caso do FRT, sob $H_{0F}$, $Y_i(1) = Y_i(0) = Y_i$, ou seja $\tau_i = 0, \forall i$. Assim, $$t^{\pi} \xrightarrow D N(0,1),$$ em que $()^{\pi}$ denota a distribuição da permutação aleatória.
+
+
+. . . 
+
+
+
+Como $N(0,1)$ é mais disperso do que $N(0,C^2)$, o $p_{FRT}$ baseado em $t$ é asintóticamente mais conservador.
+
+
+. . . 
+
+[De forma semelhante, na presença de covariáveis, ![Zhao e Ding (2021)](https://www.sciencedirect.com/science/article/pii/S0304407621001457?casa_token=7bsmFrDoCYEAAAAA:GTtOlng1bM-D7HOhfGpRyHVNPujjEfKREWUrpmqKgsTGvjhtrZWwI-bzcZbIiUj_wPOl_wDpEaY) recomedam utilizar FRT com $$t_L = \dfrac{\hat{\tau}_L}{\sqrt{\hat{V}_L}},$$ em que $\hat{\tau}_L$ é o estimador de Lin (2013.)]{style="color:blue;"}
+
+
+## Unificando
+
+Baseados nos trabalhos de Ding e Dascupta (2017) e Zhao e Ding (2021), podemos resumir as recomendações no seguinte quadro:
+
+
+
+|         | Sem covariável        | Com covariável        |
+|:-------:|:---------------------:|:---------------------:|
+| CRE     | $t = \hat{\tau} \big / \sqrt{\hat{V}}$ | $t_{L} = \hat{\tau}_{L} \big / \sqrt{\hat{V}_{L}}$ |
+| SRE     | $t_S = \hat{\tau}_S \big / \sqrt{\hat{V}_S}$ | $t_{L,S} = \hat{\tau}_{L, S} \big / \sqrt{\hat{V}_{L,S}}$ |
+| ReM     | $\times$ | $t_{L} = \hat{\tau}_{L} \big / \sqrt{\hat{V}_{L}}$ |
+
+. . . 
+
+- Para o caso do MPE (sem covariáveis adicionais) a recomendação é utilizar a estatística $t$ do intercepto da regressão por MQO de $\hat{\tau}_i$ sob $1$. 
+- Para o caso do MPE (sem covariáveis adicionais) a recomendação é utilizar a estatística $t$ do intercepto da regressão por MQO de $\hat{\tau}_i$ sob $(1, \hat{\tau}_{X,i})$. 
+
+
+
+# População finita >>> Super população
+## População finita >>> Super população
+
+- Até agora, temos nos concentrado na perspectiva da população finita em experimentos randomizados.
+- Isto implica tratar os resultados potenciais como fixos.
+- Mesmo se os resultados potenciais forem aleatórios, podemos condicionar neles sob a perspectiva da população finita.
+
+. . . 
+
+Isto todo, traz algumas vantagens:
+
+::: {.nonincremental}
+- é focado no planejamento do experimento.
+- requer suposições mínimas no PGD dos resultados
+:::
+
+
+. . . 
+
+
+Contudo, esta abordagem é frequentemente criticada por ter _validez interna_ mas não necessariamente _validez externa_.
+
+
+## População finita >>> Super população
+
+::: {.callout-tip}
+### Definição (validez interna)
+A análise estatística é valida para a amostra estudada.
+:::
+
+. . . 
+
+::: {.callout-tip}
+### Definição (validez externa)
+A análise estatística é valida para a amostra estudada mas também para a população de onde a amostra foi extraida.
+:::
+
+. . . 
+
+Sempre estamos interesados em validez externa e não apenas na interna. Contudo, como o arcabouço teórico até aqui construido é condicionado nos resultados potenciais, sob a perspectiva de população finita, os resultados são apenas válidos para a amostra observada. 
+
+. . . 
+
+
+**São estes resultados (desenvolvidos sob a perspectiva de população finita), generalizáveis para super populações (população toda)?**
+
+
+## População finita >>> Super população
+
+1. Sempre observamos apenas uma população finita (amostra). Assim, qualquer análise nos dará, diretamente, informação sobre a população finita.
+2. Randomização apenas nos garantirá validez interna dado os resultados potenciais dessas unidades.
+3. Validez externa dos resulados dependerá do processo de amostragem das unidades. Se a amostra é representativa da população então sim, temos validez externa. Caso contrário, os resultados não são generalizáveis.
+
+. . . 
+
+Note então que precisamos de **dois níveis de randomização**: (1) do processo de amostragen e (2) do mecanismo de atribuição de tratamento. 
+
+
+. . . 
+
+Vamos assumir que a amostra foi **aleatoriamente** selecionada da população de interesse. Assim, todas nossas afirmações são a respeito da população de interesse e não apenas da amostra em estudo.
+
+
+## População finita >>> Super população
+
+Vamos assumir que $$\{Z_i, Y_i(1), Y_i(0), X_i \}_{i = 1}^n  \overset{IID}{\sim} \{Z, Y(1), Y(0), X\},$$ em que temos omitido os subíndices $i$ na super população.
+
+. . . 
+
+Definimos o efeito causal médio da população como $$\tau = \mathbb{E}(Y(1) - Y(0)) = \mathbb{E}(Y(1)) - \mathbb{E}(Y(0)).$$
+
+. . . 
+
+
+::: {.callout-tip}
+### CRE (super população)
+$$Z  \perp\!\!\!\perp \{Y(1), Y(0), X \}.$$
+:::
+
+
+
+## População finita >>> Super população
+
+O efeito causal médio da população pode ser escrito como
+\begin{align*}
+\tau &= \mathbb{E}(Y(1) | Z = 1) - \mathbb{E}(Y(0) | Z = 0) \\
+      &= \mathbb{E}(Y | Z = 1) - \mathbb{E}(Y | Z = 0) 
+\end{align*}
+
+
+. . . 
+
+Um estimador de momentos é dado por:
+
+$$\hat{\tau} = {n_1}^{-1} \displaystyle \sum_{i = 1}^{n} Z_i Y_i - {n_0}^{-1} \displaystyle \sum_{i = 1}^{n} (1 - Z_i) Y_i$$
+
+- $\mathbb{E}(\hat{\tau} | \textbf{Z})$
+
+
+
+## Referências
+
+::: {.nonincremental}
+
+- Peng Ding (2023). A First Course in Causal Inference. Capítulo 8.
+- Peng Ding (2023). A First Course in Causal Inference. Capítulo 9.
+
+
+
+:::

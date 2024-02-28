@@ -28,6 +28,70 @@
       margin: 0 0.8em 0.2em -1.6em;
       vertical-align: middle;
     }
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #767676;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #767676;  padding-left: 4px; }
+    div.sourceCode
+      { color: #545454; background-color: #fefefe; }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span { color: #545454; } /* Normal */
+    code span.al { color: #7928a1; } /* Alert */
+    code span.an { color: #696969; } /* Annotation */
+    code span.at { color: #a55a00; } /* Attribute */
+    code span.bn { color: #7928a1; } /* BaseN */
+    code span.bu { } /* BuiltIn */
+    code span.cf { color: #d91e18; } /* ControlFlow */
+    code span.ch { color: #008000; } /* Char */
+    code span.cn { color: #d91e18; } /* Constant */
+    code span.co { color: #696969; } /* Comment */
+    code span.cv { color: #696969; font-style: italic; } /* CommentVar */
+    code span.do { color: #696969; font-style: italic; } /* Documentation */
+    code span.dt { color: #7928a1; } /* DataType */
+    code span.dv { color: #7928a1; } /* DecVal */
+    code span.er { color: #7928a1; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #a55a00; } /* Float */
+    code span.fu { color: #06287e; } /* Function */
+    code span.im { } /* Import */
+    code span.in { color: #696969; } /* Information */
+    code span.kw { color: #d91e18; } /* Keyword */
+    code span.op { color: #00769e; } /* Operator */
+    code span.ot { color: #d91e18; } /* Other */
+    code span.pp { color: #7928a1; } /* Preprocessor */
+    code span.sc { color: #00769e; } /* SpecialChar */
+    code span.ss { color: #008000; } /* SpecialString */
+    code span.st { color: #008000; } /* String */
+    code span.va { color: #a55a00; } /* Variable */
+    code span.vs { color: #008000; } /* VerbatimString */
+    code span.wa { color: #696969; font-style: italic; } /* Warning */
   </style>
   <link rel="stylesheet" href="MI628_Aula06_files/libs/revealjs/dist/theme/quarto.css" id="theme">
   <link href="MI628_Aula06_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
@@ -347,6 +411,8 @@ Prof.&nbsp;Carlos Trucíos <br> ctrucios@unicamp.br
 <li class="fragment"><a href="#/introdução" id="/toc-introdução">Introdução</a></li>
 <li class="fragment"><a href="#/mpe" id="/toc-mpe">MPE</a></li>
 <li class="fragment"><a href="#/frt" id="/toc-frt">FRT</a></li>
+<li class="fragment"><a href="#/neyman" id="/toc-neyman">Neyman</a></li>
+<li class="fragment"><a href="#/ajuste-por-covariáveis" id="/toc-ajuste-por-covariáveis">Ajuste por covariáveis</a></li>
 </ul>
 </nav>
 </section>
@@ -359,8 +425,8 @@ Prof.&nbsp;Carlos Trucíos <br> ctrucios@unicamp.br
 <h2>Introdução</h2>
 <ul>
 <li class="fragment">MPE é a versão mais extrema do SRE.</li>
-<li class="fragment">No MPE, temos apenas uma unidade de tratamento e uma de controle em cada estrato (por isso, neste caso, os estratos são também chamados de <em>pairs</em>)</li>
-<li class="fragment">Apesar de que MPE é um caso particular do SRE, tem seu próprio método de estimação e inferência (foco da aula de hoje).</li>
+<li class="fragment">No MPE, temos apenas uma unidade de tratamento e uma de controle em cada estrato (por isso, os estratos são também chamados de <em>pairs</em>)</li>
+<li class="fragment">Apesar de que MPE é um caso particular do SRE, MPE tem seu próprio método de estimação e inferência (foco da aula de hoje).</li>
 <li class="fragment">Podemos formar pares baseados na similariedade da covariáveis.
 <ul>
 <li class="fragment">Com covariável contínua, podemos ordenar as unidades segundo a covariável e formar os pares baseados nas unidades adjacentes.</li>
@@ -389,7 +455,7 @@ Prof.&nbsp;Carlos Trucíos <br> ctrucios@unicamp.br
 <ul>
 <li class="fragment">Consideremos <span class="math inline">\(2n\)</span> unidades, as quais são divididas em <span class="math inline">\(n\)</span> pares (formados com base nas covariáveis).</li>
 <li class="fragment">Seja <span class="math inline">\((i, j)\)</span> o index da unidade <span class="math inline">\(j\)</span> no par <span class="math inline">\(i\)</span>, em que <span class="math inline">\(i = 1, \cdots, n\)</span> e <span class="math inline">\(j = 1, 2\)</span>.</li>
-<li class="fragment">Assim, <span class="math inline">\((i, j)\)</span> tem resultados potenciais <span class="math inline">\(Y_{ij}(1)\)</span> (tratemento) e <span class="math inline">\(Y_{ij}(0)\)</span> (controle).</li>
+<li class="fragment">Assim, <span class="math inline">\((i, j)\)</span> tem resultados potenciais <span class="math inline">\(Y_{ij}(1)\)</span> (tratamento) e <span class="math inline">\(Y_{ij}(0)\)</span> (controle).</li>
 <li class="fragment">Dentro de cada par, escolhemos aleatoriamente uma unidade para receber o tratamento (e a outra receberá o controle). Seja <span class="math display">\[\begin{equation}
 Z_i = \begin{cases}
 1, \quad \text{se a primeira unidade recebe o tratamento} \\
@@ -409,14 +475,14 @@ Z_i = \begin{cases}
 <p><strong>Definição (MPE):</strong></p>
 </div>
 <div class="callout-content">
-<p>Um MPE tem mecanismo de atribuição de tratamento dado por <span id="eq-z_bernoulli"><span class="math display">\[\{Z_i\}_{i = 1}^n \sim Bernoulli(0.5), \qquad(1)\]</span></span> com resultados potenciais dentro do par dados por <span class="math display">\[Y_{i1} = Z_i Y_{i1}(1) + (1-Z_i)Y_{i1}(0) \quad e \quad Y_{i2} = Z_i Y_{i2}(0) + (1-Z_i)Y_{i2}(1) \quad (i = 1, \cdots, n).\]</span></p>
+<p>Um MPE tem mecanismo de atribuição de tratamento dado por <span id="eq-z_bernoulli"><span class="math display">\[\{Z_i\}_{i = 1}^n \sim Bernoulli(0.5), \qquad(1)\]</span></span> com resultados observados dentro do par dados por <span class="math display">\[Y_{i1} = Z_i Y_{i1}(1) + (1-Z_i)Y_{i1}(0) \quad e \quad Y_{i2} = Z_i Y_{i2}(0) + (1-Z_i)Y_{i2}(1) \quad (i = 1, \cdots, n).\]</span></p>
 <p>Assim, os dados observados são <span class="math inline">\((Z_i, Y_{i1}, Y_{i2})_{i = 1}^n.\)</span></p>
 </div>
 </div>
 </div>
 <ul>
-<li class="fragment">Se <span class="math inline">\(Z_i = 1\)</span>, a primeira unidade (<span class="math inline">\(j = 1\)</span>) recebe o tratamento, então o resultado observado da unidade <span class="math inline">\(j = 1\)</span> será igual ao resultado potencial <span class="math inline">\(Y_{i1}(1)\)</span>.</li>
-<li class="fragment">Se <span class="math inline">\(Z_i = 0\)</span>, a segunda unidade (<span class="math inline">\(j = 2\)</span>) recebe o tratamento, então o resultado observado da unidade <span class="math inline">\(j = 2\)</span> será igual ao resultado potencial <span class="math inline">\(Y_{i2}(1)\)</span>.</li>
+<li class="fragment">Se <span class="math inline">\(Z_i = 1\)</span>, a primeira unidade (<span class="math inline">\(j = 1\)</span>) recebe o tratamento, então o resultado observado da unidade <span class="math inline">\(j = 1\)</span> será igual ao resultado potencial <span class="math inline">\(Y_{i1}(1)\)</span> e o resultado observado da unidade <span class="math inline">\(j = 2\)</span> será <span class="math inline">\(Y_{i2}(0)\)</span>.</li>
+<li class="fragment">Se <span class="math inline">\(Z_i = 0\)</span>, a segunda unidade (<span class="math inline">\(j = 2\)</span>) recebe o tratamento, então o resultado observado da unidade <span class="math inline">\(j = 2\)</span> será igual ao resultado potencial <span class="math inline">\(Y_{i2}(1)\)</span> e o resultado observado da unidade <span class="math inline">\(j = 1\)</span> será <span class="math inline">\(Y_{i1}(0)\)</span>.</li>
 </ul>
 </section></section>
 <section>
@@ -426,17 +492,17 @@ Z_i = \begin{cases}
 </section>
 <section id="frt-1" class="slide level2">
 <h2>FRT</h2>
-<p>De forma semelhantes como temos feitos nos outros casos, sempre podemos utilizar FRT para testar a hipóteses nula forte: <span class="math display">\[H_{0F}: Y_{ij}(1) = Y_{ij}(0), \quad \forall i = 1, \cdots, n, \text{ e } j =1, 2.\]</span></p>
+<p>De forma semelhante como temos feito nos outros casos, sempre podemos utilizar FRT para testar a hipóteses nula forte: <span class="math display">\[H_{0F}: Y_{ij}(1) = Y_{ij}(0), \quad \forall i = 1, \cdots, n, \text{ e } j =1, 2.\]</span></p>
 <div class="fragment">
 <p>Para realizar o FRT corretamente, devemos simular <span class="math inline">\(\textbf{Z} = (Z_1, \cdots, Z_n)\)</span> de forma que seja compatível com <a href="#/eq-z_bernoulli">Equation&nbsp;1</a>.</p>
 </div>
 <div class="fragment">
-<p>Antes de discutir algumas escolhas interessantes para a esatística de teste, definiremos primeiro a diferença (dentro de cada par) entre tratamento e controle, <span class="math display">\[\hat{\tau}_i = \text{Resultados sob Tratamento} - \text{Resultado sob controle} \quad \text{(no par }i).\]</span></p>
+<p>Seja <span class="math display">\[\hat{\tau}_i = \text{Resultado sob Tratamento} - \text{Resultado sob controle} \quad \text{(no par }i),\]</span> a diferença (dentro de cada par) entre tratamento e controle.</p>
 </div>
 </section>
 <section id="frt-2" class="slide level2">
 <h2>FRT</h2>
-<p><span class="math display">\[\hat{\tau}_i = \text{Resultados sob Tratamento} - \text{Resultado sob controle} \quad \text{(no par }i).\]</span></p>
+<p><span class="math display">\[\hat{\tau}_i = \text{Resultado sob Tratamento} - \text{Resultado sob controle} \quad \text{(no par }i).\]</span></p>
 <ul>
 <li class="fragment">Se <span class="math inline">\(Z_i = 1 \rightarrow Y_{i1}(1) - Y_{i2}(0) = Y_{i1} - Y_{i2}\)</span>.</li>
 <li class="fragment">Se <span class="math inline">\(Z_i = 0 \rightarrow Y_{i2}(1) - Y_{i1}(0) = Y_{i2} - Y_{i1}\)</span>.</li>
@@ -462,8 +528,500 @@ Z_i = \begin{cases}
 <ul>
 <li class="fragment">Definimos a média das diferenças entre os pares como <span class="math inline">\(\hat{\tau} = n^{-1}\displaystyle \sum_{i = 1}^n \hat{\tau}_i\)</span>.</li>
 <li class="fragment">Sob <span class="math inline">\(H_{0F}\)</span>, <span class="math inline">\(\mathbb{E}(\hat{\tau}) = 0 \quad e \quad \mathbb{V}(\hat{\tau}) = n^{-2} \displaystyle \sum_{i = 1}^n \mathbb{V}(S_i)(Y_{i1} - Y_{i2})^2 = n^{-2} \displaystyle \sum_{i = 1}^n \hat{\tau}_i^2\)</span></li>
-<li class="fragment">Pelo TCL, <span class="math display">\[\dfrac{\hat{\tau}}{\sqrt{n^{-2}\displaystyle \sum_{i = 1}^n \hat{\tau}_i^2}} \xrightarrow D N(0, 1).\]</span></li>
+<li class="fragment">Pelo TCL, <span class="math display">\[T = \dfrac{\hat{\tau}}{\sqrt{n^{-2}\displaystyle \sum_{i = 1}^n \hat{\tau}_i^2}} \xrightarrow D N(0, 1).\]</span></li>
 </ul>
+</div>
+</div>
+</div>
+<div class="fragment">
+<p>Assim, podemos utilizar <span class="math inline">\(T\)</span> para construir um teste assintótico (ou fazer as permutações como no FRT padrão).</p>
+</div>
+</section>
+<section id="frt-4" class="slide level2">
+<h2>FRT</h2>
+<center>
+<span style="color:red;"><strong>Quando trabalhamos com pares, que tipo de teste vem imediatamente à nossa mente?</strong></span>
+</center>
+<ul>
+<li class="fragment">Teste T para amostras pareadas!</li>
+<li class="fragment"><span class="math inline">\(t_{pairs} = \dfrac{\hat{\tau}}{\sqrt{[n(n-1)]^{-2} \displaystyle \sum_{i = 1}^n (\hat{\tau}_i - \hat{\tau})^2}}.\)</span></li>
+<li class="fragment">Mas <span class="math inline">\(T - t_{pairs} \rightarrow 0\)</span>, quando <span class="math inline">\(n \rightarrow \infty\)</span>.</li>
+<li class="fragment">Sob normalidade, <span class="math inline">\(t_{pairs} \sim t_{(n-1)}\)</span> que, quando <span class="math inline">\(n \rightarrow \infty\)</span> converge para uma <span class="math inline">\(N(0, 1)\)</span>.</li>
+<li class="fragment">Assim, na prática, quando <span class="math inline">\(n\)</span> for grande, sempre podemos utilizar o <span class="math inline">\(t_{pairs}\)</span> para construir um teste assintótico para testar <span class="math inline">\(H_{0F}\)</span>.</li>
+</ul>
+</section>
+<section id="frt-5" class="slide level2">
+<h2>FRT</h2>
+<div class="callout callout-note callout-captioned callout-style-default">
+<div class="callout-body">
+<div class="callout-caption">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Exemplo 2</strong></p>
+</div>
+<div class="callout-content">
+<p>Baseados nos postos <span class="math inline">\(R_1, \cdots, R_n\)</span> de <span class="math inline">\(|\hat{\tau}_1|, \cdots, |\hat{\tau}_n|\)</span>, podemos definir a estatística <span class="math display">\[W = \displaystyle \sum_{i = 1}^n I(\hat{\tau}_i &gt; 0)R_i.\]</span></p>
+<p>Sob <span class="math inline">\(H_{0F},\)</span> os <span class="math inline">\(|\hat{\tau}_i|\)</span> são fixos, o que implica que os <span class="math inline">\(R_i\)</span>s também são, então:</p>
+<ul>
+<li class="fragment"><span class="math inline">\(\mathbb{E}(W) = \dfrac{1}{2} \displaystyle \sum_{i = 1}^n R_i = \dfrac{1}{2} \displaystyle \sum_{i = 1}^n i = \dfrac{n(n+1)}{4} \quad \quad e \quad \quad \mathbb{V}(W) = \dfrac{1}{4} \displaystyle \sum_{i = 1}^n R_i^2 = \dfrac{1}{4} \displaystyle \sum_{i = 1}^n i^2 = \dfrac{n(n+1)(2n+1)}{24}\)</span>.</li>
+<li class="fragment">Pelo TCL, <span class="math display">\[w = \dfrac{W - n(n+1) \big / 4}{\sqrt{n(n+1)(2n+1) \big / 24}} \xrightarrow D N(0,1).\]</span></li>
+</ul>
+</div>
+</div>
+</div>
+<div class="fragment">
+<p>Assim, podemos utilizar <span class="math inline">\(w\)</span> para construir um teste assintótico (ou fazer as permutações como no FRT padrão).</p>
+</div>
+</section>
+<section id="frt-6" class="slide level2">
+<h2>FRT</h2>
+<div class="callout callout-warning callout-captioned callout-style-default">
+<div class="callout-body">
+<div class="callout-caption">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Observação:</strong></p>
+</div>
+<div class="callout-content">
+<p>No <code>R</code>, podemos utilizar a função <code>t.test()</code> com o argumento <code>paired = TRUE</code> para fazer o teste do exemplo 1 e a função <code>wilcox.test()</code> com o argumento <code>paired = TRUE</code> para fazer o teste do exemplo 2.</p>
+</div>
+</div>
+</div>
+</section>
+<section id="frt-7" class="slide level2">
+<h2>FRT</h2>
+<div class="callout callout-note callout-captioned callout-style-default">
+<div class="callout-body">
+<div class="callout-caption">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Aplicação</strong></p>
+</div>
+<div class="callout-content">
+<p>O <em>dataset</em> <code>ZeaMays</code> do pacote <code>HistData</code>, contem informação da altura de 15 pares de milho tratados com fertilização cruzada (<code>cross</code>) ou autofertilização (<code>self</code>), bem como a diferença dentro de cada par (<code>diff</code>).</p>
+<p>Queremos testar a hipótese nula forte, <span class="math display">\[H_{0F}: Y_{ij}(1) = Y_{ij}(0), \quad \forall i,j.\]</span></p>
+<div class="cell" data-layout-align="center">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="fu">library</span>(HistData)</span>
+<span id="cb1-2"><a href="#cb1-2"></a>ZeaMays</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>   pair pot  cross   self   diff
+1     1   1 23.500 17.375  6.125
+2     2   1 12.000 20.375 -8.375
+3     3   1 21.000 20.000  1.000
+4     4   2 22.000 20.000  2.000
+5     5   2 19.125 18.375  0.750
+6     6   2 21.500 18.625  2.875
+7     7   3 22.125 18.625  3.500
+8     8   3 20.375 15.250  5.125
+9     9   3 18.250 16.500  1.750
+10   10   3 21.625 18.000  3.625
+11   11   3 23.250 16.250  7.000
+12   12   4 21.000 18.000  3.000
+13   13   4 22.125 12.750  9.375
+14   14   4 23.000 15.500  7.500
+15   15   4 12.000 18.000 -6.000</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="frt-8" class="slide level2">
+<h2>FRT</h2>
+<div class="callout callout-note callout-captioned callout-style-default">
+<div class="callout-body">
+<div class="callout-caption">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Aplicação</strong></p>
+</div>
+<div class="callout-content">
+<p>Construimos uma função para enumerar todos os possíveis vetores de atribuição de tratamento.</p>
+<div class="cell" data-layout-align="center">
+
+</div>
+<div class="cell" data-layout-align="center">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a>z_mpe_ran <span class="ot">&lt;-</span> <span class="cf">function</span>(n_pairs) {</span>
+<span id="cb3-2"><a href="#cb3-2"></a>  z_mpe <span class="ot">&lt;-</span> <span class="fu">expand.grid</span>(<span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>), <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>))</span>
+<span id="cb3-3"><a href="#cb3-3"></a>  <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">3</span><span class="sc">:</span>n_pairs) {</span>
+<span id="cb3-4"><a href="#cb3-4"></a>    z_mpe <span class="ot">&lt;-</span> tidyr<span class="sc">::</span><span class="fu">expand_grid</span>(z_mpe, <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>), <span class="at">.name_repair =</span> <span class="st">"minimal"</span>)</span>
+<span id="cb3-5"><a href="#cb3-5"></a>  }</span>
+<span id="cb3-6"><a href="#cb3-6"></a>  <span class="fu">return</span>(z_mpe)</span>
+<span id="cb3-7"><a href="#cb3-7"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<div class="cell" data-layout-align="center">
+
+</div>
+<div class="cell" data-layout-align="center">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a>difference <span class="ot">&lt;-</span> ZeaMays<span class="sc">$</span>diff</span>
+<span id="cb4-2"><a href="#cb4-2"></a>n_pairs <span class="ot">&lt;-</span> <span class="fu">nrow</span>(ZeaMays)</span>
+<span id="cb4-3"><a href="#cb4-3"></a>tau_obs <span class="ot">&lt;-</span> <span class="fu">mean</span>(difference)</span>
+<span id="cb4-4"><a href="#cb4-4"></a>z_mpe <span class="ot">&lt;-</span> <span class="fu">z_mpe_ran</span>(n_pairs)</span>
+<span id="cb4-5"><a href="#cb4-5"></a>s_mpe <span class="ot">&lt;-</span> <span class="dv">2</span> <span class="sc">*</span> z_mpe <span class="sc">-</span> <span class="dv">1</span></span>
+<span id="cb4-6"><a href="#cb4-6"></a>taus_ran <span class="ot">&lt;-</span> <span class="fu">c</span>()</span>
+<span id="cb4-7"><a href="#cb4-7"></a><span class="cf">for</span> (j <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">2</span><span class="sc">^</span>n_pairs) {</span>
+<span id="cb4-8"><a href="#cb4-8"></a>  taus_ran[j] <span class="ot">&lt;-</span> <span class="fu">mean</span>(<span class="fu">as.numeric</span>(s_mpe[j,] <span class="sc">*</span> difference))</span>
+<span id="cb4-9"><a href="#cb4-9"></a>}</span>
+<span id="cb4-10"><a href="#cb4-10"></a><span class="fu">mean</span>(taus_ran <span class="sc">&gt;=</span> tau_obs)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.02633667</code></pre>
+</div>
+</div>
+<div class="cell" data-layout-align="center">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a><span class="fu">t.test</span>(ZeaMays<span class="sc">$</span>cross, ZeaMays<span class="sc">$</span>self, <span class="at">paired =</span> <span class="cn">TRUE</span>, <span class="at">alternative =</span> <span class="st">"greater"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+    Paired t-test
+
+data:  ZeaMays$cross and ZeaMays$self
+t = 2.148, df = 14, p-value = 0.02485
+alternative hypothesis: true mean difference is greater than 0
+95 percent confidence interval:
+ 0.4710482       Inf
+sample estimates:
+mean difference 
+       2.616667 </code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section></section>
+<section>
+<section id="neyman" class="title-slide slide level1 center">
+<h1>Neyman</h1>
+
+</section>
+<section id="neyman-1" class="slide level2">
+<h2>Neyman</h2>
+<p>O efeito causal médio dentro do <span class="math inline">\(i\)</span>-éssimo par é <span class="math display">\[\tau_i = \dfrac{Y_{i1}(1) - Y_{i1}(0)}{2} + \dfrac{Y_{i2}(1) - Y_{i2}(0)}{2},\]</span> e o efeito causal médio de todas as unidades é <span class="math display">\[\tau = n^{-1} \displaystyle \sum_{i = 1}^n \tau_i = (2n)^{-1} \displaystyle \sum_{i = 1}^n \sum_{j = 1}^2 (Y_{ij}(1) - Y_{ij}(0)).\]</span></p>
+</section>
+<section id="neyman-2" class="slide level2">
+<h2>Neyman</h2>
+<ul>
+<li class="fragment"><span class="math inline">\(\hat{\tau}_i = \text{Resultado sob Tratamento}_i - \text{Resultado sob controle}_i\)</span></li>
+<li class="fragment"><span class="math inline">\(\hat{\tau}_i = Z_i [Y_{i1}(1) - Y_{i2}(0)] + (1 - Z_i) [Y_{i2}(1)-Y_{i1}(0)]\)</span> que é não viesado para <span class="math inline">\(\tau_i\)</span>.</li>
+<li class="fragment"><span class="math inline">\(\hat{\tau} = n^{-1} \displaystyle \sum_{i = 1}^n \hat{\tau}_i\)</span> é não viesado pra <span class="math inline">\(\tau\)</span>.</li>
+<li class="fragment"><span class="math inline">\(\mathbb{V}(\hat{\tau}) = (4n^2)^{-1} \displaystyle \sum_{i = 1}^n [Y_{i1}(1) + Y_{i1}(0)- Y_{i2}(1) - Y_{i2}(0)]^2\)</span></li>
+</ul>
+</section>
+<section id="neyman-3" class="slide level2">
+<h2>Neyman</h2>
+<div class="callout callout-tip callout-captioned callout-style-default">
+<div class="callout-body">
+<div class="callout-caption">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Teorema</strong></p>
+</div>
+<div class="callout-content">
+<p>Sob MPE, <span class="math display">\[\hat{V} = [n(n-1)]^{-1} \displaystyle \sum_{i = 1}^n (\hat{\tau}_i - \hat{\tau})^2,\]</span> é um estimador conservador de <span class="math inline">\(\mathbb{V}(\hat{\tau})\)</span>. Isto é, <span class="math display">\[\mathbb{E}(\hat{V}) - \mathbb{V}(\hat{\tau}) = [n(n-1)]^{-1} \displaystyle \sum_{i = 1}^n (\tau_i - \tau)^2 \geq 0.\]</span> A igualdade acontece quando <span class="math inline">\(\tau_i\)</span> é constante <span class="math inline">\(\forall i\)</span>.</p>
+</div>
+</div>
+</div>
+<div class="fragment">
+<p><strong>Demostração:</strong> (no quadro)</p>
+</div>
+</section>
+<section id="neyman-4" class="slide level2">
+<h2>Neyman</h2>
+<ul>
+<li class="fragment">Pelo TCL, <span class="math display">\[\dfrac{\hat{\tau}-\tau}{\sqrt{\mathbb{V}(\hat{\tau})}} \xrightarrow D N(0, 1).\]</span></li>
+<li class="fragment">Assim, pela superestimação da variância (lembre-se, <span class="math inline">\(\hat{V}\)</span> é um estimador conservador para <span class="math inline">\(\mathbb{V}(\hat{\tau})\)</span>), o intervalo <span class="math display">\[\hat{\tau} \pm z_{1-\alpha/2}\sqrt{\hat{V}},\]</span> tem confiança de, pelo menos, <span class="math inline">\(1-\alpha.\)</span></li>
+</ul>
+</section>
+<section id="neyman-5" class="slide level2">
+<h2>Neyman</h2>
+<div class="columns">
+<div class="column" style="width:30%;">
+<center>
+<img data-src="imagens/alegria_meme.png" style="width:60.0%">
+</center>
+</div><div class="column" style="width:70%;">
+<p>Tanto <span class="math inline">\(\hat{\tau}\)</span> quanto <span class="math inline">\(\hat{V}\)</span> podem também ser obtidos por MQO!</p>
+</div>
+</div>
+<div class="fragment">
+<div class="callout callout-important callout-captioned callout-style-default">
+<div class="callout-body">
+<div class="callout-caption">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Proposição</strong></p>
+</div>
+<div class="callout-content">
+<p><span class="math inline">\(\hat{\tau}\)</span> e <span class="math inline">\(\hat{V}\)</span> são identicos ao coeficiente e estimador da variância do intercepto da regressão obtida por MQO de <span class="math inline">\((\hat{\tau}_1, \cdots, \hat{\tau}_n)'\)</span> com apenas o intercepto.</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="neyman-6" class="slide level2">
+<h2>Neyman</h2>
+<div class="callout callout-note callout-captioned callout-style-default">
+<div class="callout-body">
+<div class="callout-caption">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Aplicação</strong></p>
+</div>
+<div class="callout-content">
+<p>[ainda com o mesmo <em>dataset</em> da aplicação anterior] Estamos interessados em testar a hipótese nula fraca, <span class="math display">\[H_{0F}: \tau = 0\]</span></p>
+<div class="cell" data-layout-align="center">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1"></a>n <span class="ot">&lt;-</span> n_pairs</span>
+<span id="cb8-2"><a href="#cb8-2"></a>tau_i_hat <span class="ot">&lt;-</span> difference</span>
+<span id="cb8-3"><a href="#cb8-3"></a>tau_hat <span class="ot">&lt;-</span> <span class="fu">mean</span>(tau_i_hat)</span>
+<span id="cb8-4"><a href="#cb8-4"></a>V_hat <span class="ot">&lt;-</span> <span class="fu">var</span>(tau_i_hat)<span class="sc">/</span>n</span>
+<span id="cb8-5"><a href="#cb8-5"></a><span class="fu">c</span>(tau_hat, V_hat)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 2.616667 1.483998</code></pre>
+</div>
+</div>
+<p>Ou, equivalentemente</p>
+<div class="cell" data-layout-align="center">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1"></a>modelo <span class="ot">&lt;-</span> <span class="fu">lm</span>(tau_i_hat <span class="sc">~</span> <span class="dv">1</span>)</span>
+<span id="cb10-2"><a href="#cb10-2"></a><span class="fu">summary</span>(modelo)<span class="sc">$</span>coef</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>            Estimate Std. Error  t value   Pr(&gt;|t|)
+(Intercept) 2.616667   1.218195 2.147987 0.04970294</code></pre>
+</div>
+</div>
+<p>Intervalo de confiança</p>
+<div class="cell" data-layout-align="center">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1"></a><span class="fu">c</span>(tau_hat <span class="sc">-</span> <span class="fl">1.96</span><span class="sc">*</span><span class="fu">sqrt</span>(V_hat), tau_hat <span class="sc">+</span> <span class="fl">1.96</span><span class="sc">*</span><span class="fu">sqrt</span>(V_hat))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.2290053 5.0043280</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section></section>
+<section>
+<section id="ajuste-por-covariáveis" class="title-slide slide level1 center">
+<h1>Ajuste por covariáveis</h1>
+
+</section>
+<section id="ajuste-por-covariáveis-1" class="slide level2">
+<h2>Ajuste por covariáveis</h2>
+<ul>
+<li class="fragment">Embora tenhamos feito MPE por covariáveis, pode acontecer que <span class="math inline">\(X_{i1} \neq X_{i2}\)</span>. Ou seja, o <em>matching</em> pode não ser perfeito.</li>
+<li class="fragment">Ademais, podemos ter covariáveis adicionais às utilizadas no MPE.</li>
+<li class="fragment">Nesses casos, podemos ajustar por covariáveis para melhorar a eficiência do estimador.</li>
+</ul>
+</section>
+<section id="ajuste-por-covariáveis-frt" class="slide level2">
+<h2>Ajuste por covariáveis (FRT)</h2>
+<p>Para realizar o FRT quando rerandomização não é possível, tinhamos:</p>
+<div class="callout callout-tip callout-captioned callout-style-default">
+<div class="callout-body">
+<div class="callout-caption">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Definição: estratégia de pseudo-resultado</strong></p>
+</div>
+<div class="callout-content">
+<p>Podemos construir a estatística de teste baseados nos residuos (<span class="math inline">\(\hat{\varepsilon}\)</span>) do modelo ajustado (considerando <span class="math inline">\(\textbf{Y}\)</span> como variável dependente e <span class="math inline">\(\textbf{X}\)</span> como independentes) e utilizar os resíduos como o pseudo-resultado para construir o teste.</p>
+</div>
+</div>
+</div>
+<p>Para o caso do MPE, podemos utilizar a mesma estratégia descrita acima.</p>
+<div class="callout callout-tip callout-captioned callout-style-default">
+<div class="callout-body">
+<div class="callout-caption">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Definição: estratégia da “saida” do modelo (model-output)</strong></p>
+</div>
+<div class="callout-content">
+<p>Podemos ajustar o modelo (considerando <span class="math inline">\(\textbf{Y}\)</span> como variável dependente e <span class="math inline">\(\textbf{X}\)</span> e <span class="math inline">\(\textbf{Z}\)</span> como independentes) para obter o coeficiente de <span class="math inline">\(\textbf{Z}\)</span> e utilizá-lo como estatística de teste.</p>
+</div>
+</div>
+</div>
+<div class="fragment">
+<p>Neste segundo caso, no contexto do MPE, podemos fazer algo parecido. De fato, como veremos nos próximos slides, podemos ajustar uma regressão de <span class="math inline">\(\hat{\tau}_i\)</span> sob <span class="math inline">\((1, \hat{\tau}_{X,i})\)</span> e utilizar os coeficientes (e suas variâncias estimadas) para construir a estatística de teste.</p>
+</div>
+</section>
+<section id="ajuste-por-covariáveis-neyman" class="slide level2">
+<h2>Ajuste por covariáveis (Neyman)</h2>
+<p>Consideremos agora a classe de estimadores (indexados por <span class="math inline">\(\gamma\)</span>) da forma:</p>
+<p><span class="math display">\[\hat{\tau}(\gamma) = \hat{\tau} - \gamma' \hat{\tau}_X,\]</span></p>
+<p>em que <span class="math inline">\(\hat{\tau}_X = n^{-1} \displaystyle \sum_{i = 1}^n \hat{\tau}_{X,i}\)</span> e <span class="math display">\[\hat{\tau}_{X,i} = Z_i(X_{i,1}-{X_{i,2}}) + (1-Z_i)(X_{i,2} - X_{i,1}).\]</span></p>
+<div class="fragment">
+<p>Queremos escolher <span class="math inline">\(\gamma\)</span> tal que <span class="math inline">\(\mathbb{V}(\hat{\tau}(\gamma))\)</span> seja minima.</p>
+</div>
+</section>
+<section id="ajuste-por-covariáveis-neyman-1" class="slide level2">
+<h2>Ajuste por covariáveis (Neyman)</h2>
+<p><span class="math display">\[\mathbb{V}(\hat{\tau}(\gamma)) = \mathbb{V}(\hat{\tau} - \gamma' \hat{\tau}_X) = \mathbb{V}(\hat{\tau}) + \gamma' \mathbb{C}ov(\hat{\tau}_X) \gamma - 2 \gamma'\mathbb{C}ov(\hat{\tau}_X, \hat{\tau}).\]</span></p>
+<div class="fragment">
+<p>Derivando <em>w.r.t.</em> <span class="math inline">\(\gamma\)</span> e igualando a zero:</p>
+<p><span class="math display">\[2\mathbb{C}ov(\hat{\tau}_X) \gamma - 2\mathbb{C}ov(\hat{\tau}_X, \hat{\tau}) = 0 \rightarrow \tilde{\gamma} = \mathbb{C}ov(\hat{\tau}_X)^{-1} \mathbb{C}ov(\hat{\tau}_X, \hat{\tau}).\]</span></p>
+</div>
+<div class="fragment">
+<p>A segunda derivada é <span class="math inline">\(2 \mathbb{C}ov(\hat{\tau}_X) \geq 0\)</span>, então <span class="math inline">\(\tilde{\gamma}\)</span> é ponto de mínimo.</p>
+<ul>
+<li class="fragment"><span class="math inline">\(\mathbb{C}ov(\hat{\tau}_X) = n^{-2} \displaystyle \sum_{i = 1}^n \hat{\tau}_{X,i}\hat{\tau}_{X,i}'\)</span>.</li>
+<li class="fragment">Um estimador não viesado para <span class="math inline">\(\mathbb{C}ov(\hat{\tau}_X, \hat{\tau})\)</span> é <span class="math inline">\(\hat{\theta} = [n(n-1)]^{-1} \displaystyle \sum_{i = 1}^n (\hat{\tau}_{X,i} - \hat{\tau}_X)(\hat{\tau}_i - \hat{\tau})\)</span>.</li>
+</ul>
+</div>
+</section>
+<section id="ajuste-por-covariáveis-neyman-2" class="slide level2">
+<h2>Ajuste por covariáveis (Neyman)</h2>
+Então, podemos estimar <span class="math inline">\(\tilde{\gamma}\)</span> por
+<center>
+<span class="math inline">\(\hat{\gamma} = \Big ( n^{-2} \displaystyle \sum_{i = 1}^n \hat{\tau}_{X,i}\hat{\tau}_{X,i}' \Big )^{-1} \Big ([n(n-1)]^{-1} \displaystyle \sum_{i = 1}^n (\hat{\tau}_{X,i} - \hat{\tau}_X)(\hat{\tau}_i - \hat{\tau}) \Big )\)</span>
+</center>
+<div class="fragment">
+<center>
+<span class="math inline">\(\approx \Big (\displaystyle \sum_{i = 1}^n (\hat{\tau}_{X,i} - \hat{\tau}_X) (\hat{\tau}_{X,i}- \hat{\tau}_X)' \Big )^{-1} \Big ( \displaystyle \sum_{i = 1}^n (\hat{\tau}_{X,i} - \hat{\tau}_X)(\hat{\tau}_i - \hat{\tau}) \Big ),\)</span>
+</center>
+</div>
+<div class="fragment">
+<p>que é coeficiente associado a <span class="math inline">\(\hat{\tau}_{X,i}\)</span> na regressão por MQO de <span class="math inline">\(\hat{\tau}_i\)</span> sob <span class="math inline">\((1, \hat{\tau}_{X,i})\)</span>. Assim, <span class="math display">\[\hat{\tau}_{adj} = \hat{\tau}(\hat{\gamma}) = \hat{\tau} - \hat{\gamma}'\hat{\tau}_X,\]</span> que é, aproximadamente, o intercepto da regressão por MQO de <span class="math inline">\(\hat{\tau}_i\)</span> sob <span class="math inline">\((1, \hat{\tau}_{X,i})\)</span>. Ademais, um estimador (conservador) de <span class="math inline">\(\mathbb{V}(\hat{\tau}_{adj})\)</span> é dado por <span class="math inline">\(\hat{V}_{adj} = \hat{V} - \hat{\theta}' \mathbb{Cov}(\hat{\tau}_X)^{-1}\hat{\theta}\)</span>.</p>
+</div>
+</section>
+<section id="ajuste-por-covariáveis-neyman-3" class="slide level2">
+<h2>Ajuste por covariáveis (Neyman)</h2>
+<div class="callout callout-tip callout-captioned callout-style-default">
+<div class="callout-body">
+<div class="callout-caption">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Proposição</strong></p>
+</div>
+<div class="callout-content">
+<p>Sob MPE, o estimador ajustado por covariável <span class="math inline">\(\hat{\tau}_{adj}\)</span> e seu respectivo estimador (conservador) de variância, <span class="math inline">\(\hat{V}_{adj}\)</span>, podem ser aproximados pelo intercepto e seu restectivo estimador de variância da regressão por MQO de <span class="math inline">\(\hat{\tau}_i\)</span> sob <span class="math inline">\((1, \hat{\tau}_{X,i})\)</span>.</p>
+</div>
+</div>
+</div>
+</section>
+<section id="ajuste-por-covariáveis-2" class="slide level2">
+<h2>Ajuste por covariáveis</h2>
+<div class="callout callout-note callout-captioned callout-style-default">
+<div class="callout-body">
+<div class="callout-caption">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Aplicação</strong></p>
+</div>
+<div class="callout-content">
+<p>O conjunto de dados <a href="datasets/children_data.csv">disponível aqui</a>.</p>
+<div class="cell" data-layout-align="center">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1"></a>dados <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"datasets/children_data.csv"</span>, <span class="at">head =</span> <span class="cn">TRUE</span>, <span class="at">dec =</span> <span class="st">","</span>)</span>
+<span id="cb14-2"><a href="#cb14-2"></a>dados<span class="sc">$</span>diff_x <span class="ot">&lt;-</span> dados<span class="sc">$</span>x_treatment <span class="sc">-</span> dados<span class="sc">$</span>x_control</span>
+<span id="cb14-3"><a href="#cb14-3"></a>dados<span class="sc">$</span>diff_y <span class="ot">&lt;-</span> dados<span class="sc">$</span>y_treatment <span class="sc">-</span> dados<span class="sc">$</span>y_control</span>
+<span id="cb14-4"><a href="#cb14-4"></a></span>
+<span id="cb14-5"><a href="#cb14-5"></a><span class="co"># MPE Neyman</span></span>
+<span id="cb14-6"><a href="#cb14-6"></a>n <span class="ot">&lt;-</span> <span class="fu">nrow</span>(dados)</span>
+<span id="cb14-7"><a href="#cb14-7"></a>tau_hat <span class="ot">&lt;-</span> <span class="fu">mean</span>(dados<span class="sc">$</span>diff_y)</span>
+<span id="cb14-8"><a href="#cb14-8"></a>V_hat <span class="ot">&lt;-</span> <span class="fu">var</span>(dados<span class="sc">$</span>diff_y)<span class="sc">/</span>n</span>
+<span id="cb14-9"><a href="#cb14-9"></a><span class="fu">c</span>(tau_hat <span class="sc">-</span> <span class="fl">1.96</span> <span class="sc">*</span> <span class="fu">sqrt</span>(V_hat), tau_hat <span class="sc">+</span> <span class="fl">1.96</span> <span class="sc">*</span> <span class="fu">sqrt</span>(V_hat))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1]  4.337779 22.512221</code></pre>
+</div>
+</div>
+<div class="cell" data-layout-align="center">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1"></a><span class="co"># MPE Neyman Adj </span></span>
+<span id="cb16-2"><a href="#cb16-2"></a>modelo_adj <span class="ot">&lt;-</span> <span class="fu">summary</span>(<span class="fu">lm</span>(diff_y <span class="sc">~</span> diff_x, <span class="at">data =</span> dados))<span class="sc">$</span>coef</span>
+<span id="cb16-3"><a href="#cb16-3"></a>tau_hat_adj <span class="ot">&lt;-</span> modelo_adj[<span class="dv">1</span>, <span class="dv">1</span>]</span>
+<span id="cb16-4"><a href="#cb16-4"></a>V_hat_adj <span class="ot">&lt;-</span> modelo_adj[<span class="dv">1</span>, <span class="dv">2</span>]</span>
+<span id="cb16-5"><a href="#cb16-5"></a><span class="fu">c</span>(tau_hat_adj <span class="sc">-</span> <span class="fl">1.96</span> <span class="sc">*</span> <span class="fu">sqrt</span>(V_hat_adj), tau_hat_adj <span class="sc">+</span> <span class="fl">1.96</span> <span class="sc">*</span> <span class="fu">sqrt</span>(V_hat_adj))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1]  6.667253 11.321352</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<ul>
+<li class="fragment">Quais seriam suas conclusões?</li>
+<li class="fragment">Confiaria nos resultados? (justifique)</li>
+</ul>
+</section>
+<section id="ajuste-por-covariáveis-3" class="slide level2">
+<h2>Ajuste por covariáveis</h2>
+<p>Ambos os resultados anteriores foram obtidos assumindo que <span class="math inline">\(n\)</span> é grande. Contudo, <span class="math inline">\(n = 8\)</span> não parece ser tão grande assim, afetando a aproximação. Sendo assim, utilizaremos a abordagem de Fisher (FRT) com a estatística t studentizada (ou seja, o <code>t-value</code> da regressão de <span class="math inline">\(\hat{\tau}_i\)</span> sob <span class="math inline">\((1, \hat{\tau}_{X,i})\)</span>.</p>
+<div class="callout callout-note callout-captioned callout-style-default">
+<div class="callout-body">
+<div class="callout-caption">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Aplicação</strong></p>
+</div>
+<div class="callout-content">
+<div class="cell" data-layout-align="center">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1"></a>t_ran <span class="ot">&lt;-</span> <span class="fu">sapply</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span><span class="sc">^</span><span class="dv">8</span>, <span class="cf">function</span>(x) {</span>
+<span id="cb18-2"><a href="#cb18-2"></a>  z_mpe <span class="ot">&lt;-</span> <span class="fu">mp_enumerate</span>(x, <span class="dv">8</span>)</span>
+<span id="cb18-3"><a href="#cb18-3"></a>  diff_y_mpe <span class="ot">&lt;-</span> <span class="fu">abs</span>(dados<span class="sc">$</span>diff_y) <span class="sc">*</span> z_mpe</span>
+<span id="cb18-4"><a href="#cb18-4"></a>  diff_x_mpe <span class="ot">&lt;-</span> <span class="fu">abs</span>(dados<span class="sc">$</span>diff_x) <span class="sc">*</span> z_mpe</span>
+<span id="cb18-5"><a href="#cb18-5"></a>  <span class="co"># MPE FRT</span></span>
+<span id="cb18-6"><a href="#cb18-6"></a>  unadj <span class="ot">&lt;-</span> <span class="fu">summary</span>(<span class="fu">lm</span>(diff_y_mpe <span class="sc">~</span> <span class="dv">1</span>))<span class="sc">$</span>coef[<span class="dv">1</span>, <span class="dv">3</span>]</span>
+<span id="cb18-7"><a href="#cb18-7"></a>  unadj2 <span class="ot">&lt;-</span> <span class="fu">mean</span>(diff_y_mpe)<span class="sc">/</span><span class="fu">sqrt</span>(<span class="fu">var</span>(diff_y_mpe)<span class="sc">/</span>n)</span>
+<span id="cb18-8"><a href="#cb18-8"></a>  <span class="do">## unadj e unadj2 sao iguais.</span></span>
+<span id="cb18-9"><a href="#cb18-9"></a>  <span class="co"># MPE FRT Adj</span></span>
+<span id="cb18-10"><a href="#cb18-10"></a>  adj <span class="ot">&lt;-</span> <span class="fu">summary</span>(<span class="fu">lm</span>(diff_y_mpe <span class="sc">~</span> diff_x_mpe))<span class="sc">$</span>coef[<span class="dv">1</span>, <span class="dv">3</span>]</span>
+<span id="cb18-11"><a href="#cb18-11"></a>  out <span class="ot">&lt;-</span> <span class="fu">c</span>(unadj, unadj2, adj)</span>
+<span id="cb18-12"><a href="#cb18-12"></a>  <span class="fu">return</span>(out)</span>
+<span id="cb18-13"><a href="#cb18-13"></a>})</span>
+<span id="cb18-14"><a href="#cb18-14"></a>p_valor_unadj <span class="ot">&lt;-</span> <span class="fu">mean</span>(<span class="fu">abs</span>(t_ran[<span class="dv">1</span>, ]) <span class="sc">&gt;=</span> <span class="fu">abs</span>(tau_hat<span class="sc">/</span><span class="fu">sqrt</span>(V_hat)))</span>
+<span id="cb18-15"><a href="#cb18-15"></a>p_valor_unadj </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.03125</code></pre>
+</div>
+</div>
+<div class="cell" data-layout-align="center">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1"></a>p_valor_adj <span class="ot">&lt;-</span> <span class="fu">mean</span>(<span class="fu">abs</span>(t_ran[<span class="dv">3</span>, ]) <span class="sc">&gt;=</span> <span class="fu">abs</span>(modelo_adj[<span class="dv">1</span>, <span class="dv">3</span>]))</span>
+<span id="cb20-2"><a href="#cb20-2"></a>p_valor_adj</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0</code></pre>
+</div>
+</div>
 </div>
 </div>
 </div>

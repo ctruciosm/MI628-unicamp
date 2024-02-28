@@ -427,7 +427,7 @@ Prof.&nbsp;Carlos Trucíos <br> ctrucios@unicamp.br
 <ul>
 <li class="fragment">Estratificação e pós-estratificação são duais para covariável discreta no planejamento e análise de experimentos randomizados.</li>
 <li class="fragment">Mas como lidar com covariáveis multidimensionais e/ou contínuas?</li>
-<li class="fragment">Categorizar poderia ser uma respostas mas é longe de ser uma solução ótima 🙍.</li>
+<li class="fragment">Categorizar poderia ser uma respostas mas é longe de ser uma solução ótima 😿.</li>
 <li class="fragment">Rerandomizar e ajuste de regressão são o caminho a seguir 😄.</li>
 </ul>
 <div class="fragment">
@@ -447,7 +447,7 @@ Prof.&nbsp;Carlos Trucíos <br> ctrucios@unicamp.br
 </tr>
 <tr class="even">
 <td style="text-align: left;">Covariável Geral</td>
-<td style="text-align: center;">Re-randomizar</td>
+<td style="text-align: center;">Rerandomizar</td>
 <td style="text-align: center;">Ajuste de regressão</td>
 </tr>
 </tbody>
@@ -625,7 +625,7 @@ Prof.&nbsp;Carlos Trucíos <br> ctrucios@unicamp.br
 <p>Quando <span class="math inline">\(0&lt;a&lt;\infty\)</span>, a distribuição de <span class="math inline">\(\hat{\tau}\)</span> é bem mais complexa mas é mais concentrada em <span class="math inline">\(\tau\)</span>. Assim, <span class="math inline">\(\hat{\tau}\)</span> é mais preciso sob ReM do que sob CRE.</p>
 <div class="fragment">
 <blockquote>
-<p><strong>Observação:</strong> Se ignorarmos o ReM e ainda utilizarmos o intervalo de confiança baseado na fórmula de variância de Neyman (1923) e na aproximação Normal, este será <strong>excessivamente</strong> conservador e cobre <span class="math inline">\(\tau\)</span> mesmo se os efeitos individuais forem constantes.</p>
+<p><strong>Observação:</strong> Se ignorarmos o ReM e ainda utilizarmos o intervalo de confiança baseado na fórmula de variância de Neyman (1923) e na aproximação Normal, este será <strong>excessivamente</strong> conservador.</p>
 </blockquote>
 </div>
 </section></section>
@@ -689,18 +689,21 @@ Prof.&nbsp;Carlos Trucíos <br> ctrucios@unicamp.br
 </div>
 <div class="fragment">
 <blockquote>
-<p>Observação: Um dos <strong>modelos ajustados</strong> mais utilizados é <strong>regressão</strong> linear (por MQO), mas nada impede que outras abordagens tais como regressão logística ou mesmo modelos de <em>machine learning</em> sejam utilizados.</p>
+<p>Observação: Um dos <strong>modelos ajustados</strong> mais utilizado é <strong>regressão</strong> linear (por MQO), mas nada impede que outras abordagens tais como regressão logística ou mesmo modelos de <em>machine learning</em> sejam utilizados.</p>
 </blockquote>
 </div>
 </section>
 <section id="ajuste-de-regressão-4" class="slide level2">
 <h2>Ajuste de regressão</h2>
-<p>Os seguintes métodos focam na estiação do efeito médio causal, <span class="math inline">\(\tau\)</span></p>
+<p>E se não quisermos testar <span class="math inline">\(H_{0F}\)</span> mas <span class="math inline">\(H_{0N}\)</span>?</p>
+<div class="fragment">
+<p>Os seguintes métodos focam na estimação do efeito médio causal, <span class="math inline">\(\tau\)</span>.</p>
 <h3 id="ancova">ANCOVA</h3>
 <ol type="1">
 <li class="fragment">Fisher (1925) propõe ANCOVA para melhorar a eficiência.</li>
 <li class="fragment">A ideia básica é ajustar um modelo de regressão por MQO, <span class="math display">\[y_i = \beta_0 + \beta_1 z_i + \beta_2 x_{i1} + \cdots, \beta_{k+1} x_{ik} + u,\]</span> e considerar <span class="math inline">\(\hat{\beta}_1\)</span> como um estimador para <span class="math inline">\(\tau\)</span>, que será denotado aqui por <span class="math inline">\(\hat{\tau}_F\)</span>.</li>
 </ol>
+</div>
 </section>
 <section id="ajuste-de-regressão-5" class="slide level2">
 <h2>Ajuste de regressão</h2>
@@ -732,9 +735,9 @@ Prof.&nbsp;Carlos Trucíos <br> ctrucios@unicamp.br
 <p><strong>Lin</strong></p>
 </div>
 <div class="callout-content">
-<p><a href="https://www.stat.berkeley.edu/~winston/">Winston Lin</a> na sua tese doutoral (2013), respondeu a algumas das críticas do Freedman e encontrou o seguinte:</p>
+<p><a href="https://www.stat.berkeley.edu/~winston/">Winston Lin</a> na sua tese de doutorado (2013), respondeu a algumas das críticas do Freedman e encontrou o seguinte:</p>
 <ol type="1">
-<li class="fragment">O vies de <span class="math inline">\(\hat{\tau}_F\)</span> é pequeno em grandes amostras a quando <span class="math inline">\(n \rightarrow \infty\)</span>, o vies <span class="math inline">\(\rightarrow 0\)</span>.</li>
+<li class="fragment">O vies de <span class="math inline">\(\hat{\tau}_F\)</span> é pequeno em grandes amostras e quando <span class="math inline">\(n \rightarrow \infty\)</span>, o vies <span class="math inline">\(\rightarrow 0\)</span>.</li>
 <li class="fragment">A eficiência assintótica de <span class="math inline">\(\hat{\tau}_F\)</span> pode ser melhorada utilizando o coeficiente de <span class="math inline">\(Z_i\)</span> resultante da regressão de <span class="math inline">\(\textbf{Y}\)</span> sob <span class="math inline">\((1, \textbf{Z}, \textbf{X}, \textbf{Z} \times \textbf{X})\)</span>, denotaremos o estimador por <span class="math inline">\(\hat{\tau}_L\)</span>. Além disso, o erro padrão EHW é um estimador conservador do verdadeiro erro padrão de <span class="math inline">\(\hat{\tau}_L\)</span> sob CRE.</li>
 <li class="fragment">O erro padrão EHW para <span class="math inline">\(\hat{\tau}_F\)</span> ( regressão de <span class="math inline">\(\textbf{Y}\)</span> sob <span class="math inline">\((1, \textbf{Z}, \textbf{X})\)</span>) é um estimador conservador para o verdadeiro erro padrão de <span class="math inline">\(\hat{\tau}_F\)</span></li>
 </ol>
@@ -808,9 +811,9 @@ Prof.&nbsp;Carlos Trucíos <br> ctrucios@unicamp.br
 <span id="cb3-12"><a href="#cb3-12"></a></span>
 <span id="cb3-13"><a href="#cb3-13"></a><span class="co"># Unadjusted estimator (Neyman)</span></span>
 <span id="cb3-14"><a href="#cb3-14"></a>modelo_unadj <span class="ot">&lt;-</span> <span class="fu">lm</span>(y <span class="sc">~</span> z)</span>
-<span id="cb3-15"><a href="#cb3-15"></a>ace_unadj <span class="ot">&lt;-</span> <span class="fu">coef</span>(modelo_unadj)[<span class="dv">2</span>]</span>
+<span id="cb3-15"><a href="#cb3-15"></a>tau_unadj <span class="ot">&lt;-</span> <span class="fu">coef</span>(modelo_unadj)[<span class="dv">2</span>]</span>
 <span id="cb3-16"><a href="#cb3-16"></a>se_unadj <span class="ot">&lt;-</span> <span class="fu">sqrt</span>(<span class="fu">hccm</span>(modelo_unadj, <span class="at">type =</span> <span class="st">"hc2"</span>)[<span class="dv">2</span>, <span class="dv">2</span>])</span>
-<span id="cb3-17"><a href="#cb3-17"></a><span class="fu">c</span>(ace_unadj, se_unadj)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb3-17"><a href="#cb3-17"></a><span class="fu">c</span>(tau_unadj, se_unadj)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>         z            
@@ -838,9 +841,9 @@ Prof.&nbsp;Carlos Trucíos <br> ctrucios@unicamp.br
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a><span class="co"># Regression adjustment (Lin)</span></span>
 <span id="cb5-2"><a href="#cb5-2"></a>x <span class="ot">&lt;-</span> <span class="fu">scale</span>(x)</span>
 <span id="cb5-3"><a href="#cb5-3"></a>modelo_adj <span class="ot">&lt;-</span> <span class="fu">lm</span>(y <span class="sc">~</span> z<span class="sc">*</span>x)</span>
-<span id="cb5-4"><a href="#cb5-4"></a>ace_adj <span class="ot">&lt;-</span> <span class="fu">coef</span>(modelo_adj)[<span class="dv">2</span>]</span>
+<span id="cb5-4"><a href="#cb5-4"></a>tau_adj <span class="ot">&lt;-</span> <span class="fu">coef</span>(modelo_adj)[<span class="dv">2</span>]</span>
 <span id="cb5-5"><a href="#cb5-5"></a>se_adj <span class="ot">&lt;-</span> <span class="fu">sqrt</span>(<span class="fu">hccm</span>(modelo_adj, <span class="at">type =</span> <span class="st">"hc2"</span>)[<span class="dv">2</span>, <span class="dv">2</span>]) <span class="co"># apenas para manter coerencia com o ajuste anterior</span></span>
-<span id="cb5-6"><a href="#cb5-6"></a><span class="fu">c</span>(ace_adj, se_adj) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb5-6"><a href="#cb5-6"></a><span class="fu">c</span>(tau_adj, se_adj) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>        z           
@@ -866,8 +869,8 @@ Prof.&nbsp;Carlos Trucíos <br> ctrucios@unicamp.br
 <details>
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1"></a><span class="co"># Calculamo os p-valores</span></span>
-<span id="cb7-2"><a href="#cb7-2"></a>pvalor_unadj <span class="ot">&lt;-</span> <span class="dv">2</span> <span class="sc">-</span> <span class="dv">2</span><span class="sc">*</span><span class="fu">pnorm</span>(<span class="fu">abs</span>(ace_unadj<span class="sc">/</span>se_unadj))</span>
-<span id="cb7-3"><a href="#cb7-3"></a>pvalor_adj <span class="ot">&lt;-</span> <span class="dv">2</span> <span class="sc">-</span> <span class="dv">2</span><span class="sc">*</span><span class="fu">pnorm</span>(<span class="fu">abs</span>(ace_adj<span class="sc">/</span>se_adj))</span>
+<span id="cb7-2"><a href="#cb7-2"></a>pvalor_unadj <span class="ot">&lt;-</span> <span class="dv">2</span> <span class="sc">-</span> <span class="dv">2</span><span class="sc">*</span><span class="fu">pnorm</span>(<span class="fu">abs</span>(tau_unadj<span class="sc">/</span>se_unadj))</span>
+<span id="cb7-3"><a href="#cb7-3"></a>pvalor_adj <span class="ot">&lt;-</span> <span class="dv">2</span> <span class="sc">-</span> <span class="dv">2</span><span class="sc">*</span><span class="fu">pnorm</span>(<span class="fu">abs</span>(tau_adj<span class="sc">/</span>se_adj))</span>
 <span id="cb7-4"><a href="#cb7-4"></a><span class="fu">c</span>(pvalor_unadj, pvalor_adj)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
@@ -963,7 +966,7 @@ Prof.&nbsp;Carlos Trucíos <br> ctrucios@unicamp.br
 <div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1"></a><span class="fu">c</span>(<span class="fu">sd</span>(tau_hat_cre), <span class="fu">sd</span>(tau_hat_lim), <span class="fu">sd</span>(tau_hat_rem), <span class="fu">sd</span>(tau_hat_rem_lim))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.03033885 0.01352887 0.01339963 0.01312035</code></pre>
+<pre><code>[1] 0.03064079 0.01403420 0.01395298 0.01370904</code></pre>
 </div>
 </div>
 </div>

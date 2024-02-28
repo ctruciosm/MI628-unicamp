@@ -51,7 +51,7 @@ format:
 |                     | Planejamento         | Análise             |
 |:--------------------|:--------------------:|:-------------------:|
 | Covariável Discreta | Estratificação       | Pós-estratificação  |
-| Covariável Geral    | Re-randomizar        | Ajuste de regressão |
+| Covariável Geral    | Rerandomizar        | Ajuste de regressão |
 
 
 # Rerandomizar
@@ -223,7 +223,7 @@ Quando $0<a<\infty$, a distribuição de $\hat{\tau}$ é bem mais complexa mas �
 
 . . . 
 
-> **Observação:** Se ignorarmos o ReM e ainda utilizarmos o intervalo de confiança baseado na fórmula de variância de Neyman (1923) e na aproximação Normal, este será **excessivamente** conservador e cobre $\tau$ mesmo se os efeitos individuais forem constantes.
+> **Observação:** Se ignorarmos o ReM e ainda utilizarmos o intervalo de confiança baseado na fórmula de variância de Neyman (1923) e na aproximação Normal, este será **excessivamente** conservador.
 
 
 
@@ -284,14 +284,18 @@ Na primeira estratégia, precisamos rodar o modelo de regressão apenas uma vez.
 
 . . . 
 
-> Observação: Um dos **modelos ajustados** mais utilizados é **regressão** linear (por MQO), mas nada impede que outras abordagens tais como regressão logística ou mesmo modelos de _machine learning_ sejam utilizados. 
+> Observação: Um dos **modelos ajustados** mais utilizado é **regressão** linear (por MQO), mas nada impede que outras abordagens tais como regressão logística ou mesmo modelos de _machine learning_ sejam utilizados. 
 
 
 
 
 ## Ajuste de regressão
 
-Os seguintes métodos focam na estiação do efeito médio causal, $\tau$
+E se não quisermos testar $H_{0F}$ mas $H_{0N}$?
+
+. . . 
+
+Os seguintes métodos focam na estimação do efeito médio causal, $\tau$.
 
 
 ### ANCOVA
@@ -319,9 +323,9 @@ David Freedman (2008) reanalisou ANCOVA sob o olhar dos resultados potenciais e 
 
 ::: {.callout-warning}
 ### Lin
-[Winston Lin](https://www.stat.berkeley.edu/~winston/) na sua tese doutoral (2013), respondeu a algumas das críticas do Freedman e encontrou o seguinte:
+[Winston Lin](https://www.stat.berkeley.edu/~winston/) na sua tese de doutorado (2013), respondeu a algumas das críticas do Freedman e encontrou o seguinte:
 
-1. O vies de $\hat{\tau}_F$ é pequeno em grandes amostras a quando $n \rightarrow \infty$, o vies $\rightarrow 0$.
+1. O vies de $\hat{\tau}_F$ é pequeno em grandes amostras e quando $n \rightarrow \infty$, o vies $\rightarrow 0$.
 2. A eficiência assintótica de $\hat{\tau}_F$ pode ser melhorada utilizando o coeficiente de $Z_i$ resultante da regressão de $\textbf{Y}$ sob $(1, \textbf{Z}, \textbf{X}, \textbf{Z} \times \textbf{X})$, denotaremos o estimador por $\hat{\tau}_L$. Além disso, o erro padrão EHW é um estimador conservador do verdadeiro erro padrão de $\hat{\tau}_L$ sob CRE.
 3. O erro padrão EHW para $\hat{\tau}_F$ ( regressão de $\textbf{Y}$ sob $(1, \textbf{Z}, \textbf{X})$) é um estimador conservador para o verdadeiro erro padrão de $\hat{\tau}_F$
 
@@ -374,9 +378,9 @@ x <- dados[, c("female", "gpa0")]
 
 # Unadjusted estimator (Neyman)
 modelo_unadj <- lm(y ~ z)
-ace_unadj <- coef(modelo_unadj)[2]
+tau_unadj <- coef(modelo_unadj)[2]
 se_unadj <- sqrt(hccm(modelo_unadj, type = "hc2")[2, 2])
-c(ace_unadj, se_unadj)
+c(tau_unadj, se_unadj)
 ```
 :::
 
@@ -391,9 +395,9 @@ c(ace_unadj, se_unadj)
 # Regression adjustment (Lin)
 x <- scale(x)
 modelo_adj <- lm(y ~ z*x)
-ace_adj <- coef(modelo_adj)[2]
+tau_adj <- coef(modelo_adj)[2]
 se_adj <- sqrt(hccm(modelo_adj, type = "hc2")[2, 2]) # apenas para manter coerencia com o ajuste anterior
-c(ace_adj, se_adj) 
+c(tau_adj, se_adj) 
 ```
 
 :::
@@ -405,8 +409,8 @@ c(ace_adj, se_adj)
 ```{r}
 #| echo: true
 # Calculamo os p-valores
-pvalor_unadj <- 2 - 2*pnorm(abs(ace_unadj/se_unadj))
-pvalor_adj <- 2 - 2*pnorm(abs(ace_adj/se_adj))
+pvalor_unadj <- 2 - 2*pnorm(abs(tau_unadj/se_unadj))
+pvalor_adj <- 2 - 2*pnorm(abs(tau_adj/se_adj))
 c(pvalor_unadj, pvalor_adj)
 ```
 

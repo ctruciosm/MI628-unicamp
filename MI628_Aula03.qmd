@@ -195,13 +195,13 @@ O teorema garante a normalidade e, ao mesmo tempo, que o estimador da variância
 
 . . . 
 
-Pela relação intervalo de confiança-teste de hipóteses, podemos utilizar o intervalo para testar a _hipótese nula fraca_: $$H_{0N}: \tau = 0$$
+Pela relação intervalo de confiança-teste de hipóteses, podemos utilizar o intervalo para testar a _hipótese nula fraca_: $$H_{0N}: \tau = 0 \quad \text{ou equivalentemente} \quad \bar{Y}(1) = \bar{Y}(0)$$
 
 
 . . .
 
 
-[**Observação:** $H_{0F}$ e $H_{0N}$ são conhecidas como hipótese nula forte e fraca, respectivamente.]{style="color:gray;"}
+[**Obs:** $H_{0F}$ e $H_{0N}$ são conhecidas como hipótese nula forte e fraca, respectivamente.]{style="color:gray;"}
 
 
 # Ilustração
@@ -403,6 +403,7 @@ for (i in 1:10^4) {
   cobertura[i] <- ifelse(lim_inf[i] < tau && tau < lim_sup[i], 1, 0)
   est[i] <- (tau_hat_p[i] - tau) / sqrt(V_hat_p[i])
 }
+c(mean(V_hat_p), mean(cobertura))
 ```
 
 :::

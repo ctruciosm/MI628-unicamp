@@ -164,7 +164,7 @@ $$\begin{align}
 ::: {.callout-important}
 ### Observação:
 
-Antes do experimento, ambos resultados potenciais podem ser observados. Contudo, depois do experimento um resultado potencial torna-se o _resultado observado_ e o outro torna-se o _resultado contrafactual_.
+Antes do experimento, temos os resultados potenciais. Depois do experimento um resultado potencial torna-se o _resultado observado_ e o outro torna-se o _resultado contrafactual_.
 :::
 
 . . . 
@@ -288,7 +288,7 @@ Estamos interessados em testar se o efeito causal individual é nulo em todos os
 
 . . . 
 
-O FRT é da forma $$T = T(\textbf{Z}, \textbf{Y}).$${#eq-2} em que $\textbf{Y}$ é o vetor de resultados observado e $\textbf{Z}$ o vetor de tratamentos.
+O FRT é da forma $$T = T(\textbf{Z}, \textbf{Y}).$${#eq-2} em que $\textbf{Y} = (Y_1, \cdots, Y_n)$ é o vetor de resultados observados ($Y_i = Z_i Y_i(1) + (1-Z_i) Y_i(0)$) e $\textbf{Z}$ o vetor de tratamentos.
 
 . . . 
 
@@ -338,6 +338,8 @@ M <- choose(n, n1)
 Table <- cbind(n, n1, M)
 knitr::kable(Table, col.names = c("n", "$n_1$", "M"), escape = FALSE, row.names = FALSE) %>% kable_styling(font_size = 16, full_width = TRUE)
 ```
+
+. . . 
 
 
 Uma alternativa é utilizar $R$ amostras aleatórias dos possíveis valores do vetor de tratamentos (ou, equivalentemente, $R$ permutações aleatórias de $\textbf{Z}$) e aproximar $p$ por $$\hat{p} = R^{-1} \displaystyle \sum_{r = 1}^R I\{ T(\textbf{z}^r, \textbf{Y}) \geq T(\textbf{Z}, \textbf{Y}) \}.$$
@@ -439,14 +441,20 @@ $$\dfrac{\bar{X} - \bar{Y}}{\sqrt{\Big[\dfrac{1}{n_x} + \dfrac{1}{n_y} \Big] \df
 Assim, $\sqrt{\Big[\frac{1}{n_x} + \frac{1}{n_y} \Big] \dfrac{\displaystyle \sum_{i = 1}^{n_x}(X_i - \bar{X})^2 + \sum_{j = 1}^{n_y}(Y_j - \bar{Y})^2}{n_x + n_y - 2}}$ e $\sqrt{\dfrac{n}{n_1 n_0}s^2}$ são assintóticamente equivalentes. Ou seja, o p-valor aproximado do **Caso 1: Diferença de médias** é próximo do obtido através do clássico teste t para diferencia de médias quando as variâncias são desconhecidas e iguais!
 
 
-. . .
+## FRT: Fisher Randomization Test
 
-Não apenas a diferencia de médias pode ser utilizada no contexto FRT. O teste de Wilcoxon e o teste de Kolmogorov-Smirnov são outros excelentes exemplos.
+- Não apenas a diferencia de médias pode ser utilizada no contexto de FRT (ou equivalentemente $\tau \Big / \sqrt{\dfrac{n}{n_1 n_0}S^2}$). 
+- Outras estatísticas de teste também podem ser consideradas:
+  * Soma de postos de Wilcoxon: $W = \displaystyle \sum_{i = 1}^n Z_i R_i,$ em que $R_i$ é posto de $Y_i$.
+  * Estatística Studentizada: $t = \dfrac{\hat{\bar{Y}}(1) - \hat{\bar{Y}}(0)}{\sqrt{\hat{S}^2(1) \big /n_1 + \hat{S}^2(0) \big / n_0}},$ em que $\hat{S}^2(1) = (n_1 - 1)^{-1} \displaystyle \sum_{Z_i = 1} (Y_i - \hat{\bar{Y}}(1))^2$ e $\hat{S}^2(0) = (n_0- 1)^{-1} \displaystyle \sum_{Z_i = 0} (Y_i - \hat{\bar{Y}}(0))^2.$ 
+  * Etc.
 
 
 ## FRT: Fisher Randomization Test
 
-#### Caso 1: Diferença de médias.
+
+::: {.callout-note}
+### Implementação
 
 O _dataset_ `lalonde` do pacote `Matching` contém o vetor tratamento (treat) indicando se a unidade foi, aleatoriamente, atribuida a um treinamento ou não, bem como um vetor representando o salario em 1978 (re78). Queremos saber se a participação no treinamento teve efeito ou não no salario de algum dos trabalhadores.
 
@@ -465,10 +473,13 @@ tau <- mean(y[z == 1]) - mean(y[z == 0])
 s2 = var(y)
 ```
 
+:::
+
 
 ## FRT: Fisher Randomization Test
 
-#### Caso 1: Diferença de médias.
+::: {.callout-note}
+### Implementação
 
 ```{r}
 #| echo: true
@@ -484,7 +495,7 @@ for (i in 1:mc) {
   tau_permut <- mean(y[zpermut == 1]) - mean(y[zpermut == 0])
   est_teste_frt_mc[i] <- tau_permut/sqrt(n*s2/(n1*n0))
 }
-pvalor_frt_mc <- mean(abs(est_teste_frt_mc) > est_teste_frt)
+pvalor_frt_mc <- mean(abs(est_teste_frt_mc) > abs(est_teste_frt))
 
 # FRT clássico teste t para dif medias 
 est_test_frt_classico_t <- t.test(y[z == 1], y[z == 0], var.equal = TRUE)$statistic
@@ -496,13 +507,15 @@ for (i in 1:mc) {
   z_permut <- sample(z)
   est_test_frt_classico_t_mc[i] <- t.test(y[z_permut == 1], y[z_permut == 0], var.equal = TRUE)$statistic
 }
-pvalor_frt_classico_t_mc <- mean(abs(est_test_frt_classico_t_mc) > est_test_frt_classico_t)
+pvalor_frt_classico_t_mc <- mean(abs(est_test_frt_classico_t_mc) > abs(est_test_frt_classico_t))
 ```
 
+:::
 
 ## FRT: Fisher Randomization Test
 
-#### Caso 1: Diferença de médias.
+::: {.callout-note}
+### Implementação
 
 
 ```{r}
@@ -513,7 +526,7 @@ c(pvalor_frt_clt,
   pvalor_frt_classico_t_mc)
 ```
 
-
+:::
 
 
 ## Referências

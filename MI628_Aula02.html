@@ -564,7 +564,7 @@ Ademais,
 <p><strong>Observação:</strong></p>
 </div>
 <div class="callout-content">
-<p>Antes do experimento, ambos resultados potenciais podem ser observados. Contudo, depois do experimento um resultado potencial torna-se o <em>resultado observado</em> e o outro torna-se o <em>resultado contrafactual</em>.</p>
+<p>Antes do experimento, temos os resultados potenciais. Depois do experimento um resultado potencial torna-se o <em>resultado observado</em> e o outro torna-se o <em>resultado contrafactual</em>.</p>
 </div>
 </div>
 </div>
@@ -635,7 +635,7 @@ Ademais,
 <span id="cb2-4"><a href="#cb2-4"></a><span class="fu">mean</span>(Y[Z <span class="sc">==</span> <span class="dv">1</span>]) <span class="sc">-</span> <span class="fu">mean</span>(Y[Z <span class="sc">==</span> <span class="dv">0</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.7122405</code></pre>
+<pre><code>[1] 0.657946</code></pre>
 </div>
 </div>
 </div><div class="column" style="width:50%;">
@@ -649,7 +649,7 @@ Ademais,
 <span id="cb4-4"><a href="#cb4-4"></a><span class="fu">mean</span>(Y[Z <span class="sc">==</span> <span class="dv">1</span>]) <span class="sc">-</span> <span class="fu">mean</span>(Y[Z <span class="sc">==</span> <span class="dv">0</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] -0.3799159</code></pre>
+<pre><code>[1] -0.4883566</code></pre>
 </div>
 </div>
 </div>
@@ -698,7 +698,7 @@ Ademais,
 <h2>FRT: Fisher Randomization Test</h2>
 <p>Estamos interessados em testar se o efeito causal individual é nulo em todos os casos, ou seja, <span class="math display">\[H_{0F}: Y_i(1) = Y_i(0) \quad \forall i = 1, \cdots, n.\]</span></p>
 <div class="fragment">
-<p>O FRT é da forma <span id="eq-2"><span class="math display">\[T = T(\textbf{Z}, \textbf{Y}). \qquad(2)\]</span></span> em que <span class="math inline">\(\textbf{Y}\)</span> é o vetor de resultados observado e <span class="math inline">\(\textbf{Z}\)</span> o vetor de tratamentos.</p>
+<p>O FRT é da forma <span id="eq-2"><span class="math display">\[T = T(\textbf{Z}, \textbf{Y}). \qquad(2)\]</span></span> em que <span class="math inline">\(\textbf{Y} = (Y_1, \cdots, Y_n)\)</span> é o vetor de resultados observados (<span class="math inline">\(Y_i = Z_i Y_i(1) + (1-Z_i) Y_i(0)\)</span>) e <span class="math inline">\(\textbf{Z}\)</span> o vetor de tratamentos.</p>
 </div>
 <div class="fragment">
 <div class="callout callout-warning callout-captioned callout-style-default">
@@ -777,7 +777,9 @@ Ademais,
 
 </div>
 </div>
+<div class="fragment">
 <p>Uma alternativa é utilizar <span class="math inline">\(R\)</span> amostras aleatórias dos possíveis valores do vetor de tratamentos (ou, equivalentemente, <span class="math inline">\(R\)</span> permutações aleatórias de <span class="math inline">\(\textbf{Z}\)</span>) e aproximar <span class="math inline">\(p\)</span> por <span class="math display">\[\hat{p} = R^{-1} \displaystyle \sum_{r = 1}^R I\{ T(\textbf{z}^r, \textbf{Y}) \geq T(\textbf{Z}, \textbf{Y}) \}.\]</span></p>
+</div>
 <div class="fragment">
 <p>Na prática, valores de <span class="math inline">\(R = 10^4\)</span> ou <span class="math inline">\(R = 10^5\)</span> costumam ser suficiente.</p>
 </div>
@@ -861,13 +863,30 @@ Ademais,
 <h2>FRT: Fisher Randomization Test</h2>
 <h4 id="caso-1-diferença-de-médias.-5">Caso 1: Diferença de médias.</h4>
 <p>Assim, <span class="math inline">\(\sqrt{\Big[\frac{1}{n_x} + \frac{1}{n_y} \Big] \dfrac{\displaystyle \sum_{i = 1}^{n_x}(X_i - \bar{X})^2 + \sum_{j = 1}^{n_y}(Y_j - \bar{Y})^2}{n_x + n_y - 2}}\)</span> e <span class="math inline">\(\sqrt{\dfrac{n}{n_1 n_0}s^2}\)</span> são assintóticamente equivalentes. Ou seja, o p-valor aproximado do <strong>Caso 1: Diferença de médias</strong> é próximo do obtido através do clássico teste t para diferencia de médias quando as variâncias são desconhecidas e iguais!</p>
-<div class="fragment">
-<p>Não apenas a diferencia de médias pode ser utilizada no contexto FRT. O teste de Wilcoxon e o teste de Kolmogorov-Smirnov são outros excelentes exemplos.</p>
-</div>
 </section>
 <section id="frt-fisher-randomization-test-10" class="slide level2">
 <h2>FRT: Fisher Randomization Test</h2>
-<h4 id="caso-1-diferença-de-médias.-6">Caso 1: Diferença de médias.</h4>
+<ul>
+<li class="fragment">Não apenas a diferencia de médias pode ser utilizada no contexto de FRT (ou equivalentemente <span class="math inline">\(\tau \Big / \sqrt{\dfrac{n}{n_1 n_0}S^2}\)</span>).</li>
+<li class="fragment">Outras estatísticas de teste também podem ser consideradas:
+<ul>
+<li class="fragment">Soma de postos de Wilcoxon: <span class="math inline">\(W = \displaystyle \sum_{i = 1}^n Z_i R_i,\)</span> em que <span class="math inline">\(R_i\)</span> é posto de <span class="math inline">\(Y_i\)</span>.</li>
+<li class="fragment">Estatística Studentizada: <span class="math inline">\(t = \dfrac{\hat{\bar{Y}}(1) - \hat{\bar{Y}}(0)}{\sqrt{\hat{S}^2(1) \big /n_1 + \hat{S}^2(0) \big / n_0}},\)</span> em que <span class="math inline">\(\hat{S}^2(1) = (n_1 - 1)^{-1} \displaystyle \sum_{Z_i = 1} (Y_i - \hat{\bar{Y}}(1))^2\)</span> e <span class="math inline">\(\hat{S}^2(0) = (n_0- 1)^{-1} \displaystyle \sum_{Z_i = 0} (Y_i - \hat{\bar{Y}}(0))^2.\)</span></li>
+<li class="fragment">Etc.</li>
+</ul></li>
+</ul>
+</section>
+<section id="frt-fisher-randomization-test-11" class="slide level2">
+<h2>FRT: Fisher Randomization Test</h2>
+<div class="callout callout-note callout-captioned callout-style-default">
+<div class="callout-body">
+<div class="callout-caption">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Implementação</strong></p>
+</div>
+<div class="callout-content">
 <p>O <em>dataset</em> <code>lalonde</code> do pacote <code>Matching</code> contém o vetor tratamento (treat) indicando se a unidade foi, aleatoriamente, atribuida a um treinamento ou não, bem como um vetor representando o salario em 1978 (re78). Queremos saber se a participação no treinamento teve efeito ou não no salario de algum dos trabalhadores.</p>
 <div class="cell" data-layout-align="center">
 <details>
@@ -884,10 +903,21 @@ Ademais,
 <span id="cb6-10"><a href="#cb6-10"></a>s2 <span class="ot">=</span> <span class="fu">var</span>(y)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
+</div>
+</div>
+</div>
 </section>
-<section id="frt-fisher-randomization-test-11" class="slide level2">
+<section id="frt-fisher-randomization-test-12" class="slide level2">
 <h2>FRT: Fisher Randomization Test</h2>
-<h4 id="caso-1-diferença-de-médias.-7">Caso 1: Diferença de médias.</h4>
+<div class="callout callout-note callout-captioned callout-style-default">
+<div class="callout-body">
+<div class="callout-caption">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Implementação</strong></p>
+</div>
+<div class="callout-content">
 <div class="cell" data-layout-align="center">
 <details>
 <summary>Code</summary>
@@ -903,7 +933,7 @@ Ademais,
 <span id="cb7-10"><a href="#cb7-10"></a>  tau_permut <span class="ot">&lt;-</span> <span class="fu">mean</span>(y[zpermut <span class="sc">==</span> <span class="dv">1</span>]) <span class="sc">-</span> <span class="fu">mean</span>(y[zpermut <span class="sc">==</span> <span class="dv">0</span>])</span>
 <span id="cb7-11"><a href="#cb7-11"></a>  est_teste_frt_mc[i] <span class="ot">&lt;-</span> tau_permut<span class="sc">/</span><span class="fu">sqrt</span>(n<span class="sc">*</span>s2<span class="sc">/</span>(n1<span class="sc">*</span>n0))</span>
 <span id="cb7-12"><a href="#cb7-12"></a>}</span>
-<span id="cb7-13"><a href="#cb7-13"></a>pvalor_frt_mc <span class="ot">&lt;-</span> <span class="fu">mean</span>(<span class="fu">abs</span>(est_teste_frt_mc) <span class="sc">&gt;</span> est_teste_frt)</span>
+<span id="cb7-13"><a href="#cb7-13"></a>pvalor_frt_mc <span class="ot">&lt;-</span> <span class="fu">mean</span>(<span class="fu">abs</span>(est_teste_frt_mc) <span class="sc">&gt;</span> <span class="fu">abs</span>(est_teste_frt))</span>
 <span id="cb7-14"><a href="#cb7-14"></a></span>
 <span id="cb7-15"><a href="#cb7-15"></a><span class="co"># FRT clássico teste t para dif medias </span></span>
 <span id="cb7-16"><a href="#cb7-16"></a>est_test_frt_classico_t <span class="ot">&lt;-</span> <span class="fu">t.test</span>(y[z <span class="sc">==</span> <span class="dv">1</span>], y[z <span class="sc">==</span> <span class="dv">0</span>], <span class="at">var.equal =</span> <span class="cn">TRUE</span>)<span class="sc">$</span>statistic</span>
@@ -915,13 +945,24 @@ Ademais,
 <span id="cb7-22"><a href="#cb7-22"></a>  z_permut <span class="ot">&lt;-</span> <span class="fu">sample</span>(z)</span>
 <span id="cb7-23"><a href="#cb7-23"></a>  est_test_frt_classico_t_mc[i] <span class="ot">&lt;-</span> <span class="fu">t.test</span>(y[z_permut <span class="sc">==</span> <span class="dv">1</span>], y[z_permut <span class="sc">==</span> <span class="dv">0</span>], <span class="at">var.equal =</span> <span class="cn">TRUE</span>)<span class="sc">$</span>statistic</span>
 <span id="cb7-24"><a href="#cb7-24"></a>}</span>
-<span id="cb7-25"><a href="#cb7-25"></a>pvalor_frt_classico_t_mc <span class="ot">&lt;-</span> <span class="fu">mean</span>(<span class="fu">abs</span>(est_test_frt_classico_t_mc) <span class="sc">&gt;</span> est_test_frt_classico_t)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb7-25"><a href="#cb7-25"></a>pvalor_frt_classico_t_mc <span class="ot">&lt;-</span> <span class="fu">mean</span>(<span class="fu">abs</span>(est_test_frt_classico_t_mc) <span class="sc">&gt;</span> <span class="fu">abs</span>(est_test_frt_classico_t))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
+</div>
+</div>
+</div>
 </section>
-<section id="frt-fisher-randomization-test-12" class="slide level2">
+<section id="frt-fisher-randomization-test-13" class="slide level2">
 <h2>FRT: Fisher Randomization Test</h2>
-<h4 id="caso-1-diferença-de-médias.-8">Caso 1: Diferença de médias.</h4>
+<div class="callout callout-note callout-captioned callout-style-default">
+<div class="callout-body">
+<div class="callout-caption">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Implementação</strong></p>
+</div>
+<div class="callout-content">
 <div class="cell" data-layout-align="center">
 <details>
 <summary>Code</summary>
@@ -931,7 +972,10 @@ Ademais,
 <span id="cb8-4"><a href="#cb8-4"></a>  pvalor_frt_classico_t_mc)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.004906490 0.004560000 0.004787524 0.004160000</code></pre>
+<pre><code>[1] 0.004906490 0.004360000 0.004787524 0.004320000</code></pre>
+</div>
+</div>
+</div>
 </div>
 </div>
 </section>

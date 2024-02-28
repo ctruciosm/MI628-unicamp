@@ -451,13 +451,13 @@ Prof.&nbsp;Carlos Trucíos <br> ctrucios@unicamp.br
 <p>Um CRE atribui <span class="math inline">\(n_1\)</span> unidades ao tratamento e <span class="math inline">\(n_0\)</span> ao controle (placebo). Assim, <span class="math display">\[n_{[k]1} = \# \{ i: X_i = k, Z_i = 1\} \quad e \quad n_{[k]0} = \# \{ i: X_i = k, Z_i = 0\},\]</span> são o número de unidades nos grupos de tratamento e controle no estrato <span class="math inline">\(k\)</span>, respectivamente.</p>
 </div>
 <div class="fragment">
-<p>Para algum <span class="math inline">\(k\)</span>, é possível, com alta probabilidade, que <span class="math inline">\(\dfrac{n_{[k]1}}{n} - \dfrac{n_{[k]0}}{n}\)</span> seja grande.</p>
+<p>Para algum <span class="math inline">\(k\)</span>, é possível, com alta probabilidade, que <span class="math inline">\(\dfrac{n_{[k]1}}{n_1} - \dfrac{n_{[k]0}}{n_0}\)</span> seja grande.</p>
 </div>
 </section>
 <section id="estratificação-2" class="slide level2">
 <h2>Estratificação</h2>
 <center>
-<span style="color:blue;"><strong>Qual o problema em termos, para algum estrato <span class="math inline">\(k\)</span>, <span class="math inline">\(n_{[k]1} \big / n - n_{[k]0} \big / n\)</span> grande?</strong></span>
+<span style="color:blue;"><strong>Qual o problema em termos, para algum estrato <span class="math inline">\(k\)</span>, <span class="math inline">\(n_{[k]1} \big / n_1 - n_{[k]0} \big / n_0\)</span> grande?</strong></span>
 </center>
 <div class="fragment">
 <ul>
@@ -690,14 +690,14 @@ No SRE, as unidades são agrupadas em estratos segundo alguma caracteristica (pr
 <span id="cb6-4"><a href="#cb6-4"></a><span class="fu">mean</span>(estatisticas[, <span class="dv">1</span>] <span class="sc">&lt;</span> ee_obs)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.0013</code></pre>
+<pre><code>[1] 0.0014</code></pre>
 </div>
 <details>
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1"></a><span class="fu">mean</span>(estatisticas[, <span class="dv">2</span>] <span class="sc">&lt;</span> wilcoxon_obs)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 1e-04</code></pre>
+<pre><code>[1] 5e-04</code></pre>
 </div>
 </div>
 </section>
@@ -789,7 +789,7 @@ Assim, o estimador <span class="math inline">\(\hat{\tau}_S = \displaystyle \sum
 <ul>
 <li class="fragment">Pós-estratificação é uma alternativa à estratificação quando esta última não é possível.</li>
 <li class="fragment">Quando estratificação não é realizada, uma prática comúm é ajustar por covariáveis.</li>
-<li class="fragment">Pós-estratificação é uma forma simples de justar por covariáveis.
+<li class="fragment">Pós-estratificação é uma forma simples de ajustar por covariáveis.
 <ul>
 <li class="fragment">O pesquisador estratifica unidades experimentais com uma covariável de pré-tratamento,</li>
 <li class="fragment">estima os efeitos do tratamento dentro dos estratos,</li>
@@ -953,12 +953,12 @@ Assim, o estimador <span class="math inline">\(\hat{\tau}_S = \displaystyle \sum
 </section>
 <section id="pós-estratificação-7" class="slide level2">
 <h2>Pós-estratificação</h2>
-<h4 id="como-saber-se-devo-ou-não-estratificar-pós-estratificar-ou-não">Como saber se devo ou não estratificar (pós-estratificar) ou não?</h4>
+<h4 id="como-saber-se-devo-ou-não-estratificar-pós-estratificar">Como saber se devo ou não estratificar (pós-estratificar)?</h4>
 <center>
 <img data-src="imagens/dica_ouro.jpg">
 </center>
 <center>
-Se <span class="math inline">\(X\)</span> estiver associada a <span class="math inline">\(Y\)</span> e se <span class="math inline">\(X\)</span> for exógena, então estratificação (pós-estratificação) trará ganhos quandos comparados com CRE!.
+Se <span class="math inline">\(X\)</span> estiver associada a <span class="math inline">\(Y\)</span> e se <span class="math inline">\(X\)</span> não é afetada pelo tratamento, então estratificação (pós-estratificação) trará ganhos quandos comparados com CRE!.
 </center>
 </section></section>
 <section>
@@ -972,7 +972,7 @@ Se <span class="math inline">\(X\)</span> estiver associada a <span class="math 
 <ul>
 <li class="fragment">Em geral, o ganho é na estimação da variância (se bem conduzida, estratificação reduz a variância). Por exemplo, pode-se mostrar que, se <span class="math inline">\(e_{[k]} = e\)</span> <span class="math inline">\(\forall k\)</span>, <span class="math display">\[\mathbb{V}_{CRE}(\hat{\tau}) \geq \mathbb{V}_{SRE}(\hat{\tau}_S).\]</span></li>
 <li class="fragment">Se a covariável for preditiva para os resultados potenciais, o ganho na eficiência do SRE em comparação com CRE é claro.</li>
-<li class="fragment">No caso extremo de que a covariável não for preditiva para os resultados potenciais, em grandes amostras o ganho é zero. Ademais, em pequenas amostras, CRE pode ser mais eficiente do que SRE (este é o sentido da frase do Box mostrada no início da aula).</li>
+<li class="fragment">No caso extremo de que a covariável não for preditiva para os resultados potenciais, em grandes amostras o ganho é zero. Em pequenas amostras, CRE pode ser mais eficiente do que SRE (este é o sentido da frase do Box mostrada no início da aula).</li>
 <li class="fragment">A variável utilizada como estrato não é afetado pelo tratamento.</li>
 </ul>
 </section>
