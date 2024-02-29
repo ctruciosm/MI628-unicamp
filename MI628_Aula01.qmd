@@ -88,7 +88,7 @@ format:
 
 <center>
 
-[Correlação e causalidade podem co-existir, mas correlação não implica causalidade.]{style="color:red;"}
+[Correlação e causalidade podem co-existir, mas correlação não implica (necesariamente) causalidade.]{style="color:red;"}
 
 
 </center>
@@ -182,7 +182,7 @@ Algumas vezes, correlação pode implicar causalidade, mas outras....
 
 
 <center>
-[Nesta matéria (ME920/MI626) aprenderemos diversas técnicas que nos permitirão tirar conclusões do tipo causa-efeito.]{style="color:red;"}
+[Nesta matéria (ME920/MI628) aprenderemos diversas técnicas que nos permitirão tirar conclusões do tipo causa-efeito.]{style="color:red;"}
 </center>
 
 
@@ -396,7 +396,7 @@ Devemos olhar para os dados agregados ou desagregados?
 
 #### Exemplo 4 [Pedras no rim - Charig et al. (1986)]
 
-Dados de 700 pacientes com pedras no rim foram coletados. Seja $Z$ o tratameno (1: procedimento cirúrgico invasivo, 0: procedimento menor) e seja $Y$ o resultado (1: sucesso, 0: fracasso). A Tabela de continguência é apresentada a seguir:
+Dados de 700 pacientes com pedras no rim foram coletados. Seja $Z$ o tratameno (1: procedimento cirúrgico invasivo, 0: procedimento menor) e seja $Y$ o resultado (1: sucesso, 0: fracasso). A Tabela de contingência é apresentada a seguir:
 
 |         | $Y = 1$   | $Y = 0$   |
 |:-------:|:---------:|:---------:|
@@ -473,7 +473,7 @@ $${\rm \widehat{RD}} = \dfrac{n_{11}}{n_{11} + n_{10}} - \dfrac{n_{01}}{n_{01} +
 . . . 
 
 - O tratamento 0 parece melhor, ou seja, procedimentos menores levam a uma maior quantidade de sucessos comparados com procedimentos cirúrgicos invasivos.
-- Contudo, os dados não vem de um RCT (randomized controlled trial). Isso implica que pacientes recebendo o tratamento 1 podem ser bem diferentes do que pacientes recebendo o tratamento 0.
+- Contudo, os dados não vem de um experimento aleatorizado. Isso implica que pacientes recebendo o tratamento 1 podem ser bem diferentes do que pacientes recebendo o tratamento 0.
 - Na prática, alguns pacientes tem casos mais graves (pedras maiores) do que outros. 
 
 
