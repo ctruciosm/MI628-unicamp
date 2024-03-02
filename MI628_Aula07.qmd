@@ -1,6 +1,6 @@
 ---
 title: "Inferência Causal"
-subtitle: "Experimentos Randomizados"
+subtitle: "Experimentos Randomizados: comentários finais"
 author: "Prof. Carlos Trucíos </br> ctrucios@unicamp.br"
 Email: "ctrucios@unicamp.br"
 institute: "Instituto de Matemática, Estatística e Computação Científica (IMECC), </br> Universidade Estadual de Campinas (UNICAMP)."
@@ -36,15 +36,11 @@ format:
 
 
 
-amsmath'
-
-
-
 # Introdução
 ## Introdução
 
 
-- Já estudamos as abordagens de Fisher e Neyman sob diferentes mecanismos de atribuição de tratamento (CRE, SRE, rerandomização, MPE).
+- Já estudamos as abordagens de Fisher e Neyman sob diferentes mecanismos de atribuição de tratamento (CRE, SRE, ReM, MPE).
 - Vimos as diferenças entre ambas as abordagens (FRT vs. Neyman).
 - Existe um acalorda discussão de FRT vs. Neyman (ver [Sabbaghi e Rubin (2014)](https://projecteuclid.org/journals/statistical-science/volume-29/issue-2/Comments-on-the-NeymanFisher-Controversy-and-Its-Consequences/10.1214/13-STS454.full)).
 
@@ -65,7 +61,7 @@ Existem diversas escolhas de estatística de teste para o FRT. Contudo, existe u
 
 ::: {.callout-important}
 ### Resultado
-[Ding e Dasgupta (2017)](https://academic.oup.com/biomet/article/105/1/45/4582744) mostram que quando utilizado o FRT com estatística $t$ Studentizada:
+[Ding e Dasgupta (2017)](https://academic.oup.com/biomet/article/105/1/45/4582744) mostram que o FRT com estatística $t$ Studentizada fornece:
 
 ::: {.nonincremental}
 - $p_{FRT}$ exato sob $H_{0F}$
@@ -97,7 +93,7 @@ Existem diversas escolhas de estatística de teste para o FRT. Contudo, existe u
 ::: {.column width="60%"}
 
 <center>
-["Quando utilizo a estatística $t$ Studentizada, o $p_{FRT}$ será asintóticamente conservador sob $H_{0N}$"]{style="color:red;"}
+["Quando utilizo a estatística $t$ Studentizada, o $p_{FRT}$ será asintóticamente conservador sob $H_{0N}$... `r emo::ji("doubt")`"]{style="color:red;"}
 </center>
 
 ::: {.nonincremental}
@@ -135,18 +131,47 @@ No caso do FRT, sob $H_{0F}$, $Y_i(1) = Y_i(0) = Y_i$, ou seja $\tau_i = 0, \for
 . . . 
 
 
+<center>
+[O que isso significa?]{style="color:red;"}
+</center>
+
+## Unificando
+
+
+
+```{r}
+#| echo: true
+#| warning: false
+#| message: false
+library(ggplot2)
+a <- seq(-4, 4, by = 0.001)
+n <- length(a)
+dados <- data.frame(
+  distri = rep(c("N(0, 1)", "N(0, 0.9)", "N(0, 0.8)"), each = n),
+  x = rep(a, 3),
+  y = c(dnorm(a), dnorm(a, 0, 0.9), dnorm(a, 0, 0.8)))
+ggplot(data = dados) + geom_line(aes(x, y, color = distri)) + 
+  ylab("f(x)") + 
+  theme(legend.title = element_blank()) 
+```
+
+. . . 
 
 Como $N(0,1)$ é mais disperso do que $N(0,C^2)$, o $p_{FRT}$ baseado em $t$ é asintóticamente mais conservador.
 
 
-. . . 
 
-[De forma semelhante, na presença de covariáveis, ![Zhao e Ding (2021)](https://www.sciencedirect.com/science/article/pii/S0304407621001457?casa_token=7bsmFrDoCYEAAAAA:GTtOlng1bM-D7HOhfGpRyHVNPujjEfKREWUrpmqKgsTGvjhtrZWwI-bzcZbIiUj_wPOl_wDpEaY) recomedam utilizar FRT com $$t_L = \dfrac{\hat{\tau}_L}{\sqrt{\hat{V}_L}},$$ em que $\hat{\tau}_L$ é o estimador de Lin (2013.)]{style="color:blue;"}
+## Unificando
+
+
+
+
+[De forma semelhante, na presença de covariáveis, [Zhao e Ding (2021)](https://www.sciencedirect.com/science/article/pii/S0304407621001457?casa_token=7bsmFrDoCYEAAAAA:GTtOlng1bM-D7HOhfGpRyHVNPujjEfKREWUrpmqKgsTGvjhtrZWwI-bzcZbIiUj_wPOl_wDpEaY) recomedam utilizar FRT com $$t_L = \dfrac{\hat{\tau}_L}{\sqrt{\hat{V}_L}},$$ em que $\hat{\tau}_L$ é o estimador de Lin (2013.)]{style="color:blue;"}
 
 
 ## Unificando
 
-Baseados nos trabalhos de Ding e Dascupta (2017) e Zhao e Ding (2021), podemos resumir as recomendações no seguinte quadro:
+Baseados nos trabalhos de Ding e Dasgupta (2017) e Zhao e Ding (2021), podemos resumir as recomendações em:
 
 
 
@@ -176,14 +201,14 @@ Isto todo, traz algumas vantagens:
 
 ::: {.nonincremental}
 - é focado no planejamento do experimento.
-- requer suposições mínimas no PGD dos resultados
+- requer suposições mínimas no PGD dos resultados.
 :::
 
 
 . . . 
 
 
-Contudo, esta abordagem é frequentemente criticada por ter _validez interna_ mas não necessariamente _validez externa_.
+Contudo, esta abordagem é frequentemente criticada por ter _validez interna_ mas não necessariamente _validez externa_ `r emo::ji("sad")`.
 
 
 ## População finita >>> Super população
@@ -207,7 +232,9 @@ Sempre estamos interesados em validez externa e não apenas na interna. Contudo,
 . . . 
 
 
-**São estes resultados (desenvolvidos sob a perspectiva de população finita), generalizáveis para super populações (população toda)?**
+<center>
+[**São estes resultados (desenvolvidos sob a perspectiva de população finita), generalizáveis para super populações (população toda)?**]{style="color:blue;"}
+</center>
 
 
 ## População finita >>> Super população
@@ -246,11 +273,10 @@ $$Z  \perp\!\!\!\perp \{Y(1), Y(0), X \}.$$
 
 ## População finita >>> Super população
 
-O efeito causal médio da população pode ser escrito como
-\begin{align*}
-\tau &= \mathbb{E}(Y(1) | Z = 1) - \mathbb{E}(Y(0) | Z = 0) \\
-      &= \mathbb{E}(Y | Z = 1) - \mathbb{E}(Y | Z = 0) 
-\end{align*}
+Sob CRE, o efeito causal médio da população pode ser escrito como
+$$
+\tau = \mathbb{E}(Y(1) | Z = 1) - \mathbb{E}(Y(0) | Z = 0) = \mathbb{E}(Y | Z = 1) - \mathbb{E}(Y | Z = 0)
+$$
 
 
 . . . 
@@ -259,7 +285,176 @@ Um estimador de momentos é dado por:
 
 $$\hat{\tau} = {n_1}^{-1} \displaystyle \sum_{i = 1}^{n} Z_i Y_i - {n_0}^{-1} \displaystyle \sum_{i = 1}^{n} (1 - Z_i) Y_i$$
 
-- $\mathbb{E}(\hat{\tau} | \textbf{Z})$
+- $\mathbb{E}(\hat{\tau} | \textbf{Z}) = \tau$
+- $\mathbb{V}(\hat{\tau} | \textbf{Z}) = \mathbb{V}(Y(1)) \big / n_1 + \mathbb{V}(Y(0)) \big / n_0$
+
+
+. . . 
+
+Sob IID, a variância amostral é não viesado para a variância populacional. Ou seja, o estimador (conservador) de Neyman é não viesado para $\mathbb{V}(\hat{\tau}$ (**o problema de ser um estimador conservador vá embora quando pensamos em super populações!**)
+
+
+## População finita >>> Super população
+
+### Ajuste por covariável
+
+
+\begin{align*}
+  Y(1) & = \delta_1 + \beta_1'X + \varepsilon(1), \\
+  Y(0) & = \delta_0 + \beta_0'X + \varepsilon(0). \\
+\end{align*}
+
+. . . 
+
+$$\tau = \mathbb{E}(Y(1)-Y(0)) = (\delta_1 - \delta_0) + (\beta_1 - \beta_0)' \mathbb{E}(X),$$
+
+. . . 
+
+E sua versão amostral é 
+$$\hat{\tau}_{adj} = (\hat{\delta}_1 - \hat{\delta}_0) + (\hat{\beta}_1 - \hat{\beta}_0)' \bar{X},$$ em que se $X$ for centrado, temos:
+
+$$\hat{\tau}_{adj} = \hat{\delta}_1 - \hat{\delta}_0 = \hat{\tau}_L,$$ em que os coeficientes estimador são todos obtidos por MQO.
+
+## População finita >>> Super população
+
+### Ajuste por covariável
+
+Para estimar a variância, precisaremos:
+
+$$\hat{V}_{EHW} + (\hat{\beta}_1 - \hat{\beta}_0)'S_X^2(\hat{\beta}_1 - \hat{\beta}_0)/n,$$ em que $(\hat{\beta}_1 - \hat{\beta}_0)$ é o coeficiente da interação $Z_iX_i$ obtido no estimador de Lin.
+
+
+. . . 
+
+Outra opção é fazer bootstrap para estimar a variância.
+
+
+## População finita >>> Super população
+
+
+::: {.callout-note}
+### Ilustração
+
+1. Construiremos um código para obter o estimador de Lin, bem como o sua variância.
+
+```{r}
+#| echo: true
+#| warning: false
+#| message: false
+library(car)
+lin_estimator <- function(Z, X, Y) {
+  X <- scale(X)
+  n <- length(Y)
+  p <- ncol(X)
+  
+  modelo <- lm(Y ~ Z*X)
+  tau_lin <- coef(modelo)[2]
+  v_ehw <- hccm(modelo)[2, 2]
+  
+  aux_beta <- matrix(coef(modelo)[-(1:(p + 2))], ncol = 1)
+  v_super_pop <- v_ehw + t(aux_beta) %*% cov(X) %*% aux_beta / n
+  
+  out <- c(tau_lin, sqrt(v_ehw), sqrt(v_super_pop))
+  return(out)
+}
+```
+
+:::
+
+
+## População finita >>> Super população
+
+
+::: {.callout-note}
+### Ilustração
+
+2. Faremos uma simulação para comparar o desvio padrão obtido utilizando EHW e utilizando a correção apresentada.
+
+```{r}
+#| echo: true
+#| warning: false
+#| message: false
+n <- 500
+mc <- 2000
+
+resultado <- matrix(NA, ncol = 3, nrow = mc)
+for (i in 1:mc) {
+  X <- matrix(rnorm(2*n), ncol = 2)
+  Y1 <- X[, 1] + X[, 1]^2 + runif(n, -0.5, 0.5)
+  Y0 <- X[, 2] + X[, 2]^2 + runif(n, -1, 1)
+  Z <- rbinom(n, 1, 0.6)
+  Y <- Z * Y1 + (1 - Z) * Y0
+  resultado[i, ] <- lin_estimator(Z, X, Y)
+}
+```
+:::
+
+
+
+
+## População finita >>> Super população
+
+3. Veremos os resultados
+
+
+::: {.callout-note}
+### Ilustração
+```{r}
+#| echo: false
+# Vies
+mean(resultado[, 1])
+# Desvio padrão empírico
+sd(resultado[, 1])
+# Desvio padrão EHW
+mean(resultado[, 2])
+# Desvio padrão EHW +  correção
+mean(resultado[, 3])
+# Cobertura: Intervalos EHW
+mean((resultado[, 1] - 1.96*resultado[, 2]) * (resultado[, 1] + 1.96*resultado[, 2]) <= 0)
+# Cobertura: Intervalos EHW +  correção
+mean((resultado[, 1] - 1.96*resultado[, 3]) * (resultado[, 1] + 1.96*resultado[, 3]) <= 0)
+```
+
+
+
+
+:::
+
+
+## População finita >>> Super população
+
+É possível extender a discusão para o caso de SRE.
+
+. . . 
+
+
+Vamos assumir que $$\{Z_i, Y_i(1), Y_i(0), X_i \}_{i = 1}^n  \overset{IID}{\sim} \{Z, Y(1), Y(0), X\},$$ em que $X_i \in \{1, \cdots, K\}$.
+
+
+. . . 
+
+
+::: {.callout-tip}
+### SRE (super população)
+$$Z  \perp\!\!\!\perp \{Y(1), Y(0) \} | X.$$
+:::
+
+## População finita >>> Super população
+
+Então, $$\tau_{[k]} = \mathbb{E}(Y(1) - Y(0) | X = k) = \mathbb{E}(Y | Z = 1, X = k) - \mathbb{E}(Y | Z = 0, X = k).$$
+
+Logo, \begin{align*}
+\tau & = \mathbb{E}(Y(1) - Y(0)) \\
+     & = \displaystyle \sum_{k = 1}^K p(X = k) \times \mathbb{E}(Y(1) - Y(0) | X = k) \\
+& = \displaystyle \sum_{k = 1}^K p(X = k) \tau_{[k]} \\
+\end{align*}
+
+
+. . . 
+
+- Como dentro de cada estrato, temos CREs independentes, podemos aplicar o visto para CRE.
+- Se cada estrato tiver mais do que duas univerdades, podemos utilizar $\hat{V}_S$ como estimador de $\mathbb{V}(\tau_S)$.
+
 
 
 

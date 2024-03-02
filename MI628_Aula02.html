@@ -635,7 +635,7 @@ Ademais,
 <span id="cb2-4"><a href="#cb2-4"></a><span class="fu">mean</span>(Y[Z <span class="sc">==</span> <span class="dv">1</span>]) <span class="sc">-</span> <span class="fu">mean</span>(Y[Z <span class="sc">==</span> <span class="dv">0</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.657946</code></pre>
+<pre><code>[1] 0.739413</code></pre>
 </div>
 </div>
 </div><div class="column" style="width:50%;">
@@ -649,7 +649,7 @@ Ademais,
 <span id="cb4-4"><a href="#cb4-4"></a><span class="fu">mean</span>(Y[Z <span class="sc">==</span> <span class="dv">1</span>]) <span class="sc">-</span> <span class="fu">mean</span>(Y[Z <span class="sc">==</span> <span class="dv">0</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] -0.4883566</code></pre>
+<pre><code>[1] -0.4872207</code></pre>
 </div>
 </div>
 </div>
@@ -799,7 +799,7 @@ Ademais,
 <section id="frt-fisher-randomization-test-4" class="slide level2">
 <h2>FRT: Fisher Randomization Test</h2>
 <h4 id="caso-1-diferença-de-médias.">Caso 1: Diferença de médias.</h4>
-<p><span class="math display">\[\text{Seja} \quad \tau = \hat{\bar{Y}}(1) -  \hat{\bar{Y}}(0),\]</span> em que <span class="math inline">\(\hat{\bar{Y}}(1) = n_1^{-1} \displaystyle \sum_{Z_i = 1} Y_i = n_1^{-1} \displaystyle \sum_{i = 1}^n Z_i Y_i\)</span> e <span class="math inline">\(\hat{\bar{Y}}(0) = n_0^{-1} \displaystyle \sum_{Z_i = 0} Y_i = n_0^{-1} \displaystyle \sum_{i = 1}^n (1 - Z_i) Y_i\)</span> são a média amostral sob tratamento (1) e controle (0), respectivamente.</p>
+<p><span class="math display">\[\text{Seja} \quad \hat{\tau} = \hat{\bar{Y}}(1) -  \hat{\bar{Y}}(0),\]</span> em que <span class="math inline">\(\hat{\bar{Y}}(1) = n_1^{-1} \displaystyle \sum_{Z_i = 1} Y_i = n_1^{-1} \displaystyle \sum_{i = 1}^n Z_i Y_i\)</span> e <span class="math inline">\(\hat{\bar{Y}}(0) = n_0^{-1} \displaystyle \sum_{Z_i = 0} Y_i = n_0^{-1} \displaystyle \sum_{i = 1}^n (1 - Z_i) Y_i\)</span> são a média amostral sob tratamento (1) e controle (0), respectivamente.</p>
 <div class="fragment">
 <div class="callout callout-important callout-captioned callout-style-default">
 <div class="callout-body">
@@ -822,18 +822,18 @@ Ademais,
 <h4 id="caso-1-diferença-de-médias.-1">Caso 1: Diferença de médias.</h4>
 <p>Sob <span class="math inline">\(H_{0F}\)</span>,</p>
 <ul>
-<li class="fragment"><span class="math inline">\(\mathbb{E}(\tau) = 0\)</span></li>
-<li class="fragment"><span class="math inline">\(\mathbb{V}(\tau) = \dfrac{n}{n_1 n_0}S^2 = \dfrac{n}{n_1 n_0 (n-1)}\displaystyle \sum_{i = 1}^n (Y_i - \bar{Y})^2\)</span></li>
-<li class="fragment"><span class="math inline">\(\tau \Big / \sqrt{\dfrac{n}{n_1 n_0}S^2} \rightarrow N(0,1).\)</span></li>
-<li class="fragment">Podemos utilizar <span class="math inline">\(\tau \Big / \sqrt{\dfrac{n}{n_1 n_0}S^2}\)</span> como estatística de teste no FRT e calcular o p-valor.</li>
+<li class="fragment"><span class="math inline">\(\mathbb{E}(\hat{\tau}) = 0\)</span></li>
+<li class="fragment"><span class="math inline">\(\mathbb{V}(\hat{\tau}) = \dfrac{n}{n_1 n_0}S^2 = \dfrac{n}{n_1 n_0 (n-1)}\displaystyle \sum_{i = 1}^n (Y_i - \bar{Y})^2\)</span></li>
+<li class="fragment"><span class="math inline">\(\hat{\tau} \Big / \sqrt{\dfrac{n}{n_1 n_0}S^2} \rightarrow N(0,1).\)</span></li>
+<li class="fragment">Podemos utilizar <span class="math inline">\(\hat{\tau} \Big / \sqrt{\dfrac{n}{n_1 n_0}S^2}\)</span> como estatística de teste no FRT e calcular o p-valor.</li>
 </ul>
 </section>
 <section id="frt-fisher-randomization-test-6" class="slide level2">
 <h2>FRT: Fisher Randomization Test</h2>
 <h4 id="caso-1-diferença-de-médias.-2">Caso 1: Diferença de médias.</h4>
 <ul>
-<li class="fragment"><span class="math inline">\(\mathbb{E}(\tau) = 0\)</span> e <span class="math inline">\(\mathbb{V}(\tau) = \dfrac{n}{n_1 n_0}S^2.\)</span> <strong>Demostração no quadro</strong></li>
-<li class="fragment"><span class="math inline">\(\tau \Big / \sqrt{\dfrac{n}{n_1 n_0}S^2} \rightarrow N(0,1).\)</span> Ver TCL para populações finitas.</li>
+<li class="fragment"><span class="math inline">\(\mathbb{E}(\hat{\tau}) = 0\)</span> e <span class="math inline">\(\mathbb{V}(\hat{\tau)} = \dfrac{n}{n_1 n_0}S^2.\)</span> <strong>Demostração no quadro</strong></li>
+<li class="fragment"><span class="math inline">\(\hat{\tau} \Big / \sqrt{\dfrac{n}{n_1 n_0}S^2} \rightarrow N(0,1).\)</span> Ver TCL para populações finitas.</li>
 </ul>
 <div class="fragment">
 <center>
@@ -854,9 +854,9 @@ Ademais,
 <ul>
 <li class="fragment">Pense nos <span class="math inline">\(X_1, \cdots, X_{n_x}\)</span> como os <span class="math inline">\(\{Y_i: Z_i = 1\}\)</span> e nos <span class="math inline">\(Y_1, \cdots, Y_{n_x}\)</span> como os <span class="math inline">\(\{Y_i: Z_i = 0\}\)</span>.</li>
 <li class="fragment">Então, <span class="math inline">\(n_x = n_1\)</span>, <span class="math inline">\(n_y = n_0\)</span> e <span class="math inline">\(n_1 + n_0 = n\)</span>.</li>
-<li class="fragment">Note que <span class="math inline">\((n - 1)S^2 = \displaystyle \sum_{Z_i = 1} (Y_i - \hat{\bar{Y}}(1))^2 + \sum_{Z_i = 0} (Y_i - \hat{\bar{Y}}(0))^2 + \dfrac{n_1 n_0}{n} \tau^2\)</span></li>
+<li class="fragment">Note que <span class="math inline">\((n - 1)S^2 = \displaystyle \sum_{Z_i = 1} (Y_i - \hat{\bar{Y}}(1))^2 + \sum_{Z_i = 0} (Y_i - \hat{\bar{Y}}(0))^2 + \dfrac{n_1 n_0}{n} \hat{\tau}^2\)</span></li>
 <li class="fragment">Quando <span class="math inline">\(n \rightarrow \infty\)</span>, <span class="math inline">\(t_{n-2} \xrightarrow D N(0,1)\)</span> e <span class="math inline">\(\dfrac{n-1}{n-2} \rightarrow 1\)</span>.</li>
-<li class="fragment">Sob <span class="math inline">\(H_{0F}\)</span>, <span class="math inline">\(\dfrac{n_1 n_0}{n} \tau^2 \rightarrow 0\)</span></li>
+<li class="fragment">Sob <span class="math inline">\(H_{0F}\)</span>, <span class="math inline">\(\dfrac{n_1 n_0}{n} \hat{\tau}^2 \xrightarrow p 0\)</span></li>
 </ul>
 </section>
 <section id="frt-fisher-randomization-test-9" class="slide level2">
@@ -867,7 +867,7 @@ Ademais,
 <section id="frt-fisher-randomization-test-10" class="slide level2">
 <h2>FRT: Fisher Randomization Test</h2>
 <ul>
-<li class="fragment">Não apenas a diferencia de médias pode ser utilizada no contexto de FRT (ou equivalentemente <span class="math inline">\(\tau \Big / \sqrt{\dfrac{n}{n_1 n_0}S^2}\)</span>).</li>
+<li class="fragment">Não apenas a diferencia de médias pode ser utilizada no contexto de FRT (ou equivalentemente <span class="math inline">\(\hat{\tau} \Big / \sqrt{\dfrac{n}{n_1 n_0}S^2}\)</span>).</li>
 <li class="fragment">Outras estatísticas de teste também podem ser consideradas:
 <ul>
 <li class="fragment">Soma de postos de Wilcoxon: <span class="math inline">\(W = \displaystyle \sum_{i = 1}^n Z_i R_i,\)</span> em que <span class="math inline">\(R_i\)</span> é posto de <span class="math inline">\(Y_i\)</span>.</li>
@@ -972,7 +972,7 @@ Ademais,
 <span id="cb8-4"><a href="#cb8-4"></a>  pvalor_frt_classico_t_mc)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.004906490 0.004360000 0.004787524 0.004320000</code></pre>
+<pre><code>[1] 0.004906490 0.003910000 0.004787524 0.004430000</code></pre>
 </div>
 </div>
 </div>

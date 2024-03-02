@@ -366,7 +366,7 @@ Na prática, valores de $R = 10^4$ ou $R = 10^5$ costumam ser suficiente.
 
 #### Caso 1: Diferença de médias.
 
-$$\text{Seja} \quad \tau = \hat{\bar{Y}}(1) -  \hat{\bar{Y}}(0),$$ em que $\hat{\bar{Y}}(1) = n_1^{-1} \displaystyle \sum_{Z_i = 1} Y_i = n_1^{-1} \displaystyle \sum_{i = 1}^n Z_i Y_i$ e $\hat{\bar{Y}}(0) = n_0^{-1} \displaystyle \sum_{Z_i = 0} Y_i = n_0^{-1} \displaystyle \sum_{i = 1}^n (1 - Z_i) Y_i$  são a média amostral sob tratamento (1) e controle (0), respectivamente.
+$$\text{Seja} \quad \hat{\tau} = \hat{\bar{Y}}(1) -  \hat{\bar{Y}}(0),$$ em que $\hat{\bar{Y}}(1) = n_1^{-1} \displaystyle \sum_{Z_i = 1} Y_i = n_1^{-1} \displaystyle \sum_{i = 1}^n Z_i Y_i$ e $\hat{\bar{Y}}(0) = n_0^{-1} \displaystyle \sum_{Z_i = 0} Y_i = n_0^{-1} \displaystyle \sum_{i = 1}^n (1 - Z_i) Y_i$  são a média amostral sob tratamento (1) e controle (0), respectivamente.
 
 
 . . . 
@@ -390,10 +390,10 @@ Para mais informações, ver Cap 4.3 [aqui](https://amostragemcomr.github.io/liv
 
 Sob $H_{0F}$, 
 
-- $\mathbb{E}(\tau) = 0$
-- $\mathbb{V}(\tau) = \dfrac{n}{n_1 n_0}S^2 = \dfrac{n}{n_1 n_0 (n-1)}\displaystyle \sum_{i = 1}^n (Y_i - \bar{Y})^2$
-- $\tau \Big / \sqrt{\dfrac{n}{n_1 n_0}S^2} \rightarrow N(0,1).$
-- Podemos utilizar $\tau \Big / \sqrt{\dfrac{n}{n_1 n_0}S^2}$ como estatística de teste no FRT e calcular o p-valor.
+- $\mathbb{E}(\hat{\tau}) = 0$
+- $\mathbb{V}(\hat{\tau}) = \dfrac{n}{n_1 n_0}S^2 = \dfrac{n}{n_1 n_0 (n-1)}\displaystyle \sum_{i = 1}^n (Y_i - \bar{Y})^2$
+- $\hat{\tau} \Big / \sqrt{\dfrac{n}{n_1 n_0}S^2} \rightarrow N(0,1).$
+- Podemos utilizar $\hat{\tau} \Big / \sqrt{\dfrac{n}{n_1 n_0}S^2}$ como estatística de teste no FRT e calcular o p-valor.
 
 
 ## FRT: Fisher Randomization Test
@@ -401,8 +401,8 @@ Sob $H_{0F}$,
 #### Caso 1: Diferença de médias.
 
 
-- $\mathbb{E}(\tau) = 0$ e $\mathbb{V}(\tau) = \dfrac{n}{n_1 n_0}S^2.$ **Demostração no quadro**
-- $\tau \Big / \sqrt{\dfrac{n}{n_1 n_0}S^2} \rightarrow N(0,1).$ Ver TCL para populações finitas.
+- $\mathbb{E}(\hat{\tau}) = 0$ e $\mathbb{V}(\hat{\tau)} = \dfrac{n}{n_1 n_0}S^2.$ **Demostração no quadro**
+- $\hat{\tau} \Big / \sqrt{\dfrac{n}{n_1 n_0}S^2} \rightarrow N(0,1).$ Ver TCL para populações finitas.
 
 . . .
 
@@ -430,9 +430,9 @@ $$\dfrac{\bar{X} - \bar{Y}}{\sqrt{\Big[\dfrac{1}{n_x} + \dfrac{1}{n_y} \Big] \df
 
 - Pense nos $X_1, \cdots, X_{n_x}$ como os $\{Y_i: Z_i = 1\}$ e nos $Y_1, \cdots, Y_{n_x}$ como os $\{Y_i: Z_i = 0\}$.
 - Então, $n_x = n_1$, $n_y = n_0$ e $n_1 + n_0 = n$.
-- Note que $(n - 1)S^2 = \displaystyle \sum_{Z_i = 1} (Y_i - \hat{\bar{Y}}(1))^2 + \sum_{Z_i = 0} (Y_i - \hat{\bar{Y}}(0))^2 + \dfrac{n_1 n_0}{n} \tau^2$
+- Note que $(n - 1)S^2 = \displaystyle \sum_{Z_i = 1} (Y_i - \hat{\bar{Y}}(1))^2 + \sum_{Z_i = 0} (Y_i - \hat{\bar{Y}}(0))^2 + \dfrac{n_1 n_0}{n} \hat{\tau}^2$
 - Quando $n \rightarrow \infty$, $t_{n-2} \xrightarrow D N(0,1)$ e $\dfrac{n-1}{n-2} \rightarrow 1$.
-- Sob $H_{0F}$, $\dfrac{n_1 n_0}{n} \tau^2 \rightarrow 0$
+- Sob $H_{0F}$, $\dfrac{n_1 n_0}{n} \hat{\tau}^2 \xrightarrow  p 0$
 
 ## FRT: Fisher Randomization Test
 
@@ -443,7 +443,7 @@ Assim, $\sqrt{\Big[\frac{1}{n_x} + \frac{1}{n_y} \Big] \dfrac{\displaystyle \sum
 
 ## FRT: Fisher Randomization Test
 
-- Não apenas a diferencia de médias pode ser utilizada no contexto de FRT (ou equivalentemente $\tau \Big / \sqrt{\dfrac{n}{n_1 n_0}S^2}$). 
+- Não apenas a diferencia de médias pode ser utilizada no contexto de FRT (ou equivalentemente $\hat{\tau} \Big / \sqrt{\dfrac{n}{n_1 n_0}S^2}$). 
 - Outras estatísticas de teste também podem ser consideradas:
   * Soma de postos de Wilcoxon: $W = \displaystyle \sum_{i = 1}^n Z_i R_i,$ em que $R_i$ é posto de $Y_i$.
   * Estatística Studentizada: $t = \dfrac{\hat{\bar{Y}}(1) - \hat{\bar{Y}}(0)}{\sqrt{\hat{S}^2(1) \big /n_1 + \hat{S}^2(0) \big / n_0}},$ em que $\hat{S}^2(1) = (n_1 - 1)^{-1} \displaystyle \sum_{Z_i = 1} (Y_i - \hat{\bar{Y}}(1))^2$ e $\hat{S}^2(0) = (n_0- 1)^{-1} \displaystyle \sum_{Z_i = 0} (Y_i - \hat{\bar{Y}}(0))^2.$ 
