@@ -106,6 +106,100 @@ Para algum $k$, é possível, com alta probabilidade, que $\dfrac{n_{[k]1}}{n_1}
 ![**E agora, José?**](imagens/chaves.jpg){width="27%"}
 </center>
 
+## Estratificação
+
+::: {.callout-note}
+### Simulação
+```{r}
+#| echo: true
+n <- 20
+n_masc <- 10
+n_feme <- 10
+n_1 <- 10
+n_0 <- 10
+set.seed(123)
+x <- sample(c(rep(1, n_masc), rep(0, n_feme)))
+z_aux <- combn(n, n_1)
+z <- matrix(NA, ncol = ncol(z_aux), nrow = n)
+diff_estrato_1 <- c()
+diff_estrato_2 <- c()
+for (i in 1:ncol(z_aux)) {
+  z[, i] <- ifelse(1:n %in% z_aux[, i], 1, 0)
+  n_masc_trat <- sum(x[z[, i] == 1])
+  n_masc_ctrl <- sum(x[z[, i] == 0])
+  diff_estrato_1[i] <- n_masc_trat / n_1 - n_masc_ctrl / n_0
+  
+  n_feme_trat <- n_1 - n_masc_trat
+  n_feme_ctrl <- n_0 - n_masc_ctrl
+  diff_estrato_2[i] <- n_feme_trat / n_1 - n_feme_ctrl / n_0
+}
+z_sim <- z
+table(diff_estrato_1)
+table(diff_estrato_2)
+```
+
+:::
+
+
+## Estratificação
+
+::: {.callout-note}
+### Simulação
+```{r}
+#| echo: true
+Y0 <- rep(0, n)
+Y0[x == 0] <- Y0[x == 0] + 5
+tau <- 0
+Y1 <- tau + Y0
+# Focamos apenas nos casos completamente balanceados:
+index_completamente_balanceados <- which(diff_estrato_1 == 0)
+tau <- c()
+for (i in index_completamente_balanceados) {
+  tau[i] <- mean(Y1[z[, i] == 1]) - mean(Y0[z[, i] == 0])
+}
+tau <- tau[!is.na(tau)]
+summary(tau)
+```
+:::
+
+
+
+
+## Estratificação
+
+::: {.callout-note}
+### Simulação
+```{r}
+#| echo: true
+# Focamos em alguns casos desbalanceados:
+index_desbalanceados <- which(diff_estrato_1 > 0.4)
+tau <- c()
+for (i in index_desbalanceados) {
+  tau[i] <- mean(Y1[z[, i] == 1]) - mean(Y0[z[, i] == 0])
+}
+tau <- tau[!is.na(tau)]
+summary(tau)
+```
+:::
+
+. . . 
+
+
+::: {.callout-note}
+### Simulação
+```{r}
+#| echo: true
+# Focamos em alguns casos desbalanceados:
+index_desbalanceados <- which(diff_estrato_1 < -0.4)
+tau <- c()
+for (i in index_desbalanceados) {
+  tau[i] <- mean(Y1[z[, i] == 1]) - mean(Y0[z[, i] == 0])
+}
+tau <- tau[!is.na(tau)]
+summary(tau)
+```
+:::
+
 
 
 ## Estratificação
@@ -184,7 +278,6 @@ Para cada estrato $k$, temos:
 
 
 Assim, o efeito causal médio é dado por: $$\tau = n^{-1} \displaystyle \sum_{i = 1}^n \tau_i = n^{-1} \sum_{k = 1}^K \sum_{X_i = k} \tau_i = \sum_{k = 1}^K \pi_{[k]}\tau_{[k]}.$$
-
 
 
 # Inferência sob SRE
@@ -568,6 +661,27 @@ pvalor_s <- 2 - 2*pnorm(abs(est_s))       # Bilateral
 pvalor_sps <- 2 - 2*pnorm(abs(est_sps))   # Bilateral
 c(est_s, pvalor_s, est_sps, pvalor_sps)
 ```
+
+
+## Pós-estratificação
+
+::: {.callout-note}
+### Simulação
+```{r}
+#| echo: true
+alguns_index_desbalanceados <- which(diff_estrato_1 > 0.3 & diff_estrato_1 < 0.9)
+tau <- c()
+for (i in alguns_index_desbalanceados) {
+  Y = z_sim[, i]*Y1 + (1 - z_sim[, i])*Y0
+  tau[i] <- ee(Y, z_sim[, i], x)
+}
+tau <- tau[!is.na(tau)]
+summary(tau)
+```
+::: 
+
+
+
 
 
 ## Pós-estratificação

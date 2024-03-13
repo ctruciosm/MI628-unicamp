@@ -479,6 +479,162 @@ Prof.&nbsp;Carlos Trucíos <br> ctrucios@unicamp.br
 </section>
 <section id="estratificação-3" class="slide level2">
 <h2>Estratificação</h2>
+<div class="callout callout-note callout-captioned callout-style-default">
+<div class="callout-body">
+<div class="callout-caption">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Simulação</strong></p>
+</div>
+<div class="callout-content">
+<div class="cell" data-layout-align="center">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a>n <span class="ot">&lt;-</span> <span class="dv">20</span></span>
+<span id="cb1-2"><a href="#cb1-2"></a>n_masc <span class="ot">&lt;-</span> <span class="dv">10</span></span>
+<span id="cb1-3"><a href="#cb1-3"></a>n_feme <span class="ot">&lt;-</span> <span class="dv">10</span></span>
+<span id="cb1-4"><a href="#cb1-4"></a>n_1 <span class="ot">&lt;-</span> <span class="dv">10</span></span>
+<span id="cb1-5"><a href="#cb1-5"></a>n_0 <span class="ot">&lt;-</span> <span class="dv">10</span></span>
+<span id="cb1-6"><a href="#cb1-6"></a><span class="fu">set.seed</span>(<span class="dv">123</span>)</span>
+<span id="cb1-7"><a href="#cb1-7"></a>x <span class="ot">&lt;-</span> <span class="fu">sample</span>(<span class="fu">c</span>(<span class="fu">rep</span>(<span class="dv">1</span>, n_masc), <span class="fu">rep</span>(<span class="dv">0</span>, n_feme)))</span>
+<span id="cb1-8"><a href="#cb1-8"></a>z_aux <span class="ot">&lt;-</span> <span class="fu">combn</span>(n, n_1)</span>
+<span id="cb1-9"><a href="#cb1-9"></a>z <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="cn">NA</span>, <span class="at">ncol =</span> <span class="fu">ncol</span>(z_aux), <span class="at">nrow =</span> n)</span>
+<span id="cb1-10"><a href="#cb1-10"></a>diff_estrato_1 <span class="ot">&lt;-</span> <span class="fu">c</span>()</span>
+<span id="cb1-11"><a href="#cb1-11"></a>diff_estrato_2 <span class="ot">&lt;-</span> <span class="fu">c</span>()</span>
+<span id="cb1-12"><a href="#cb1-12"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">ncol</span>(z_aux)) {</span>
+<span id="cb1-13"><a href="#cb1-13"></a>  z[, i] <span class="ot">&lt;-</span> <span class="fu">ifelse</span>(<span class="dv">1</span><span class="sc">:</span>n <span class="sc">%in%</span> z_aux[, i], <span class="dv">1</span>, <span class="dv">0</span>)</span>
+<span id="cb1-14"><a href="#cb1-14"></a>  n_masc_trat <span class="ot">&lt;-</span> <span class="fu">sum</span>(x[z[, i] <span class="sc">==</span> <span class="dv">1</span>])</span>
+<span id="cb1-15"><a href="#cb1-15"></a>  n_masc_ctrl <span class="ot">&lt;-</span> <span class="fu">sum</span>(x[z[, i] <span class="sc">==</span> <span class="dv">0</span>])</span>
+<span id="cb1-16"><a href="#cb1-16"></a>  diff_estrato_1[i] <span class="ot">&lt;-</span> n_masc_trat <span class="sc">/</span> n_1 <span class="sc">-</span> n_masc_ctrl <span class="sc">/</span> n_0</span>
+<span id="cb1-17"><a href="#cb1-17"></a>  </span>
+<span id="cb1-18"><a href="#cb1-18"></a>  n_feme_trat <span class="ot">&lt;-</span> n_1 <span class="sc">-</span> n_masc_trat</span>
+<span id="cb1-19"><a href="#cb1-19"></a>  n_feme_ctrl <span class="ot">&lt;-</span> n_0 <span class="sc">-</span> n_masc_ctrl</span>
+<span id="cb1-20"><a href="#cb1-20"></a>  diff_estrato_2[i] <span class="ot">&lt;-</span> n_feme_trat <span class="sc">/</span> n_1 <span class="sc">-</span> n_feme_ctrl <span class="sc">/</span> n_0</span>
+<span id="cb1-21"><a href="#cb1-21"></a>}</span>
+<span id="cb1-22"><a href="#cb1-22"></a>z_sim <span class="ot">&lt;-</span> z</span>
+<span id="cb1-23"><a href="#cb1-23"></a><span class="fu">table</span>(diff_estrato_1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>diff_estrato_1
+   -1  -0.8  -0.6  -0.4  -0.2     0   0.2   0.4   0.6   0.8     1 
+    1   100  2025 14400 44100 63504 44100 14400  2025   100     1 </code></pre>
+</div>
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a><span class="fu">table</span>(diff_estrato_2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>diff_estrato_2
+   -1  -0.8  -0.6  -0.4  -0.2     0   0.2   0.4   0.6   0.8     1 
+    1   100  2025 14400 44100 63504 44100 14400  2025   100     1 </code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="estratificação-4" class="slide level2">
+<h2>Estratificação</h2>
+<div class="callout callout-note callout-captioned callout-style-default">
+<div class="callout-body">
+<div class="callout-caption">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Simulação</strong></p>
+</div>
+<div class="callout-content">
+<div class="cell" data-layout-align="center">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a>Y0 <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="dv">0</span>, n)</span>
+<span id="cb5-2"><a href="#cb5-2"></a>Y0[x <span class="sc">==</span> <span class="dv">0</span>] <span class="ot">&lt;-</span> Y0[x <span class="sc">==</span> <span class="dv">0</span>] <span class="sc">+</span> <span class="dv">5</span></span>
+<span id="cb5-3"><a href="#cb5-3"></a>tau <span class="ot">&lt;-</span> <span class="dv">0</span></span>
+<span id="cb5-4"><a href="#cb5-4"></a>Y1 <span class="ot">&lt;-</span> tau <span class="sc">+</span> Y0</span>
+<span id="cb5-5"><a href="#cb5-5"></a><span class="co"># Focamos apenas nos casos completamente balanceados:</span></span>
+<span id="cb5-6"><a href="#cb5-6"></a>index_completamente_balanceados <span class="ot">&lt;-</span> <span class="fu">which</span>(diff_estrato_1 <span class="sc">==</span> <span class="dv">0</span>)</span>
+<span id="cb5-7"><a href="#cb5-7"></a>tau <span class="ot">&lt;-</span> <span class="fu">c</span>()</span>
+<span id="cb5-8"><a href="#cb5-8"></a><span class="cf">for</span> (i <span class="cf">in</span> index_completamente_balanceados) {</span>
+<span id="cb5-9"><a href="#cb5-9"></a>  tau[i] <span class="ot">&lt;-</span> <span class="fu">mean</span>(Y1[z[, i] <span class="sc">==</span> <span class="dv">1</span>]) <span class="sc">-</span> <span class="fu">mean</span>(Y0[z[, i] <span class="sc">==</span> <span class="dv">0</span>])</span>
+<span id="cb5-10"><a href="#cb5-10"></a>}</span>
+<span id="cb5-11"><a href="#cb5-11"></a>tau <span class="ot">&lt;-</span> tau[<span class="sc">!</span><span class="fu">is.na</span>(tau)]</span>
+<span id="cb5-12"><a href="#cb5-12"></a><span class="fu">summary</span>(tau)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+      0       0       0       0       0       0 </code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="estratificação-5" class="slide level2">
+<h2>Estratificação</h2>
+<div class="callout callout-note callout-captioned callout-style-default">
+<div class="callout-body">
+<div class="callout-caption">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Simulação</strong></p>
+</div>
+<div class="callout-content">
+<div class="cell" data-layout-align="center">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1"></a><span class="co"># Focamos em alguns casos desbalanceados:</span></span>
+<span id="cb7-2"><a href="#cb7-2"></a>index_desbalanceados <span class="ot">&lt;-</span> <span class="fu">which</span>(diff_estrato_1 <span class="sc">&gt;</span> <span class="fl">0.4</span>)</span>
+<span id="cb7-3"><a href="#cb7-3"></a>tau <span class="ot">&lt;-</span> <span class="fu">c</span>()</span>
+<span id="cb7-4"><a href="#cb7-4"></a><span class="cf">for</span> (i <span class="cf">in</span> index_desbalanceados) {</span>
+<span id="cb7-5"><a href="#cb7-5"></a>  tau[i] <span class="ot">&lt;-</span> <span class="fu">mean</span>(Y1[z[, i] <span class="sc">==</span> <span class="dv">1</span>]) <span class="sc">-</span> <span class="fu">mean</span>(Y0[z[, i] <span class="sc">==</span> <span class="dv">0</span>])</span>
+<span id="cb7-6"><a href="#cb7-6"></a>}</span>
+<span id="cb7-7"><a href="#cb7-7"></a>tau <span class="ot">&lt;-</span> tau[<span class="sc">!</span><span class="fu">is.na</span>(tau)]</span>
+<span id="cb7-8"><a href="#cb7-8"></a><span class="fu">summary</span>(tau)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+ -5.000  -3.000  -3.000  -3.048  -3.000  -3.000 </code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="fragment">
+<div class="callout callout-note callout-captioned callout-style-default">
+<div class="callout-body">
+<div class="callout-caption">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Simulação</strong></p>
+</div>
+<div class="callout-content">
+<div class="cell" data-layout-align="center">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1"></a><span class="co"># Focamos em alguns casos desbalanceados:</span></span>
+<span id="cb9-2"><a href="#cb9-2"></a>index_desbalanceados <span class="ot">&lt;-</span> <span class="fu">which</span>(diff_estrato_1 <span class="sc">&lt;</span> <span class="sc">-</span><span class="fl">0.4</span>)</span>
+<span id="cb9-3"><a href="#cb9-3"></a>tau <span class="ot">&lt;-</span> <span class="fu">c</span>()</span>
+<span id="cb9-4"><a href="#cb9-4"></a><span class="cf">for</span> (i <span class="cf">in</span> index_desbalanceados) {</span>
+<span id="cb9-5"><a href="#cb9-5"></a>  tau[i] <span class="ot">&lt;-</span> <span class="fu">mean</span>(Y1[z[, i] <span class="sc">==</span> <span class="dv">1</span>]) <span class="sc">-</span> <span class="fu">mean</span>(Y0[z[, i] <span class="sc">==</span> <span class="dv">0</span>])</span>
+<span id="cb9-6"><a href="#cb9-6"></a>}</span>
+<span id="cb9-7"><a href="#cb9-7"></a>tau <span class="ot">&lt;-</span> tau[<span class="sc">!</span><span class="fu">is.na</span>(tau)]</span>
+<span id="cb9-8"><a href="#cb9-8"></a><span class="fu">summary</span>(tau)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+  3.000   3.000   3.000   3.048   3.000   5.000 </code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="estratificação-6" class="slide level2">
+<h2>Estratificação</h2>
 <p><strong>Como podemos evitar o problema de desbalanceamento?</strong></p>
 <div class="fragment">
 <center>
@@ -493,7 +649,7 @@ No SRE, as unidades são agrupadas em estratos segundo alguma caracteristica (pr
 </center>
 </div>
 </section>
-<section id="estratificação-4" class="slide level2">
+<section id="estratificação-7" class="slide level2">
 <h2>Estratificação</h2>
 <div class="callout callout-tip callout-captioned callout-style-default">
 <div class="callout-body">
@@ -516,7 +672,7 @@ No SRE, as unidades são agrupadas em estratos segundo alguma caracteristica (pr
 </blockquote>
 </div>
 </section>
-<section id="estratificação-5" class="slide level2">
+<section id="estratificação-8" class="slide level2">
 <h2>Estratificação</h2>
 <p>Dentro de cada estrato <span class="math inline">\(k\)</span>, a proporção de unidades recebendo o tratamento é dada por <span class="math display">\[e_{[k]} = \dfrac{n_{[k]1}}{n_{[k]}},\]</span> quantidade conhecida como <em>propensity score</em>.</p>
 <div class="fragment">
@@ -527,7 +683,7 @@ No SRE, as unidades são agrupadas em estratos segundo alguma caracteristica (pr
 </ol>
 </div>
 </section>
-<section id="estratificação-6" class="slide level2">
+<section id="estratificação-9" class="slide level2">
 <h2>Estratificação</h2>
 <p>Para cada unidade <span class="math inline">\(i\)</span>, temos:</p>
 <ul>
@@ -574,22 +730,22 @@ No SRE, as unidades são agrupadas em estratos segundo alguma caracteristica (pr
 <div class="cell" data-layout-align="center">
 <details>
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a>ee <span class="ot">&lt;-</span> <span class="cf">function</span>(y, z, x) {</span>
-<span id="cb1-2"><a href="#cb1-2"></a>  x_levels <span class="ot">&lt;-</span> <span class="fu">unique</span>(x)</span>
-<span id="cb1-3"><a href="#cb1-3"></a>  K <span class="ot">&lt;-</span> <span class="fu">length</span>(x_levels)</span>
-<span id="cb1-4"><a href="#cb1-4"></a>  pi_k <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="dv">0</span>, K)</span>
-<span id="cb1-5"><a href="#cb1-5"></a>  tau_k <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="dv">0</span>, K)</span>
-<span id="cb1-6"><a href="#cb1-6"></a>  n <span class="ot">&lt;-</span> <span class="fu">length</span>(z)</span>
-<span id="cb1-7"><a href="#cb1-7"></a>  <span class="cf">for</span> (k <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>K) {</span>
-<span id="cb1-8"><a href="#cb1-8"></a>    x_k <span class="ot">&lt;-</span> x_levels[k]</span>
-<span id="cb1-9"><a href="#cb1-9"></a>    z_k <span class="ot">&lt;-</span> z[x <span class="sc">==</span> x_k]</span>
-<span id="cb1-10"><a href="#cb1-10"></a>    y_k <span class="ot">&lt;-</span> y[x <span class="sc">==</span> x_k]</span>
-<span id="cb1-11"><a href="#cb1-11"></a>    pi_k[k] <span class="ot">&lt;-</span> <span class="fu">length</span>(z_k)<span class="sc">/</span>n</span>
-<span id="cb1-12"><a href="#cb1-12"></a>    tau_k[k] <span class="ot">&lt;-</span> <span class="fu">mean</span>(y_k[z_k <span class="sc">==</span> <span class="dv">1</span>]) <span class="sc">-</span> <span class="fu">mean</span>(y_k[z_k <span class="sc">==</span> <span class="dv">0</span>])</span>
-<span id="cb1-13"><a href="#cb1-13"></a>  }</span>
-<span id="cb1-14"><a href="#cb1-14"></a>  tau_S <span class="ot">&lt;-</span> <span class="fu">sum</span>(pi_k <span class="sc">*</span> tau_k)</span>
-<span id="cb1-15"><a href="#cb1-15"></a>  <span class="fu">return</span>(tau_S)</span>
-<span id="cb1-16"><a href="#cb1-16"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1"></a>ee <span class="ot">&lt;-</span> <span class="cf">function</span>(y, z, x) {</span>
+<span id="cb11-2"><a href="#cb11-2"></a>  x_levels <span class="ot">&lt;-</span> <span class="fu">unique</span>(x)</span>
+<span id="cb11-3"><a href="#cb11-3"></a>  K <span class="ot">&lt;-</span> <span class="fu">length</span>(x_levels)</span>
+<span id="cb11-4"><a href="#cb11-4"></a>  pi_k <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="dv">0</span>, K)</span>
+<span id="cb11-5"><a href="#cb11-5"></a>  tau_k <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="dv">0</span>, K)</span>
+<span id="cb11-6"><a href="#cb11-6"></a>  n <span class="ot">&lt;-</span> <span class="fu">length</span>(z)</span>
+<span id="cb11-7"><a href="#cb11-7"></a>  <span class="cf">for</span> (k <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>K) {</span>
+<span id="cb11-8"><a href="#cb11-8"></a>    x_k <span class="ot">&lt;-</span> x_levels[k]</span>
+<span id="cb11-9"><a href="#cb11-9"></a>    z_k <span class="ot">&lt;-</span> z[x <span class="sc">==</span> x_k]</span>
+<span id="cb11-10"><a href="#cb11-10"></a>    y_k <span class="ot">&lt;-</span> y[x <span class="sc">==</span> x_k]</span>
+<span id="cb11-11"><a href="#cb11-11"></a>    pi_k[k] <span class="ot">&lt;-</span> <span class="fu">length</span>(z_k)<span class="sc">/</span>n</span>
+<span id="cb11-12"><a href="#cb11-12"></a>    tau_k[k] <span class="ot">&lt;-</span> <span class="fu">mean</span>(y_k[z_k <span class="sc">==</span> <span class="dv">1</span>]) <span class="sc">-</span> <span class="fu">mean</span>(y_k[z_k <span class="sc">==</span> <span class="dv">0</span>])</span>
+<span id="cb11-13"><a href="#cb11-13"></a>  }</span>
+<span id="cb11-14"><a href="#cb11-14"></a>  tau_S <span class="ot">&lt;-</span> <span class="fu">sum</span>(pi_k <span class="sc">*</span> tau_k)</span>
+<span id="cb11-15"><a href="#cb11-15"></a>  <span class="fu">return</span>(tau_S)</span>
+<span id="cb11-16"><a href="#cb11-16"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
 </section>
@@ -605,21 +761,21 @@ No SRE, as unidades são agrupadas em estratos segundo alguma caracteristica (pr
 <div class="cell" data-layout-align="center">
 <details>
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a>comb_wilcoxon <span class="ot">&lt;-</span> <span class="cf">function</span>(y, z, x) {</span>
-<span id="cb2-2"><a href="#cb2-2"></a>  x_levels <span class="ot">&lt;-</span> <span class="fu">unique</span>(x)</span>
-<span id="cb2-3"><a href="#cb2-3"></a>  K <span class="ot">&lt;-</span> <span class="fu">length</span>(x_levels)</span>
-<span id="cb2-4"><a href="#cb2-4"></a>  c_k <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="dv">0</span>, K)</span>
-<span id="cb2-5"><a href="#cb2-5"></a>  w_k <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="dv">0</span>, K)</span>
-<span id="cb2-6"><a href="#cb2-6"></a>  <span class="cf">for</span> (k <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>K) {</span>
-<span id="cb2-7"><a href="#cb2-7"></a>    x_k <span class="ot">&lt;-</span> x_levels[k]</span>
-<span id="cb2-8"><a href="#cb2-8"></a>    z_k <span class="ot">&lt;-</span> z[x <span class="sc">==</span> x_k]</span>
-<span id="cb2-9"><a href="#cb2-9"></a>    y_k <span class="ot">&lt;-</span> y[x <span class="sc">==</span> x_k]</span>
-<span id="cb2-10"><a href="#cb2-10"></a>    c_k[k] <span class="ot">&lt;-</span> <span class="dv">1</span> <span class="sc">/</span> (<span class="fu">length</span>(z_k) <span class="sc">+</span> <span class="dv">1</span>)</span>
-<span id="cb2-11"><a href="#cb2-11"></a>    w_k[k] <span class="ot">&lt;-</span> <span class="fu">wilcox.test</span>(y_k[z_k <span class="sc">==</span> <span class="dv">1</span>], y_k[z_k <span class="sc">==</span> <span class="dv">0</span>])<span class="sc">$</span>statistic</span>
-<span id="cb2-12"><a href="#cb2-12"></a>  }</span>
-<span id="cb2-13"><a href="#cb2-13"></a>  w_S <span class="ot">&lt;-</span> <span class="fu">sum</span>(c_k <span class="sc">*</span> w_k)</span>
-<span id="cb2-14"><a href="#cb2-14"></a>  <span class="fu">return</span>(w_S)</span>
-<span id="cb2-15"><a href="#cb2-15"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1"></a>comb_wilcoxon <span class="ot">&lt;-</span> <span class="cf">function</span>(y, z, x) {</span>
+<span id="cb12-2"><a href="#cb12-2"></a>  x_levels <span class="ot">&lt;-</span> <span class="fu">unique</span>(x)</span>
+<span id="cb12-3"><a href="#cb12-3"></a>  K <span class="ot">&lt;-</span> <span class="fu">length</span>(x_levels)</span>
+<span id="cb12-4"><a href="#cb12-4"></a>  c_k <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="dv">0</span>, K)</span>
+<span id="cb12-5"><a href="#cb12-5"></a>  w_k <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="dv">0</span>, K)</span>
+<span id="cb12-6"><a href="#cb12-6"></a>  <span class="cf">for</span> (k <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>K) {</span>
+<span id="cb12-7"><a href="#cb12-7"></a>    x_k <span class="ot">&lt;-</span> x_levels[k]</span>
+<span id="cb12-8"><a href="#cb12-8"></a>    z_k <span class="ot">&lt;-</span> z[x <span class="sc">==</span> x_k]</span>
+<span id="cb12-9"><a href="#cb12-9"></a>    y_k <span class="ot">&lt;-</span> y[x <span class="sc">==</span> x_k]</span>
+<span id="cb12-10"><a href="#cb12-10"></a>    c_k[k] <span class="ot">&lt;-</span> <span class="dv">1</span> <span class="sc">/</span> (<span class="fu">length</span>(z_k) <span class="sc">+</span> <span class="dv">1</span>)</span>
+<span id="cb12-11"><a href="#cb12-11"></a>    w_k[k] <span class="ot">&lt;-</span> <span class="fu">wilcox.test</span>(y_k[z_k <span class="sc">==</span> <span class="dv">1</span>], y_k[z_k <span class="sc">==</span> <span class="dv">0</span>])<span class="sc">$</span>statistic</span>
+<span id="cb12-12"><a href="#cb12-12"></a>  }</span>
+<span id="cb12-13"><a href="#cb12-13"></a>  w_S <span class="ot">&lt;-</span> <span class="fu">sum</span>(c_k <span class="sc">*</span> w_k)</span>
+<span id="cb12-14"><a href="#cb12-14"></a>  <span class="fu">return</span>(w_S)</span>
+<span id="cb12-15"><a href="#cb12-15"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
 </section>
@@ -641,10 +797,10 @@ No SRE, as unidades são agrupadas em estratos segundo alguma caracteristica (pr
 <div class="cell" data-layout-align="center">
 <details>
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a>dados <span class="ot">&lt;-</span> <span class="fu">read.table</span>(<span class="st">"datasets/Penn46_ascii.txt"</span>)</span>
-<span id="cb3-2"><a href="#cb3-2"></a>z <span class="ot">&lt;-</span> dados<span class="sc">$</span>treatment</span>
-<span id="cb3-3"><a href="#cb3-3"></a>x <span class="ot">&lt;-</span> dados<span class="sc">$</span>quarter</span>
-<span id="cb3-4"><a href="#cb3-4"></a>y <span class="ot">&lt;-</span> <span class="fu">log</span>(dados<span class="sc">$</span>duration)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1"></a>dados <span class="ot">&lt;-</span> <span class="fu">read.table</span>(<span class="st">"datasets/Penn46_ascii.txt"</span>)</span>
+<span id="cb13-2"><a href="#cb13-2"></a>z <span class="ot">&lt;-</span> dados<span class="sc">$</span>treatment</span>
+<span id="cb13-3"><a href="#cb13-3"></a>x <span class="ot">&lt;-</span> dados<span class="sc">$</span>quarter</span>
+<span id="cb13-4"><a href="#cb13-4"></a>y <span class="ot">&lt;-</span> <span class="fu">log</span>(dados<span class="sc">$</span>duration)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
 <div class="fragment">
@@ -652,16 +808,16 @@ No SRE, as unidades são agrupadas em estratos segundo alguma caracteristica (pr
 <div class="cell" data-layout-align="center">
 <details>
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a>z_permuta_SRE <span class="ot">&lt;-</span> <span class="cf">function</span>(z, x) {</span>
-<span id="cb4-2"><a href="#cb4-2"></a>  x_levels <span class="ot">&lt;-</span> <span class="fu">unique</span>(x)</span>
-<span id="cb4-3"><a href="#cb4-3"></a>  K <span class="ot">&lt;-</span> <span class="fu">length</span>(x_levels)</span>
-<span id="cb4-4"><a href="#cb4-4"></a>  z_perm <span class="ot">&lt;-</span> z</span>
-<span id="cb4-5"><a href="#cb4-5"></a>  <span class="cf">for</span> (k <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>K) {</span>
-<span id="cb4-6"><a href="#cb4-6"></a>    x_k <span class="ot">&lt;-</span> x_levels[k]</span>
-<span id="cb4-7"><a href="#cb4-7"></a>    z_perm[x <span class="sc">==</span> x_k] <span class="ot">&lt;-</span> <span class="fu">sample</span>(z[x <span class="sc">==</span> x_k])</span>
-<span id="cb4-8"><a href="#cb4-8"></a>  }</span>
-<span id="cb4-9"><a href="#cb4-9"></a>  <span class="fu">return</span>(z_perm)</span>
-<span id="cb4-10"><a href="#cb4-10"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1"></a>z_permuta_SRE <span class="ot">&lt;-</span> <span class="cf">function</span>(z, x) {</span>
+<span id="cb14-2"><a href="#cb14-2"></a>  x_levels <span class="ot">&lt;-</span> <span class="fu">unique</span>(x)</span>
+<span id="cb14-3"><a href="#cb14-3"></a>  K <span class="ot">&lt;-</span> <span class="fu">length</span>(x_levels)</span>
+<span id="cb14-4"><a href="#cb14-4"></a>  z_perm <span class="ot">&lt;-</span> z</span>
+<span id="cb14-5"><a href="#cb14-5"></a>  <span class="cf">for</span> (k <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>K) {</span>
+<span id="cb14-6"><a href="#cb14-6"></a>    x_k <span class="ot">&lt;-</span> x_levels[k]</span>
+<span id="cb14-7"><a href="#cb14-7"></a>    z_perm[x <span class="sc">==</span> x_k] <span class="ot">&lt;-</span> <span class="fu">sample</span>(z[x <span class="sc">==</span> x_k])</span>
+<span id="cb14-8"><a href="#cb14-8"></a>  }</span>
+<span id="cb14-9"><a href="#cb14-9"></a>  <span class="fu">return</span>(z_perm)</span>
+<span id="cb14-10"><a href="#cb14-10"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
 </div>
@@ -672,29 +828,29 @@ No SRE, as unidades são agrupadas em estratos segundo alguma caracteristica (pr
 <div class="cell" data-layout-align="center">
 <details>
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a>mc <span class="ot">&lt;-</span> <span class="dv">10</span><span class="sc">^</span><span class="dv">4</span></span>
-<span id="cb5-2"><a href="#cb5-2"></a>estatisticas <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="cn">NA</span>, <span class="at">ncol =</span> <span class="dv">2</span>, <span class="at">nrow =</span> mc)</span>
-<span id="cb5-3"><a href="#cb5-3"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>mc) {</span>
-<span id="cb5-4"><a href="#cb5-4"></a>  z_perm <span class="ot">&lt;-</span> <span class="fu">z_permuta_SRE</span>(z, x)</span>
-<span id="cb5-5"><a href="#cb5-5"></a>  estatisticas[i, <span class="dv">1</span>] <span class="ot">&lt;-</span> <span class="fu">ee</span>(y, z_perm, x)</span>
-<span id="cb5-6"><a href="#cb5-6"></a>  estatisticas[i, <span class="dv">2</span>] <span class="ot">&lt;-</span> <span class="fu">comb_wilcoxon</span>(y, z_perm, x)</span>
-<span id="cb5-7"><a href="#cb5-7"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1"></a>mc <span class="ot">&lt;-</span> <span class="dv">10</span><span class="sc">^</span><span class="dv">4</span></span>
+<span id="cb15-2"><a href="#cb15-2"></a>estatisticas <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="cn">NA</span>, <span class="at">ncol =</span> <span class="dv">2</span>, <span class="at">nrow =</span> mc)</span>
+<span id="cb15-3"><a href="#cb15-3"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>mc) {</span>
+<span id="cb15-4"><a href="#cb15-4"></a>  z_perm <span class="ot">&lt;-</span> <span class="fu">z_permuta_SRE</span>(z, x)</span>
+<span id="cb15-5"><a href="#cb15-5"></a>  estatisticas[i, <span class="dv">1</span>] <span class="ot">&lt;-</span> <span class="fu">ee</span>(y, z_perm, x)</span>
+<span id="cb15-6"><a href="#cb15-6"></a>  estatisticas[i, <span class="dv">2</span>] <span class="ot">&lt;-</span> <span class="fu">comb_wilcoxon</span>(y, z_perm, x)</span>
+<span id="cb15-7"><a href="#cb15-7"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
 <div class="cell" data-layout-align="center">
 <details>
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a><span class="co"># Unilateral p-values</span></span>
-<span id="cb6-2"><a href="#cb6-2"></a>ee_obs <span class="ot">&lt;-</span> <span class="fu">ee</span>(y, z, x)</span>
-<span id="cb6-3"><a href="#cb6-3"></a>wilcoxon_obs <span class="ot">&lt;-</span> <span class="fu">comb_wilcoxon</span>(y, z, x)</span>
-<span id="cb6-4"><a href="#cb6-4"></a><span class="fu">mean</span>(estatisticas[, <span class="dv">1</span>] <span class="sc">&lt;</span> ee_obs)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1"></a><span class="co"># Unilateral p-values</span></span>
+<span id="cb16-2"><a href="#cb16-2"></a>ee_obs <span class="ot">&lt;-</span> <span class="fu">ee</span>(y, z, x)</span>
+<span id="cb16-3"><a href="#cb16-3"></a>wilcoxon_obs <span class="ot">&lt;-</span> <span class="fu">comb_wilcoxon</span>(y, z, x)</span>
+<span id="cb16-4"><a href="#cb16-4"></a><span class="fu">mean</span>(estatisticas[, <span class="dv">1</span>] <span class="sc">&lt;</span> ee_obs)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.0014</code></pre>
+<pre><code>[1] 0.0015</code></pre>
 </div>
 <details>
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1"></a><span class="fu">mean</span>(estatisticas[, <span class="dv">2</span>] <span class="sc">&lt;</span> wilcoxon_obs)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1"></a><span class="fu">mean</span>(estatisticas[, <span class="dv">2</span>] <span class="sc">&lt;</span> wilcoxon_obs)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 5e-04</code></pre>
@@ -730,25 +886,25 @@ Assim, o estimador <span class="math inline">\(\hat{\tau}_S = \displaystyle \sum
 <div class="cell" data-layout-align="center">
 <details>
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1"></a>neyman_sre <span class="ot">&lt;-</span> <span class="cf">function</span>(y, z, x) {</span>
-<span id="cb10-2"><a href="#cb10-2"></a>  x_levels <span class="ot">&lt;-</span> <span class="fu">unique</span>(x)</span>
-<span id="cb10-3"><a href="#cb10-3"></a>  K <span class="ot">&lt;-</span> <span class="fu">length</span>(x_levels)</span>
-<span id="cb10-4"><a href="#cb10-4"></a>  pi_k <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="dv">0</span>, K)</span>
-<span id="cb10-5"><a href="#cb10-5"></a>  tau_k <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="dv">0</span>, K)</span>
-<span id="cb10-6"><a href="#cb10-6"></a>  v_k <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="dv">0</span>, K)</span>
-<span id="cb10-7"><a href="#cb10-7"></a>  n <span class="ot">&lt;-</span> <span class="fu">length</span>(z)</span>
-<span id="cb10-8"><a href="#cb10-8"></a>  <span class="cf">for</span> (k <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>K) {</span>
-<span id="cb10-9"><a href="#cb10-9"></a>    x_k <span class="ot">&lt;-</span> x_levels[k]</span>
-<span id="cb10-10"><a href="#cb10-10"></a>    z_k <span class="ot">&lt;-</span> z[x <span class="sc">==</span> x_k]</span>
-<span id="cb10-11"><a href="#cb10-11"></a>    y_k <span class="ot">&lt;-</span> y[x <span class="sc">==</span> x_k]</span>
-<span id="cb10-12"><a href="#cb10-12"></a>    pi_k[k] <span class="ot">&lt;-</span> <span class="fu">length</span>(z_k)<span class="sc">/</span>n</span>
-<span id="cb10-13"><a href="#cb10-13"></a>    tau_k[k] <span class="ot">&lt;-</span> <span class="fu">mean</span>(y_k[z_k <span class="sc">==</span> <span class="dv">1</span>]) <span class="sc">-</span> <span class="fu">mean</span>(y_k[z_k <span class="sc">==</span> <span class="dv">0</span>])</span>
-<span id="cb10-14"><a href="#cb10-14"></a>    v_k[k] <span class="ot">&lt;-</span> <span class="fu">var</span>(y_k[z_k <span class="sc">==</span> <span class="dv">1</span>]) <span class="sc">/</span> <span class="fu">sum</span>(z_k) <span class="sc">+</span> <span class="fu">var</span>(y_k[z_k <span class="sc">==</span> <span class="dv">0</span>]) <span class="sc">/</span> <span class="fu">sum</span>(<span class="dv">1</span> <span class="sc">-</span> z_k)</span>
-<span id="cb10-15"><a href="#cb10-15"></a>  }</span>
-<span id="cb10-16"><a href="#cb10-16"></a>  tau_s <span class="ot">&lt;-</span> <span class="fu">sum</span>(pi_k <span class="sc">*</span> tau_k)</span>
-<span id="cb10-17"><a href="#cb10-17"></a>  v_s <span class="ot">&lt;-</span> <span class="fu">sum</span>(pi_k<span class="sc">^</span><span class="dv">2</span> <span class="sc">*</span> v_k) </span>
-<span id="cb10-18"><a href="#cb10-18"></a>  <span class="fu">return</span>(<span class="fu">c</span>(tau_s, v_s))</span>
-<span id="cb10-19"><a href="#cb10-19"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1"></a>neyman_sre <span class="ot">&lt;-</span> <span class="cf">function</span>(y, z, x) {</span>
+<span id="cb20-2"><a href="#cb20-2"></a>  x_levels <span class="ot">&lt;-</span> <span class="fu">unique</span>(x)</span>
+<span id="cb20-3"><a href="#cb20-3"></a>  K <span class="ot">&lt;-</span> <span class="fu">length</span>(x_levels)</span>
+<span id="cb20-4"><a href="#cb20-4"></a>  pi_k <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="dv">0</span>, K)</span>
+<span id="cb20-5"><a href="#cb20-5"></a>  tau_k <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="dv">0</span>, K)</span>
+<span id="cb20-6"><a href="#cb20-6"></a>  v_k <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="dv">0</span>, K)</span>
+<span id="cb20-7"><a href="#cb20-7"></a>  n <span class="ot">&lt;-</span> <span class="fu">length</span>(z)</span>
+<span id="cb20-8"><a href="#cb20-8"></a>  <span class="cf">for</span> (k <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>K) {</span>
+<span id="cb20-9"><a href="#cb20-9"></a>    x_k <span class="ot">&lt;-</span> x_levels[k]</span>
+<span id="cb20-10"><a href="#cb20-10"></a>    z_k <span class="ot">&lt;-</span> z[x <span class="sc">==</span> x_k]</span>
+<span id="cb20-11"><a href="#cb20-11"></a>    y_k <span class="ot">&lt;-</span> y[x <span class="sc">==</span> x_k]</span>
+<span id="cb20-12"><a href="#cb20-12"></a>    pi_k[k] <span class="ot">&lt;-</span> <span class="fu">length</span>(z_k)<span class="sc">/</span>n</span>
+<span id="cb20-13"><a href="#cb20-13"></a>    tau_k[k] <span class="ot">&lt;-</span> <span class="fu">mean</span>(y_k[z_k <span class="sc">==</span> <span class="dv">1</span>]) <span class="sc">-</span> <span class="fu">mean</span>(y_k[z_k <span class="sc">==</span> <span class="dv">0</span>])</span>
+<span id="cb20-14"><a href="#cb20-14"></a>    v_k[k] <span class="ot">&lt;-</span> <span class="fu">var</span>(y_k[z_k <span class="sc">==</span> <span class="dv">1</span>]) <span class="sc">/</span> <span class="fu">sum</span>(z_k) <span class="sc">+</span> <span class="fu">var</span>(y_k[z_k <span class="sc">==</span> <span class="dv">0</span>]) <span class="sc">/</span> <span class="fu">sum</span>(<span class="dv">1</span> <span class="sc">-</span> z_k)</span>
+<span id="cb20-15"><a href="#cb20-15"></a>  }</span>
+<span id="cb20-16"><a href="#cb20-16"></a>  tau_s <span class="ot">&lt;-</span> <span class="fu">sum</span>(pi_k <span class="sc">*</span> tau_k)</span>
+<span id="cb20-17"><a href="#cb20-17"></a>  v_s <span class="ot">&lt;-</span> <span class="fu">sum</span>(pi_k<span class="sc">^</span><span class="dv">2</span> <span class="sc">*</span> v_k) </span>
+<span id="cb20-18"><a href="#cb20-18"></a>  <span class="fu">return</span>(<span class="fu">c</span>(tau_s, v_s))</span>
+<span id="cb20-19"><a href="#cb20-19"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
 </section>
@@ -758,10 +914,10 @@ Assim, o estimador <span class="math inline">\(\hat{\tau}_S = \displaystyle \sum
 <div class="cell" data-layout-align="center">
 <details>
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1"></a>est_neyman <span class="ot">&lt;-</span> <span class="fu">neyman_sre</span>(y, z, x)</span>
-<span id="cb11-2"><a href="#cb11-2"></a>lim_inf <span class="ot">&lt;-</span> est_neyman[<span class="dv">1</span>] <span class="sc">-</span> <span class="fl">1.96</span><span class="sc">*</span><span class="fu">sqrt</span>(est_neyman[<span class="dv">2</span>])</span>
-<span id="cb11-3"><a href="#cb11-3"></a>lim_sup <span class="ot">&lt;-</span> est_neyman[<span class="dv">1</span>] <span class="sc">+</span> <span class="fl">1.96</span><span class="sc">*</span><span class="fu">sqrt</span>(est_neyman[<span class="dv">2</span>])</span>
-<span id="cb11-4"><a href="#cb11-4"></a><span class="fu">c</span>(lim_inf, lim_sup)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1"></a>est_neyman <span class="ot">&lt;-</span> <span class="fu">neyman_sre</span>(y, z, x)</span>
+<span id="cb21-2"><a href="#cb21-2"></a>lim_inf <span class="ot">&lt;-</span> est_neyman[<span class="dv">1</span>] <span class="sc">-</span> <span class="fl">1.96</span><span class="sc">*</span><span class="fu">sqrt</span>(est_neyman[<span class="dv">2</span>])</span>
+<span id="cb21-3"><a href="#cb21-3"></a>lim_sup <span class="ot">&lt;-</span> est_neyman[<span class="dv">1</span>] <span class="sc">+</span> <span class="fl">1.96</span><span class="sc">*</span><span class="fu">sqrt</span>(est_neyman[<span class="dv">2</span>])</span>
+<span id="cb21-4"><a href="#cb21-4"></a><span class="fu">c</span>(lim_inf, lim_sup)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] -0.15027005 -0.02954287</code></pre>
@@ -876,9 +1032,9 @@ Assim, o estimador <span class="math inline">\(\hat{\tau}_S = \displaystyle \sum
 <div class="cell" data-layout-align="center">
 <details>
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1"></a><span class="fu">library</span>(foreign)</span>
-<span id="cb13-2"><a href="#cb13-2"></a>dados <span class="ot">&lt;-</span> <span class="fu">read.dta</span>(<span class="st">"datasets/chong.dta"</span>)</span>
-<span id="cb13-3"><a href="#cb13-3"></a><span class="fu">table</span>(dados<span class="sc">$</span>treatment, dados<span class="sc">$</span>class_level)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1"></a><span class="fu">library</span>(foreign)</span>
+<span id="cb23-2"><a href="#cb23-2"></a>dados <span class="ot">&lt;-</span> <span class="fu">read.dta</span>(<span class="st">"datasets/chong.dta"</span>)</span>
+<span id="cb23-3"><a href="#cb23-3"></a><span class="fu">table</span>(dados<span class="sc">$</span>treatment, dados<span class="sc">$</span>class_level)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>               
@@ -893,11 +1049,11 @@ Assim, o estimador <span class="math inline">\(\hat{\tau}_S = \displaystyle \sum
 <div class="cell" data-layout-align="center">
 <details>
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1"></a>dados <span class="ot">&lt;-</span> dados <span class="sc">|&gt;</span> dplyr<span class="sc">::</span><span class="fu">select</span>(treatment, gradesq34, class_level, anemic_base_re) <span class="sc">|&gt;</span> </span>
-<span id="cb15-2"><a href="#cb15-2"></a>                   dplyr<span class="sc">::</span><span class="fu">filter</span>(treatment <span class="sc">!=</span> <span class="st">"Soccer Player"</span>)</span>
-<span id="cb15-3"><a href="#cb15-3"></a>z <span class="ot">&lt;-</span> (dados<span class="sc">$</span>treatment <span class="sc">==</span> <span class="st">"Physician"</span>)</span>
-<span id="cb15-4"><a href="#cb15-4"></a>y <span class="ot">&lt;-</span> dados<span class="sc">$</span>gradesq34</span>
-<span id="cb15-5"><a href="#cb15-5"></a>x <span class="ot">&lt;-</span> dados<span class="sc">$</span>class_level</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1"></a>dados <span class="ot">&lt;-</span> dados <span class="sc">|&gt;</span> dplyr<span class="sc">::</span><span class="fu">select</span>(treatment, gradesq34, class_level, anemic_base_re) <span class="sc">|&gt;</span> </span>
+<span id="cb25-2"><a href="#cb25-2"></a>                   dplyr<span class="sc">::</span><span class="fu">filter</span>(treatment <span class="sc">!=</span> <span class="st">"Soccer Player"</span>)</span>
+<span id="cb25-3"><a href="#cb25-3"></a>z <span class="ot">&lt;-</span> (dados<span class="sc">$</span>treatment <span class="sc">==</span> <span class="st">"Physician"</span>)</span>
+<span id="cb25-4"><a href="#cb25-4"></a>y <span class="ot">&lt;-</span> dados<span class="sc">$</span>gradesq34</span>
+<span id="cb25-5"><a href="#cb25-5"></a>x <span class="ot">&lt;-</span> dados<span class="sc">$</span>class_level</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
 </div>
@@ -907,11 +1063,11 @@ Assim, o estimador <span class="math inline">\(\hat{\tau}_S = \displaystyle \sum
 <div class="cell" data-layout-align="center">
 <details>
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1"></a><span class="co"># Estraificação</span></span>
-<span id="cb16-2"><a href="#cb16-2"></a>est <span class="ot">&lt;-</span> <span class="fu">neyman_sre</span>(y, z, x)</span>
-<span id="cb16-3"><a href="#cb16-3"></a>tau_s <span class="ot">&lt;-</span> est[<span class="dv">1</span>]</span>
-<span id="cb16-4"><a href="#cb16-4"></a>v_s <span class="ot">&lt;-</span> est[<span class="dv">2</span>]</span>
-<span id="cb16-5"><a href="#cb16-5"></a><span class="fu">c</span>(tau_s, v_s)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1"></a><span class="co"># Estraificação</span></span>
+<span id="cb26-2"><a href="#cb26-2"></a>est <span class="ot">&lt;-</span> <span class="fu">neyman_sre</span>(y, z, x)</span>
+<span id="cb26-3"><a href="#cb26-3"></a>tau_s <span class="ot">&lt;-</span> est[<span class="dv">1</span>]</span>
+<span id="cb26-4"><a href="#cb26-4"></a>v_s <span class="ot">&lt;-</span> est[<span class="dv">2</span>]</span>
+<span id="cb26-5"><a href="#cb26-5"></a><span class="fu">c</span>(tau_s, v_s)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 0.40589074 0.04096198</code></pre>
@@ -922,13 +1078,13 @@ Assim, o estimador <span class="math inline">\(\hat{\tau}_S = \displaystyle \sum
 <div class="cell" data-layout-align="center">
 <details>
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1"></a><span class="co"># Estratificação + Pós-estratificação</span></span>
-<span id="cb18-2"><a href="#cb18-2"></a>anemia <span class="ot">&lt;-</span> dados<span class="sc">$</span>anemic_base_re</span>
-<span id="cb18-3"><a href="#cb18-3"></a>sps <span class="ot">&lt;-</span> <span class="fu">interaction</span>(x, anemia)</span>
-<span id="cb18-4"><a href="#cb18-4"></a>est <span class="ot">&lt;-</span> <span class="fu">neyman_sre</span>(y, z, sps)</span>
-<span id="cb18-5"><a href="#cb18-5"></a>tau_sps <span class="ot">&lt;-</span> est[<span class="dv">1</span>]</span>
-<span id="cb18-6"><a href="#cb18-6"></a>v_sps <span class="ot">&lt;-</span> est[<span class="dv">2</span>]</span>
-<span id="cb18-7"><a href="#cb18-7"></a><span class="fu">c</span>(tau_sps, v_sps)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1"></a><span class="co"># Estratificação + Pós-estratificação</span></span>
+<span id="cb28-2"><a href="#cb28-2"></a>anemia <span class="ot">&lt;-</span> dados<span class="sc">$</span>anemic_base_re</span>
+<span id="cb28-3"><a href="#cb28-3"></a>sps <span class="ot">&lt;-</span> <span class="fu">interaction</span>(x, anemia)</span>
+<span id="cb28-4"><a href="#cb28-4"></a>est <span class="ot">&lt;-</span> <span class="fu">neyman_sre</span>(y, z, sps)</span>
+<span id="cb28-5"><a href="#cb28-5"></a>tau_sps <span class="ot">&lt;-</span> est[<span class="dv">1</span>]</span>
+<span id="cb28-6"><a href="#cb28-6"></a>v_sps <span class="ot">&lt;-</span> est[<span class="dv">2</span>]</span>
+<span id="cb28-7"><a href="#cb28-7"></a><span class="fu">c</span>(tau_sps, v_sps)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 0.46334322 0.03624965</code></pre>
@@ -939,11 +1095,11 @@ Assim, o estimador <span class="math inline">\(\hat{\tau}_S = \displaystyle \sum
 <div class="cell" data-layout-align="center">
 <details>
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1"></a>est_s <span class="ot">&lt;-</span> tau_s <span class="sc">/</span> <span class="fu">sqrt</span>(v_s)</span>
-<span id="cb20-2"><a href="#cb20-2"></a>est_sps <span class="ot">&lt;-</span> tau_sps <span class="sc">/</span> <span class="fu">sqrt</span>(v_sps)</span>
-<span id="cb20-3"><a href="#cb20-3"></a>pvalor_s <span class="ot">&lt;-</span> <span class="dv">2</span> <span class="sc">-</span> <span class="dv">2</span><span class="sc">*</span><span class="fu">pnorm</span>(<span class="fu">abs</span>(est_s))       <span class="co"># Bilateral</span></span>
-<span id="cb20-4"><a href="#cb20-4"></a>pvalor_sps <span class="ot">&lt;-</span> <span class="dv">2</span> <span class="sc">-</span> <span class="dv">2</span><span class="sc">*</span><span class="fu">pnorm</span>(<span class="fu">abs</span>(est_sps))   <span class="co"># Bilateral</span></span>
-<span id="cb20-5"><a href="#cb20-5"></a><span class="fu">c</span>(est_s, pvalor_s, est_sps, pvalor_sps)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1"></a>est_s <span class="ot">&lt;-</span> tau_s <span class="sc">/</span> <span class="fu">sqrt</span>(v_s)</span>
+<span id="cb30-2"><a href="#cb30-2"></a>est_sps <span class="ot">&lt;-</span> tau_sps <span class="sc">/</span> <span class="fu">sqrt</span>(v_sps)</span>
+<span id="cb30-3"><a href="#cb30-3"></a>pvalor_s <span class="ot">&lt;-</span> <span class="dv">2</span> <span class="sc">-</span> <span class="dv">2</span><span class="sc">*</span><span class="fu">pnorm</span>(<span class="fu">abs</span>(est_s))       <span class="co"># Bilateral</span></span>
+<span id="cb30-4"><a href="#cb30-4"></a>pvalor_sps <span class="ot">&lt;-</span> <span class="dv">2</span> <span class="sc">-</span> <span class="dv">2</span><span class="sc">*</span><span class="fu">pnorm</span>(<span class="fu">abs</span>(est_sps))   <span class="co"># Bilateral</span></span>
+<span id="cb30-5"><a href="#cb30-5"></a><span class="fu">c</span>(est_s, pvalor_s, est_sps, pvalor_sps)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 2.00548160 0.04491159 2.43360967 0.01494911</code></pre>
@@ -952,6 +1108,38 @@ Assim, o estimador <span class="math inline">\(\hat{\tau}_S = \displaystyle \sum
 </div>
 </section>
 <section id="pós-estratificação-7" class="slide level2">
+<h2>Pós-estratificação</h2>
+<div class="callout callout-note callout-captioned callout-style-default">
+<div class="callout-body">
+<div class="callout-caption">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Simulação</strong></p>
+</div>
+<div class="callout-content">
+<div class="cell" data-layout-align="center">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1"></a>alguns_index_desbalanceados <span class="ot">&lt;-</span> <span class="fu">which</span>(diff_estrato_1 <span class="sc">&gt;</span> <span class="fl">0.3</span> <span class="sc">&amp;</span> diff_estrato_1 <span class="sc">&lt;</span> <span class="fl">0.9</span>)</span>
+<span id="cb32-2"><a href="#cb32-2"></a>tau <span class="ot">&lt;-</span> <span class="fu">c</span>()</span>
+<span id="cb32-3"><a href="#cb32-3"></a><span class="cf">for</span> (i <span class="cf">in</span> alguns_index_desbalanceados) {</span>
+<span id="cb32-4"><a href="#cb32-4"></a>  Y <span class="ot">=</span> z_sim[, i]<span class="sc">*</span>Y1 <span class="sc">+</span> (<span class="dv">1</span> <span class="sc">-</span> z_sim[, i])<span class="sc">*</span>Y0</span>
+<span id="cb32-5"><a href="#cb32-5"></a>  tau[i] <span class="ot">&lt;-</span> <span class="fu">ee</span>(Y, z_sim[, i], x)</span>
+<span id="cb32-6"><a href="#cb32-6"></a>}</span>
+<span id="cb32-7"><a href="#cb32-7"></a>tau <span class="ot">&lt;-</span> tau[<span class="sc">!</span><span class="fu">is.na</span>(tau)]</span>
+<span id="cb32-8"><a href="#cb32-8"></a><span class="fu">summary</span>(tau)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+                                                </code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="pós-estratificação-8" class="slide level2">
 <h2>Pós-estratificação</h2>
 <h4 id="como-saber-se-devo-ou-não-estratificar-pós-estratificar">Como saber se devo ou não estratificar (pós-estratificar)?</h4>
 <center>
