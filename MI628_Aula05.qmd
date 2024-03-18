@@ -39,6 +39,15 @@ format:
 # Introdução
 ## Introdução
 
+
+- Experimentos randomizados são o **padrão ouro** para estimar efeitos causais, porque a randomização equilibra, em média, todos os possíveis fatores de confusão (a.k.a. covariáveis). Contudo, pode acontecer que, em um determiado experimento, CRE crie grupos que são desbalanceados em alguma _covariável importante_.
+- Esse desbalanceamento traz consequências (já discutidas na aula anterior).
+- Nestes casos, continuamos com o experimento como esta ou re-randomizamos e continuamos o experimento com grupos balanceados?
+
+
+
+## Introdução
+
 - Estratificação e pós-estratificação são duais para covariável discreta no planejamento e análise de experimentos randomizados.
 - Mas como lidar com covariáveis multidimensionais e/ou contínuas?
 - Categorizar poderia ser uma respostas mas é longe de ser uma solução ótima `r emo::ji("sad")`.
@@ -59,7 +68,7 @@ format:
 
 - Considere uma polulação com $n$ unidades experimentais, das quais $n_1$ recebem o tratamento e $n_0$ o controle e seja $\textbf{Z} = (Z_1, \cdots, Z_n)$ o vetor indicador de tratamento.
 - Para cada $i$, seja $X_i \in \mathbb{R}^K$ o vetor de covariáveis (discretas ou contínuas). 
-- Denote, $\textbf{X}_{n \times K} = (X_1, \cdots, X_n)'$ e por simplicidade que $n^{-1} \displaystyle \sum_{i = 1}^n X_i = 0.$
+- Denote, $\textbf{X}_{n \times K} = (X_1, \cdots, X_n)'$ e por simplicidade assumiremos que $n^{-1} \displaystyle \sum_{i = 1}^n X_i = 0.$
 
 . . . 
 
@@ -98,7 +107,7 @@ $M$ permanece o mesmo se transformamos $X_i$ em $b_0 + B X_i$ para todas as unid
 . . . 
 
 
-Para valores grandes de $n$, $M \sim \chi^2_K.$ Assim, $M$ pode ter valores realizados grandes, afinal, $M$ tem média $K$ e variância $2K$.
+Sob CRE e para valores grandes de $n$, $M \sim \chi^2_K.$ Assim, $M$ pode ter valores realizados grandes, afinal, $M$ tem média $K$ e variância $2K$.
 
 ## Rerandomizar
 
@@ -159,7 +168,45 @@ Selecione $\textbf{Z}$ de um CRE e aceite este sss $$M \leq a,$$ para algum valo
 
 . . . 
 
-Uma prática comúm é escolher $a$ como algum quantil da $\chi^2_K$.
+Uma prática comúm é escolher $a$ pequeno ou utilizar algum quantil da $\chi^2_K$.
+
+
+## Rerandomizar
+
+
+- Uma outra forma de escolher $a$ é fixando primeiro $p_a$ tal que $$p_a = P(M \leq a),$$ em que $p_a$ é a proporção de todas as randomizações consideradas aceitáveis pelo critério de rerandomização.
+-  Na prática, a escolha de $p_a$ é feita em termos do PRIV.
+
+. . . 
+
+
+::: {.callout-tip}
+### Percent Reduction in Variance (PRIV)
+
+$$PRIV = 100 \times \Big (\dfrac{\mathbb{V}(\hat{\tau}_X) -  \mathbb{V}_a(\hat{\tau}_X)}{\mathbb{V}(\hat{\tau}_X)}  \Big) = 100 \times \Big ( 1 - \dfrac{P(\chi_{k+2}^2 \leq a)}{P(\chi_{k}^2 \leq a)} \Big)$$
+
+:::
+
+
+
+## Rerandomizar
+
+#### Exemplo
+
+<center>
+Suponha que $k = 10$, devemos escolher $p_a = 0.001$ ou $p_a = 0.0001$?
+</center>
+
+
+- $p_a = 0.001 \rightarrow a = 1.478743 \rightarrow PRIV \approx 88\%$ 
+- $p_a = 0.0001 \rightarrow a = 0.8889204 \rightarrow PRIV \approx 93\%$ 
+
+. . . 
+
+Note que, o número de rerandomizações até o primeiro aceitável é $1/p_a$. Dependendo do tempo computacional necessário (o que tem testes de permutação é um fator importante), o 5\% adicional na redução da variância pode ou não valer a pena.
+
+
+
 
 
 ## Rerandomizar
@@ -218,6 +265,14 @@ Sob ReM com $M \leq a$, quando $n \rightarrow \infty$ e se as condições (1)--(
 
 
 ## Rerandomizar
+
+$$R^2 = \mathbb{C}or(\hat{\tau}, \hat{\tau}_X) = \dfrac{n_1^{-1}S^2(1|X) + n_0^{-1}S^2(0|X) - n^{-1}S^2(\tau | X)}{_1^{-1}S^2(1) + n_0^{-1}S^2(0) - n^{-1}S^2(\tau)},$$ em que $S^2(1)$, $S^2(0)$, $S^2(\tau)$ são as variâncias de $\{Y_i(1)\}_{i = 1}^n$, $\{Y_i(0)\}_{i = 1}^n$, $\{\tau_i\}_{i = 1}^n$ e $S^2(1|X)$, $S^2(0|X)$, $S^2(\tau|X)$ são as variâncias das suas projeções em $(1, X)$.
+
+
+
+. . . 
+
+
 
 Quando $0<a<\infty$, a distribuição de $\hat{\tau}$ é bem mais complexa mas é mais concentrada em $\tau$. Assim, $\hat{\tau}$ é mais preciso sob ReM do que sob CRE.
 
@@ -492,7 +547,13 @@ No experimento de simulação temos, além dos métodos vistos na aula de hoje, 
 c(sd(tau_hat_cre), sd(tau_hat_lim), sd(tau_hat_rem), sd(tau_hat_rem_lim))
 ```
 
+. . . 
 
+
+::: {.callout-important}
+### Importante
+Li et al. (2018) mostram quem, quando $a$ é pequeno, a distribuição assintótica de $\hat{\tau}$ sob ReM e a distribuição assintócica de $\hat{\tau}_L$ sob CRE são quase idênticas.
+:::
 
 ## Referências
 
@@ -502,6 +563,7 @@ c(sd(tau_hat_cre), sd(tau_hat_lim), sd(tau_hat_rem), sd(tau_hat_rem_lim))
 - Morgan, K. L., & Rubin, D. B. (2012). Rerandomization to improve covariate balance in experiments.
 - Angrist, J., Lang, D., & Oreopoulos, P. (2009). Incentives and services for college achievement: Evidence from a randomized trial. American Economic Journal: Applied Economics, 1(1), 136-163.
 - Li, X., & Ding, P. (2020). Rerandomization and regression adjustment. Journal of the Royal Statistical Society Series B: Statistical Methodology, 82(1), 241-268.
+- Li, X., Ding, P., & Rubin, D. B. (2018). Asymptotic theory of rerandomization in treatment–control experiments. Proceedings of the National Academy of Sciences, 115(37), 9157-9162.
 
 
 :::

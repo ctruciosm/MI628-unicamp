@@ -412,7 +412,7 @@ Prof.&nbsp;Carlos Trucíos <br> ctrucios@unicamp.br
 <li class="fragment"><a href="#/rerandomizar" id="/toc-rerandomizar">Rerandomizar</a></li>
 <li class="fragment"><a href="#/ajuste-de-regressão" id="/toc-ajuste-de-regressão">Ajuste de regressão</a></li>
 <li class="fragment"><a href="#/lin-e-sre" id="/toc-lin-e-sre">Lin e SRE</a></li>
-<li class="fragment"><a href="#/exemplo" id="/toc-exemplo">Exemplo</a></li>
+<li class="fragment"><a href="#/exemplo-1" id="/toc-exemplo-1">Exemplo</a></li>
 <li class="fragment"><a href="#/simulação" id="/toc-simulação">Simulação</a></li>
 </ul>
 </nav>
@@ -423,6 +423,14 @@ Prof.&nbsp;Carlos Trucíos <br> ctrucios@unicamp.br
 
 </section>
 <section id="introdução-1" class="slide level2">
+<h2>Introdução</h2>
+<ul>
+<li class="fragment">Experimentos randomizados são o <strong>padrão ouro</strong> para estimar efeitos causais, porque a randomização equilibra, em média, todos os possíveis fatores de confusão (a.k.a. covariáveis). Contudo, pode acontecer que, em um determiado experimento, CRE crie grupos que são desbalanceados em alguma <em>covariável importante</em>.</li>
+<li class="fragment">Esse desbalanceamento traz consequências (já discutidas na aula anterior).</li>
+<li class="fragment">Nestes casos, continuamos com o experimento como esta ou re-randomizamos e continuamos o experimento com grupos balanceados?</li>
+</ul>
+</section>
+<section id="introdução-2" class="slide level2">
 <h2>Introdução</h2>
 <ul>
 <li class="fragment">Estratificação e pós-estratificação são duais para covariável discreta no planejamento e análise de experimentos randomizados.</li>
@@ -464,7 +472,7 @@ Prof.&nbsp;Carlos Trucíos <br> ctrucios@unicamp.br
 <ul>
 <li class="fragment">Considere uma polulação com <span class="math inline">\(n\)</span> unidades experimentais, das quais <span class="math inline">\(n_1\)</span> recebem o tratamento e <span class="math inline">\(n_0\)</span> o controle e seja <span class="math inline">\(\textbf{Z} = (Z_1, \cdots, Z_n)\)</span> o vetor indicador de tratamento.</li>
 <li class="fragment">Para cada <span class="math inline">\(i\)</span>, seja <span class="math inline">\(X_i \in \mathbb{R}^K\)</span> o vetor de covariáveis (discretas ou contínuas).</li>
-<li class="fragment">Denote, <span class="math inline">\(\textbf{X}_{n \times K} = (X_1, \cdots, X_n)'\)</span> e por simplicidade que <span class="math inline">\(n^{-1} \displaystyle \sum_{i = 1}^n X_i = 0.\)</span></li>
+<li class="fragment">Denote, <span class="math inline">\(\textbf{X}_{n \times K} = (X_1, \cdots, X_n)'\)</span> e por simplicidade assumiremos que <span class="math inline">\(n^{-1} \displaystyle \sum_{i = 1}^n X_i = 0.\)</span></li>
 </ul>
 <div class="fragment">
 <p>Sob CRE, a diferença de médias das covariáveis, <span class="math display">\[\hat{\tau}_X = n_1^{-1} \displaystyle \sum_{i = 1}^n Z_i X_i - n_0^{-1}\sum_{i = 1}^n (1- Z_i) X_i,\]</span> tem <span class="math inline">\(\mathbb{E}(\hat{\tau}_X) = 0\)</span> e <span class="math inline">\(\mathbb{V}(\hat{\tau}_X) = \dfrac{n}{n_1 n_0}S^2_X\)</span>, em que <span class="math inline">\(S^2_X = (n - 1)^{-1} \displaystyle \sum_{i = 1}^nX_i X_i'.\)</span></p>
@@ -500,7 +508,7 @@ Prof.&nbsp;Carlos Trucíos <br> ctrucios@unicamp.br
 </div>
 </div>
 <div class="fragment">
-<p>Para valores grandes de <span class="math inline">\(n\)</span>, <span class="math inline">\(M \sim \chi^2_K.\)</span> Assim, <span class="math inline">\(M\)</span> pode ter valores realizados grandes, afinal, <span class="math inline">\(M\)</span> tem média <span class="math inline">\(K\)</span> e variância <span class="math inline">\(2K\)</span>.</p>
+<p>Sob CRE e para valores grandes de <span class="math inline">\(n\)</span>, <span class="math inline">\(M \sim \chi^2_K.\)</span> Assim, <span class="math inline">\(M\)</span> pode ter valores realizados grandes, afinal, <span class="math inline">\(M\)</span> tem média <span class="math inline">\(K\)</span> e variância <span class="math inline">\(2K\)</span>.</p>
 </div>
 </section>
 <section id="rerandomizar-4" class="slide level2">
@@ -549,10 +557,46 @@ Prof.&nbsp;Carlos Trucíos <br> ctrucios@unicamp.br
 <p><strong>Como escolher a?</strong></p>
 </div>
 <div class="fragment">
-<p>Uma prática comúm é escolher <span class="math inline">\(a\)</span> como algum quantil da <span class="math inline">\(\chi^2_K\)</span>.</p>
+<p>Uma prática comúm é escolher <span class="math inline">\(a\)</span> pequeno ou utilizar algum quantil da <span class="math inline">\(\chi^2_K\)</span>.</p>
 </div>
 </section>
 <section id="rerandomizar-7" class="slide level2">
+<h2>Rerandomizar</h2>
+<ul>
+<li class="fragment">Uma outra forma de escolher <span class="math inline">\(a\)</span> é fixando primeiro <span class="math inline">\(p_a\)</span> tal que <span class="math display">\[p_a = P(M \leq a),\]</span> em que <span class="math inline">\(p_a\)</span> é a proporção de todas as randomizações consideradas aceitáveis pelo critério de rerandomização.</li>
+<li class="fragment">Na prática, a escolha de <span class="math inline">\(p_a\)</span> é feita em termos do PRIV.</li>
+</ul>
+<div class="fragment">
+<div class="callout callout-tip callout-captioned callout-style-default">
+<div class="callout-body">
+<div class="callout-caption">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Percent Reduction in Variance (PRIV)</strong></p>
+</div>
+<div class="callout-content">
+<p><span class="math display">\[PRIV = 100 \times \Big (\dfrac{\mathbb{V}(\hat{\tau}_X) -  \mathbb{V}_a(\hat{\tau}_X)}{\mathbb{V}(\hat{\tau}_X)}  \Big) = 100 \times \Big ( 1 - \dfrac{P(\chi_{k+2}^2 \leq a)}{P(\chi_{k}^2 \leq a)} \Big)\]</span></p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="rerandomizar-8" class="slide level2">
+<h2>Rerandomizar</h2>
+<h4 id="exemplo">Exemplo</h4>
+<center>
+Suponha que <span class="math inline">\(k = 10\)</span>, devemos escolher <span class="math inline">\(p_a = 0.001\)</span> ou <span class="math inline">\(p_a = 0.0001\)</span>?
+</center>
+<ul>
+<li class="fragment"><span class="math inline">\(p_a = 0.001 \rightarrow a = 1.478743 \rightarrow PRIV \approx 88\%\)</span></li>
+<li class="fragment"><span class="math inline">\(p_a = 0.0001 \rightarrow a = 0.8889204 \rightarrow PRIV \approx 93\%\)</span></li>
+</ul>
+<div class="fragment">
+<p>Note que, o número de rerandomizações até o primeiro aceitável é <span class="math inline">\(1/p_a\)</span>. Dependendo do tempo computacional necessário (o que tem testes de permutação é um fator importante), o 5% adicional na redução da variância pode ou não valer a pena.</p>
+</div>
+</section>
+<section id="rerandomizar-9" class="slide level2">
 <h2>Rerandomizar</h2>
 <div class="cell" data-layout-align="center">
 <details>
@@ -569,7 +613,7 @@ Prof.&nbsp;Carlos Trucíos <br> ctrucios@unicamp.br
 </details>
 </div>
 </section>
-<section id="rerandomizar-8" class="slide level2">
+<section id="rerandomizar-10" class="slide level2">
 <h2>Rerandomizar</h2>
 <p><strong>Como analisar dados sob ReM?</strong></p>
 <ol type="1">
@@ -592,7 +636,7 @@ Prof.&nbsp;Carlos Trucíos <br> ctrucios@unicamp.br
 </div>
 </div>
 </section>
-<section id="rerandomizar-9" class="slide level2">
+<section id="rerandomizar-11" class="slide level2">
 <h2>Rerandomizar</h2>
 <div class="callout callout-tip callout-captioned callout-style-default">
 <div class="callout-body">
@@ -620,9 +664,12 @@ Prof.&nbsp;Carlos Trucíos <br> ctrucios@unicamp.br
 <li class="fragment">Quando <span class="math inline">\(a \rightarrow 0\)</span>, <span class="math inline">\(\hat{\tau}- \tau \sim \sqrt{\mathbb{V}(\hat{\tau})(1 - R^2)}\varepsilon\)</span>.</li>
 </ul>
 </section>
-<section id="rerandomizar-10" class="slide level2">
+<section id="rerandomizar-12" class="slide level2">
 <h2>Rerandomizar</h2>
+<p><span class="math display">\[R^2 = \mathbb{C}or(\hat{\tau}, \hat{\tau}_X) = \dfrac{n_1^{-1}S^2(1|X) + n_0^{-1}S^2(0|X) - n^{-1}S^2(\tau | X)}{_1^{-1}S^2(1) + n_0^{-1}S^2(0) - n^{-1}S^2(\tau)},\]</span> em que <span class="math inline">\(S^2(1)\)</span>, <span class="math inline">\(S^2(0)\)</span>, <span class="math inline">\(S^2(\tau)\)</span> são as variâncias de <span class="math inline">\(\{Y_i(1)\}_{i = 1}^n\)</span>, <span class="math inline">\(\{Y_i(0)\}_{i = 1}^n\)</span>, <span class="math inline">\(\{\tau_i\}_{i = 1}^n\)</span> e <span class="math inline">\(S^2(1|X)\)</span>, <span class="math inline">\(S^2(0|X)\)</span>, <span class="math inline">\(S^2(\tau|X)\)</span> são as variâncias das suas projeções em <span class="math inline">\((1, X)\)</span>.</p>
+<div class="fragment">
 <p>Quando <span class="math inline">\(0&lt;a&lt;\infty\)</span>, a distribuição de <span class="math inline">\(\hat{\tau}\)</span> é bem mais complexa mas é mais concentrada em <span class="math inline">\(\tau\)</span>. Assim, <span class="math inline">\(\hat{\tau}\)</span> é mais preciso sob ReM do que sob CRE.</p>
+</div>
 <div class="fragment">
 <blockquote>
 <p><strong>Observação:</strong> Se ignorarmos o ReM e ainda utilizarmos o intervalo de confiança baseado na fórmula de variância de Neyman (1923) e na aproximação Normal, este será <strong>excessivamente</strong> conservador.</p>
@@ -756,11 +803,11 @@ Prof.&nbsp;Carlos Trucíos <br> ctrucios@unicamp.br
 <p>Pode ser o caso de termos um SRE, estratificado numa variável discreta <span class="math inline">\(C\)</span> e também termos outras covariáveis <span class="math inline">\(X\)</span>. Se todos os estratos são grandes, podemos obter um estimador de Lin como <span class="math display">\[\hat{\tau}_{L,S} = \displaystyle \sum_{k = 1}^K \pi_{[k]} \hat{\tau}_{L,[k]},\]</span> e um estimador (conservador) de <span class="math inline">\(\mathbb{V}(\hat{\tau}_{L,S})\)</span> dado por <span class="math display">\[\hat{V}_{L,S} = \displaystyle \sum_{k = 1}^K \pi_{[k]}^2 \hat{V}_{EHW, [k]}\]</span></p>
 </section></section>
 <section>
-<section id="exemplo" class="title-slide slide level1 center">
+<section id="exemplo-1" class="title-slide slide level1 center">
 <h1>Exemplo</h1>
 
 </section>
-<section id="exemplo-1" class="slide level2">
+<section id="exemplo-2" class="slide level2">
 <h2>Exemplo</h2>
 <div class="callout callout-note callout-captioned callout-style-default">
 <div class="callout-body">
@@ -783,7 +830,7 @@ Prof.&nbsp;Carlos Trucíos <br> ctrucios@unicamp.br
 </div>
 </div>
 </section>
-<section id="exemplo-2" class="slide level2">
+<section id="exemplo-3" class="slide level2">
 <h2>Exemplo</h2>
 <div class="callout callout-note callout-captioned callout-style-default">
 <div class="callout-body">
@@ -824,7 +871,7 @@ Prof.&nbsp;Carlos Trucíos <br> ctrucios@unicamp.br
 </div>
 </div>
 </section>
-<section id="exemplo-3" class="slide level2">
+<section id="exemplo-4" class="slide level2">
 <h2>Exemplo</h2>
 <div class="callout callout-note callout-captioned callout-style-default">
 <div class="callout-body">
@@ -854,7 +901,7 @@ Prof.&nbsp;Carlos Trucíos <br> ctrucios@unicamp.br
 </div>
 </div>
 </section>
-<section id="exemplo-4" class="slide level2">
+<section id="exemplo-5" class="slide level2">
 <h2>Exemplo</h2>
 <div class="callout callout-note callout-captioned callout-style-default">
 <div class="callout-body">
@@ -966,7 +1013,22 @@ Prof.&nbsp;Carlos Trucíos <br> ctrucios@unicamp.br
 <div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1"></a><span class="fu">c</span>(<span class="fu">sd</span>(tau_hat_cre), <span class="fu">sd</span>(tau_hat_lim), <span class="fu">sd</span>(tau_hat_rem), <span class="fu">sd</span>(tau_hat_rem_lim))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.03064079 0.01403420 0.01395298 0.01370904</code></pre>
+<pre><code>[1] 0.03041661 0.01374499 0.01389687 0.01352262</code></pre>
+</div>
+</div>
+</div>
+<div class="fragment">
+<div class="callout callout-important callout-captioned callout-style-default">
+<div class="callout-body">
+<div class="callout-caption">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Importante</strong></p>
+</div>
+<div class="callout-content">
+<p>Li et al.&nbsp;(2018) mostram quem, quando <span class="math inline">\(a\)</span> é pequeno, a distribuição assintótica de <span class="math inline">\(\hat{\tau}\)</span> sob ReM e a distribuição assintócica de <span class="math inline">\(\hat{\tau}_L\)</span> sob CRE são quase idênticas.</p>
+</div>
 </div>
 </div>
 </div>
@@ -979,6 +1041,7 @@ Prof.&nbsp;Carlos Trucíos <br> ctrucios@unicamp.br
 <li>Morgan, K. L., &amp; Rubin, D. B. (2012). Rerandomization to improve covariate balance in experiments.</li>
 <li>Angrist, J., Lang, D., &amp; Oreopoulos, P. (2009). Incentives and services for college achievement: Evidence from a randomized trial. American Economic Journal: Applied Economics, 1(1), 136-163.</li>
 <li>Li, X., &amp; Ding, P. (2020). Rerandomization and regression adjustment. Journal of the Royal Statistical Society Series B: Statistical Methodology, 82(1), 241-268.</li>
+<li>Li, X., Ding, P., &amp; Rubin, D. B. (2018). Asymptotic theory of rerandomization in treatment–control experiments. Proceedings of the National Academy of Sciences, 115(37), 9157-9162.</li>
 </ul>
 </div>
 
