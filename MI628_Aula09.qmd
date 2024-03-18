@@ -1,6 +1,6 @@
 ---
 title: "Inferência Causal"
-subtitle: "Estudos observacionais"
+subtitle: "Propensity Score"
 author: "Prof. Carlos Trucíos </br> ctrucios@unicamp.br"
 Email: "ctrucios@unicamp.br"
 institute: "Instituto de Matemática, Estatística e Computação Científica (IMECC), </br> Universidade Estadual de Campinas (UNICAMP)."
@@ -39,476 +39,50 @@ format:
 # Introdução
 ## Introdução
 
-- Nas aulas anteriores aprendimos a testar a hipótese de causalidade quando o mecanismo de atribuição de tratamento é CRE, SRE, ReM ou MPE (*experimentos controlados*).
-- Em muitos casos, não temos controle sob o mecanismo de atribuiçao de tratamento (temos apenas dados observados).
-- Durante as próximas semanas, aprenderemos a lidar com dados observacionais.
-- Aprenderemos sob quais circunstâncias estudos observacionais levarão a inferências causais válidas.
+- Introduzido por Rosembaum e Rubin (1983), _propensity score_ desempenha um papel crucial na inferência causal quando trabalhamos com estudos observacionais.
+- 
 
 
-## Introdução
+# Propensity score
+## Propensity score
+
+Assumindo uma amostragem IID, temos quatro variáveis aleatórias associadas a cada unidade $i$: 
 
 
-::: {.callout-note}
-### Estudo experimental vs. observacional
+- $X$, 
+- $Z$, 
+- $Y(1)$ e
+- $Y(0)$.
 
-_Lalonde (1986)_ está interessado no efeito causal de um programa de treinamento sob o salario. Ele compara os resultados utilizando dados experimentais (dataset `lalonde` do pacote `Matching`) vs. dados observacionais ([`cps1re74.csv`](https://dataverse.harvard.edu/file.xhtml?fileId=7440281&version=3.0)).
+. . . 
+
+Ademais, $$P(X, Z, Y(1), Y(0)) = P(X) \times P(Y(1), Y(0) | X) \times P(Z | Y(1), Y(0), X)$$
+
+
+
+
+## Propensity score
+
+::: {.callout-tip}
+### Definição (Propensity score):
+Definimos $$e(X, Y(1), Y(0)) = P(Z = 1| X, Y(1), Y(0))$$ como o _propensity score_. Sob ignorabilidade forte, $$e(X, Y(1), Y(0)) = P(Z = 1| X, Y(1), Y(0)) = P(Z = 1 | X)$$ que é simplesmente denotado por $e(X)$ e é a **probabilidade condicional de receber o tratamento dado as covariáveis observadas**
 
 :::
 
-
 . . . 
-
-
-
-:::: {.columns}
-
-::: {.column width="50%"}
-#### Estudo Experimental
-```{r}
-#| echo: true
-#| message: false
-#| warning: false
-library(Matching)
-library(car)
-data(lalonde)
-y <- lalonde$re78
-z <- lalonde$treat
-modelo_ee <- lm(y ~ z)
-v_ehw_ee <- hccm(modelo_ee)
-Estimate <- coef(modelo_ee)
-Std_Error <- sqrt(diag(v_ehw_ee))
-t <- Estimate / Std_Error
-p_valor <- pnorm(abs(t), lower.tail = FALSE)
-tabela_ee <- round(cbind(Estimate,  Std_Error, t, p_valor), 3)
-tabela_ee
-```
-
-:::
-
-::: {.column width="50%"}
-#### Estudo Observacional
-```{r}
-#| echo: true
-#| message: false
-#| warning: false
-data <- read.csv("datasets/cps1re74.csv", sep = " ")
-y <- data$re78
-z <- data$treat
-modelo_eo <- lm(y ~ z)
-v_ehw_eo <- hccm(modelo_eo)
-Estimate <- coef(modelo_eo)
-Std_Error <- sqrt(diag(v_ehw_eo))
-t <- Estimate / Std_Error
-p_valor <- pnorm(abs(t), lower.tail = FALSE)
-tabela_eo <- round(cbind(Estimate,  Std_Error, t, p_valor), 3)
-tabela_eo
-```
-:::
-
-::::
-
-. . . 
-
-[De fato, LaLonde (1986) encontrou que muitos métodos estatísticos/econométricos tradicionais davan resultados diferentes quando utilizados dados experimentais vs. observacionais `r emo::ji("sad")`]{style="color:blue"} [(tempo depois, Dehejia e Wahba (1999) encontram que, se utilizarmos métodos motivados pela inferência causal, estes problemas não aparecem `r emo::ji("smile")`)]{style="color:red"}.
-
-
-
-# Estudos observacionais
-## Estudos observacionais
-
-- Tem por objetivo elucidar relações do tipo causa-efeito.
-- Não é possível utilizar experimentos controlados.
-
-
-. . . 
-
-Um (correto) planejamento de um estudo observacional deve responder à seguinte pergunta:
-<center>
-Como o estudo observacional seria conduzido se pudesemos faze-lo através de experimentos controlados?
-
-</center>
-
-# Vies de seleção
-## Vies de seleção
-
-
-Suponha que para cada $i = 1, \cdots, n$ temos:
-
-::: {.nonincremental}
-- $X_i$: covariável pre-tratamento.
-- $Z_i$: indicadora de tratamento.
-- $Y_i$: resultado observado (com $Y_i(1)$ e $Y_i(0)$).
-:::
-
-. . . 
-
-Assumiremos que $$\{X_i, Z_i, Y_i(1), Y_i(0)\}_{i = 1}^n  \overset{IID}{\sim} \{X, Z, Y(1), Y(0)\}.$$ 
-
-## Vies de seleção
-
-Os efeitos causais de interesse são:
-
-- Efeito causal médio: $\tau = \mathbb{E}(Y(1) - Y(0)).$
-- Efeito causal médio no grupo de tratamento: $\tau_T = \mathbb{E}(Y(1) - Y(0)| Z = 1) = \mathbb{E}(Y | Z = 1) - \mathbb{E}(Y(0)| Z = 1).$
-- Efeito causal médio no grupo de controle: $\tau_C = \mathbb{E}(Y(1) - Y(0)| Z = 0) = \mathbb{E}(Y(1) | Z = 0) - \mathbb{E}(Y| Z = 0).$
-
-. . . 
-
-
-#### Observação
-<center>
-[$\mathbb{E}(Y | Z = 1)$ e $\mathbb{E}(Y | Z = 0)$ são estimáveis mas $\mathbb{E}(Y(0)| Z = 1)$ e $\mathbb{E}(Y(1) | Z = 0)$ não são]{style="color:blue"} [(Por que?)]{style="color:red"}
-</center>
-
-## Vies de seleção
-
-E se utilizarmos a diferença de médias?
-
-\begin{align*}
-\tau_{PF} & = \mathbb{E}(Y | Z = 1) - \mathbb{E}(Y | Z = 0), \\
-          & = \mathbb{E}(Y(1) | Z = 1) - \mathbb{E}(Y(0) | Z = 0).
-\end{align*}
-
-. . . 
-
-Note que
-
-::: {.nonincremental}
-- $\tau_{PF} - \tau_T = \mathbb{E}(Y(0) | Z = 1) -  \mathbb{E}(Y(0) | Z = 0)$.
-- $\tau_{PF} - \tau_C = \mathbb{E}(Y(1) | Z = 1) -  \mathbb{E}(Y(1) | Z = 0)$.
-:::
-
-que, em geral, são $\neq 0$, o que significa um _vies de seleção_.
 
 
 <aside>
-PF: _prima facie_ ou a primeira impressão.
+**Observação:** alguns autores definem _propoensity score_ apenas como $e(1) = P(Z = 1 | X)$ seguindo a notação de Rosembaum e Rubin (1983). Contudo, Rosembaum e Rubin (1983) usam esta notação pois focam em estudos observacionais. A definição $e(X, Y(1), Y(0)) = P(Z = 1| X, Y(1), Y(0))$ pode ser vista como uma generalização da definição de Rosembaum e Rubin (1983).
 </aside>
-
-
-## Vies de seleção
-
-::: {.callout-tip}
-### Vies de seleção
-Vies de seleção é um termo utilizado em diversas áreas. Aqui, vies de seleção corresponde à seleção do grupo e tratamento.
-:::
-
-
-. . . 
-
-#### Porque randomização é tão importante?
-
-Sob CRE, <center>$Z  \perp\!\!\!\perp \{Y(1), Y(0)\}.$</center>
-
-Então:
-
-::: {.nonincremental}
-- $\tau_{PF} - \tau_T = \mathbb{E}(Y(0) | Z = 1) -  \mathbb{E}(Y(0) | Z = 0) = \mathbb{E}(Y(0)) - \mathbb{E}(Y(0)) = 0$.
-- $\tau_{PF} - \tau_C = \mathbb{E}(Y(1) | Z = 1) -  \mathbb{E}(Y(1) | Z = 0) = \mathbb{E}(Y(1)) - \mathbb{E}(Y(1)) = 0$.
-:::
-
-. . . 
-
-<center>
-[Sob CRE, $\tau_T = \tau_C = \tau_{PF} = \tau$.]{style="color:red"}
-</center>
-
-
-
-# Identificação não paramétrica do efeito causal
-## Identificação não paramétrica do efeito causal
-
-- Inferência causal em estudos observacionais é uma tarefa dificil.
-- Para que seja possível, é necessário incluir algumas suposições.
-
-. . . 
-
-
-::: {.callout-tip}
-### Suposições:
-$$\mathbb{E}(Y(0)| Z = 1, X) = \mathbb{E}(Y(0)| Z = 0, X)$${#eq-suposicao1}
-
-$$\mathbb{E}(Y(1)| Z = 1, X) = \mathbb{E}(Y(1)| Z = 0, X)$${#eq-suposicao2}
-
-:::
-
-
-. . . 
-
-
-Equações (1) e (2) implicam que, condicionado em $X$, o vies de seleção é zero. Ou seja, a diferença nas médias dos resultados potenciais entre os grupos de tratamento e controle devem-se à diferença nas covariais observadas $X$. Assim, dado o mesmo valor de $X$, os resultados potenciais tem a mesma média entre tratamento e controle.
-
-
-
-## Identificação não paramétrica do efeito causal
-
-Sejam $$\tau(X), \tau_T(X), \tau_C(X), \text{ e }\tau_{PF}(X)$$ as versões condicionadas em $X$ de $$\tau, \tau_T, \tau_C, \text{ e } \tau_{PF}, \text{ respectivamente.}$$
-
-Equações (1) e (2) garantem que $$\tau_{T}(X) = \tau_C(X) = \tau_{PF}(X) = \tau(X).$$
-
-
-## Identificação não paramétrica do efeito causal
-
-
-::: {.callout-tip}
-### Definição (identificação):
-Um parâmetro $\theta$ é dito identificável se pode ser escrito como uma função da distribuição dos dados observados sob certas suposições do modelo. Um parâmetro $\theta$ é dito identificável não parametricamente se pode ser escrito como uma função da distribuição dos dados observados sem quaisquer suposição do modelo.
-
-:::
-
-
-. . . 
-
-
-::: {.callout-tip}
-### Resultado
-Sob (1) e (2), o efeito causal médio, $\tau$, é identificável não parametricamente.
-:::
-
-
-## Identificação não paramétrica do efeito causal
-
-
-- Por definição, $\tau_{PF}(X) = \mathbb{E}(Y | Z = 1, X) - \mathbb{E}(Y | Z = 0, X)$ é identificável não parametricamente pois depende apenas dos observáveis.
-- Por (1) e (2), $\tau_{T}(X) = \tau_C(X) = \tau_{PF}(X) = \tau(X)$ e então todos dependem apenas dos observáveis. Tornando-se todos identificáveis não parametricamente.
-- Por propriedade de esperança:
-    * $\mathbb{E}(\tau(X)) = \mathbb{E}(\mathbb{E}(Y(1) - Y(0) | X)) = \mathbb{E}(Y(1) - Y(0)) = \tau$
-    * $\mathbb{E}(\tau_T(X)) = \mathbb{E}(\mathbb{E}(Y(1) - Y(0) | Z = 1, X)) = \mathbb{E}(Y(1) - Y(0) | Z = 1) = \tau_T$
-    * $\mathbb{E}(\tau_C(X)) = \mathbb{E}(\mathbb{E}(Y(1) - Y(0) | Z = 0, X)) = \mathbb{E}(Y(1) - Y(0) | Z = 0) = \tau_C$
-- Assim, $\tau$ também é identificável não parametricamente
-    
-
-## Identificação não paramétrica do efeito causal
-
-
-Sob (1) e (2),
-
-\begin{align}
-\tau & = \mathbb{E}(\tau(X)) \\
-     & = \mathbb{E}[\mathbb{E}(Y | Z = 1, X) - \mathbb{E}(Y | Z = 0, X)] \\
-     & = \int [\mathbb{E}(Y | Z = 1, X = x) - \mathbb{E}(Y | Z = 0, X = x)]f(x)dx \\
-     & \text{ou} \\
-     & = \displaystyle \sum_x \mathbb{E}(Y | Z = 1, X = x) P(X = x) - \mathbb{E}(Y | Z = 0, X = x) P(X = x),
-\end{align} dependendo se $X$ for contínuo ou discreto.
-
-## Identificação não paramétrica do efeito causal
-
-
-Ademais, $$\tau_{PF} = \displaystyle \sum_x \mathbb{E}(Y | Z = 1, X = x) P(X = x| Z = 1) - \mathbb{E}(Y | Z = 0, X = x) P(X = x | Z = 0)$$
-
-
-## Identificação não paramétrica do efeito causal
-
-
-::: {.callout-tip}
-### Suposições:
-$$\text{Ignorabilidade:} \quad Y(z) \perp\!\!\!\perp  Z | X \quad (z = 0, 1).$${#eq-suposicao3}
-
-$$\text{Ignorabilidade forte:} \quad\{Y(1), Y(0)\} \perp\!\!\!\perp  Z | X.$${#eq-suposicao4}
-:::
-
-. . . 
-
-A suposição de _ignorabilidade forte_ (4) requer que o vetor de resultados potenciais seja independente do tratamento dadas as covariáveis. Já a suposição de _ignorabilidade_ (3) requer apenas que cada resultado potencial seja independente do tratamento dadas as covariáveis.
-
-. . . 
-
-<center>
-[A suposição de _ignorabilidade_ é condição suficiente para identificação não paramétrica.]{style="color:red"}
-</center>
-
-
-## Identificação não paramétrica do efeito causal
-
-- A  diferença entre ambas suposições (*ignorabilidade* e *ignorabilidade forte*) é técnica e com interesses puramente teóricos. Aqui diferenciaremos  entre as duas e nos referiremos a elas apenas como _ignorabilidade_.
-- _Ignorabilidade_,  exclui todas as covariáveis não medidas que afetam o tratamento e o resultado simultaneamente. 
-- Ou seja, _ignorabilidade_ exclui as variáveis de confusão.
-- Por isso, ignorabilidade também é chamada de suposição de inconfundibilidade. 
-
-
-## Identificação não paramétrica do efeito causal
-
-
-Seja \begin{align}
-Y(1) & = g_1(X, V_1), \\
-Y(0) & = g_0(X, V_0), \\
-Z & = I(g(X, V) \geq 0),
-\end{align}em que $g(\cdot)s$, $g_0(\cdot)$ e $g(\cdot)$ são funções e os termos de erro $(V_1, V_0) \perp\!\!\!\perp V$.
-
-. . . 
-
-Note que suposições (3) e (4) são ambas verificadas. No PGD a causa comum do tratamento e do resultado ($X$) é observável e as componentes restantes são independentes.
-
-
-## Identificação não paramétrica do efeito causal
-
-
-Seja \begin{align}
-Y(1) & = g_1(X, U, V_1), \\
-Y(0) & = g_0(X, U, V_0), \\
-Z & = I(g(X, U, V) \geq 0),
-\end{align}em que $g(\cdot)s$, $g_0(\cdot)$ e $g(\cdot)$ são funções e os termos de erro $(V_1, V_0) \perp\!\!\!\perp V$.
-
-. . . 
-
-Neste caso, nem (3) nem (4) são verificadas. A variável $U$ induce dependência entre tratamento e os resultados potencais (mesmo condicionando em $X$). 
-
-
-. . . 
-
-
-::: {.callout-important}
-### Observação
-Se não temos acesso a $U$ e analisamos os dados baseados apenas em $(X, Y, Z)$, teremos um estimador viesado. Este problema é conhecido em econometria como [vies por variáveis omitiddas](https://ctruciosm.github.io/ME715-unicamp/ME715_Aula05.html#/vari%C3%A1veis-omitidas).
-
-:::
-
-
-
-## Identificação não paramétrica do efeito causal
-
-::: {.callout-warning}
-### Importante
-::: {.nonincremental}
-- A suposição de ignorabilidade é razoável se tivermos um conjunto rico de covariáveis $X$ que afetam tanto o tratamento quanto o resultado simultaneamente.
-- Na prática não temos certeza se esta suposição é verificada ou não.
-- Justificamos sua veracidade baseados no conhecimento científico da área de conhecimento.
-- Existem estratégias (veremos isto nas últimas aulas) quando a suposição de ignorabilidade não é plausível.
-
-:::
-
-:::
-
-
-# Duas estratégias simples
-## Estratificação baseados em covariável discreta
-
-Se a covariável $X$ for discreta, a suposição de ignorabilidade (3), torna-se
-
-$$\quad Y(z) \perp\!\!\!\perp  Z | X = k \quad (z = 0, 1; k = 1, \cdots, K).$$
-
-. . . 
-
-
-Basicamente, assume-se um SRE no contexto de superpopulação. 
-
-. . . 
-
-
-Então, podemos estimar $\tau$ por $$\hat{\tau} = \displaystyle \sum_{k = 1}^K \pi_{[k]} [\hat{\bar{Y}}_{[k]}(1) - \hat{\bar{Y}}_{[k]}(0)]$$
-
-
-## Estratificação baseados em covariável discreta
-
-
-Embora o método seja amplamente utilizado, duas dificuldades aparecem: 
-
-1. Funciona bem para $K$ pequenos. Para valores grandes de $K$, a chance de termos $n_{[k]1} = 0$ o $n_{[k]0} = 0$ aumentam (gerando estimadores pobremente definidos).
-2. Não é obvio como proceder com $X \in \mathbb{R}^p$ ($p \geq 2$) ou com $X$ contínua.
-
-. . . 
-
-
-Um método padrão é criar estratos com base nas covariáveis iniciais e depois aplicar o método de estratificação. Contudo, isto pode resultar em arbitrariedade na análise devido à não singularidade dos estratos criados.
-
-
-## Outcome regression
-
-
-Consiste em ajustar por MQO do tipo
-
-$$\mathbb{E}(Y | Z, X) = \beta_0 + \beta_Z Z + X \beta_X.$$
-
-. . . 
-
-
-Assim, \begin{align}
-\tau(X) & = \mathbb{E}(Y | Z = 1, X) - \mathbb{E}(Y | Z = 0, X), \\
-        & = (\beta_0 + \beta_Z + X \beta_X) - ((\beta_0 + X \beta_X)), \\
-        & = \beta_Z,
-\end{align}
-
-. . . 
-
-Se as suposições de ignorabilidade são válidas, então $$\tau = \mathbb{E}(\tau(X)) = \beta_Z$$
-
-
-<center>
-[Se ignorbilidad acontece e o modelo de $Y$ for linear, o efrito causal médio é simplesemente o coeficiente associado a $Z$.]{style="color:red"}
-</center>
-
-
-## Outcome regression
-
-
-- A interpretação causal de $\beta_Z$ está sujeito a dois requisitos fortes: ignorabilidad e lineariedad.
-- Contudo, como discutido anteriormente (ver estimador de Lin), ignorar a heterogeneidade do efeito do tratamento inducido pela covariável $X$ produz um estimador suboptimo.
-- Assim, se fizermos $\mathbb{E}(Y | Z, X) = \beta_0 + \beta_Z Z + X \beta_X + ZX \beta_{ZX}$, teremos \begin{align}
-\tau(X) & = \mathbb{E}(Y | Z = 1, X) - \mathbb{E}(Y | Z = 0, X), \\
-        & = (\beta_0 + \beta_Z  + X \beta_X + X \beta_{ZX}) - ((\beta_0 + X \beta_X)), \\
-        & = \beta_Z + X \beta_{ZX},
-\end{align}
-
-
-## Outcome regression
-
-Sob a suposição de ignorabilidade, temos que $$\tau = \mathbb{E}(\tau(X)) = \mathbb{E}(\beta_Z + X \beta_{ZX}) = \beta_Z + \mathbb{E}(X)  \beta_{ZX}$$
-
-. . . 
-
-- Um estimador para $\tau$ é então $\hat{\tau} = \hat{\beta}_Z + \bar{X} \hat{\beta}_{ZX}$.
-- Se $X$ forem variáveis centradas, então $\hat{\tau} = \hat{\beta}_Z$
-
-
-## Outcome regression
-
-- Em geral, outros modelos mais complexos poderiam ser utilizados.
-- Por exemplo, podemos construis dois preditores $\hat{\mu}_1(X)$ e $\hat{\mu}_0(X)$ baseados nos dados de tratamento e controle, respectivamente. 
-- Então um estimador para $\tau(X)$ é dado por $\hat{\tau}(X) = \hat{\mu}_1(X) - \hat{\mu}_0(X)$.
-- Assim, um estimador para $\tau$ é dado por $$\hat{\tau}^{reg} = n^{-1} \displaystyle \sum_{i = 1}^n [\hat{\mu}_1(X_i) - \hat{\mu}_0(X_i)]$$
-- Este estimador é comumente chamado de _outcome regression estimator_ e podemos utilizar Bootstrap para estimar o erro padrão do estimador.
-
-
-## Outcome regression
-
-
-::: {.callout-note}
-### Exemplo (outcome regression para Y binário)
-Com um resultado binário, podemos modelar $Y$ com um modelo logístico. 
-
-$$\mathbb{E}(Y| Z, X) = P(Y = 1| Z, X) = \dfrac{e^{\beta_0 + \beta_Z Z + X \beta_X}}{1 + e^{\beta_0 + \beta_Z Z + X \beta_X}}.$$
-
-E um estimador para $\tau$ é dado por 
-
-$$\hat{\tau} = n^{-1} \displaystyle \sum_{i = 1}^n \{\dfrac{e^{\hat{\beta}_0 + \hat{\beta}_Z + X \hat{\beta}_X}}{1 + e^{\hat{\beta}_0 + \hat{\beta}_Z Z + X \hat{\beta}_X}} - \dfrac{e^{\hat{\beta}_0 + X \hat{\beta}_X}}{1 + e^{\hat{\beta}_0 + \hat{\beta}_Z Z + X \hat{\beta}_X}}\}$$
-
-
-:::
-
-
-. . . 
-
-Em econometria, este estimador é chamado de _efeito parcial médio_ ou _efeito marginal médio_ do tratamento no modelo logístico.
-
-
-## Outcome regression
-
-#### Comentário finais
-
-- Os preditores para a média condicional dos resultados podem também ser outros modelos de aprendizado de máquina (por isso a interseção de inferência causal e aprendizado de máquina é um tópico de pesquisa em alta).
-- O problema com outcome regression é a sensibilidade à especificação do modelo (lembre-se do exercício das 1024 regressões da lista 1). Isto pode dar espaço a reportar as estimativas do efeito causal dependendo dos interesses da pesquisa sem dar detalhes do processo de pesquisa dos modelos ([p-hacking](https://pt.wikipedia.org/wiki/P-hacking))
-
-
-
-
 
 
 ## Referências
 
 ::: {.nonincremental}
 
-- Peng Ding (2023). A First Course in Causal Inference. Capítulo 10.
-- LaLonde, R. J. (1986). Evaluating the econometric evaluations of training programs with experimental data. The American economic review, 604-620.
+- Peng Ding (2023). A First Course in Causal Inference. Capítulo 11.
+
 
 
 
