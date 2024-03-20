@@ -28,6 +28,70 @@
       margin: 0 0.8em 0.2em -1.6em;
       vertical-align: middle;
     }
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #767676;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #767676;  padding-left: 4px; }
+    div.sourceCode
+      { color: #545454; background-color: #fefefe; }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span { color: #545454; } /* Normal */
+    code span.al { color: #7928a1; } /* Alert */
+    code span.an { color: #696969; } /* Annotation */
+    code span.at { color: #a55a00; } /* Attribute */
+    code span.bn { color: #7928a1; } /* BaseN */
+    code span.bu { } /* BuiltIn */
+    code span.cf { color: #d91e18; } /* ControlFlow */
+    code span.ch { color: #008000; } /* Char */
+    code span.cn { color: #d91e18; } /* Constant */
+    code span.co { color: #696969; } /* Comment */
+    code span.cv { color: #696969; font-style: italic; } /* CommentVar */
+    code span.do { color: #696969; font-style: italic; } /* Documentation */
+    code span.dt { color: #7928a1; } /* DataType */
+    code span.dv { color: #7928a1; } /* DecVal */
+    code span.er { color: #7928a1; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #a55a00; } /* Float */
+    code span.fu { color: #06287e; } /* Function */
+    code span.im { } /* Import */
+    code span.in { color: #696969; } /* Information */
+    code span.kw { color: #d91e18; } /* Keyword */
+    code span.op { color: #00769e; } /* Operator */
+    code span.ot { color: #d91e18; } /* Other */
+    code span.pp { color: #7928a1; } /* Preprocessor */
+    code span.sc { color: #00769e; } /* SpecialChar */
+    code span.ss { color: #008000; } /* SpecialString */
+    code span.st { color: #008000; } /* String */
+    code span.va { color: #a55a00; } /* Variable */
+    code span.vs { color: #008000; } /* VerbatimString */
+    code span.wa { color: #696969; font-style: italic; } /* Warning */
   </style>
   <link rel="stylesheet" href="MI628_Aula09_files/libs/revealjs/dist/theme/quarto.css" id="theme">
   <link href="MI628_Aula09_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
@@ -346,6 +410,7 @@ Prof.&nbsp;Carlos Trucíos <br> ctrucios@unicamp.br
 <ul>
 <li class="fragment"><a href="#/introdução" id="/toc-introdução">Introdução</a></li>
 <li class="fragment"><a href="#/propensity-score" id="/toc-propensity-score">Propensity score</a></li>
+<li class="fragment"><a href="#/propensity-score-redução-de-dimensão" id="/toc-propensity-score-redução-de-dimensão">Propensity Score: Redução de Dimensão</a></li>
 </ul>
 </nav>
 </section>
@@ -398,8 +463,205 @@ Prof.&nbsp;Carlos Trucíos <br> ctrucios@unicamp.br
 
 </div>
 <aside><div>
-<strong>Observação:</strong> alguns autores definem <em>propoensity score</em> apenas como <span class="math inline">\(e(1) = P(Z = 1 | X)\)</span> seguindo a notação de Rosembaum e Rubin (1983). Contudo, Rosembaum e Rubin (1983) usam esta notação pois focam em estudos observacionais. A definição <span class="math inline">\(e(X, Y(1), Y(0)) = P(Z = 1| X, Y(1), Y(0))\)</span> pode ser vista como uma generalização da definição de Rosembaum e Rubin (1983).
-</div></aside></section>
+<strong>Observação:</strong> alguns autores definem <em>propensity score</em> apenas como <span class="math inline">\(e(1) = P(Z = 1 | X)\)</span> seguindo a notação de Rosembaum e Rubin (1983). Essa notação é utilizada pois os autores focam em estudos observacionais. A definição <span class="math inline">\(e(X, Y(1), Y(0)) = P(Z = 1| X, Y(1), Y(0))\)</span> pode ser vista como uma generalização da definição de Rosembaum e Rubin (1983).
+</div></aside></section></section>
+<section>
+<section id="propensity-score-redução-de-dimensão" class="title-slide slide level1 center">
+<h1>Propensity Score: Redução de Dimensão</h1>
+
+</section>
+<section id="propensity-score-redução-de-dimensão-1" class="slide level2">
+<h2>Propensity Score: Redução de Dimensão</h2>
+<div class="callout callout-tip callout-captioned callout-style-default">
+<div class="callout-body">
+<div class="callout-caption">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Teorema</strong></p>
+</div>
+<div class="callout-content">
+<p>Se <span class="math inline">\(Z \perp\!\!\!\perp \{ Y(1), Y(0)\} | X\)</span>, então <span class="math inline">\(Z \perp\!\!\!\perp \{ Y(1), Y(0)\} | e(X)\)</span></p>
+</div>
+</div>
+</div>
+<div class="fragment">
+<ul>
+<li class="fragment">O Teorema estabelece que, se ignorabilidade forte acontece (dado <span class="math inline">\(X\)</span>), também acontece dado <span class="math inline">\(e(X)\)</span>.</li>
+<li class="fragment">Isto implica que condicionar em <span class="math inline">\(e(X)\)</span> remove qualquer efeito confundidor induzido por <span class="math inline">\(X\)</span>.</li>
+<li class="fragment"><span class="math inline">\(X\)</span> pode ser geral e multidimensional, já <span class="math inline">\(e(X)\)</span> é unidimensional e está entre 0 e 1.</li>
+<li class="fragment">Então, propensity score reduz a dimensão das covariáveis originais mas ainda mantem a ignorabilidade.</li>
+<li class="fragment"><strong>Demostração</strong> (no quadro)</li>
+</ul>
+</div>
+</section>
+<section id="propensity-score-redução-de-dimensão-2" class="slide level2">
+<h2>Propensity Score: Redução de Dimensão</h2>
+<p>O Teorema anterior motiva um método para estimar efeitos causais: <strong>Propensity Score Stratification</strong>.</p>
+<div class="fragment">
+<ul>
+<li class="fragment">Assuma que o <em>propensity score</em> é conhecido e com apenas <span class="math inline">\(K\)</span> (<span class="math inline">\(K &lt;&lt; n\)</span>) possíveis valores <span class="math inline">\(\{e_1, e_2, \cdots, e_K \}\)</span>.</li>
+<li class="fragment">Neste caso, o Teorema anterior pode ser re-escrito como <span class="math display">\[Z \perp\!\!\!\perp  \{ Y(1), Y(0)\} | e(X) = e_k \quad (k = 1, \cdots, K).\]</span></li>
+<li class="fragment">Assim, temos <span class="math inline">\(K\)</span> CRES independentes em cada estrato do <em>propensity score</em> e podemos analizar os dados observacionais da mesma forma como no SRE (mas agora estratificado em <span class="math inline">\(e(X)\)</span>) 😄</li>
+</ul>
+</div>
+</section>
+<section id="propensity-score-redução-de-dimensão-3" class="slide level2">
+<h2>Propensity Score: Redução de Dimensão</h2>
+<center>
+<span style="color:red">Na prática, <span class="math inline">\(e(X)\)</span> não é conhecido e não é discreto 😞.</span>
+</center>
+<div class="fragment">
+<h3 id="como-então-utilizar-propensity-score-para-estratificar">Como então utilizar propensity score para estratificar?</h3>
+<ul>
+<li class="fragment">Ajustamos um modelo para <span class="math inline">\(P(Z = 1 | X)\)</span>, por exemplo, um modelo logístico.</li>
+<li class="fragment">Os valores ajustados serão os <em>propensity score</em> estimados, <span class="math inline">\(\hat{e}(X)\)</span>. -<span class="math inline">\(\hat{e}(X)\)</span> pode assumir tantos valores quanto o tamanho do conjunto de dados (<span class="math inline">\(n\)</span>) 😭.</li>
+<li class="fragment">Contudo, podemos discretizar (utilizando os quantis ou algum outro método) <span class="math inline">\(\hat{e}(X)\)</span> e termos (aproximadamente) <span class="math display">\[Z \perp\!\!\!\perp  \{ Y(1), Y(0)\} | \hat{e}'(X) = e_k \quad (k = 1, \cdots, K),\]</span> em que <span class="math inline">\(\hat{e}'(X)\)</span> são os quantis 😄.</li>
+</ul>
+</div>
+</section>
+<section id="propensity-score-redução-de-dimensão-4" class="slide level2">
+<h2>Propensity Score: Redução de Dimensão</h2>
+<ul>
+<li class="fragment">Para obtermos <span class="math inline">\(\hat{e}(X)\)</span> precisamos ajustar um modelo, o que nos leva a pensar se o estimador final é dependente do modelo escolhido.</li>
+<li class="fragment">Note que a estratificação utilizando <em>propensity score</em> apenas precisa que a ordem esteja correta em lugar do que seus valores exatos.</li>
+<li class="fragment">Isto torna o método um pouco robusto à escolha do modelo.</li>
+</ul>
+</section>
+<section id="propensity-score-redução-de-dimensão-5" class="slide level2">
+<h2>Propensity Score: Redução de Dimensão</h2>
+<center>
+<span style="color:red">Como escolher <span class="math inline">\(K\)</span>?</span>
+</center>
+<div class="fragment">
+<ul>
+<li class="fragment">Rosenbaum and Rubin (1984) sugerem <span class="math inline">\(K = 5\)</span>.</li>
+<li class="fragment">Wang et al.&nbsp;(2020) sugerem escolher <span class="math inline">\(K\)</span> como o máximo número de estratos nos quais o estimador estratificado está bem definido.</li>
+</ul>
+</div>
+<div class="fragment">
+<center>
+<span style="color:red">Como calcular o desvio padrão?</span>
+</center>
+</div>
+<div class="fragment">
+<ul>
+<li class="fragment">Alguns autores calculam o desvio padrão dentro de cada estrato obtido atraves de <span class="math inline">\(\hat{e}(X)\)</span>, mas a incerteza associada a <span class="math inline">\(\hat{e}(X)\)</span> não é levada em consideração.</li>
+<li class="fragment">Outros preferem fazer um Bootstrap para levar em consideração a incerteza associada a <span class="math inline">\(\hat{e}(X)\)</span>.</li>
+</ul>
+</div>
+</section>
+<section id="propensity-score-redução-de-dimensão-6" class="slide level2">
+<h2>Propensity Score: Redução de Dimensão</h2>
+<div class="callout callout-note callout-captioned callout-style-default">
+<div class="callout-body">
+<div class="callout-caption">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Exemplo</strong></p>
+</div>
+<div class="callout-content">
+<p><a href="https://dataverse.harvard.edu/file.xhtml?fileId=7440222&amp;version=3.0"><em>Dataset</em> disponível aqui</a>. <a href="https://academic.oup.com/jrsssb/article/78/3/673/7040940?login=false">Chang et al.&nbsp;(2016)</a> estudam se a participação no programa da merenda nas escolas (<code>School_meal</code>) leva a um aumento no índice de massa muscular (<code>BMI</code>) das crianças. 12 outras covariáveis também estão disponíveis no <em>dataset</em>.</p>
+<div class="cell" data-layout-align="center">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a>dados <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"datasets/nhanes_bmi.csv"</span>)[, <span class="sc">-</span><span class="dv">1</span>]</span>
+<span id="cb1-2"><a href="#cb1-2"></a>z <span class="ot">&lt;-</span> dados<span class="sc">$</span>School_meal</span>
+<span id="cb1-3"><a href="#cb1-3"></a>y <span class="ot">&lt;-</span> dados<span class="sc">$</span>BMI</span>
+<span id="cb1-4"><a href="#cb1-4"></a>x <span class="ot">&lt;-</span> <span class="fu">scale</span>(dados[, <span class="sc">-</span><span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>)])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+</div>
+</div>
+</div>
+<div class="fragment">
+<p>Calculamos <span class="math inline">\(\hat{e}(X)\)</span></p>
+<div class="cell" data-layout-align="center">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a>prop_score <span class="ot">&lt;-</span> <span class="fu">glm</span>(z <span class="sc">~</span> x, <span class="at">family =</span> binomial)<span class="sc">$</span>fitted.values </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+</div>
+</section>
+<section id="propensity-score-redução-de-dimensão-7" class="slide level2">
+<h2>Propensity Score: Redução de Dimensão</h2>
+<p>Estratificamos e estimamos o efeito causal médio.</p>
+<div class="cell" data-layout-align="center">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a>neyman_sre <span class="ot">&lt;-</span> <span class="cf">function</span>(y, z, x) {</span>
+<span id="cb3-2"><a href="#cb3-2"></a>  x_levels <span class="ot">&lt;-</span> <span class="fu">unique</span>(x)</span>
+<span id="cb3-3"><a href="#cb3-3"></a>  K <span class="ot">&lt;-</span> <span class="fu">length</span>(x_levels)</span>
+<span id="cb3-4"><a href="#cb3-4"></a>  pi_k <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="dv">0</span>, K)</span>
+<span id="cb3-5"><a href="#cb3-5"></a>  tau_k <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="dv">0</span>, K)</span>
+<span id="cb3-6"><a href="#cb3-6"></a>  v_k <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="dv">0</span>, K)</span>
+<span id="cb3-7"><a href="#cb3-7"></a>  n <span class="ot">&lt;-</span> <span class="fu">length</span>(z)</span>
+<span id="cb3-8"><a href="#cb3-8"></a>  <span class="cf">for</span> (k <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>K) {</span>
+<span id="cb3-9"><a href="#cb3-9"></a>    x_k <span class="ot">&lt;-</span> x_levels[k]</span>
+<span id="cb3-10"><a href="#cb3-10"></a>    z_k <span class="ot">&lt;-</span> z[x <span class="sc">==</span> x_k]</span>
+<span id="cb3-11"><a href="#cb3-11"></a>    y_k <span class="ot">&lt;-</span> y[x <span class="sc">==</span> x_k]</span>
+<span id="cb3-12"><a href="#cb3-12"></a>    pi_k[k] <span class="ot">&lt;-</span> <span class="fu">length</span>(z_k)<span class="sc">/</span>n</span>
+<span id="cb3-13"><a href="#cb3-13"></a>    tau_k[k] <span class="ot">&lt;-</span> <span class="fu">mean</span>(y_k[z_k <span class="sc">==</span> <span class="dv">1</span>]) <span class="sc">-</span> <span class="fu">mean</span>(y_k[z_k <span class="sc">==</span> <span class="dv">0</span>])</span>
+<span id="cb3-14"><a href="#cb3-14"></a>    v_k[k] <span class="ot">&lt;-</span> <span class="fu">var</span>(y_k[z_k <span class="sc">==</span> <span class="dv">1</span>]) <span class="sc">/</span> <span class="fu">sum</span>(z_k) <span class="sc">+</span> <span class="fu">var</span>(y_k[z_k <span class="sc">==</span> <span class="dv">0</span>]) <span class="sc">/</span> <span class="fu">sum</span>(<span class="dv">1</span> <span class="sc">-</span> z_k)</span>
+<span id="cb3-15"><a href="#cb3-15"></a>  }</span>
+<span id="cb3-16"><a href="#cb3-16"></a>  tau_s <span class="ot">&lt;-</span> <span class="fu">sum</span>(pi_k <span class="sc">*</span> tau_k)</span>
+<span id="cb3-17"><a href="#cb3-17"></a>  v_s <span class="ot">&lt;-</span> <span class="fu">sum</span>(pi_k<span class="sc">^</span><span class="dv">2</span> <span class="sc">*</span> v_k) </span>
+<span id="cb3-18"><a href="#cb3-18"></a>  <span class="fu">return</span>(<span class="fu">c</span>(tau_s, <span class="fu">sqrt</span>(v_s)))</span>
+<span id="cb3-19"><a href="#cb3-19"></a>}</span>
+<span id="cb3-20"><a href="#cb3-20"></a></span>
+<span id="cb3-21"><a href="#cb3-21"></a>K <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">5</span>, <span class="dv">10</span>, <span class="dv">20</span>, <span class="dv">50</span>, <span class="dv">80</span>)</span>
+<span id="cb3-22"><a href="#cb3-22"></a>resultados <span class="ot">&lt;-</span> <span class="fu">sapply</span>(K, <span class="at">FUN =</span> <span class="cf">function</span>(k){</span>
+<span id="cb3-23"><a href="#cb3-23"></a>                          q_prop_score <span class="ot">=</span> <span class="fu">quantile</span>(prop_score, (<span class="dv">1</span><span class="sc">:</span>(k <span class="sc">-</span> <span class="dv">1</span>))<span class="sc">/</span>k)</span>
+<span id="cb3-24"><a href="#cb3-24"></a>                          ps_estrato <span class="ot">=</span> <span class="fu">cut</span>(prop_score, <span class="at">breaks =</span> <span class="fu">c</span>(<span class="dv">0</span>, q_prop_score, <span class="dv">1</span>), <span class="at">labels =</span> <span class="dv">1</span><span class="sc">:</span>k)</span>
+<span id="cb3-25"><a href="#cb3-25"></a>                          <span class="fu">neyman_sre</span>(y, z, ps_estrato)</span>
+<span id="cb3-26"><a href="#cb3-26"></a>                          })</span>
+<span id="cb3-27"><a href="#cb3-27"></a><span class="fu">colnames</span>(resultados) <span class="ot">&lt;-</span> K</span>
+<span id="cb3-28"><a href="#cb3-28"></a><span class="fu">rownames</span>(resultados) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"Estim"</span>, <span class="st">"SE"</span>)</span>
+<span id="cb3-29"><a href="#cb3-29"></a>resultados</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>               5         10         20         50         80
+Estim -0.1160964 -0.1776036 -0.1996877 -0.2647423 -0.2037701
+SE     0.2833304  0.2824724  0.2789719  0.2724072         NA</code></pre>
+</div>
+</div>
+</section>
+<section id="propensity-score-redução-de-dimensão-8" class="slide level2">
+<h2>Propensity Score: Redução de Dimensão</h2>
+<p>Como seriam os resultados se não utilizamos <em>propensity score</em>?</p>
+<ul>
+<li class="fragment">Naive: <a href="https://ctruciosm.github.io/MI628-unicamp/MI628_Aula03#/aplica%C3%A7%C3%A3o-1">MQO com correção para covariância</a></li>
+<li class="fragment"><a href="https://ctruciosm.github.io/MI628-unicamp/MI628_Aula05#/ajuste-de-regress%C3%A3o-4">Fisher</a></li>
+<li class="fragment"><a href="https://ctruciosm.github.io/MI628-unicamp/MI628_Aula05#/ajuste-de-regress%C3%A3o-5">Lin</a></li>
+</ul>
+<div class="fragment">
+<div class="cell" data-layout-align="center">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a><span class="fu">library</span>(car)</span>
+<span id="cb5-2"><a href="#cb5-2"></a>naive <span class="ot">&lt;-</span> <span class="fu">lm</span>(y <span class="sc">~</span> z)</span>
+<span id="cb5-3"><a href="#cb5-3"></a>fisher <span class="ot">&lt;-</span> <span class="fu">lm</span>(y <span class="sc">~</span> z <span class="sc">+</span> x)</span>
+<span id="cb5-4"><a href="#cb5-4"></a>lin <span class="ot">&lt;-</span> <span class="fu">lm</span>(y <span class="sc">~</span> z<span class="sc">*</span>x)</span>
+<span id="cb5-5"><a href="#cb5-5"></a>resultados <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fu">c</span>(<span class="fu">coef</span>(naive)[<span class="dv">2</span>], <span class="fu">sqrt</span>(<span class="fu">hccm</span>(naive)[<span class="dv">2</span>, <span class="dv">2</span>]),</span>
+<span id="cb5-6"><a href="#cb5-6"></a>                       <span class="fu">coef</span>(fisher)[<span class="dv">2</span>], <span class="fu">sqrt</span>(<span class="fu">hccm</span>(fisher)[<span class="dv">2</span>, <span class="dv">2</span>]),</span>
+<span id="cb5-7"><a href="#cb5-7"></a>                       <span class="fu">coef</span>(lin)[<span class="dv">2</span>], <span class="fu">sqrt</span>(<span class="fu">hccm</span>(lin)[<span class="dv">2</span>, <span class="dv">2</span>])), <span class="at">ncol =</span> <span class="dv">3</span>)</span>
+<span id="cb5-8"><a href="#cb5-8"></a><span class="fu">colnames</span>(resultados) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"Naive"</span>, <span class="st">"Fisher"</span>, <span class="st">"Lin"</span>)</span>
+<span id="cb5-9"><a href="#cb5-9"></a><span class="fu">rownames</span>(resultados) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"Estim"</span>, <span class="st">"SE"</span>)</span>
+<span id="cb5-10"><a href="#cb5-10"></a>resultados</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>          Naive     Fisher         Lin
+Estim 0.5339044 0.06124785 -0.01695389
+SE    0.2254186 0.22673582  0.22587296</code></pre>
+</div>
+</div>
+</div>
+<div class="fragment">
+<p>O estimador de Lin e o método de <em>propensity score stratification</em> fornecem, qualitativamente, os mesmo resultados, enquanto que o estimador Naive difere bastante dos outros métodos (<strong>Why?</strong>). Fisher devolve um efeito positivo mas insignificante.</p>
+</div>
+</section>
 <section id="referências" class="slide level2">
 <h2>Referências</h2>
 <div>

@@ -73,8 +73,194 @@ Definimos $$e(X, Y(1), Y(0)) = P(Z = 1| X, Y(1), Y(0))$$ como o _propensity scor
 
 
 <aside>
-**Observação:** alguns autores definem _propoensity score_ apenas como $e(1) = P(Z = 1 | X)$ seguindo a notação de Rosembaum e Rubin (1983). Contudo, Rosembaum e Rubin (1983) usam esta notação pois focam em estudos observacionais. A definição $e(X, Y(1), Y(0)) = P(Z = 1| X, Y(1), Y(0))$ pode ser vista como uma generalização da definição de Rosembaum e Rubin (1983).
+**Observação:** alguns autores definem _propensity score_ apenas como $e(1) = P(Z = 1 | X)$ seguindo a notação de Rosembaum e Rubin (1983). Essa notação é utilizada pois os autores focam em estudos observacionais. A definição $e(X, Y(1), Y(0)) = P(Z = 1| X, Y(1), Y(0))$ pode ser vista como uma generalização da definição de Rosembaum e Rubin (1983).
 </aside>
+
+
+# Propensity Score: Redução de Dimensão
+## Propensity Score: Redução de Dimensão
+
+
+::: {.callout-tip}
+### Teorema
+Se $Z \perp\!\!\!\perp  \{ Y(1), Y(0)\} | X$, então $Z \perp\!\!\!\perp  \{ Y(1), Y(0)\} | e(X)$
+
+:::
+
+
+. . . 
+
+
+- O Teorema estabelece que, se ignorabilidade forte acontece (dado $X$), também acontece dado $e(X)$.
+- Isto implica que condicionar em $e(X)$ remove qualquer efeito confundidor induzido por $X$.
+- $X$ pode ser geral e multidimensional, já $e(X)$ é unidimensional e está entre 0 e 1.
+- Então, propensity score reduz a dimensão das covariáveis originais mas ainda mantem a ignorabilidade.
+- **Demostração** (no quadro)
+
+## Propensity Score: Redução de Dimensão
+
+
+O Teorema anterior motiva um método para estimar efeitos causais: **Propensity Score Stratification**.
+
+. . . 
+
+- Assuma que o _propensity score_ é conhecido e com apenas $K$ ($K << n$) possíveis valores $\{e_1, e_2, \cdots, e_K \}$.
+- Neste caso, o Teorema anterior pode ser re-escrito como $$Z \perp\!\!\!\perp  \{ Y(1), Y(0)\} | e(X) = e_k \quad (k = 1, \cdots, K).$$
+- Assim, temos $K$ CRES independentes em cada estrato do _propensity score_ e podemos analizar os dados observacionais da mesma forma como no SRE (mas agora estratificado em $e(X)$) `r emo::ji("smile")`
+
+
+## Propensity Score: Redução de Dimensão
+
+
+<center>
+[Na prática, $e(X)$ não é conhecido e não é discreto `r emo::ji("sad")`.]{style="color:red"}
+</center>
+
+. . . 
+
+### Como então utilizar propensity score para estratificar?
+
+- Ajustamos um modelo para $P(Z = 1 | X)$, por exemplo, um modelo logístico.
+- Os valores ajustados serão os _propensity score_ estimados, $\hat{e}(X)$.
+-$\hat{e}(X)$ pode assumir tantos valores quanto o tamanho do conjunto de dados ($n$) `r emo::ji("sad")`.
+- Contudo, podemos discretizar (utilizando os quantis ou algum outro método) $\hat{e}(X)$ e termos (aproximadamente) $$Z \perp\!\!\!\perp  \{ Y(1), Y(0)\} | \hat{e}'(X) = e_k \quad (k = 1, \cdots, K),$$ em que $\hat{e}'(X)$ são os quantis `r emo::ji("smile")`.
+
+
+## Propensity Score: Redução de Dimensão
+
+- Para obtermos $\hat{e}(X)$ precisamos ajustar um modelo, o que nos leva a pensar se o estimador final é dependente do modelo escolhido.
+- Note que a estratificação utilizando _propensity score_ apenas precisa que a ordem esteja correta em lugar do que seus valores exatos.
+- Isto torna o método um pouco robusto à escolha do modelo.
+
+## Propensity Score: Redução de Dimensão
+
+
+<center>
+[Como escolher $K$?]{style="color:red"}
+</center>
+
+. . . 
+
+- Rosenbaum and Rubin (1984) sugerem $K = 5$.
+- Wang et al. (2020) sugerem escolher $K$ como o máximo número de estratos nos quais o estimador estratificado está bem definido.
+
+. . . 
+
+<center>
+[Como calcular o desvio padrão?]{style="color:red"}
+</center>
+
+. . . 
+
+- Alguns autores calculam o desvio padrão dentro de cada estrato obtido atraves de $\hat{e}(X)$, mas a incerteza associada a $\hat{e}(X)$ não é levada em consideração.
+- Outros preferem fazer um Bootstrap para levar em consideração a incerteza associada a $\hat{e}(X)$.
+
+## Propensity Score: Redução de Dimensão
+
+
+::: {.callout-note}
+### Exemplo
+
+[_Dataset_ disponível aqui](https://dataverse.harvard.edu/file.xhtml?fileId=7440222&version=3.0). [Chang et al. (2016)](https://academic.oup.com/jrsssb/article/78/3/673/7040940?login=false) estudam se a participação no programa da merenda nas escolas (`School_meal`) leva a um aumento no índice de massa muscular (`BMI`) das crianças. 12 outras covariáveis também estão disponíveis no _dataset_.
+
+
+```{r}
+#| echo: true
+dados <- read.csv("datasets/nhanes_bmi.csv")[, -1]
+z <- dados$School_meal
+y <- dados$BMI
+x <- scale(dados[, -c(1, 2)])
+```
+
+:::
+
+
+. . . 
+
+Calculamos $\hat{e}(X)$
+
+```{r}
+#| echo: true
+prop_score <- glm(z ~ x, family = binomial)$fitted.values 
+```
+
+## Propensity Score: Redução de Dimensão
+
+Estratificamos e estimamos o efeito causal médio.
+
+```{r}
+#| echo: true
+neyman_sre <- function(y, z, x) {
+  x_levels <- unique(x)
+  K <- length(x_levels)
+  pi_k <- rep(0, K)
+  tau_k <- rep(0, K)
+  v_k <- rep(0, K)
+  n <- length(z)
+  for (k in 1:K) {
+    x_k <- x_levels[k]
+    z_k <- z[x == x_k]
+    y_k <- y[x == x_k]
+    pi_k[k] <- length(z_k)/n
+    tau_k[k] <- mean(y_k[z_k == 1]) - mean(y_k[z_k == 0])
+    v_k[k] <- var(y_k[z_k == 1]) / sum(z_k) + var(y_k[z_k == 0]) / sum(1 - z_k)
+  }
+  tau_s <- sum(pi_k * tau_k)
+  v_s <- sum(pi_k^2 * v_k) 
+  return(c(tau_s, sqrt(v_s)))
+}
+
+K <- c(5, 10, 20, 50, 80)
+resultados <- sapply(K, FUN = function(k){
+                          q_prop_score = quantile(prop_score, (1:(k - 1))/k)
+                          ps_estrato = cut(prop_score, breaks = c(0, q_prop_score, 1), labels = 1:k)
+                          neyman_sre(y, z, ps_estrato)
+                          })
+colnames(resultados) <- K
+rownames(resultados) <- c("Estim", "SE")
+resultados
+```
+
+## Propensity Score: Redução de Dimensão
+
+Como seriam os resultados se não utilizamos _propensity score_?
+
+- Naive: [MQO com correção para covariância](https://ctruciosm.github.io/MI628-unicamp/MI628_Aula03#/aplica%C3%A7%C3%A3o-1)
+- [Fisher](https://ctruciosm.github.io/MI628-unicamp/MI628_Aula05#/ajuste-de-regress%C3%A3o-4)
+- [Lin](https://ctruciosm.github.io/MI628-unicamp/MI628_Aula05#/ajuste-de-regress%C3%A3o-5) 
+
+
+. . . 
+
+
+```{r}
+#| echo: true
+library(car)
+naive <- lm(y ~ z)
+fisher <- lm(y ~ z + x)
+lin <- lm(y ~ z*x)
+resultados <- matrix(c(coef(naive)[2], sqrt(hccm(naive)[2, 2]),
+                       coef(fisher)[2], sqrt(hccm(fisher)[2, 2]),
+                       coef(lin)[2], sqrt(hccm(lin)[2, 2])), ncol = 3)
+colnames(resultados) <- c("Naive", "Fisher", "Lin")
+rownames(resultados) <- c("Estim", "SE")
+resultados
+```
+
+. . . 
+
+
+O estimador de Lin e o método de _propensity score stratification_ fornecem, qualitativamente, os mesmo resultados. Já o estimador Naive difere bastante dos outros métodos (**Why?**) enquanto que Fisher devolve um efeito positivo, porém, insignificante.
+
+
+# Propensity Score: Ponderação
+## Propensity Score: Ponderação
+
+
+
+
+
+
 
 
 ## Referências
