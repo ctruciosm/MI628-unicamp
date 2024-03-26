@@ -41,7 +41,7 @@ format:
 - MPE é a versão mais extrema do SRE.
 - No MPE, temos apenas uma unidade de tratamento e uma de controle em cada estrato (por isso, os estratos são também chamados de _pairs_)
 - Apesar de que MPE é um caso particular do SRE, MPE tem seu próprio método de estimação e inferência (foco da aula de hoje).
-- Podemos formar pares baseados na similariedade da covariáveis.
+- Podemos formar pares baseados na similaridade das covariáveis.
     * Com covariável contínua, podemos ordenar as unidades segundo a covariável e formar os pares baseados nas unidades adjacentes.
     * Com muitas covariáveis, podemos definir distâncias por pares e formar pares baseados nessas distâncias.
 

@@ -257,9 +257,40 @@ O estimador de Lin e o método de _propensity score stratification_ fornecem, qu
 ## Propensity Score: Ponderação
 
 
+::: {.callout-tip}
+### Teorema
+Se $Z \perp\!\!\!\perp \{ Y(1), Y(0)\} | X$ e $0 < e(X) < 1$, então: $$\mathbb{E}[Y(1)] = \mathbb{E} \Big [ \dfrac{ZY}{e(X)}\Big], \quad \mathbb{E}[Y(0)] = \mathbb{E} \Big [ \dfrac{(1 - Z)Y}{1 - e(X)}\Big] \quad e$$ $$\tau = \mathbb{E}[Y(1) - Y(0)] = \mathbb{E} \Big [\dfrac{ZY}{e(X)} - \dfrac{(1-Z)Y}{1-e(X)} \Big]$$
+
+:::
+
+
+**Demostração** (no quadro)
+
+## Estimador IPW
+
+O estimador IPW (Inverse Propensity Score Weighting), também conhecido como estimador HT (Horvitz-Thompson) é motivado pelo Teorema anterior e é dado por $$\hat{\tau}^{IPW} = \dfrac{1}{n} \displaystyle \sum_{i = 1}^n \dfrac{Z_i Y_i}{\hat{e}(X_i)} - \dfrac{1}{n} \displaystyle \sum_{i = 1}^n \dfrac{(1 - Z_i)Y_i}{1- \hat{e}(X_i)},$$ em que $\hat{e}(X_i)$ é o _propensity score_ estimado.
 
 
 
+
+## Estimador IPW
+
+- Suponha que em lugar de termos  resultado observado $Y_i$, temos $\tilde{Y}_i = Y_i + c$ ($\forall i$).
+- Adicionar, para cada $i$, uma constante ao resultado observado não deveria mudar o efeito causal médio.
+- Contudo, se adicionarmos, para cada $i$, uma constante $c$, temos que $\hat{\tau}^{IPW}$ torna-se $$\hat{\tau}^{IPW} + c \Big[\dfrac{1}{n} \displaystyle \sum_{i = 1}^n \dfrac{Z_i}{\hat{e}(X_i)} - \dfrac{1}{n} \displaystyle \sum_{i = 1}^n \dfrac{1 - Z_i}{1 - \hat{e}(X_i)} \Big]$$
+
+
+. . . 
+
+[O estimador $\hat{\tau}^{IPW}$ apresenta um sério problema: **não é invariante a transformações de locação de $Y$** `r emo::ji("sad")`.]{style="color:gray"}
+
+
+## Estimador IPW
+
+
+- $\hat{\tau}^{IPW}$ não é um estimador razoável, pois depende de $c$.
+- Uma forma simples de remediar o problema é normalizar os pesos. Este estimador é conhecido como o estimador de Hajek e é dado por $$\hat{\tau}^{Hajek} =  \dfrac{\displaystyle \sum_{i = 1}^n \dfrac{Z_i Y_i}{\hat{e}(X_i)}}{\displaystyle \sum_{i = 1}^n \dfrac{Z_i}{\hat{e}(X_i)}} - \dfrac{\displaystyle \sum_{i = 1}^n \dfrac{(1 - Z_i)Y_i}{1- \hat{e}(X_i)}}{\displaystyle \sum_{i = 1}^n \dfrac{1 - Z_i}{1- \hat{e}(X_i)}}.$$
+- Pode-se mostrra que $\hat{\tau}^{Hajek}$ é invariante a transformações de locação. 
 
 
 

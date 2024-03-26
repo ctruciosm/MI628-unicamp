@@ -411,6 +411,7 @@ Prof.&nbsp;Carlos Trucíos <br> ctrucios@unicamp.br
 <li class="fragment"><a href="#/introdução" id="/toc-introdução">Introdução</a></li>
 <li class="fragment"><a href="#/propensity-score" id="/toc-propensity-score">Propensity score</a></li>
 <li class="fragment"><a href="#/propensity-score-redução-de-dimensão" id="/toc-propensity-score-redução-de-dimensão">Propensity Score: Redução de Dimensão</a></li>
+<li class="fragment"><a href="#/propensity-score-ponderação" id="/toc-propensity-score-ponderação">Propensity Score: Ponderação</a></li>
 </ul>
 </nav>
 </section>
@@ -509,13 +510,13 @@ Prof.&nbsp;Carlos Trucíos <br> ctrucios@unicamp.br
 <section id="propensity-score-redução-de-dimensão-3" class="slide level2">
 <h2>Propensity Score: Redução de Dimensão</h2>
 <center>
-<span style="color:red">Na prática, <span class="math inline">\(e(X)\)</span> não é conhecido e não é discreto 😞.</span>
+<span style="color:red">Na prática, <span class="math inline">\(e(X)\)</span> não é conhecido e não é discreto 😭.</span>
 </center>
 <div class="fragment">
 <h3 id="como-então-utilizar-propensity-score-para-estratificar">Como então utilizar propensity score para estratificar?</h3>
 <ul>
 <li class="fragment">Ajustamos um modelo para <span class="math inline">\(P(Z = 1 | X)\)</span>, por exemplo, um modelo logístico.</li>
-<li class="fragment">Os valores ajustados serão os <em>propensity score</em> estimados, <span class="math inline">\(\hat{e}(X)\)</span>. -<span class="math inline">\(\hat{e}(X)\)</span> pode assumir tantos valores quanto o tamanho do conjunto de dados (<span class="math inline">\(n\)</span>) 😭.</li>
+<li class="fragment">Os valores ajustados serão os <em>propensity score</em> estimados, <span class="math inline">\(\hat{e}(X)\)</span>. -<span class="math inline">\(\hat{e}(X)\)</span> pode assumir tantos valores quanto o tamanho do conjunto de dados (<span class="math inline">\(n\)</span>) 😿.</li>
 <li class="fragment">Contudo, podemos discretizar (utilizando os quantis ou algum outro método) <span class="math inline">\(\hat{e}(X)\)</span> e termos (aproximadamente) <span class="math display">\[Z \perp\!\!\!\perp  \{ Y(1), Y(0)\} | \hat{e}'(X) = e_k \quad (k = 1, \cdots, K),\]</span> em que <span class="math inline">\(\hat{e}'(X)\)</span> são os quantis 😄.</li>
 </ul>
 </div>
@@ -659,7 +660,44 @@ SE    0.2254186 0.22673582  0.22587296</code></pre>
 </div>
 </div>
 <div class="fragment">
-<p>O estimador de Lin e o método de <em>propensity score stratification</em> fornecem, qualitativamente, os mesmo resultados, enquanto que o estimador Naive difere bastante dos outros métodos (<strong>Why?</strong>). Fisher devolve um efeito positivo mas insignificante.</p>
+<p>O estimador de Lin e o método de <em>propensity score stratification</em> fornecem, qualitativamente, os mesmo resultados. Já o estimador Naive difere bastante dos outros métodos (<strong>Why?</strong>) enquanto que Fisher devolve um efeito positivo, porém, insignificante.</p>
+</div>
+</section></section>
+<section>
+<section id="propensity-score-ponderação" class="title-slide slide level1 center">
+<h1>Propensity Score: Ponderação</h1>
+
+</section>
+<section id="propensity-score-ponderação-1" class="slide level2">
+<h2>Propensity Score: Ponderação</h2>
+<div class="callout callout-tip callout-captioned callout-style-default">
+<div class="callout-body">
+<div class="callout-caption">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Teorema</strong></p>
+</div>
+<div class="callout-content">
+<p>Se <span class="math inline">\(Z \perp\!\!\!\perp \{ Y(1), Y(0)\} | X\)</span> e <span class="math inline">\(0 &lt; e(X) &lt; 1\)</span>, então: <span class="math display">\[\mathbb{E}[Y(1)] = \mathbb{E} \Big [ \dfrac{ZY}{e(X)}\Big], \quad \mathbb{E}[Y(0)] = \mathbb{E} \Big [ \dfrac{(1 - Z)Y}{1 - e(X)}\Big] \quad e\]</span> <span class="math display">\[\tau = \mathbb{E}[Y(1) - Y(0)] = \mathbb{E} \Big [\dfrac{ZY}{e(X)} - \dfrac{(1-Z)Y}{1-e(X)} \Big]\]</span></p>
+</div>
+</div>
+</div>
+<p><strong>Demostração</strong> (no quadro)</p>
+</section>
+<section id="estimador-ipw" class="slide level2">
+<h2>Estimador IPW</h2>
+<p>O estimador IPW (Inverse Propensity Score Weighting), também conhecido como estimador HT (Horvitz-Thompson) é motivado pelo Teorema anterior e é dado por <span class="math display">\[\hat{\tau}^{IPW} = \dfrac{1}{n} \displaystyle \sum_{i = 1}^n \dfrac{Z_i Y_i}{\hat{e}(X_i)} - \dfrac{1}{n} \displaystyle \sum_{i = 1}^n \dfrac{(1 - Z_i)Y_i}{1- \hat{e}(X_i)},\]</span> em que <span class="math inline">\(\hat{e}(X_i)\)</span> é o <em>propensity score</em> estimado.</p>
+</section>
+<section id="estimador-ipw-1" class="slide level2">
+<h2>Estimador IPW</h2>
+<ul>
+<li class="fragment">Suponha que em lugar de termos resultado observado <span class="math inline">\(Y_i\)</span>, temos <span class="math inline">\(\tilde{Y}_i = Y_i + c\)</span> (<span class="math inline">\(\forall i\)</span>).</li>
+<li class="fragment">Adicionar, para cada <span class="math inline">\(i\)</span>, uma constante ao resultado observado não deveria mudar o efeito causal médio.</li>
+<li class="fragment">Contudo, se adicionarmos, para cada <span class="math inline">\(i\)</span>, uma constante <span class="math inline">\(c\)</span>, temos que <span class="math inline">\(\hat{\tau}^{IPW}\)</span> torna-se <span class="math inline">\(\hat{\tau}^{IPW} + c \Big[\dfrac{1}{n} \displaystyle \sum_{i = 1}^n \dfrac{Z_i}{\hat{e}(X_i)} - \dfrac{1}{n} \displaystyle \sum_{i = 1}^n \dfrac{1 - Z_i}{1 - \hat{e}(X_i)} \Big]\)</span></li>
+</ul>
+<div class="fragment">
+<p><span style="color:gray">O estimador <span class="math inline">\(\hat{\tau}^{IPW}\)</span> apresenta um sério problema: <strong>não é invariante a transformações de locação de <span class="math inline">\(Y\)</span></strong> 😢.</span></p>
 </div>
 </section>
 <section id="referências" class="slide level2">
