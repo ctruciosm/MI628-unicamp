@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html lang="en"><head>
-<script src="MI628_Aula07_files/libs/clipboard/clipboard.min.js"></script>
-<script src="MI628_Aula07_files/libs/quarto-html/tabby.min.js"></script>
-<script src="MI628_Aula07_files/libs/quarto-html/popper.min.js"></script>
-<script src="MI628_Aula07_files/libs/quarto-html/tippy.umd.min.js"></script>
-<link href="MI628_Aula07_files/libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="MI628_Aula07_files/libs/quarto-html/quarto-html.min.css" rel="stylesheet" data-mode="light">
-<link href="MI628_Aula07_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+<script src="MI628_Aula10_files/libs/clipboard/clipboard.min.js"></script>
+<script src="MI628_Aula10_files/libs/quarto-html/tabby.min.js"></script>
+<script src="MI628_Aula10_files/libs/quarto-html/popper.min.js"></script>
+<script src="MI628_Aula10_files/libs/quarto-html/tippy.umd.min.js"></script>
+<link href="MI628_Aula10_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="MI628_Aula10_files/libs/quarto-html/quarto-html.min.css" rel="stylesheet" data-mode="light">
+<link href="MI628_Aula10_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
   <meta name="generator" content="quarto-1.2.269">
 
   <meta name="author" content="Prof.&nbsp;Carlos Trucíos  ctrucios@unicamp.br">
@@ -14,8 +14,8 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
-  <link rel="stylesheet" href="MI628_Aula07_files/libs/revealjs/dist/reset.css">
-  <link rel="stylesheet" href="MI628_Aula07_files/libs/revealjs/dist/reveal.css">
+  <link rel="stylesheet" href="MI628_Aula10_files/libs/revealjs/dist/reset.css">
+  <link rel="stylesheet" href="MI628_Aula10_files/libs/revealjs/dist/reveal.css">
   <style>
     code{white-space: pre-wrap;}
     span.smallcaps{font-variant: small-caps;}
@@ -93,13 +93,13 @@
     code span.vs { color: #008000; } /* VerbatimString */
     code span.wa { color: #696969; font-style: italic; } /* Warning */
   </style>
-  <link rel="stylesheet" href="MI628_Aula07_files/libs/revealjs/dist/theme/quarto.css" id="theme">
-  <link href="MI628_Aula07_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
-  <link href="MI628_Aula07_files/libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
-  <link href="MI628_Aula07_files/libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
-  <link href="MI628_Aula07_files/libs/revealjs/plugin/reveal-chalkboard/font-awesome/css/all.css" rel="stylesheet">
-  <link href="MI628_Aula07_files/libs/revealjs/plugin/reveal-chalkboard/style.css" rel="stylesheet">
-  <link href="MI628_Aula07_files/libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
+  <link rel="stylesheet" href="MI628_Aula10_files/libs/revealjs/dist/theme/quarto.css" id="theme">
+  <link href="MI628_Aula10_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
+  <link href="MI628_Aula10_files/libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
+  <link href="MI628_Aula10_files/libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
+  <link href="MI628_Aula10_files/libs/revealjs/plugin/reveal-chalkboard/font-awesome/css/all.css" rel="stylesheet">
+  <link href="MI628_Aula10_files/libs/revealjs/plugin/reveal-chalkboard/style.css" rel="stylesheet">
+  <link href="MI628_Aula10_files/libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
   <style type="text/css">
 
   .callout {
@@ -391,7 +391,7 @@
 
 <section id="title-slide" data-background-image="imagens/unicamp.png" data-background-opacity="1" data-background-position="99% 5%" data-background-size="20%" class="quarto-title-block center">
   <h1 class="title">Inferência Causal</h1>
-  <p class="subtitle">Experimentos Randomizados: comentários finais</p>
+  <p class="subtitle">Augmented IPS</p>
 
 <div class="quarto-title-authors">
 <div class="quarto-title-author">
@@ -409,8 +409,8 @@ Prof.&nbsp;Carlos Trucíos <br> ctrucios@unicamp.br
 <h2 id="toc-title">Conteúdo</h2>
 <ul>
 <li class="fragment"><a href="#/introdução" id="/toc-introdução">Introdução</a></li>
-<li class="fragment"><a href="#/unificando" id="/toc-unificando">Unificando</a></li>
-<li class="fragment"><a href="#/população-finita-super-população" id="/toc-população-finita-super-população">População finita &gt;&gt;&gt; Super população</a></li>
+<li class="fragment"><a href="#/augmented-ipw" id="/toc-augmented-ipw">Augmented IPW</a></li>
+<li class="fragment"><a href="#/simulação" id="/toc-simulação">Simulação</a></li>
 </ul>
 </nav>
 </section>
@@ -422,489 +422,227 @@ Prof.&nbsp;Carlos Trucíos <br> ctrucios@unicamp.br
 <section id="introdução-1" class="slide level2">
 <h2>Introdução</h2>
 <ul>
-<li class="fragment">Já estudamos as abordagens de Fisher e Neyman sob diferentes mecanismos de atribuição de tratamento (CRE, SRE, ReM, MPE).</li>
-<li class="fragment">Vimos as diferenças entre ambas as abordagens (FRT vs.&nbsp;Neyman).</li>
-<li class="fragment">Existe um acalorada discussão de FRT vs.&nbsp;Neyman (ver <a href="https://projecteuclid.org/journals/statistical-science/volume-29/issue-2/Comments-on-the-NeymanFisher-Controversy-and-Its-Consequences/10.1214/13-STS454.full">Sabbaghi e Rubin (2014)</a>).</li>
+<li class="fragment">Sob <em>ignorabilidade</em> (<span class="math inline">\(Z \perp\!\!\!\perp \{ Y(1), Y(0)\} | X\)</span>) e <em>sobreposição</em> (<span class="math inline">\(0 &lt; e(X) &lt; 1\)</span>), temos mostrado duas fórmulas de identificação do ACE (<span class="math inline">\(\tau = \mathbb{E}[Y(1) - Y(0)]\)</span>).</li>
+<li class="fragment">A primeira, <span class="math display">\[\tau = \mathbb{E}[\mu_1(X)]- \mathbb{E}[\mu_0(X)],\]</span>em que <span class="math inline">\(\mu_i(X) = \mathbb{E}[Y(i) | X] = \mathbb{E}[Y | Z = i, X]\)</span>.</li>
+<li class="fragment">A segunda, <span class="math display">\[\tau = \mathbb{E}\Big[\dfrac{ZY}{e(X)} \Big] - \mathbb{E}\Big[\dfrac{(1- Z)Y}{1 - e(X)} \Big],\]</span>em que <span class="math inline">\(e(X) = P(Z = 1 | X)\)</span> é o <em>propensity score</em>.</li>
+</ul>
+</section>
+<section id="introdução-2" class="slide level2">
+<h2>Introdução</h2>
+<ul>
+<li class="fragment">A primeira abordagem, precisa ajustar um modelo para o resultado dado o tratamento e covariáveis. É consistente se o modelo utilizado está corretamente especificado.</li>
+<li class="fragment">A segunda abordagem precisa ajustar um modelo para o tratamento dadas as covariáveis. É consistente se o modelo do <em>propensity score</em> for corretamente especificado.</li>
+<li class="fragment">A combinação de ambas as abordagens motiva um novo estimador que também é consistente (conhecido como estimador <em>augmented IPW</em> ou <em>Doubly Robust</em>).</li>
 </ul>
 </section></section>
 <section>
-<section id="unificando" class="title-slide slide level1 center">
-<h1>Unificando</h1>
+<section id="augmented-ipw" class="title-slide slide level1 center">
+<h1>Augmented IPW</h1>
 
 </section>
-<section id="unificando-1" class="slide level2">
-<h2>Unificando</h2>
+<section id="augmented-ipw-1" class="slide level2">
+<h2>Augmented IPW</h2>
 <ul>
-<li class="fragment">Hipótese nula forte: <span class="math inline">\(H_{0F}: Y_i(1) = Y_i(0), \quad \forall i = 1, \cdots, n.\)</span></li>
-<li class="fragment">Hipótese nula fraca: <span class="math inline">\(H_{0N}: \bar{Y}(1) = \bar{Y}(0) \quad (\text{equivalentemente} \quad H_{0N}: \tau = 0)\)</span></li>
+<li class="fragment">Postulemos um modelo para a média condicional do resultado, <span class="math inline">\(\mu_1(X, \beta_1)\)</span> e <span class="math inline">\(\mu_0(X, \beta_0)\)</span>.</li>
+<li class="fragment">Por exemplo, se a média condicional for linear ou logística, os parâmetros são apenas os coeficientes da regressão.</li>
+<li class="fragment">Se o modelo for corretamente especificado, então <span class="math inline">\(\mu_i(X, \beta_i) = \mu_i(X)\)</span>.</li>
+<li class="fragment">Postulemos um modelo para o <em>propensity score</em>, <span class="math inline">\(e(X, \alpha)\)</span>.</li>
+<li class="fragment">Se o modelo for linear ou logiístico, <span class="math inline">\(\alpha\)</span> é o coeficiente da regressão e se o modelo for corretamente especificado, <span class="math inline">\(e(X, \alpha) = e(X)\)</span>.</li>
 </ul>
-<div class="fragment">
-<p>Existem diversas escolhas de estatística de teste para o FRT. Contudo, existe uma vantagem de se utilizar a estatística <span class="math inline">\(t\)</span> Studentizada, <span class="math display">\[t = \dfrac{\hat{\tau}}{\sqrt{\hat{V}}}.\]</span></p>
-</div>
-<div class="fragment">
-<div class="callout callout-important callout-captioned callout-style-default">
-<div class="callout-body">
-<div class="callout-caption">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<p><strong>Resultado</strong></p>
-</div>
-<div class="callout-content">
-<p><a href="https://academic.oup.com/biomet/article/105/1/45/4582744">Ding e Dasgupta (2017)</a> mostram que o FRT com estatística <span class="math inline">\(t\)</span> Studentizada fornece:</p>
-<div>
-<ul>
-<li><span class="math inline">\(p_{FRT}\)</span> exato sob <span class="math inline">\(H_{0F}\)</span></li>
-<li><span class="math inline">\(p_{FRT}\)</span> asintóticamente conservador sob <span class="math inline">\(H_{0N}\)</span></li>
-</ul>
-</div>
-</div>
-</div>
-</div>
-</div>
 </section>
-<section id="unificando-2" class="slide level2">
-<h2>Unificando</h2>
-<p><strong>Importante</strong></p>
-<ul>
-<li class="fragment">O resultado anterior só é valido apenas quando a estatística <span class="math inline">\(t\)</span> Studentizada é utilizada.</li>
-<li class="fragment">Utilizar outras estatísticas não fornece o resultado anteior.</li>
-<li class="fragment">Por exemplo, FRT com <span class="math inline">\(\hat{\tau}\)</span>, será asintóticamente anti-conservador sob <span class="math inline">\(H_{0N}\)</span>.</li>
-</ul>
-<div class="fragment">
-<div class="columns">
-<div class="column" style="width:40%;">
-<p><img data-src="imagens/duvida_ds.jpg"></p>
-</div><div class="column" style="width:60%;">
-<center>
-<span style="color:red;">“Quando utilizo a estatística <span class="math inline">\(t\)</span> Studentizada, o <span class="math inline">\(p_{FRT}\)</span> será asintóticamente conservador sob <span class="math inline">\(H_{0N}\)</span>… 🤷”</span>
-</center>
-<div>
-<ul>
-<li>Alguém entendeu o que isso significa?</li>
-<li>Alguém entendeu como isso é possível?</li>
-</ul>
-</div>
-</div>
-</div>
-</div>
-</section>
-<section id="unificando-3" class="slide level2">
-<h2>Unificando</h2>
-<p>Seja</p>
-<p><span class="math display">\[t = \dfrac{\hat{\tau}}{\sqrt{\hat{V}}} = \dfrac{\sqrt{\mathbb{V}(\hat{\tau})}}{\sqrt{\hat{V}}} \dfrac{\hat{\tau}}{\sqrt{\mathbb{V}(\hat{\tau})}},\]</span></p>
-<ul>
-<li class="fragment">Sob <span class="math inline">\(H_{0N}\)</span>: <span class="math inline">\(\dfrac{\hat{\tau}}{\sqrt{\mathbb{V}(\hat{\tau})}} \xrightarrow D N(0,1)\)</span></li>
-<li class="fragment"><span class="math inline">\(\dfrac{\sqrt{\mathbb{V}(\hat{\tau})}}{\sqrt{\hat{V}}} \rightarrow C\)</span></li>
-<li class="fragment"><span class="math inline">\(t \xrightarrow D N(0, C^2)\)</span></li>
-</ul>
-<div class="fragment">
-<p>Em que <span class="math inline">\(C \leq 1\)</span>, com a igualdade acontecendo se <span class="math inline">\(\tau_i = \tau, \quad \forall i\)</span>.</p>
-</div>
-</section>
-<section id="unificando-4" class="slide level2">
-<h2>Unificando</h2>
-<p>No caso do FRT, sob <span class="math inline">\(H_{0F}\)</span>, <span class="math inline">\(Y_i(1) = Y_i(0) = Y_i\)</span>, ou seja <span class="math inline">\(\tau_i = 0, \forall i\)</span>. Assim, <span class="math display">\[t^{\pi} \xrightarrow D N(0,1),\]</span> em que <span class="math inline">\(()^{\pi}\)</span> denota a distribuição da permutação aleatória.</p>
-<div class="fragment">
-<center>
-<span style="color:red;">O que isso significa?</span>
-</center>
-</div>
-</section>
-<section id="unificando-5" class="slide level2">
-<h2>Unificando</h2>
-<div class="cell" data-layout-align="center">
-<details>
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="fu">library</span>(ggplot2)</span>
-<span id="cb1-2"><a href="#cb1-2"></a>a <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="sc">-</span><span class="dv">4</span>, <span class="dv">4</span>, <span class="at">by =</span> <span class="fl">0.001</span>)</span>
-<span id="cb1-3"><a href="#cb1-3"></a>n <span class="ot">&lt;-</span> <span class="fu">length</span>(a)</span>
-<span id="cb1-4"><a href="#cb1-4"></a>dados <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
-<span id="cb1-5"><a href="#cb1-5"></a>  <span class="at">distri =</span> <span class="fu">rep</span>(<span class="fu">c</span>(<span class="st">"N(0, 1)"</span>, <span class="st">"N(0, 0.9)"</span>, <span class="st">"N(0, 0.8)"</span>), <span class="at">each =</span> n),</span>
-<span id="cb1-6"><a href="#cb1-6"></a>  <span class="at">x =</span> <span class="fu">rep</span>(a, <span class="dv">3</span>),</span>
-<span id="cb1-7"><a href="#cb1-7"></a>  <span class="at">y =</span> <span class="fu">c</span>(<span class="fu">dnorm</span>(a), <span class="fu">dnorm</span>(a, <span class="dv">0</span>, <span class="fl">0.9</span>), <span class="fu">dnorm</span>(a, <span class="dv">0</span>, <span class="fl">0.8</span>)))</span>
-<span id="cb1-8"><a href="#cb1-8"></a><span class="fu">ggplot</span>(<span class="at">data =</span> dados) <span class="sc">+</span> <span class="fu">geom_line</span>(<span class="fu">aes</span>(x, y, <span class="at">color =</span> distri)) <span class="sc">+</span> </span>
-<span id="cb1-9"><a href="#cb1-9"></a>  <span class="fu">ylab</span>(<span class="st">"f(x)"</span>) <span class="sc">+</span> </span>
-<span id="cb1-10"><a href="#cb1-10"></a>  <span class="fu">theme</span>(<span class="at">legend.title =</span> <span class="fu">element_blank</span>()) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-
-</div>
-<img data-src="MI628_Aula07_files/figure-revealjs/unnamed-chunk-1-1.png" width="960" class="r-stretch quarto-figure-center"><div class="fragment">
-<p>Como <span class="math inline">\(N(0,1)\)</span> é mais disperso do que <span class="math inline">\(N(0,C^2)\)</span>, o <span class="math inline">\(p_{FRT}\)</span> baseado em <span class="math inline">\(t\)</span> é asintóticamente mais conservador.</p>
-</div>
-</section>
-<section id="unificando-6" class="slide level2">
-<h2>Unificando</h2>
-<p><span style="color:blue;">De forma semelhante, na presença de covariáveis, <a href="https://www.sciencedirect.com/science/article/pii/S0304407621001457?casa_token=7bsmFrDoCYEAAAAA:GTtOlng1bM-D7HOhfGpRyHVNPujjEfKREWUrpmqKgsTGvjhtrZWwI-bzcZbIiUj_wPOl_wDpEaY">Zhao e Ding (2021)</a> recomedam utilizar FRT com <span class="math display">\[t_L = \dfrac{\hat{\tau}_L}{\sqrt{\hat{V}_L}},\]</span> em que <span class="math inline">\(\hat{\tau}_L\)</span> é o estimador de Lin (2013.)</span></p>
-</section>
-<section id="unificando-7" class="slide level2">
-<h2>Unificando</h2>
-<p>Baseados nos trabalhos de Ding e Dasgupta (2017) e Zhao e Ding (2021), podemos resumir as recomendações em:</p>
-<table>
-<colgroup>
-<col style="width: 16%">
-<col style="width: 41%">
-<col style="width: 41%">
-</colgroup>
-<thead>
-<tr class="header">
-<th style="text-align: center;"></th>
-<th style="text-align: center;">Sem covariável</th>
-<th style="text-align: center;">Com covariável</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: center;">CRE</td>
-<td style="text-align: center;"><span class="math inline">\(t = \hat{\tau} \big / \sqrt{\hat{V}}\)</span></td>
-<td style="text-align: center;"><span class="math inline">\(t_{L} = \hat{\tau}_{L} \big / \sqrt{\hat{V}_{L}}\)</span></td>
-</tr>
-<tr class="even">
-<td style="text-align: center;">SRE</td>
-<td style="text-align: center;"><span class="math inline">\(t_S = \hat{\tau}_S \big / \sqrt{\hat{V}_S}\)</span></td>
-<td style="text-align: center;"><span class="math inline">\(t_{L,S} = \hat{\tau}_{L, S} \big / \sqrt{\hat{V}_{L,S}}\)</span></td>
-</tr>
-<tr class="odd">
-<td style="text-align: center;">ReM</td>
-<td style="text-align: center;"><span class="math inline">\(\times\)</span></td>
-<td style="text-align: center;"><span class="math inline">\(t_{L} = \hat{\tau}_{L} \big / \sqrt{\hat{V}_{L}}\)</span></td>
-</tr>
-</tbody>
-</table>
+<section id="augmented-ipw-2" class="slide level2">
+<h2>Augmented IPW</h2>
+<p>Definimos, <span class="math display">\[\tilde{\mu}_1^{DR} = \mathbb{E} \Big [\dfrac{Z \{Y - \mu_1(X, \beta_1)\}}{e(X, \alpha)}  + \mu_1(X, \beta_1) \Big] = \mathbb{E} \Big[\dfrac{ZY}{e(X, \alpha)} - \dfrac{Z - e(X, \alpha)}{e(X, \alpha)}\mu_1(X, \beta_1) \Big],\]</span></p>
+<p><span class="math display">\[\tilde{\mu}_0^{DR} = \mathbb{E} \Big [\dfrac{(1 - Z) \{Y - \mu_0(X, \beta_0)\}}{e(X, \alpha)}  + \mu_0(X, \beta_0) \Big] = \mathbb{E} \Big[\dfrac{(1 - Z)Y}{e(X, \alpha)} - \dfrac{e(X, \alpha) - Z}{e(X, \alpha)}\mu_0(X, \beta_0) \Big],\]</span></p>
 <div class="fragment">
 <ul>
-<li class="fragment">Para o caso do MPE (sem covariáveis adicionais) a recomendação é utilizar a estatística <span class="math inline">\(t\)</span> do intercepto da regressão por MQO de <span class="math inline">\(\hat{\tau}_i\)</span> sob <span class="math inline">\(1\)</span>.</li>
-<li class="fragment">Para o caso do MPE (sem covariáveis adicionais) a recomendação é utilizar a estatística <span class="math inline">\(t\)</span> do intercepto da regressão por MQO de <span class="math inline">\(\hat{\tau}_i\)</span> sob <span class="math inline">\((1, \hat{\tau}_{X,i})\)</span>.</li>
+<li class="fragment">Note que os termos do meio, aumentam <span class="math inline">\(\mu_i(X, \beta_i)\)</span> pelos residuais ponderados pelo <em>inverse propsensity score</em>.</li>
+<li class="fragment">Os termos finais, aumentam o IPW pelos resultados imputados.</li>
 </ul>
-</div>
-</section></section>
-<section>
-<section id="população-finita-super-população" class="title-slide slide level1 center">
-<h1>População finita &gt;&gt;&gt; Super população</h1>
-
-</section>
-<section id="população-finita-super-população-1" class="slide level2">
-<h2>População finita &gt;&gt;&gt; Super população</h2>
-<ul>
-<li class="fragment">Até agora, temos nos concentrado na perspectiva da população finita em experimentos randomizados.</li>
-<li class="fragment">Isto implica tratar os resultados potenciais como fixos.</li>
-<li class="fragment">Mesmo se os resultados potenciais forem aleatórios, podemos condicionar neles sob a perspectiva da população finita.</li>
-</ul>
-<div class="fragment">
-<p>Isto todo, traz algumas vantagens:</p>
-<div>
-<ul>
-<li>é focado no planejamento do experimento.</li>
-<li>requer suposições mínimas no PGD dos resultados.</li>
-</ul>
-</div>
-</div>
-<div class="fragment">
-<p>Contudo, esta abordagem é frequentemente criticada por ter <em>validez interna</em> mas não necessariamente <em>validez externa</em> 😭.</p>
 </div>
 </section>
-<section id="população-finita-super-população-2" class="slide level2">
-<h2>População finita &gt;&gt;&gt; Super população</h2>
+<section id="augmented-ipw-3" class="slide level2">
+<h2>Augmented IPW</h2>
 <div class="callout callout-tip callout-captioned callout-style-default">
 <div class="callout-body">
 <div class="callout-caption">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
-<p><strong>Definição (validez interna)</strong></p>
+<p><strong>Teorema</strong></p>
 </div>
 <div class="callout-content">
-<p>A análise estatística é valida para a amostra estudada.</p>
-</div>
-</div>
-</div>
-<div class="fragment">
-<div class="callout callout-tip callout-captioned callout-style-default">
-<div class="callout-body">
-<div class="callout-caption">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<p><strong>Definição (validez externa)</strong></p>
-</div>
-<div class="callout-content">
-<p>A análise estatística é valida para a amostra estudada mas também para a população de onde a amostra foi extraida.</p>
-</div>
-</div>
-</div>
-</div>
-<div class="fragment">
-<p>Sempre estamos interesados em validez externa e não apenas na interna. Contudo, como o arcabouço teórico até aqui construido é condicionado nos resultados potenciais, sob a perspectiva de população finita, os resultados são apenas válidos para a amostra observada.</p>
-</div>
-<div class="fragment">
-<center>
-<span style="color:blue;"><strong>São estes resultados (desenvolvidos sob a perspectiva de população finita), generalizáveis para super populações (população toda)?</strong></span>
-</center>
-</div>
-</section>
-<section id="população-finita-super-população-3" class="slide level2">
-<h2>População finita &gt;&gt;&gt; Super população</h2>
+<p>Assumindo <em>ignorabildiade</em> (<span class="math inline">\(Z \perp\!\!\!\perp \{ Y(1), Y(0)\} | X\)</span>) e <em>sobreposição</em> (<span class="math inline">\(0 &lt; e(X) &lt; 1\)</span>):</p>
+<div>
 <ol type="1">
-<li class="fragment">Sempre observamos apenas uma população finita (amostra). Assim, qualquer análise nos dará, diretamente, informação sobre a população finita.</li>
-<li class="fragment">Randomização apenas nos garantirá validez interna dado os resultados potenciais dessas unidades.</li>
-<li class="fragment">Validez externa dos resulados dependerá do processo de amostragem das unidades. Se a amostra é representativa da população então sim, temos validez externa. Caso contrário, os resultados não são generalizáveis.</li>
+<li>Se <span class="math inline">\(e(X, \alpha) = e(X)\)</span> ou <span class="math inline">\(\mu_1(X, \beta_1) = \mu_1(X)\)</span>, então <span class="math inline">\(\tilde{\mu}_1^{DR} = \mathbb{E}[Y(1)]\)</span>.</li>
+<li>Se <span class="math inline">\(e(X, \alpha) = e(X)\)</span> ou <span class="math inline">\(\mu_0(X, \beta_0) = \mu_1(X)\)</span>, então <span class="math inline">\(\tilde{\mu}_0^{DR} = \mathbb{E}[Y(0)]\)</span>.</li>
+<li>Se <span class="math inline">\(e(X, \alpha) = e(X)\)</span> ou <span class="math inline">\(\{ \mu_0(X, \beta_0), \mu_1(X, \beta_1) = \mu_1(X) \}\)</span>, então <span class="math inline">\(\tilde{\mu}_1^{DR} - \tilde{\mu}_0^{DR} = \tau\)</span></li>
 </ol>
-<div class="fragment">
-<p>Note então que precisamos de <strong>dois níveis de randomização</strong>: (1) do processo de amostragen e (2) do mecanismo de atribuição de tratamento.</p>
 </div>
-<div class="fragment">
-<p>Vamos assumir que a amostra foi <strong>aleatoriamente</strong> selecionada da população de interesse. Assim, todas nossas afirmações são a respeito da população de interesse e não apenas da amostra em estudo.</p>
 </div>
+</div>
+</div>
+<p><strong>Demostração:</strong> (no quadro)</p>
 </section>
-<section id="população-finita-super-população-4" class="slide level2">
-<h2>População finita &gt;&gt;&gt; Super população</h2>
-<p>Vamos assumir que <span class="math display">\[\{Z_i, Y_i(1), Y_i(0), X_i \}_{i = 1}^n  \overset{IID}{\sim} \{Z, Y(1), Y(0), X\},\]</span> em que temos omitido os subíndices <span class="math inline">\(i\)</span> na super população.</p>
-<div class="fragment">
-<p>Definimos o efeito causal médio da população como <span class="math display">\[\tau = \mathbb{E}(Y(1) - Y(0)) = \mathbb{E}(Y(1)) - \mathbb{E}(Y(0)).\]</span></p>
-</div>
-<div class="fragment">
+<section id="augmented-ipw-4" class="slide level2">
+<h2>Augmented IPW</h2>
 <div class="callout callout-tip callout-captioned callout-style-default">
 <div class="callout-body">
 <div class="callout-caption">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
-<p><strong>CRE (super população)</strong></p>
+<p><strong>Estimador</strong></p>
 </div>
 <div class="callout-content">
-<p><span class="math display">\[Z  \perp\!\!\!\perp \{Y(1), Y(0), X \}.\]</span></p>
+<p>Baseados nos dados observados <span class="math inline">\(\{X_i, Z_i, Y_i\}_{i = 1}^n\)</span>, podemos obter um estimador DR para <span class="math inline">\(\tau\)</span> através dos seguintes passos:</p>
+<div>
+<ol type="1">
+<li>Obter os valores ajustados do <em>propensity score</em>: <span class="math inline">\(e(X_i, \hat{\alpha})\)</span>.</li>
+<li>Obter <span class="math inline">\(\mu_1(X_i, \hat{\beta}_1)\)</span> e <span class="math inline">\(\mu_0(X_i, \hat{\beta}_0)\)</span></li>
+<li>Construir <span class="math inline">\(\hat{\tau}^{DR} = \hat{\mu}_1^{DR} - \hat{\mu}_0^{DR}\)</span>, em que <span class="math display">\[\hat{\mu}_1^{DR} = \dfrac{1}{n} \displaystyle \sum_{i = 1}^n \Big [\dfrac{Z_i [Y_i - \mu_1(X_i, \hat{\beta}_1)]}{e(X_i, \hat{\beta}_1)} + \mu_1(X_i, \hat{\beta}_1)\Big] \quad e\]</span></li>
+</ol>
+<p><span class="math display">\[\hat{\mu}_0^{DR} = \dfrac{1}{n} \displaystyle \sum_{i = 1}^n \Big [\dfrac{(1 - Z_i) [Y_i - \mu_0(X_i, \hat{\beta}_0)]}{1 - e(X_i, \hat{\beta}_0)} + \mu_0(X_i, \hat{\beta}_0)\Big]\]</span></p>
 </div>
 </div>
 </div>
 </div>
+<p>Funk et al.&nbsp;(2011) sugerem aproximar <span class="math inline">\(\mathbb{V}(\hat{\tau}^{DR})\)</span> vía Bootstrap não paramétrico.</p>
 </section>
-<section id="população-finita-super-população-5" class="slide level2">
-<h2>População finita &gt;&gt;&gt; Super população</h2>
-<p>Sob CRE, o efeito causal médio da população pode ser escrito como <span class="math display">\[
-\tau = \mathbb{E}(Y(1) | Z = 1) - \mathbb{E}(Y(0) | Z = 0) = \mathbb{E}(Y | Z = 1) - \mathbb{E}(Y | Z = 0)
-\]</span></p>
-<div class="fragment">
-<p>Um estimador de momentos é dado por:</p>
-<p><span class="math display">\[\hat{\tau} = {n_1}^{-1} \displaystyle \sum_{i = 1}^{n} Z_i Y_i - {n_0}^{-1} \displaystyle \sum_{i = 1}^{n} (1 - Z_i) Y_i\]</span></p>
-<ul>
-<li class="fragment"><span class="math inline">\(\mathbb{E}(\hat{\tau} | \textbf{Z}) = \tau\)</span></li>
-<li class="fragment"><span class="math inline">\(\mathbb{V}(\hat{\tau} | \textbf{Z}) = \mathbb{V}(Y(1)) \big / n_1 + \mathbb{V}(Y(0)) \big / n_0\)</span></li>
-</ul>
-</div>
-<div class="fragment">
-<p>Sob IID, a variância amostral é não viesado para a variância populacional. Ou seja, o estimador (conservador) de Neyman é não viesado para <span class="math inline">\(\mathbb{V}(\hat{\tau} | textbf{Z})\)</span> (<strong>o problema de ser um estimador conservador vá embora quando pensamos em super populações!</strong>)</p>
-</div>
-</section>
-<section id="população-finita-super-população-6" class="slide level2">
-<h2>População finita &gt;&gt;&gt; Super população</h2>
-<h3 id="ajuste-por-covariável">Ajuste por covariável</h3>
-<p><span class="math display">\[\begin{align*}
-  Y(1) &amp; = \delta_1 + \beta_1'X + \varepsilon(1), \\
-  Y(0) &amp; = \delta_0 + \beta_0'X + \varepsilon(0). \\
-\end{align*}\]</span></p>
-<div class="fragment">
-<p><span class="math display">\[\tau = \mathbb{E}(Y(1)-Y(0)) = (\delta_1 - \delta_0) + (\beta_1 - \beta_0)' \mathbb{E}(X),\]</span></p>
-</div>
-<div class="fragment">
-<p>E sua versão amostral é <span class="math display">\[\hat{\tau}_{adj} = (\hat{\delta}_1 - \hat{\delta}_0) + (\hat{\beta}_1 - \hat{\beta}_0)' \bar{X},\]</span> em que se <span class="math inline">\(X\)</span> for centrado, temos:</p>
-<p><span class="math display">\[\hat{\tau}_{adj} = \hat{\delta}_1 - \hat{\delta}_0 = \hat{\tau}_L,\]</span> em que os coeficientes estimador são todos obtidos por MQO.</p>
-</div>
-</section>
-<section id="população-finita-super-população-7" class="slide level2">
-<h2>População finita &gt;&gt;&gt; Super população</h2>
-<h3 id="ajuste-por-covariável-1">Ajuste por covariável</h3>
-<p>Para estimar a variância, precisaremos:</p>
-<p><span class="math display">\[\hat{V}_{EHW} + (\hat{\beta}_1 - \hat{\beta}_0)'S_X^2(\hat{\beta}_1 - \hat{\beta}_0)/n,\]</span> em que <span class="math inline">\((\hat{\beta}_1 - \hat{\beta}_0)\)</span> é o coeficiente da interação <span class="math inline">\(Z_iX_i\)</span> obtido no estimador de Lin.</p>
-<div class="fragment">
-<p>Outra opção é fazer bootstrap para estimar a variância.</p>
-</div>
-</section>
-<section id="população-finita-super-população-8" class="slide level2">
-<h2>População finita &gt;&gt;&gt; Super população</h2>
+<section id="augmented-ipw-5" class="slide level2">
+<h2>Augmented IPW</h2>
 <div class="callout callout-note callout-captioned callout-style-default">
 <div class="callout-body">
 <div class="callout-caption">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
-<p><strong>Ilustração</strong></p>
+<p><strong>Implementação</strong></p>
 </div>
 <div class="callout-content">
-<ol type="1">
-<li class="fragment">Construiremos um código para obter o estimador de Lin, bem como o sua variância.</li>
-</ol>
+<p>Implementaremos os quatro métodos vistos até agora. O modelo utilizado para o <em>propsensity score</em> será o modelo logístico.</p>
 <div class="cell" data-layout-align="center">
 <details>
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a><span class="fu">library</span>(car)</span>
-<span id="cb2-2"><a href="#cb2-2"></a>lin_estimator <span class="ot">&lt;-</span> <span class="cf">function</span>(Z, X, Y) {</span>
-<span id="cb2-3"><a href="#cb2-3"></a>  X <span class="ot">&lt;-</span> <span class="fu">scale</span>(X)</span>
-<span id="cb2-4"><a href="#cb2-4"></a>  n <span class="ot">&lt;-</span> <span class="fu">length</span>(Y)</span>
-<span id="cb2-5"><a href="#cb2-5"></a>  p <span class="ot">&lt;-</span> <span class="fu">ncol</span>(X)</span>
-<span id="cb2-6"><a href="#cb2-6"></a>  </span>
-<span id="cb2-7"><a href="#cb2-7"></a>  modelo <span class="ot">&lt;-</span> <span class="fu">lm</span>(Y <span class="sc">~</span> Z<span class="sc">*</span>X)</span>
-<span id="cb2-8"><a href="#cb2-8"></a>  tau_lin <span class="ot">&lt;-</span> <span class="fu">coef</span>(modelo)[<span class="dv">2</span>]</span>
-<span id="cb2-9"><a href="#cb2-9"></a>  v_ehw <span class="ot">&lt;-</span> <span class="fu">hccm</span>(modelo)[<span class="dv">2</span>, <span class="dv">2</span>]</span>
-<span id="cb2-10"><a href="#cb2-10"></a>  </span>
-<span id="cb2-11"><a href="#cb2-11"></a>  aux_beta <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fu">coef</span>(modelo)[<span class="sc">-</span>(<span class="dv">1</span><span class="sc">:</span>(p <span class="sc">+</span> <span class="dv">2</span>))], <span class="at">ncol =</span> <span class="dv">1</span>)</span>
-<span id="cb2-12"><a href="#cb2-12"></a>  v_super_pop <span class="ot">&lt;-</span> v_ehw <span class="sc">+</span> <span class="fu">t</span>(aux_beta) <span class="sc">%*%</span> <span class="fu">cov</span>(X) <span class="sc">%*%</span> aux_beta <span class="sc">/</span> n</span>
-<span id="cb2-13"><a href="#cb2-13"></a>  </span>
-<span id="cb2-14"><a href="#cb2-14"></a>  out <span class="ot">&lt;-</span> <span class="fu">c</span>(tau_lin, <span class="fu">sqrt</span>(v_ehw), <span class="fu">sqrt</span>(v_super_pop))</span>
-<span id="cb2-15"><a href="#cb2-15"></a>  <span class="fu">return</span>(out)</span>
-<span id="cb2-16"><a href="#cb2-16"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a>OS_est <span class="ot">&lt;-</span> <span class="cf">function</span>(z, y, x, <span class="at">out_family =</span> gaussian, <span class="at">alphas =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>)) {</span>
+<span id="cb1-2"><a href="#cb1-2"></a>  <span class="co"># Propensity score</span></span>
+<span id="cb1-3"><a href="#cb1-3"></a>  e <span class="ot">&lt;-</span> <span class="fu">glm</span>(z <span class="sc">~</span> x, <span class="at">family =</span> Binomial)<span class="sc">$</span>fitted.values</span>
+<span id="cb1-4"><a href="#cb1-4"></a>  e <span class="ot">&lt;-</span> <span class="fu">pmax</span>(alphas[<span class="dv">1</span>], <span class="fu">pmin</span>(alphas[<span class="dv">2</span>], e))</span>
+<span id="cb1-5"><a href="#cb1-5"></a>  </span>
+<span id="cb1-6"><a href="#cb1-6"></a>  <span class="co"># Fitted potencial outcomes</span></span>
+<span id="cb1-7"><a href="#cb1-7"></a>  outcome_1 <span class="ot">&lt;-</span> <span class="fu">glm</span>(y <span class="sc">~</span> x, <span class="at">weights =</span> z, <span class="at">family =</span> out_family)<span class="sc">$</span>fitted.values</span>
+<span id="cb1-8"><a href="#cb1-8"></a>  outcome_0 <span class="ot">&lt;-</span> <span class="fu">glm</span>(y <span class="sc">~</span> x, <span class="at">weights =</span> <span class="dv">1</span> <span class="sc">-</span> z, <span class="at">family =</span> out_family)<span class="sc">$</span>fitted.values</span>
+<span id="cb1-9"><a href="#cb1-9"></a>  </span>
+<span id="cb1-10"><a href="#cb1-10"></a>  <span class="co"># Outcome regression estimator</span></span>
+<span id="cb1-11"><a href="#cb1-11"></a>  tau_reg <span class="ot">&lt;-</span> <span class="fu">mean</span>(outcome_1 <span class="sc">-</span> outcome_0)</span>
+<span id="cb1-12"><a href="#cb1-12"></a>  </span>
+<span id="cb1-13"><a href="#cb1-13"></a>  <span class="co"># IPW</span></span>
+<span id="cb1-14"><a href="#cb1-14"></a>  tau_ipw <span class="ot">&lt;-</span> <span class="fu">mean</span>(z <span class="sc">*</span> y <span class="sc">/</span> e) <span class="sc">-</span> <span class="fu">mean</span>((<span class="dv">1</span> <span class="sc">-</span> z) <span class="sc">*</span> y <span class="sc">/</span> (<span class="dv">1</span> <span class="sc">-</span> e))</span>
+<span id="cb1-15"><a href="#cb1-15"></a>  tau_hajek <span class="ot">&lt;-</span> <span class="fu">mean</span>(z <span class="sc">*</span> y <span class="sc">/</span> e) <span class="sc">-</span> <span class="fu">mean</span>((<span class="dv">1</span> <span class="sc">-</span> z) <span class="sc">*</span> y <span class="sc">/</span> (<span class="dv">1</span> <span class="sc">-</span> e))</span>
+<span id="cb1-16"><a href="#cb1-16"></a>  </span>
+<span id="cb1-17"><a href="#cb1-17"></a>  <span class="co"># DR</span></span>
+<span id="cb1-18"><a href="#cb1-18"></a>  res_1 <span class="ot">&lt;-</span> y <span class="sc">-</span> outcome_1</span>
+<span id="cb1-19"><a href="#cb1-19"></a>  res_2 <span class="ot">&lt;-</span> y <span class="sc">-</span> outcome_0</span>
+<span id="cb1-20"><a href="#cb1-20"></a>  tau_dr <span class="ot">&lt;-</span> <span class="fu">mean</span>(z <span class="sc">*</span> res_1 <span class="sc">/</span> e) <span class="sc">+</span> <span class="fu">mean</span>((<span class="dv">1</span> <span class="sc">-</span> z) <span class="sc">*</span> res_2 <span class="sc">/</span> (<span class="dv">1</span> <span class="sc">-</span> e)) <span class="sc">+</span> tau_reg</span>
+<span id="cb1-21"><a href="#cb1-21"></a>  </span>
+<span id="cb1-22"><a href="#cb1-22"></a>  out <span class="ot">&lt;-</span> <span class="fu">c</span>(tau_reg, tau_ipw, tau_hajek, tau_dr)</span>
+<span id="cb1-23"><a href="#cb1-23"></a>  <span class="fu">return</span>(out)</span>
+<span id="cb1-24"><a href="#cb1-24"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
 </div>
 </div>
 </div>
 </section>
-<section id="população-finita-super-população-9" class="slide level2">
-<h2>População finita &gt;&gt;&gt; Super população</h2>
+<section id="augmented-ipw-6" class="slide level2">
+<h2>Augmented IPW</h2>
 <div class="callout callout-note callout-captioned callout-style-default">
 <div class="callout-body">
 <div class="callout-caption">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
-<p><strong>Ilustração</strong></p>
+<p><strong>Implementação</strong></p>
 </div>
 <div class="callout-content">
-<ol start="2" type="1">
-<li class="fragment">Faremos uma simulação para comparar o desvio padrão obtido utilizando EHW e utilizando a correção apresentada.</li>
-</ol>
+<p>Utilizaremos Bootstrao não paramétrico para estimar a variância dos estimadores</p>
+<div class="cell" data-layout-align="center">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a>OS_ATE <span class="ot">&lt;-</span> <span class="cf">function</span>(z, y, x, <span class="at">n_boot =</span> <span class="dv">500</span>, <span class="at">out_family =</span> gaussian, <span class="at">alphas =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>)) {</span>
+<span id="cb2-2"><a href="#cb2-2"></a>  taus <span class="ot">&lt;-</span> <span class="fu">OS_est</span>(z, y, x, out_family, alphas)</span>
+<span id="cb2-3"><a href="#cb2-3"></a>  </span>
+<span id="cb2-4"><a href="#cb2-4"></a>  <span class="co"># Bootstrap não-paramétrico</span></span>
+<span id="cb2-5"><a href="#cb2-5"></a>  n <span class="ot">&lt;-</span> <span class="fu">length</span>(z)</span>
+<span id="cb2-6"><a href="#cb2-6"></a>  boot_est <span class="ot">&lt;-</span> <span class="fu">replicate</span>(n_boot, {</span>
+<span id="cb2-7"><a href="#cb2-7"></a>    id_boot <span class="ot">&lt;-</span> <span class="fu">sample</span>(<span class="dv">1</span><span class="sc">:</span>n, n, <span class="at">replace =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb2-8"><a href="#cb2-8"></a>    <span class="fu">OS_est</span>(z[id_boot], y[id_boot], x[id_boot, ], out_family, alphas)</span>
+<span id="cb2-9"><a href="#cb2-9"></a>  })</span>
+<span id="cb2-10"><a href="#cb2-10"></a>  boot_se <span class="ot">&lt;-</span> <span class="fu">apply</span>(boot_est, <span class="dv">1</span>, sd)</span>
+<span id="cb2-11"><a href="#cb2-11"></a>  out <span class="ot">&lt;-</span> <span class="fu">rbind</span>(taus, boot_se)</span>
+<span id="cb2-12"><a href="#cb2-12"></a>  <span class="fu">colnames</span>(out) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"Estim"</span>, <span class="st">"SE"</span>)</span>
+<span id="cb2-13"><a href="#cb2-13"></a>  <span class="fu">rownames</span>(out) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"Reg"</span>, <span class="st">"IPW"</span>, <span class="st">"Hajek"</span>, <span class="st">"DR"</span>)</span>
+<span id="cb2-14"><a href="#cb2-14"></a>  <span class="fu">return</span>(out)</span>
+<span id="cb2-15"><a href="#cb2-15"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+</div>
+</div>
+</div>
+</section></section>
+<section>
+<section id="simulação" class="title-slide slide level1 center">
+<h1>Simulação</h1>
+
+</section>
+<section id="simulação-1" class="slide level2">
+<h2>Simulação</h2>
+<p>Avaliaremos as propriedades em amostras finitas dos quatro estimadores implementados. O estudo considerará o seguintes cenârios:</p>
+<ul>
+<li class="fragment">Ambos, o modelo do <em>propensity score</em> e do resultados são corretos.</li>
+<li class="fragment">O modelo do <em>propensity score</em> é incorreto mas o do resultado correto.</li>
+<li class="fragment">O modelo do <em>propensity score</em> é correto mas o do resultado incorreto.</li>
+<li class="fragment">Ambos os modelos são incorretos</li>
+</ul>
+</section>
+<section id="simulação-2" class="slide level2">
+<h2>Simulação</h2>
+<div class="callout callout-note callout-captioned callout-style-default">
+<div class="callout-body">
+<div class="callout-caption">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Simulação</strong></p>
+</div>
+<div class="callout-content">
 <div class="cell" data-layout-align="center">
 <details>
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a>n <span class="ot">&lt;-</span> <span class="dv">500</span></span>
-<span id="cb3-2"><a href="#cb3-2"></a>mc <span class="ot">&lt;-</span> <span class="dv">2000</span></span>
-<span id="cb3-3"><a href="#cb3-3"></a></span>
-<span id="cb3-4"><a href="#cb3-4"></a>resultado <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="cn">NA</span>, <span class="at">ncol =</span> <span class="dv">3</span>, <span class="at">nrow =</span> mc)</span>
-<span id="cb3-5"><a href="#cb3-5"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>mc) {</span>
-<span id="cb3-6"><a href="#cb3-6"></a>  X <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fu">rnorm</span>(<span class="dv">2</span><span class="sc">*</span>n), <span class="at">ncol =</span> <span class="dv">2</span>)</span>
-<span id="cb3-7"><a href="#cb3-7"></a>  Y1 <span class="ot">&lt;-</span> X[, <span class="dv">1</span>] <span class="sc">+</span> X[, <span class="dv">1</span>]<span class="sc">^</span><span class="dv">2</span> <span class="sc">+</span> <span class="fu">runif</span>(n, <span class="sc">-</span><span class="fl">0.5</span>, <span class="fl">0.5</span>)</span>
-<span id="cb3-8"><a href="#cb3-8"></a>  Y0 <span class="ot">&lt;-</span> X[, <span class="dv">2</span>] <span class="sc">+</span> X[, <span class="dv">2</span>]<span class="sc">^</span><span class="dv">2</span> <span class="sc">+</span> <span class="fu">runif</span>(n, <span class="sc">-</span><span class="dv">1</span>, <span class="dv">1</span>)</span>
-<span id="cb3-9"><a href="#cb3-9"></a>  Z <span class="ot">&lt;-</span> <span class="fu">rbinom</span>(n, <span class="dv">1</span>, <span class="fl">0.6</span>)</span>
-<span id="cb3-10"><a href="#cb3-10"></a>  Y <span class="ot">&lt;-</span> Z <span class="sc">*</span> Y1 <span class="sc">+</span> (<span class="dv">1</span> <span class="sc">-</span> Z) <span class="sc">*</span> Y0</span>
-<span id="cb3-11"><a href="#cb3-11"></a>  resultado[i, ] <span class="ot">&lt;-</span> <span class="fu">lin_estimator</span>(Z, X, Y)</span>
-<span id="cb3-12"><a href="#cb3-12"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb3-2"><a href="#cb3-2"></a><span class="co"># DGP1</span></span>
+<span id="cb3-3"><a href="#cb3-3"></a>x <span class="ot">&lt;-</span> <span class="fu">cbind</span>(<span class="dv">1</span>, <span class="fu">matrix</span>(<span class="fu">rnorm</span>(n <span class="sc">*</span> <span class="dv">2</span>), n, <span class="dv">2</span>))</span>
+<span id="cb3-4"><a href="#cb3-4"></a>beta_z <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">1</span>)</span>
+<span id="cb3-5"><a href="#cb3-5"></a>e <span class="ot">&lt;-</span> <span class="dv">1</span> <span class="sc">/</span> (<span class="dv">1</span> <span class="sc">+</span> <span class="fu">exp</span>(<span class="sc">-</span><span class="fu">as.vector</span>(x <span class="sc">%*%</span> beta_z)))</span>
+<span id="cb3-6"><a href="#cb3-6"></a>z <span class="ot">&lt;-</span> <span class="fu">rbinom</span>(n, <span class="dv">1</span>, e)</span>
+<span id="cb3-7"><a href="#cb3-7"></a>beta_y1 <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">1</span>)</span>
+<span id="cb3-8"><a href="#cb3-8"></a>beta_y0 <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">1</span>)</span>
+<span id="cb3-9"><a href="#cb3-9"></a>Y1 <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(n, x <span class="sc">%*%</span> beta_y1)</span>
+<span id="cb3-10"><a href="#cb3-10"></a>Y0 <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(n, x <span class="sc">%*%</span> beta_y0)</span>
+<span id="cb3-11"><a href="#cb3-11"></a>Y <span class="ot">&lt;-</span> z <span class="sc">*</span> Y1 <span class="sc">+</span> (<span class="dv">1</span> <span class="sc">-</span> z) <span class="sc">*</span> Y0 </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
 </div>
 </div>
 </div>
-</section>
-<section id="população-finita-super-população-10" class="slide level2">
-<h2>População finita &gt;&gt;&gt; Super população</h2>
-<ol start="3" type="1">
-<li class="fragment">Veremos os resultados</li>
-</ol>
-<div class="callout callout-note callout-captioned callout-style-default">
-<div class="callout-body">
-<div class="callout-caption">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<p><strong>Ilustração</strong></p>
-</div>
-<div class="callout-content">
-<div class="cell" data-layout-align="center">
-<details>
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a><span class="co"># Vies</span></span>
-<span id="cb4-2"><a href="#cb4-2"></a><span class="fu">mean</span>(resultado[, <span class="dv">1</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.001441006</code></pre>
-</div>
-<details>
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a><span class="co"># Desvio padrão empírico</span></span>
-<span id="cb6-2"><a href="#cb6-2"></a><span class="fu">sd</span>(resultado[, <span class="dv">1</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.152001</code></pre>
-</div>
-<details>
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1"></a><span class="co"># Desvio padrão EHW</span></span>
-<span id="cb8-2"><a href="#cb8-2"></a><span class="fu">mean</span>(resultado[, <span class="dv">2</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.1388576</code></pre>
-</div>
-<details>
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1"></a><span class="co"># Desvio padrão EHW +  correção</span></span>
-<span id="cb10-2"><a href="#cb10-2"></a><span class="fu">mean</span>(resultado[, <span class="dv">3</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.1532274</code></pre>
-</div>
-<details>
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1"></a><span class="co"># Cobertura: Intervalos EHW</span></span>
-<span id="cb12-2"><a href="#cb12-2"></a><span class="fu">mean</span>((resultado[, <span class="dv">1</span>] <span class="sc">-</span> <span class="fl">1.96</span><span class="sc">*</span>resultado[, <span class="dv">2</span>]) <span class="sc">*</span> (resultado[, <span class="dv">1</span>] <span class="sc">+</span> <span class="fl">1.96</span><span class="sc">*</span>resultado[, <span class="dv">2</span>]) <span class="sc">&lt;=</span> <span class="dv">0</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.926</code></pre>
-</div>
-<details>
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1"></a><span class="co"># Cobertura: Intervalos EHW +  correção</span></span>
-<span id="cb14-2"><a href="#cb14-2"></a><span class="fu">mean</span>((resultado[, <span class="dv">1</span>] <span class="sc">-</span> <span class="fl">1.96</span><span class="sc">*</span>resultado[, <span class="dv">3</span>]) <span class="sc">*</span> (resultado[, <span class="dv">1</span>] <span class="sc">+</span> <span class="fl">1.96</span><span class="sc">*</span>resultado[, <span class="dv">3</span>]) <span class="sc">&lt;=</span> <span class="dv">0</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.9505</code></pre>
-</div>
-</div>
-</div>
-</div>
-</div>
-</section>
-<section id="população-finita-super-população-11" class="slide level2">
-<h2>População finita &gt;&gt;&gt; Super população</h2>
-<p>É possível extender a discusão para o caso de SRE.</p>
-<div class="fragment">
-<p>Vamos assumir que <span class="math display">\[\{Z_i, Y_i(1), Y_i(0), X_i \}_{i = 1}^n  \overset{IID}{\sim} \{Z, Y(1), Y(0), X\},\]</span> em que <span class="math inline">\(X_i \in \{1, \cdots, K\}\)</span>.</p>
-</div>
-<div class="fragment">
-<div class="callout callout-tip callout-captioned callout-style-default">
-<div class="callout-body">
-<div class="callout-caption">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<p><strong>SRE (super população)</strong></p>
-</div>
-<div class="callout-content">
-<p><span class="math display">\[Z  \perp\!\!\!\perp \{Y(1), Y(0) \} | X.\]</span></p>
-</div>
-</div>
-</div>
-</div>
-</section>
-<section id="população-finita-super-população-12" class="slide level2">
-<h2>População finita &gt;&gt;&gt; Super população</h2>
-<p>Então, <span class="math display">\[\tau_{[k]} = \mathbb{E}(Y(1) - Y(0) | X = k) = \mathbb{E}(Y | Z = 1, X = k) - \mathbb{E}(Y | Z = 0, X = k).\]</span></p>
-<p>Logo, <span class="math display">\[\begin{align*}
-\tau &amp; = \mathbb{E}(Y(1) - Y(0)) \\
-     &amp; = \displaystyle \sum_{k = 1}^K p(X = k) \times \mathbb{E}(Y(1) - Y(0) | X = k) \\
-&amp; = \displaystyle \sum_{k = 1}^K p(X = k) \tau_{[k]} \\
-\end{align*}\]</span></p>
-</section>
-<section id="população-finita-super-população-13" class="slide level2">
-<h2>População finita &gt;&gt;&gt; Super população</h2>
-<ul>
-<li class="fragment">Como dentro de cada estrato, temos CREs independentes, podemos aplicar o visto para CRE.</li>
-<li class="fragment">Se cada estrato tiver mais do que duas univerdades, podemos utilizar <span class="math inline">\(\hat{V}_S\)</span> como estimador de <span class="math inline">\(\mathbb{V}(\tau_S)\)</span>.</li>
-</ul>
+<p>::::</p>
 </section>
 <section id="referências" class="slide level2">
 <h2>Referências</h2>
 <div>
 <ul>
-<li>Peng Ding (2023). A First Course in Causal Inference. Capítulo 8.</li>
-<li>Peng Ding (2023). A First Course in Causal Inference. Capítulo 9.</li>
+<li>Peng Ding (2023). A First Course in Causal Inference. Capítulo 12.</li>
 </ul>
 </div>
 
@@ -916,20 +654,20 @@ Prof.&nbsp;Carlos Trucíos <br> ctrucios@unicamp.br
   </div>
 
   <script>window.backupDefine = window.define; window.define = undefined;</script>
-  <script src="MI628_Aula07_files/libs/revealjs/dist/reveal.js"></script>
+  <script src="MI628_Aula10_files/libs/revealjs/dist/reveal.js"></script>
   <!-- reveal.js plugins -->
-  <script src="MI628_Aula07_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script>
-  <script src="MI628_Aula07_files/libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
-  <script src="MI628_Aula07_files/libs/revealjs/plugin/reveal-menu/menu.js"></script>
-  <script src="MI628_Aula07_files/libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
-  <script src="MI628_Aula07_files/libs/revealjs/plugin/reveal-chalkboard/plugin.js"></script>
-  <script src="MI628_Aula07_files/libs/revealjs/plugin/quarto-support/support.js"></script>
+  <script src="MI628_Aula10_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script>
+  <script src="MI628_Aula10_files/libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
+  <script src="MI628_Aula10_files/libs/revealjs/plugin/reveal-menu/menu.js"></script>
+  <script src="MI628_Aula10_files/libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
+  <script src="MI628_Aula10_files/libs/revealjs/plugin/reveal-chalkboard/plugin.js"></script>
+  <script src="MI628_Aula10_files/libs/revealjs/plugin/quarto-support/support.js"></script>
   
 
-  <script src="MI628_Aula07_files/libs/revealjs/plugin/notes/notes.js"></script>
-  <script src="MI628_Aula07_files/libs/revealjs/plugin/search/search.js"></script>
-  <script src="MI628_Aula07_files/libs/revealjs/plugin/zoom/zoom.js"></script>
-  <script src="MI628_Aula07_files/libs/revealjs/plugin/math/math.js"></script>
+  <script src="MI628_Aula10_files/libs/revealjs/plugin/notes/notes.js"></script>
+  <script src="MI628_Aula10_files/libs/revealjs/plugin/search/search.js"></script>
+  <script src="MI628_Aula10_files/libs/revealjs/plugin/zoom/zoom.js"></script>
+  <script src="MI628_Aula10_files/libs/revealjs/plugin/math/math.js"></script>
   <script>window.define = window.backupDefine; window.backupDefine = undefined;</script>
 
   <script>

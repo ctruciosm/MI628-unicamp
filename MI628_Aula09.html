@@ -412,6 +412,7 @@ Prof.&nbsp;Carlos Trucíos <br> ctrucios@unicamp.br
 <li class="fragment"><a href="#/propensity-score" id="/toc-propensity-score">Propensity score</a></li>
 <li class="fragment"><a href="#/propensity-score-redução-de-dimensão" id="/toc-propensity-score-redução-de-dimensão">Propensity Score: Redução de Dimensão</a></li>
 <li class="fragment"><a href="#/propensity-score-ponderação" id="/toc-propensity-score-ponderação">Propensity Score: Ponderação</a></li>
+<li class="fragment"><a href="#/propensity-score-balanceamento" id="/toc-propensity-score-balanceamento">Propensity Score: Balanceamento</a></li>
 </ul>
 </nav>
 </section>
@@ -510,13 +511,13 @@ Prof.&nbsp;Carlos Trucíos <br> ctrucios@unicamp.br
 <section id="propensity-score-redução-de-dimensão-3" class="slide level2">
 <h2>Propensity Score: Redução de Dimensão</h2>
 <center>
-<span style="color:red">Na prática, <span class="math inline">\(e(X)\)</span> não é conhecido e não é discreto 😭.</span>
+<span style="color:red">Na prática, <span class="math inline">\(e(X)\)</span> não é conhecido e não é discreto 🙍.</span>
 </center>
 <div class="fragment">
 <h3 id="como-então-utilizar-propensity-score-para-estratificar">Como então utilizar propensity score para estratificar?</h3>
 <ul>
 <li class="fragment">Ajustamos um modelo para <span class="math inline">\(P(Z = 1 | X)\)</span>, por exemplo, um modelo logístico.</li>
-<li class="fragment">Os valores ajustados serão os <em>propensity score</em> estimados, <span class="math inline">\(\hat{e}(X)\)</span>. -<span class="math inline">\(\hat{e}(X)\)</span> pode assumir tantos valores quanto o tamanho do conjunto de dados (<span class="math inline">\(n\)</span>) 😿.</li>
+<li class="fragment">Os valores ajustados serão os <em>propensity score</em> estimados, <span class="math inline">\(\hat{e}(X)\)</span>. -<span class="math inline">\(\hat{e}(X)\)</span> pode assumir tantos valores quanto o tamanho do conjunto de dados (<span class="math inline">\(n\)</span>) 😢.</li>
 <li class="fragment">Contudo, podemos discretizar (utilizando os quantis ou algum outro método) <span class="math inline">\(\hat{e}(X)\)</span> e termos (aproximadamente) <span class="math display">\[Z \perp\!\!\!\perp  \{ Y(1), Y(0)\} | \hat{e}'(X) = e_k \quad (k = 1, \cdots, K),\]</span> em que <span class="math inline">\(\hat{e}'(X)\)</span> são os quantis 😄.</li>
 </ul>
 </div>
@@ -683,8 +684,11 @@ SE    0.2254186 0.22673582  0.22587296</code></pre>
 </div>
 </div>
 </div>
+
 <p><strong>Demostração</strong> (no quadro)</p>
-</section>
+<aside><div>
+A condição <span class="math inline">\(0 &lt; e(X) &lt; 1\)</span> é conhecida como a condição de sobreposição (<em>overlap</em>) ou positividade (<em>positivity</em>)
+</div></aside></section>
 <section id="estimador-ipw" class="slide level2">
 <h2>Estimador IPW</h2>
 <p>O estimador IPW (Inverse Propensity Score Weighting), também conhecido como estimador HT (Horvitz-Thompson) é motivado pelo Teorema anterior e é dado por <span class="math display">\[\hat{\tau}^{IPW} = \dfrac{1}{n} \displaystyle \sum_{i = 1}^n \dfrac{Z_i Y_i}{\hat{e}(X_i)} - \dfrac{1}{n} \displaystyle \sum_{i = 1}^n \dfrac{(1 - Z_i)Y_i}{1- \hat{e}(X_i)},\]</span> em que <span class="math inline">\(\hat{e}(X_i)\)</span> é o <em>propensity score</em> estimado.</p>
@@ -694,12 +698,258 @@ SE    0.2254186 0.22673582  0.22587296</code></pre>
 <ul>
 <li class="fragment">Suponha que em lugar de termos resultado observado <span class="math inline">\(Y_i\)</span>, temos <span class="math inline">\(\tilde{Y}_i = Y_i + c\)</span> (<span class="math inline">\(\forall i\)</span>).</li>
 <li class="fragment">Adicionar, para cada <span class="math inline">\(i\)</span>, uma constante ao resultado observado não deveria mudar o efeito causal médio.</li>
-<li class="fragment">Contudo, se adicionarmos, para cada <span class="math inline">\(i\)</span>, uma constante <span class="math inline">\(c\)</span>, temos que <span class="math inline">\(\hat{\tau}^{IPW}\)</span> torna-se <span class="math inline">\(\hat{\tau}^{IPW} + c \Big[\dfrac{1}{n} \displaystyle \sum_{i = 1}^n \dfrac{Z_i}{\hat{e}(X_i)} - \dfrac{1}{n} \displaystyle \sum_{i = 1}^n \dfrac{1 - Z_i}{1 - \hat{e}(X_i)} \Big]\)</span></li>
+<li class="fragment">Contudo, se adicionarmos, para cada <span class="math inline">\(i\)</span>, uma constante <span class="math inline">\(c\)</span>, temos que <span class="math inline">\(\hat{\tau}^{IPW}\)</span> torna-se <span class="math display">\[\hat{\tau}^{IPW} + c \Big[\dfrac{1}{n} \displaystyle \sum_{i = 1}^n \dfrac{Z_i}{\hat{e}(X_i)} - \dfrac{1}{n} \displaystyle \sum_{i = 1}^n \dfrac{1 - Z_i}{1 - \hat{e}(X_i)} \Big]\]</span></li>
 </ul>
 <div class="fragment">
 <p><span style="color:gray">O estimador <span class="math inline">\(\hat{\tau}^{IPW}\)</span> apresenta um sério problema: <strong>não é invariante a transformações de locação de <span class="math inline">\(Y\)</span></strong> 😢.</span></p>
 </div>
 </section>
+<section id="estimador-ipw-2" class="slide level2">
+<h2>Estimador IPW</h2>
+<ul>
+<li class="fragment"><span class="math inline">\(\hat{\tau}^{IPW}\)</span> não é um estimador razoável, pois depende de <span class="math inline">\(c\)</span>.</li>
+<li class="fragment">Uma forma simples de remediar o problema é normalizar os pesos. Este estimador é conhecido como o estimador de Hajek e é dado por <span class="math display">\[\hat{\tau}^{Hajek} =  \dfrac{\displaystyle \sum_{i = 1}^n \dfrac{Z_i Y_i}{\hat{e}(X_i)}}{\displaystyle \sum_{i = 1}^n \dfrac{Z_i}{\hat{e}(X_i)}} - \dfrac{\displaystyle \sum_{i = 1}^n \dfrac{(1 - Z_i)Y_i}{1- \hat{e}(X_i)}}{\displaystyle \sum_{i = 1}^n \dfrac{1 - Z_i}{1- \hat{e}(X_i)}}.\]</span></li>
+<li class="fragment">Pode-se mostrar que <span class="math inline">\(\hat{\tau}^{Hajek}\)</span> é invariante a transformações de locação 😄.</li>
+</ul>
+</section>
+<section id="estimador-ipw-3" class="slide level2">
+<h2>Estimador IPW</h2>
+<ul>
+<li class="fragment">Muitos resultados assintóticos requerem que <span class="math inline">\(0 &lt; \alpha_L &lt;e(X) &lt; \alpha_U &lt; 1\)</span> (condicação conhecida como sobreposição forte).</li>
+<li class="fragment">Contudo, esta suposição é bastante forte (D’Amour et al.&nbsp;2021) e mesmo se a condição é verificada para <span class="math inline">\(e(X)\)</span> não há garantia que seja verificada para <span class="math inline">\(\hat{e}(X)\)</span> fazendo com que o estimador <em>exploda</em>, tornando os resultados bastante instáveis.</li>
+<li class="fragment">Para evitar isto, podemos: substituir <span class="math inline">\(\hat{e}(X)\)</span> por <span class="math inline">\(\max [\alpha_L, \min[\hat{e}(X_i), \alpha_U]]\)</span>.</li>
+<li class="fragment">Algumas escolhas comuns para <span class="math inline">\(\alpha_L\)</span> e <span class="math inline">\(\alpha_U\)</span> são 0.1 e 0.9 ou 0.05 e 0.95.</li>
+</ul>
+</section>
+<section id="estimador-ipw-4" class="slide level2">
+<h2>Estimador IPW</h2>
+<div class="callout callout-note callout-captioned callout-style-default">
+<div class="callout-body">
+<div class="callout-caption">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Implementação</strong></p>
+</div>
+<div class="callout-content">
+<div class="cell" data-layout-align="center">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1"></a>estimador_ipw <span class="ot">&lt;-</span> <span class="cf">function</span>(z, y, x, <span class="at">alphas =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>)) {</span>
+<span id="cb7-2"><a href="#cb7-2"></a>  prop_score <span class="ot">&lt;-</span> <span class="fu">glm</span>(z <span class="sc">~</span> x, <span class="at">family =</span> binomial)<span class="sc">$</span>fitted.values</span>
+<span id="cb7-3"><a href="#cb7-3"></a>  prop_score <span class="ot">&lt;-</span> <span class="fu">pmax</span>(alphas[<span class="dv">1</span>], <span class="fu">pmin</span>(prop_score, alphas[<span class="dv">2</span>]))</span>
+<span id="cb7-4"><a href="#cb7-4"></a>  </span>
+<span id="cb7-5"><a href="#cb7-5"></a>  tau_ipw <span class="ot">&lt;-</span> <span class="fu">mean</span>(z <span class="sc">*</span> y <span class="sc">/</span> prop_score) <span class="sc">-</span> <span class="fu">mean</span>((<span class="dv">1</span> <span class="sc">-</span> z) <span class="sc">*</span> y <span class="sc">/</span> (<span class="dv">1</span> <span class="sc">-</span> prop_score))</span>
+<span id="cb7-6"><a href="#cb7-6"></a>  tau_hajek <span class="ot">&lt;-</span> <span class="fu">mean</span>(z <span class="sc">*</span> y <span class="sc">/</span> prop_score) <span class="sc">/</span> <span class="fu">mean</span>(z <span class="sc">/</span> prop_score) <span class="sc">-</span> <span class="fu">mean</span>((<span class="dv">1</span> <span class="sc">-</span> z) <span class="sc">*</span> y <span class="sc">/</span> (<span class="dv">1</span> <span class="sc">-</span> prop_score)) <span class="sc">/</span> <span class="fu">mean</span>((<span class="dv">1</span> <span class="sc">-</span> z) <span class="sc">/</span> (<span class="dv">1</span> <span class="sc">-</span> prop_score))</span>
+<span id="cb7-7"><a href="#cb7-7"></a>  </span>
+<span id="cb7-8"><a href="#cb7-8"></a>  out <span class="ot">&lt;-</span> <span class="fu">c</span>(tau_ipw, tau_hajek)</span>
+<span id="cb7-9"><a href="#cb7-9"></a>  <span class="fu">return</span>(out)</span>
+<span id="cb7-10"><a href="#cb7-10"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="estimador-ipw-5" class="slide level2">
+<h2>Estimador IPW</h2>
+<div class="callout callout-note callout-captioned callout-style-default">
+<div class="callout-body">
+<div class="callout-caption">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Implementação</strong></p>
+</div>
+<div class="callout-content">
+<div class="cell" data-layout-align="center">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1"></a>bootstrap_ipw <span class="ot">&lt;-</span> <span class="cf">function</span>(z, y, x, <span class="at">n_boot =</span> <span class="dv">500</span>, <span class="at">alphas =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>)) {</span>
+<span id="cb8-2"><a href="#cb8-2"></a>  poit_estim <span class="ot">&lt;-</span> <span class="fu">estimador_ipw</span>(z, y, x, alphas)</span>
+<span id="cb8-3"><a href="#cb8-3"></a>  </span>
+<span id="cb8-4"><a href="#cb8-4"></a>  n <span class="ot">&lt;-</span> <span class="fu">length</span>(z)</span>
+<span id="cb8-5"><a href="#cb8-5"></a>  boot_estim <span class="ot">&lt;-</span> <span class="fu">replicate</span>(n_boot, {</span>
+<span id="cb8-6"><a href="#cb8-6"></a>    sample_boot <span class="ot">&lt;-</span> <span class="fu">sample</span>(<span class="dv">1</span><span class="sc">:</span>n, n, <span class="at">replace =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb8-7"><a href="#cb8-7"></a>    <span class="fu">estimador_ipw</span>(z[sample_boot], y[sample_boot], x[sample_boot, ], alphas)</span>
+<span id="cb8-8"><a href="#cb8-8"></a>  })</span>
+<span id="cb8-9"><a href="#cb8-9"></a>  boot_se <span class="ot">&lt;-</span> <span class="fu">apply</span>(boot_estim, <span class="dv">1</span>, sd)</span>
+<span id="cb8-10"><a href="#cb8-10"></a>  out <span class="ot">&lt;-</span> <span class="fu">cbind</span>(poit_estim, boot_se)</span>
+<span id="cb8-11"><a href="#cb8-11"></a>  <span class="fu">colnames</span>(out) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"Est"</span>, <span class="st">"SD"</span>)</span>
+<span id="cb8-12"><a href="#cb8-12"></a>  <span class="fu">rownames</span>(out) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"IPW"</span>, <span class="st">"Hajek"</span>)</span>
+<span id="cb8-13"><a href="#cb8-13"></a>  <span class="fu">return</span>(out)</span>
+<span id="cb8-14"><a href="#cb8-14"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="estimador-ipw-6" class="slide level2">
+<h2>Estimador IPW</h2>
+<div class="callout callout-note callout-captioned callout-style-default">
+<div class="callout-body">
+<div class="callout-caption">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Exemplo (Merenda e BMI)</strong></p>
+</div>
+<div class="callout-content">
+<p><a href="https://academic.oup.com/jrsssb/article/78/3/673/7040940?login=false">Chang et al.&nbsp;(2016)</a> estudam se a participação no programa da merenda nas escolas (<code>School_meal</code>) leva a um aumento no índice de massa muscular (<code>BMI</code>) das crianças. 12 outras covariáveis também estão disponíveis no <em>dataset</em>.</p>
+<div class="cell" data-layout-align="center">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1"></a>dados <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"datasets/nhanes_bmi.csv"</span>)[, <span class="sc">-</span><span class="dv">1</span>]</span>
+<span id="cb9-2"><a href="#cb9-2"></a>z <span class="ot">&lt;-</span> dados<span class="sc">$</span>School_meal</span>
+<span id="cb9-3"><a href="#cb9-3"></a>y <span class="ot">&lt;-</span> dados<span class="sc">$</span>BMI</span>
+<span id="cb9-4"><a href="#cb9-4"></a>x <span class="ot">&lt;-</span> <span class="fu">scale</span>(dados[, <span class="sc">-</span><span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>)])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<p>A maneira de exemplo, utilizaremos diversos valores de <span class="math inline">\(\alpha_L\)</span> e <span class="math inline">\(\alpha_U\)</span>: ::: {.non-incremenral} - (0, 1) - (0.01, 0.99) - (0.05, 0.95) - (0.1, 0.9)</p>
+</div>
+</div>
+</div>
+<p>:::</p>
+</section>
+<section id="estimador-ipw-7" class="slide level2">
+<h2>Estimador IPW</h2>
+<div class="callout callout-note callout-captioned callout-style-default">
+<div class="callout-body">
+<div class="callout-caption">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Exemplo (Merenda e BMI)</strong></p>
+</div>
+<div class="callout-content">
+<div class="cell" data-layout-align="center">
+<div class="cell-output cell-output-stdout">
+<pre><code>$alpha_01
+         Est    SD
+IPW   -1.516 0.500
+Hajek -0.156 0.254
+
+$alpha_02
+         Est   SD
+IPW   -1.516 0.50
+Hajek -0.156 0.24
+
+$alpha_03
+         Est    SD
+IPW   -1.499 0.479
+Hajek -0.152 0.236
+
+$alpha_04
+         Est    SD
+IPW   -0.713 0.418
+Hajek -0.054 0.235</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<ul>
+<li class="fragment">Note que o estimador de Hajek é sempre negativo e insignificante.</li>
+<li class="fragment">O estimador de HW (IPW) é bastante negativo e, dependendo do truncamento, significativo.</li>
+<li class="fragment">O estimador de HW é instável e devemos preferir Hajek!</li>
+</ul>
+</section></section>
+<section>
+<section id="propensity-score-balanceamento" class="title-slide slide level1 center">
+<h1>Propensity Score: Balanceamento</h1>
+
+</section>
+<section id="propensity-score-balanceamento-1" class="slide level2">
+<h2>Propensity Score: Balanceamento</h2>
+<div class="callout callout-tip callout-captioned callout-style-default">
+<div class="callout-body">
+<div class="callout-caption">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Teorema</strong></p>
+</div>
+<div class="callout-content">
+<p>O <em>propensity score</em> satisfaz <span class="math display">\[Z \perp\!\!\!\perp Z \ e(X).\]</span> Ademais, para qualquer função <span class="math inline">\(h(\cdot)\)</span>, temos que <span class="math display">\[\mathbb{E} \Big [\dfrac{Zh(X)}{e(X)} \Big] = \mathbb{E} \Big[\dfrac{(1 - Z) h(X)}{1- e(X)} \Big],\]</span> desde que ambas as <span class="math inline">\(\mathbb{E}(\cdot)\)</span> existam.</p>
+</div>
+</div>
+</div>
+<div class="fragment">
+<center>
+<span style="color:red">O que significa essa teorema?</span>
+</center>
+<ul>
+<li class="fragment">Condicional no <em>propensity score</em>, a indicadora de tratamento e as covariáveis são independentes.</li>
+<li class="fragment">Dentro de cada nível do <em>propensity score</em>, a distribuição das covariáveis é balanceada entre tratamento e controle.</li>
+</ul>
+</div>
+</section>
+<section id="propensity-score-balanceamento-2" class="slide level2">
+<h2>Propensity Score: Balanceamento</h2>
+<ul>
+<li class="fragment">O Teorema anterior tem uma implicação direta na análise de dados.</li>
+<li class="fragment">Antes de termos acesso aos resultados (<span class="math inline">\(Y\)</span>), podemos verificar se o modelo de <em>propensity score</em> está bem especificado como para garantir o balanceamento das covariáveis.</li>
+<li class="fragment">Por exemplo, pense no <em>propensity score stratification</em>. Discretizamos <span class="math inline">\(\hat{e}(X)\)</span> para termos <span class="math inline">\(\hat{e}'(X)\)</span> e então, aproximadamente <span class="math display">\[Z \perp\!\!\!\perp X | \hat{e}'(X) = e_k \quad (k = 1, \cdots, K).\]</span> Assim, podemos verificar se a distribuição das covariáveis é a mesma entre tratamento e controle dentro de cada estrato.</li>
+</ul>
+</section>
+<section id="propensity-score-balanceamento-3" class="slide level2">
+<h2>Propensity Score: Balanceamento</h2>
+<div class="cell" data-layout-align="center">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb11-2"><a href="#cb11-2"></a>balance_check <span class="ot">&lt;-</span> <span class="fu">sapply</span>(<span class="dv">1</span><span class="sc">:</span><span class="fu">ncol</span>(x),</span>
+<span id="cb11-3"><a href="#cb11-3"></a>                <span class="at">FUN =</span> <span class="cf">function</span>(px){</span>
+<span id="cb11-4"><a href="#cb11-4"></a>                  q_prop_score <span class="ot">=</span> <span class="fu">quantile</span>(prop_score, (<span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>)<span class="sc">/</span><span class="dv">5</span>)</span>
+<span id="cb11-5"><a href="#cb11-5"></a>                  prop_score_strata <span class="ot">=</span> <span class="fu">cut</span>(prop_score, <span class="at">breaks =</span> <span class="fu">c</span>(<span class="dv">0</span>, q_prop_score, <span class="dv">1</span>), <span class="at">labels =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>)</span>
+<span id="cb11-6"><a href="#cb11-6"></a>                  <span class="fu">neyman_sre</span>(x[, px], z, prop_score_strata)</span>
+<span id="cb11-7"><a href="#cb11-7"></a>                })</span>
+<span id="cb11-8"><a href="#cb11-8"></a></span>
+<span id="cb11-9"><a href="#cb11-9"></a>dat_balance <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">est =</span> balance_check[<span class="dv">1</span>, ],</span>
+<span id="cb11-10"><a href="#cb11-10"></a>                         <span class="at">upper =</span> balance_check[<span class="dv">1</span>, ] <span class="sc">+</span> <span class="fl">1.96</span><span class="sc">*</span>balance_check[<span class="dv">2</span>, ],</span>
+<span id="cb11-11"><a href="#cb11-11"></a>                         <span class="at">lower =</span> balance_check[<span class="dv">1</span>, ] <span class="sc">-</span> <span class="fl">1.96</span><span class="sc">*</span>balance_check[<span class="dv">2</span>, ],</span>
+<span id="cb11-12"><a href="#cb11-12"></a>                         <span class="at">cov =</span> <span class="fu">factor</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">11</span>))</span>
+<span id="cb11-13"><a href="#cb11-13"></a><span class="fu">ggplot</span>(dat_balance) <span class="sc">+</span> </span>
+<span id="cb11-14"><a href="#cb11-14"></a>  <span class="fu">geom_errorbar</span>(<span class="fu">aes</span>(<span class="at">x =</span> cov, <span class="at">ymin =</span> lower, <span class="at">ymax =</span> upper), <span class="at">alpha =</span> <span class="fl">0.6</span>) <span class="sc">+</span> </span>
+<span id="cb11-15"><a href="#cb11-15"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">x =</span> cov, <span class="at">y =</span> est), <span class="at">alpha =</span> <span class="fl">0.6</span>) <span class="sc">+</span></span>
+<span id="cb11-16"><a href="#cb11-16"></a>  <span class="fu">geom_hline</span>(<span class="fu">aes</span>(<span class="at">yintercept =</span> <span class="dv">0</span>), <span class="at">alpha =</span> <span class="fl">0.3</span>) <span class="sc">+</span> </span>
+<span id="cb11-17"><a href="#cb11-17"></a>  <span class="fu">theme_bw</span>() <span class="sc">+</span> </span>
+<span id="cb11-18"><a href="#cb11-18"></a>  <span class="fu">theme</span>(<span class="at">panel.grid.major =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb11-19"><a href="#cb11-19"></a>        <span class="at">panel.grid.minor =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb11-20"><a href="#cb11-20"></a>        <span class="at">axis.title.y =</span> <span class="fu">element_blank</span>()) <span class="sc">+</span></span>
+<span id="cb11-21"><a href="#cb11-21"></a>  <span class="fu">xlab</span>(<span class="st">"Verificando balanceamento com base na estratificação (K = 5)"</span>)                     </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+
+</div>
+<img data-src="MI628_Aula09_files/figure-revealjs/unnamed-chunk-9-1.png" width="960" class="r-stretch quarto-figure-center"></section>
+<section id="propensity-score-balanceamento-4" class="slide level2">
+<h2>Propensity Score: Balanceamento</h2>
+<div class="cell" data-layout-align="center">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1"></a>balance_check <span class="ot">&lt;-</span> <span class="fu">sapply</span>(<span class="dv">1</span><span class="sc">:</span><span class="fu">dim</span>(x)[<span class="dv">2</span>],</span>
+<span id="cb12-2"><a href="#cb12-2"></a>                <span class="at">FUN =</span> <span class="cf">function</span>(px){</span>
+<span id="cb12-3"><a href="#cb12-3"></a>                  <span class="fu">bootstrap_ipw</span>(z, x[, px], x)[<span class="dv">2</span>, ]</span>
+<span id="cb12-4"><a href="#cb12-4"></a>                })</span>
+<span id="cb12-5"><a href="#cb12-5"></a></span>
+<span id="cb12-6"><a href="#cb12-6"></a>dat_balance <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">est =</span> balance_check[<span class="dv">1</span>, ],</span>
+<span id="cb12-7"><a href="#cb12-7"></a>                         <span class="at">upper =</span> balance_check[<span class="dv">1</span>, ] <span class="sc">+</span> <span class="fl">1.96</span><span class="sc">*</span>balance_check[<span class="dv">2</span>, ],</span>
+<span id="cb12-8"><a href="#cb12-8"></a>                         <span class="at">lower =</span> balance_check[<span class="dv">1</span>, ] <span class="sc">-</span> <span class="fl">1.96</span><span class="sc">*</span>balance_check[<span class="dv">2</span>, ],</span>
+<span id="cb12-9"><a href="#cb12-9"></a>                         <span class="at">cov =</span> <span class="fu">factor</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">11</span>))</span>
+<span id="cb12-10"><a href="#cb12-10"></a><span class="fu">ggplot</span>(dat_balance) <span class="sc">+</span> </span>
+<span id="cb12-11"><a href="#cb12-11"></a>  <span class="fu">geom_errorbar</span>(<span class="fu">aes</span>(<span class="at">x =</span> cov, <span class="at">ymin =</span> lower, <span class="at">ymax =</span> upper), <span class="at">alpha =</span> <span class="fl">0.6</span>) <span class="sc">+</span> </span>
+<span id="cb12-12"><a href="#cb12-12"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">x =</span> cov, <span class="at">y =</span> est), <span class="at">alpha =</span> <span class="fl">0.6</span>) <span class="sc">+</span></span>
+<span id="cb12-13"><a href="#cb12-13"></a>  <span class="fu">geom_hline</span>(<span class="fu">aes</span>(<span class="at">yintercept =</span> <span class="dv">0</span>), <span class="at">alpha =</span> <span class="fl">0.3</span>) <span class="sc">+</span> </span>
+<span id="cb12-14"><a href="#cb12-14"></a>  <span class="fu">theme_bw</span>() <span class="sc">+</span> </span>
+<span id="cb12-15"><a href="#cb12-15"></a>  <span class="fu">theme</span>(<span class="at">panel.grid.major =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb12-16"><a href="#cb12-16"></a>        <span class="at">panel.grid.minor =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb12-17"><a href="#cb12-17"></a>        <span class="at">axis.title.y=</span><span class="fu">element_blank</span>()) <span class="sc">+</span></span>
+<span id="cb12-18"><a href="#cb12-18"></a>  <span class="fu">xlab</span>(<span class="st">"balance check based on weighting"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+
+</div>
+<img data-src="MI628_Aula09_files/figure-revealjs/unnamed-chunk-10-1.png" width="960" class="r-stretch quarto-figure-center"></section>
 <section id="referências" class="slide level2">
 <h2>Referências</h2>
 <div>

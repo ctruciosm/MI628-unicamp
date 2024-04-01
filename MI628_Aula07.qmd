@@ -42,7 +42,7 @@ format:
 
 - Já estudamos as abordagens de Fisher e Neyman sob diferentes mecanismos de atribuição de tratamento (CRE, SRE, ReM, MPE).
 - Vimos as diferenças entre ambas as abordagens (FRT vs. Neyman).
-- Existe um acalorda discussão de FRT vs. Neyman (ver [Sabbaghi e Rubin (2014)](https://projecteuclid.org/journals/statistical-science/volume-29/issue-2/Comments-on-the-NeymanFisher-Controversy-and-Its-Consequences/10.1214/13-STS454.full)).
+- Existe um acalorada discussão de FRT vs. Neyman (ver [Sabbaghi e Rubin (2014)](https://projecteuclid.org/journals/statistical-science/volume-29/issue-2/Comments-on-the-NeymanFisher-Controversy-and-Its-Consequences/10.1214/13-STS454.full)).
 
 
 # Unificando
@@ -291,7 +291,7 @@ $$\hat{\tau} = {n_1}^{-1} \displaystyle \sum_{i = 1}^{n} Z_i Y_i - {n_0}^{-1} \d
 
 . . . 
 
-Sob IID, a variância amostral é não viesado para a variância populacional. Ou seja, o estimador (conservador) de Neyman é não viesado para $\mathbb{V}(\hat{\tau}$ (**o problema de ser um estimador conservador vá embora quando pensamos em super populações!**)
+Sob IID, a variância amostral é não viesado para a variância populacional. Ou seja, o estimador (conservador) de Neyman é não viesado para $\mathbb{V}(\hat{\tau} | textbf{Z})$ (**o problema de ser um estimador conservador vá embora quando pensamos em super populações!**)
 
 
 ## População finita >>> Super população
@@ -400,7 +400,7 @@ for (i in 1:mc) {
 ::: {.callout-note}
 ### Ilustração
 ```{r}
-#| echo: false
+#| echo: true
 # Vies
 mean(resultado[, 1])
 # Desvio padrão empírico
@@ -450,7 +450,8 @@ Logo, \begin{align*}
 \end{align*}
 
 
-. . . 
+## População finita >>> Super população
+
 
 - Como dentro de cada estrato, temos CREs independentes, podemos aplicar o visto para CRE.
 - Se cada estrato tiver mais do que duas univerdades, podemos utilizar $\hat{V}_S$ como estimador de $\mathbb{V}(\tau_S)$.

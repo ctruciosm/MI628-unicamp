@@ -263,8 +263,15 @@ Se $Z \perp\!\!\!\perp \{ Y(1), Y(0)\} | X$ e $0 < e(X) < 1$, então: $$\mathbb{
 
 :::
 
+<aside>
+A condição $0 < e(X) < 1$ é conhecida como a condição de sobreposição (*overlap*) ou positividade (*positivity*)
+</aside>
+
 
 **Demostração** (no quadro)
+
+
+
 
 ## Estimador IPW
 
@@ -290,8 +297,192 @@ O estimador IPW (Inverse Propensity Score Weighting), também conhecido como est
 
 - $\hat{\tau}^{IPW}$ não é um estimador razoável, pois depende de $c$.
 - Uma forma simples de remediar o problema é normalizar os pesos. Este estimador é conhecido como o estimador de Hajek e é dado por $$\hat{\tau}^{Hajek} =  \dfrac{\displaystyle \sum_{i = 1}^n \dfrac{Z_i Y_i}{\hat{e}(X_i)}}{\displaystyle \sum_{i = 1}^n \dfrac{Z_i}{\hat{e}(X_i)}} - \dfrac{\displaystyle \sum_{i = 1}^n \dfrac{(1 - Z_i)Y_i}{1- \hat{e}(X_i)}}{\displaystyle \sum_{i = 1}^n \dfrac{1 - Z_i}{1- \hat{e}(X_i)}}.$$
-- Pode-se mostrra que $\hat{\tau}^{Hajek}$ é invariante a transformações de locação. 
+- Pode-se mostrar que $\hat{\tau}^{Hajek}$ é invariante a transformações de locação `r emo::ji("smile")`. 
 
+
+## Estimador IPW
+
+- Muitos resultados assintóticos requerem que $0 < \alpha_L <e(X) < \alpha_U < 1$ (condicação conhecida como sobreposição forte).
+- Contudo, esta suposição é bastante forte (D'Amour et al. 2021) e mesmo se a condição é verificada para $e(X)$ não há garantia que seja verificada para $\hat{e}(X)$ fazendo com que o estimador _exploda_, tornando os resultados bastante instáveis.
+- Para evitar isto, podemos: substituir $\hat{e}(X)$ por $\max [\alpha_L, \min[\hat{e}(X_i), \alpha_U]]$.
+- Algumas escolhas comuns para $\alpha_L$ e $\alpha_U$ são 0.1 e 0.9 ou 0.05 e 0.95.
+
+
+## Estimador IPW
+
+::: {.callout-note}
+### Implementação
+```{r}
+#| echo: true
+
+estimador_ipw <- function(z, y, x, alphas = c(0, 1)) {
+  prop_score <- glm(z ~ x, family = binomial)$fitted.values
+  prop_score <- pmax(alphas[1], pmin(prop_score, alphas[2]))
+  
+  tau_ipw <- mean(z * y / prop_score) - mean((1 - z) * y / (1 - prop_score))
+  tau_hajek <- mean(z * y / prop_score) / mean(z / prop_score) - mean((1 - z) * y / (1 - prop_score)) / mean((1 - z) / (1 - prop_score))
+  
+  out <- c(tau_ipw, tau_hajek)
+  return(out)
+}
+```
+:::
+
+
+## Estimador IPW
+
+::: {.callout-note}
+### Implementação
+```{r}
+#| echo: true
+bootstrap_ipw <- function(z, y, x, n_boot = 500, alphas = c(0, 1)) {
+  poit_estim <- estimador_ipw(z, y, x, alphas)
+  
+  n <- length(z)
+  boot_estim <- replicate(n_boot, {
+    sample_boot <- sample(1:n, n, replace = TRUE)
+    estimador_ipw(z[sample_boot], y[sample_boot], x[sample_boot, ], alphas)
+  })
+  boot_se <- apply(boot_estim, 1, sd)
+  out <- cbind(poit_estim, boot_se)
+  colnames(out) <- c("Est", "SD")
+  rownames(out) <- c("IPW", "Hajek")
+  return(out)
+}
+```
+:::
+
+
+## Estimador IPW
+
+::: {.callout-note}
+### Exemplo (Merenda e BMI)
+
+[Chang et al. (2016)](https://academic.oup.com/jrsssb/article/78/3/673/7040940?login=false) estudam se a participação no programa da merenda nas escolas (`School_meal`) leva a um aumento no índice de massa muscular (`BMI`) das crianças. 12 outras covariáveis também estão disponíveis no _dataset_.
+
+```{r}
+#| echo: true
+dados <- read.csv("datasets/nhanes_bmi.csv")[, -1]
+z <- dados$School_meal
+y <- dados$BMI
+x <- scale(dados[, -c(1, 2)])
+```
+
+A maneira de exemplo, utilizaremos diversos valores de $\alpha_L$ e $\alpha_U$:
+::: {.non-incremenral}
+- (0, 1)
+- (0.01, 0.99)
+- (0.05, 0.95)
+- (0.1, 0.9)
+:::
+
+
+:::
+
+
+## Estimador IPW
+
+::: {.callout-note}
+### Exemplo (Merenda e BMI)
+```{r}
+l_alphas <- list(alpha_01 = c(0, 1), alpha_02 = c(0.01, 0.99),
+               alpha_03 = c(0.05, 0.95), alpha_04 = c(0.1, .9))
+
+trim_estim <- lapply(l_alphas, 
+                     function(a) {round(bootstrap_ipw(z, y, x, alphas = a), 3)} )
+trim_estim
+```
+:::
+
+- Note que o estimador de Hajek é sempre negativo e insignificante.
+- O estimador de HW (IPW) é bastante negativo e, dependendo do truncamento, significativo.
+- O estimador de HW é instável e devemos preferir Hajek!
+
+
+# Propensity Score: Balanceamento
+## Propensity Score: Balanceamento
+
+
+::: {.callout-tip}
+### Teorema
+O _propensity score_ satisfaz $$Z \perp\!\!\!\perp Z \ e(X).$$ Ademais, para qualquer função $h(\cdot)$, temos que $$\mathbb{E} \Big [\dfrac{Zh(X)}{e(X)} \Big] = \mathbb{E} \Big[\dfrac{(1 - Z) h(X)}{1- e(X)} \Big],$$ desde que ambas as $\mathbb{E}(\cdot)$ existam.
+:::
+
+. . . 
+
+<center>
+[O que significa essa teorema?]{style="color:red"}
+</center>
+
+
+- Condicional no _propensity score_, a indicadora de tratamento e as covariáveis são independentes.
+- Dentro de cada nível do _propensity score_, a distribuição das covariáveis é balanceada entre tratamento e controle.
+
+
+## Propensity Score: Balanceamento
+
+
+- O Teorema anterior tem uma implicação direta na análise de dados.
+- Antes de termos acesso aos resultados ($Y$), podemos verificar se o modelo de _propensity score_ está bem especificado como para garantir o balanceamento das covariáveis.
+- Por exemplo, pense no _propensity score stratification_. Discretizamos $\hat{e}(X)$ para termos $\hat{e}'(X)$ e então, aproximadamente $$Z \perp\!\!\!\perp X | \hat{e}'(X) = e_k \quad (k = 1, \cdots, K).$$ Assim, podemos verificar se a distribuição das covariáveis é a mesma entre tratamento e controle dentro de cada estrato.
+
+
+## Propensity Score: Balanceamento
+
+
+```{r}
+#| echo: true
+library(ggplot2)
+balance_check <- sapply(1:ncol(x),
+                FUN = function(px){
+                  q_prop_score = quantile(prop_score, (1:4)/5)
+                  prop_score_strata = cut(prop_score, breaks = c(0, q_prop_score, 1), labels = 1:5)
+                  neyman_sre(x[, px], z, prop_score_strata)
+                })
+
+dat_balance <- data.frame(est = balance_check[1, ],
+                         upper = balance_check[1, ] + 1.96*balance_check[2, ],
+                         lower = balance_check[1, ] - 1.96*balance_check[2, ],
+                         cov = factor(1:11))
+ggplot(dat_balance) + 
+  geom_errorbar(aes(x = cov, ymin = lower, ymax = upper), alpha = 0.6) + 
+  geom_point(aes(x = cov, y = est), alpha = 0.6) +
+  geom_hline(aes(yintercept = 0), alpha = 0.3) + 
+  theme_bw() + 
+  theme(panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(),
+        axis.title.y = element_blank()) +
+  xlab("Verificando balanceamento com base na estratificação (K = 5)")                     
+```
+
+
+
+
+
+## Propensity Score: Balanceamento
+
+```{r}
+#| echo: true
+balance_check <- sapply(1:dim(x)[2],
+                FUN = function(px){
+                  bootstrap_ipw(z, x[, px], x)[2, ]
+                })
+
+dat_balance <- data.frame(est = balance_check[1, ],
+                         upper = balance_check[1, ] + 1.96*balance_check[2, ],
+                         lower = balance_check[1, ] - 1.96*balance_check[2, ],
+                         cov = factor(1:11))
+ggplot(dat_balance) + 
+  geom_errorbar(aes(x = cov, ymin = lower, ymax = upper), alpha = 0.6) + 
+  geom_point(aes(x = cov, y = est), alpha = 0.6) +
+  geom_hline(aes(yintercept = 0), alpha = 0.3) + 
+  theme_bw() + 
+  theme(panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(),
+        axis.title.y=element_blank()) +
+  xlab("balance check based on weighting")
+
+```
 
 
 ## Referências

@@ -1,0 +1,381 @@
+---
+title: "Inferência Causal"
+subtitle: "Augmented IPS"
+author: "Prof. Carlos Trucíos </br> ctrucios@unicamp.br"
+Email: "ctrucios@unicamp.br"
+institute: "Instituto de Matemática, Estatística e Computação Científica (IMECC), </br> Universidade Estadual de Campinas (UNICAMP)."
+toc: true
+toc-depth: 1
+toc-title: "Conteúdo"
+knitr:
+    opts_chunk: 
+      fig.align: 'center'
+execute:
+    message: false
+    warning: false
+format:
+    revealjs:
+        slide-number: true
+        show-slide-number: print
+        self-contained: false
+        chalkboard: true
+        width: 1600
+        height: 900
+        theme: [default, styles.scss]
+        incremental: true
+        code-fold: true
+        logo: "imagens/imecc.png"
+        footer: "Carlos Trucíos (IMECC/UNICAMP)  |  ME920/MI628 - Inferência Causal |  [ctruciosm.github.io](https://ctruciosm.github.io/)"
+        highlight-style: "a11y"
+        title-slide-attributes:
+            data-background-image: "imagens/unicamp.png"
+            data-background-size: 20%
+            data-background-position: 99% 5%
+            data-background-opacity: "1"
+---
+
+
+
+# Introdução
+## Introdução
+
+- Sob _ignorabilidade_ ($Z \perp\!\!\!\perp  \{ Y(1), Y(0)\} | X$) e _sobreposição_ ($0 < e(X) < 1$), temos mostrado duas  fórmulas de identificação do ACE ($\tau = \mathbb{E}[Y(1) - Y(0)]$).
+- A primeira, $$\tau = \mathbb{E}[\mu_1(X)]- \mathbb{E}[\mu_0(X)],$$em que $\mu_i(X) = \mathbb{E}[Y(i) | X] = \mathbb{E}[Y | Z = i, X]$.
+- A segunda, $$\tau = \mathbb{E}\Big[\dfrac{ZY}{e(X)} \Big] - \mathbb{E}\Big[\dfrac{(1- Z)Y}{1 - e(X)} \Big],$$em que $e(X) = P(Z = 1 | X)$ é o _propensity score_.
+
+## Introdução
+
+
+- A primeira abordagem, precisa ajustar um modelo para o resultado dado o tratamento e covariáveis. É consistente se o modelo utilizado está corretamente especificado. 
+- A segunda abordagem precisa ajustar um modelo para o tratamento dadas as covariáveis. É consistente se o modelo do _propensity score_ for corretamente especificado.
+- A combinação de ambas as abordagens motiva um novo estimador que também é consistente (conhecido como estimador _augmented IPW_ ou _Doubly Robust_).
+
+# Augmented IPW
+## Augmented IPW
+
+- Postulemos um modelo para a média condicional do resultado, $\mu_1(X, \beta_1)$ e $\mu_0(X, \beta_0)$.
+- Por exemplo, se a média condicional for linear ou logística, os parâmetros são apenas os coeficientes da regressão.
+- Se o modelo for corretamente especificado, então $\mu_i(X, \beta_i) = \mu_i(X)$.
+- Postulemos um modelo para o _propensity score_, $e(X, \alpha)$.
+- Se o modelo for linear ou logiístico, $\alpha$ é o coeficiente da regressão e se o modelo for corretamente especificado, $e(X, \alpha) = e(X)$.
+
+
+
+## Augmented IPW
+
+Definimos, $$\tilde{\mu}_1^{DR} = \mathbb{E} \Big [\dfrac{Z \{Y - \mu_1(X, \beta_1)\}}{e(X, \alpha)}  + \mu_1(X, \beta_1) \Big] = \mathbb{E} \Big[\dfrac{ZY}{e(X, \alpha)} - \dfrac{Z - e(X, \alpha)}{e(X, \alpha)}\mu_1(X, \beta_1) \Big],$$
+
+$$\tilde{\mu}_0^{DR} = \mathbb{E} \Big [\dfrac{(1 - Z) \{Y - \mu_0(X, \beta_0)\}}{e(X, \alpha)}  + \mu_0(X, \beta_0) \Big] = \mathbb{E} \Big[\dfrac{(1 - Z)Y}{e(X, \alpha)} - \dfrac{e(X, \alpha) - Z}{e(X, \alpha)}\mu_0(X, \beta_0) \Big],$$
+
+. . . 
+
+- Note que os termos do meio, aumentam $\mu_i(X, \beta_i)$ pelos residuais ponderados pelo _inverse propsensity score_.
+- Os termos finais, aumentam o IPW pelos resultados imputados.
+
+
+
+## Augmented IPW
+
+::: {.callout-tip}
+### Teorema
+Assumindo _ignorabildiade_ ($Z \perp\!\!\!\perp  \{ Y(1), Y(0)\} | X$) e _sobreposição_ ($0 < e(X) < 1$):
+
+::: {.nonincremental}
+1. Se $e(X, \alpha) = e(X)$ ou $\mu_1(X, \beta_1) = \mu_1(X)$, então $\tilde{\mu}_1^{DR} = \mathbb{E}[Y(1)]$.
+2. Se $e(X, \alpha) = e(X)$ ou $\mu_0(X, \beta_0) = \mu_1(X)$, então $\tilde{\mu}_0^{DR} = \mathbb{E}[Y(0)]$.
+3. Se $e(X, \alpha) = e(X)$ ou $\{ \mu_0(X, \beta_0), \mu_1(X, \beta_1) = \mu_1(X) \}$, então $\tilde{\mu}_1^{DR} - \tilde{\mu}_0^{DR} = \tau$
+:::
+
+:::
+
+
+**Demostração:** (no quadro)
+
+
+
+## Augmented IPW
+
+::: {.callout-tip}
+### Estimador
+Baseados nos dados observados $\{X_i, Z_i, Y_i\}_{i = 1}^n$, podemos obter um estimador DR para $\tau$ através dos seguintes passos:
+
+::: {.nonincremental}
+1. Obter os valores ajustados do _propensity score_: $e(X_i, \hat{\alpha})$.
+2. Obter $\mu_1(X_i, \hat{\beta}_1)$ e $\mu_0(X_i, \hat{\beta}_0)$
+3. Construir $\hat{\tau}^{DR} = \hat{\mu}_1^{DR} - \hat{\mu}_0^{DR}$, em que $$\hat{\mu}_1^{DR} = \dfrac{1}{n} \displaystyle \sum_{i = 1}^n \Big [\dfrac{Z_i [Y_i - \mu_1(X_i, \hat{\beta}_1)]}{e(X_i, \hat{\beta}_1)} + \mu_1(X_i, \hat{\beta}_1)\Big] \quad e$$
+
+$$\hat{\mu}_0^{DR} = \dfrac{1}{n} \displaystyle \sum_{i = 1}^n \Big [\dfrac{(1 - Z_i) [Y_i - \mu_0(X_i, \hat{\beta}_0)]}{1 - e(X_i, \hat{\beta}_0)} + \mu_0(X_i, \hat{\beta}_0)\Big]$$
+
+:::
+
+:::
+
+Funk et al. (2011) sugerem aproximar $\mathbb{V}(\hat{\tau}^{DR})$ vía Bootstrap não paramétrico.
+
+
+
+## Augmented IPW
+
+::: {.callout-note}
+### Implementação
+Implementaremos os quatro métodos vistos até agora. O modelo utilizado para o _propsensity score_ será o modelo logístico.
+
+
+```{r}
+#| echo: true
+OS_est <- function(z, y, x, out_family = gaussian, alphas = c(0, 1)) {
+  # Propensity score
+  e <- glm(z ~ x, family = binomial)$fitted.values
+  e <- pmax(alphas[1], pmin(alphas[2], e))
+  
+  # Fitted potencial outcomes
+  outcome_1 <- glm(y ~ x, weights = z, family = out_family)$fitted.values
+  outcome_0 <- glm(y ~ x, weights = 1 - z, family = out_family)$fitted.values
+  
+  # Outcome regression estimator
+  tau_reg <- mean(outcome_1 - outcome_0)
+  
+  # IPW
+  tau_ipw <- mean(z * y / e) - mean((1 - z) * y / (1 - e))
+  tau_hajek <- mean(z * y / e) / mean(z / e) - mean((1 - z) * y / (1 - e)) / mean((1 - z) / (1 - e))
+  
+  # DR
+  res_1 <- y - outcome_1
+  res_2 <- y - outcome_0
+  tau_dr <- mean(z * res_1 / e) + mean((1 - z) * res_2 / (1 - e)) + tau_reg
+  
+  out <- c(tau_reg, tau_ipw, tau_hajek, tau_dr)
+  return(out)
+}
+```
+:::
+
+
+## Augmented IPW
+
+
+::: {.callout-note}
+### Implementação
+Utilizaremos Bootstrao não paramétrico para estimar a variância dos estimadores
+```{r}
+#| echo: true
+OS_ATE <- function(z, y, x, n_boot = 500, out_family = gaussian, alphas = c(0, 1)) {
+  taus <- OS_est(z, y, x, out_family, alphas)
+  
+  # Bootstrap não-paramétrico
+  n <- length(z)
+  boot_est <- replicate(n_boot, {
+    id_boot <- sample(1:n, n, replace = TRUE)
+    OS_est(z[id_boot], y[id_boot], x[id_boot, ], out_family, alphas)
+  })
+  boot_se <- apply(boot_est, 1, sd)
+  out <- rbind(taus, boot_se)
+  rownames(out) <- c("Estim", "SE")
+  colnames(out) <- c("Reg", "IPW", "Hajek", "DR")
+  return(out)
+}
+```
+:::
+
+
+
+# Simulação
+## Simulação
+
+Avaliaremos as propriedades em amostras finitas dos quatro estimadores implementados. O estudo considerará o seguintes cenârios:
+
+- Ambos, o modelo do _propensity score_ e do resultados são corretos.
+- O modelo do _propensity score_ é incorreto mas o do resultado correto.
+- O modelo do _propensity score_ é correto mas o do resultado incorreto.
+- Ambos os modelos são incorretos
+  
+
+
+## Simulação
+
+::: {.callout-note}
+### Simulação
+```{r}
+#| echo: true
+mc <- 500
+bias <- matrix(NA, ncol = 4, nrow = mc)
+estim_se <- matrix(NA, ncol = 4, nrow = mc)
+for (i in 1:mc) {
+  x <- cbind(1, matrix(rnorm(n * 2), n, 2))
+  beta_z <- c(0, 1, 1)
+  e <- 1 / (1 + exp(-as.vector(x %*% beta_z)))
+  z <- rbinom(n, 1, e)
+  beta_y1 <- c(1, 2, 1)
+  beta_y0 <- c(1, 2, 1)
+  y1 <- rnorm(n, x %*% beta_y1)
+  y0 <- rnorm(n, x %*% beta_y0)
+  y <- z * y1 + (1 - z) * y0 
+  ce <- OS_ATE(z, y, x)
+  bias[i,] <-  ce[1, ] - 0
+  estim_se[i, ] <- ce[2, ]
+}
+# Bias, True SD, Estim SD
+resultados <- rbind(apply(bias, 2, mean), 
+                    apply(bias, 2, sd), 
+                    apply(estim_se, 2, mean))
+colnames(resultados) <- c("Reg", "IPW", "Hajek", "DR")
+rownames(resultados) <- c("Bias", "True Var", "Estim Var")
+resultados
+```
+
+:::
+
+
+
+## Simulação
+
+::: {.callout-note}
+### Simulação
+```{r}
+#| echo: true
+mc <- 500
+bias <- matrix(NA, ncol = 4, nrow = mc)
+estim_se <- matrix(NA, ncol = 4, nrow = mc)
+for (i in 1:mc) {
+  x <- matrix(rnorm(n*2), n, 2)
+  x1 <- cbind(1, x, exp(x))
+  x <- cbind(1, x)
+  beta_z <- c(-1, 0, 0, 1, -1)
+  e <- 1/(1 + exp(-as.vector(x1 %*% beta_z)))
+  z <- rbinom(n, 1, e)
+  beta_y1 <- c(1, 2, 1)
+  beta_y0 <- c(1, 2, 1)
+  y1 <- rnorm(n, x %*% beta_y1)
+  y0 <- rnorm(n, x %*% beta_y0)
+  y <- z*y1 + (1 - z)*y0
+  ce <- OS_ATE(z, y, x)
+  bias[i,] <-  ce[1, ] - 0
+  estim_se[i, ] <- ce[2, ]
+}
+# Bias, True SD, Estim SD
+resultados <- rbind(apply(bias, 2, mean), 
+                    apply(bias, 2, sd), 
+                    apply(estim_se, 2, mean))
+colnames(resultados) <- c("Reg", "IPW", "Hajek", "DR")
+rownames(resultados) <- c("Bias", "True Var", "Estim Var")
+resultados
+```
+
+:::
+
+
+
+## Simulação
+
+::: {.callout-note}
+### Simulação
+```{r}
+#| echo: true
+mc <- 500
+bias <- matrix(NA, ncol = 4, nrow = mc)
+estim_se <- matrix(NA, ncol = 4, nrow = mc)
+for (i in 1:mc) {
+  x <- matrix(rnorm(n*2), n, 2)
+  x1 <- cbind(1, x, exp(x))
+  x <- cbind(1, x)
+  beta_z <- c(0, 1, 1)
+  e <- 1 / (1 + exp(-as.vector(x %*% beta_z)))
+  z <- rbinom(n, 1, e)
+  beta_y1 <- c(1, 0, 0, 0.2, -0.1)
+  beta_y0 <- c(1, 0, 0, -0.2, 0.1)
+  y1 <- rnorm(n, x1 %*% beta_y1)
+  y0 <- rnorm(n, x1 %*% beta_y0)
+  y <- z*y1 + (1 - z)*y0
+  ce <- OS_ATE(z, y, x)
+  bias[i,] <-  ce[1, ]  - 0.2*exp(1/2)
+  estim_se[i, ] <- ce[2, ]
+}
+# Bias, True SD, Estim SD
+resultados <- rbind(apply(bias, 2, mean), 
+                    apply(bias, 2, sd), 
+                    apply(estim_se, 2, mean))
+colnames(resultados) <- c("Reg", "IPW", "Hajek", "DR")
+rownames(resultados) <- c("Bias", "True Var", "Estim Var")
+resultados
+```
+
+:::
+
+
+## Simulação
+
+::: {.callout-note}
+### Simulação
+```{r}
+#| echo: true
+mc <- 500
+bias <- matrix(NA, ncol = 4, nrow = mc)
+estim_se <- matrix(NA, ncol = 4, nrow = mc)
+for (i in 1:mc) {
+  x <- matrix(rnorm(n*2), n, 2)
+  x1 <- cbind(1, x, exp(x))
+  x <- cbind(1, x)
+  beta_z <- c(-1, 0, 0, 1, -1)
+  e <- 1 / (1 + exp(-as.vector(x1 %*% beta_z)))
+  z <- rbinom(n, 1, e)
+  beta_y1 <- c(1, 0, 0, 0.2, -0.1)
+  beta_y0 <- c(1, 0, 0, -0.2, 0.1)
+  y1 <- rnorm(n, x1 %*% beta_y1)
+  y0 <- rnorm(n, x1 %*% beta_y0)
+  y <- z*y1 + (1 - z)*y0
+  ce <- OS_ATE(z, y, x)
+  bias[i,] <-  ce[1, ] - 0.2*exp(1/2)
+  estim_se[i, ] <- ce[2, ]
+}
+# Bias, True SD, Estim SD
+resultados <- rbind(apply(bias, 2, mean), 
+                    apply(bias, 2, sd), 
+                    apply(estim_se, 2, mean))
+colnames(resultados) <- c("Reg", "IPW", "Hajek", "DR")
+rownames(resultados) <- c("Bias", "True Var", "Estim Var")
+resultados
+
+```
+
+:::
+
+
+# Exemplo
+## Exemplo
+
+::: {.callout-note}
+### Exemplo
+[_Dataset_ disponível aqui](https://dataverse.harvard.edu/file.xhtml?fileId=7440222&version=3.0). [Chang et al. (2016)](https://academic.oup.com/jrsssb/article/78/3/673/7040940?login=false) estudam se a participação no programa da merenda nas escolas (`School_meal`) leva a um aumento no índice de massa muscular (`BMI`) das crianças. 12 outras covariáveis também estão disponíveis no _dataset_.
+
+
+```{r}
+#| echo: true
+dados <- read.csv("datasets/nhanes_bmi.csv")[, -1]
+z <- dados$School_meal
+y <- dados$BMI
+x <- scale(dados[, -c(1, 2)])
+causal_effetcs = OS_ATE(z, y, x, n_boot = 1000)
+round(causal_effetcs, 3)
+```
+
+
+```{r}
+causal_effetcs_trim = OS_ATE(z, y, x, n_boot = 1000, alphas = c(0.1, 0.9))
+round(causal_effetcs_trim, 3)
+```
+
+:::
+
+
+
+
+## Referências
+
+::: {.nonincremental}
+
+- Peng Ding (2023). A First Course in Causal Inference. Capítulo 12.
+
+
+
+
+:::
