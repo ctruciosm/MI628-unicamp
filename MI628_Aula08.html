@@ -499,7 +499,7 @@ z           -8506.495   584.999 -14.541       0</code></pre>
 </div>
 </div>
 <div class="fragment">
-<p><span style="color:blue">De fato, LaLonde (1986) encontrou que muitos métodos estatísticos/econométricos tradicionais davan resultados diferentes quando utilizados dados experimentais vs.&nbsp;observacionais 🙍</span> <span style="color:red">(tempo depois, Dehejia e Wahba (1999) encontram que, se utilizarmos métodos motivados pela inferência causal, estes problemas não aparecem 😄)</span>.</p>
+<p><span style="color:blue">De fato, LaLonde (1986) encontrou que muitos métodos estatísticos/econométricos tradicionais davan resultados diferentes quando utilizados dados experimentais vs.&nbsp;observacionais 😭</span> <span style="color:red">(tempo depois, Dehejia e Wahba (1999) encontram que, se utilizarmos métodos motivados pela inferência causal, estes problemas não aparecem 😄)</span>.</p>
 </div>
 </section></section>
 <section>
@@ -544,8 +544,8 @@ Um (correto) planejamento de um estudo observacional deve responder à seguinte 
 <p>Os efeitos causais de interesse são:</p>
 <ul>
 <li class="fragment">Efeito causal médio: <span class="math inline">\(\tau = \mathbb{E}(Y(1) - Y(0)).\)</span></li>
-<li class="fragment">Efeito causal médio no grupo de tratamento: <span class="math inline">\(\tau_T = \mathbb{E}(Y(1) - Y(0)| Z = 1) = \mathbb{E}(Y | Z = 1) - \mathbb{E}(Y(0)| Z = 1).\)</span></li>
-<li class="fragment">Efeito causal médio no grupo de controle: <span class="math inline">\(\tau_C = \mathbb{E}(Y(1) - Y(0)| Z = 0) = \mathbb{E}(Y(1) | Z = 0) - \mathbb{E}(Y| Z = 0).\)</span></li>
+<li class="fragment">Efeito causal médio no grupo de tratamento: <span class="math display">\[\tau_T = \mathbb{E}(Y(1) - Y(0)| Z = 1) = \mathbb{E}(Y | Z = 1) - \mathbb{E}(Y(0)| Z = 1).\]</span></li>
+<li class="fragment">Efeito causal médio no grupo de controle: <span class="math display">\[\tau_C = \mathbb{E}(Y(1) - Y(0)| Z = 0) = \mathbb{E}(Y(1) | Z = 0) - \mathbb{E}(Y| Z = 0).\]</span></li>
 </ul>
 <div class="fragment">
 <h4 id="observação">Observação</h4>
@@ -643,10 +643,33 @@ Sob CRE,
 </section>
 <section id="identificação-não-paramétrica-do-efeito-causal-2" class="slide level2">
 <h2>Identificação não paramétrica do efeito causal</h2>
-<p>Sejam <span class="math display">\[\tau(X), \tau_T(X), \tau_C(X), \text{ e }\tau_{PF}(X)\]</span> as versões condicionadas em <span class="math inline">\(X\)</span> de <span class="math display">\[\tau, \tau_T, \tau_C, \text{ e } \tau_{PF}, \text{ respectivamente.}\]</span></p>
-<p>Equações (1) e (2) garantem que <span class="math display">\[\tau_{T}(X) = \tau_C(X) = \tau_{PF}(X) = \tau(X).\]</span></p>
+<p>Sejam <span class="math display">\[\tau(X), \tau_T(X), \tau_C(X), \text{ e }\tau_{PF}(X)\]</span> as versões condicionadas em <span class="math inline">\(X\)</span> de <span class="math inline">\(\tau, \tau_T, \tau_C, \text{ e } \tau_{PF}, \text{ respectivamente.}\)</span></p>
+<ul>
+<li class="fragment"><span class="math inline">\(\tau(X) = \mathbb{E}[Y(1) - Y(0) | X],\)</span></li>
+<li class="fragment"><span class="math inline">\(\tau_T(X) = \mathbb{E}[Y(1) - Y(0) | Z = 1, X],\)</span></li>
+<li class="fragment"><span class="math inline">\(\tau_C(X) = \mathbb{E}[Y(1) - Y(0) | Z = 0, X],\)</span></li>
+<li class="fragment"><span class="math inline">\(\tau_{PF}(X) = \mathbb{E}[Y | Z = 1, X] - \mathbb{E}[Y | Z = 0, X]\)</span></li>
+</ul>
 </section>
 <section id="identificação-não-paramétrica-do-efeito-causal-3" class="slide level2">
+<h2>Identificação não paramétrica do efeito causal</h2>
+<div class="callout callout-tip callout-captioned callout-style-default">
+<div class="callout-body">
+<div class="callout-caption">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Suposições:</strong></p>
+</div>
+<div class="callout-content">
+<p><span class="math display">\[\mathbb{E}(Y(0)| Z = 1, X) = \mathbb{E}(Y(0)| Z = 0, X)\]</span></p>
+<p><span class="math display">\[\mathbb{E}(Y(1)| Z = 1, X) = \mathbb{E}(Y(1)| Z = 0, X)\]</span></p>
+</div>
+</div>
+</div>
+<p>As equações acima garantem que <span class="math display">\[\tau_{T}(X) = \tau_C(X) = \tau_{PF}(X) = \tau(X).\]</span></p>
+</section>
+<section id="identificação-não-paramétrica-do-efeito-causal-4" class="slide level2">
 <h2>Identificação não paramétrica do efeito causal</h2>
 <div class="callout callout-tip callout-captioned callout-style-default">
 <div class="callout-body">
@@ -661,6 +684,14 @@ Sob CRE,
 </div>
 </div>
 </div>
+<ul>
+<li class="fragment"><span class="math inline">\(\theta = \mathbb{E}(Y)\)</span> é identificável não parametricamente (se temos amostras IID de <span class="math inline">\(Y\)</span>).</li>
+<li class="fragment"><span class="math inline">\(\theta = \rho_{YX} = \mathbb{E}[Y - \mu_Y][X - \mu_X]\)</span> é identificável não parametricamente (se temos amostras IID de <span class="math inline">\(Y\)</span> e <span class="math inline">\(X\)</span>).</li>
+<li class="fragment">O que podemos dizer de <span class="math inline">\(\tau = \mathbb{E}[Y(1) - Y(0)]\)</span>?</li>
+</ul>
+</section>
+<section id="identificação-não-paramétrica-do-efeito-causal-5" class="slide level2">
+<h2>Identificação não paramétrica do efeito causal</h2>
 <div class="fragment">
 <div class="callout callout-tip callout-captioned callout-style-default">
 <div class="callout-body">
@@ -677,7 +708,7 @@ Sob CRE,
 </div>
 </div>
 </section>
-<section id="identificação-não-paramétrica-do-efeito-causal-4" class="slide level2">
+<section id="identificação-não-paramétrica-do-efeito-causal-6" class="slide level2">
 <h2>Identificação não paramétrica do efeito causal</h2>
 <ul>
 <li class="fragment">Por definição, <span class="math inline">\(\tau_{PF}(X) = \mathbb{E}(Y | Z = 1, X) - \mathbb{E}(Y | Z = 0, X)\)</span> é identificável não parametricamente pois depende apenas dos observáveis.</li>
@@ -691,7 +722,7 @@ Sob CRE,
 <li class="fragment">Assim, <span class="math inline">\(\tau\)</span> também é identificável não parametricamente</li>
 </ul>
 </section>
-<section id="identificação-não-paramétrica-do-efeito-causal-5" class="slide level2">
+<section id="identificação-não-paramétrica-do-efeito-causal-7" class="slide level2">
 <h2>Identificação não paramétrica do efeito causal</h2>
 <p>Sob (1) e (2),</p>
 <p><span class="math display">\[\begin{align}
@@ -702,11 +733,11 @@ Sob CRE,
      &amp; = \displaystyle \sum_x \mathbb{E}(Y | Z = 1, X = x) P(X = x) - \mathbb{E}(Y | Z = 0, X = x) P(X = x),
 \end{align}\]</span> dependendo se <span class="math inline">\(X\)</span> for contínuo ou discreto.</p>
 </section>
-<section id="identificação-não-paramétrica-do-efeito-causal-6" class="slide level2">
+<section id="identificação-não-paramétrica-do-efeito-causal-8" class="slide level2">
 <h2>Identificação não paramétrica do efeito causal</h2>
 <p>Ademais, <span class="math display">\[\tau_{PF} = \displaystyle \sum_x \mathbb{E}(Y | Z = 1, X = x) P(X = x| Z = 1) - \mathbb{E}(Y | Z = 0, X = x) P(X = x | Z = 0)\]</span></p>
 </section>
-<section id="identificação-não-paramétrica-do-efeito-causal-7" class="slide level2">
+<section id="identificação-não-paramétrica-do-efeito-causal-9" class="slide level2">
 <h2>Identificação não paramétrica do efeito causal</h2>
 <div class="callout callout-tip callout-captioned callout-style-default">
 <div class="callout-body">
@@ -731,7 +762,7 @@ Sob CRE,
 </center>
 </div>
 </section>
-<section id="identificação-não-paramétrica-do-efeito-causal-8" class="slide level2">
+<section id="identificação-não-paramétrica-do-efeito-causal-10" class="slide level2">
 <h2>Identificação não paramétrica do efeito causal</h2>
 <ul>
 <li class="fragment">A diferença entre ambas suposições (<em>ignorabilidade</em> e <em>ignorabilidade forte</em>) é técnica e com interesses puramente teóricos. Aqui diferenciaremos entre as duas e nos referiremos a elas apenas como <em>ignorabilidade</em>.</li>
@@ -740,7 +771,7 @@ Sob CRE,
 <li class="fragment">Por isso, ignorabilidade também é chamada de suposição de inconfundibilidade.</li>
 </ul>
 </section>
-<section id="identificação-não-paramétrica-do-efeito-causal-9" class="slide level2">
+<section id="identificação-não-paramétrica-do-efeito-causal-11" class="slide level2">
 <h2>Identificação não paramétrica do efeito causal</h2>
 <p>Seja <span class="math display">\[\begin{align}
 Y(1) &amp; = g_1(X, V_1), \\
@@ -751,7 +782,7 @@ Z &amp; = I(g(X, V) \geq 0),
 <p>Note que suposições (3) e (4) são ambas verificadas. No PGD a causa comum do tratamento e do resultado (<span class="math inline">\(X\)</span>) é observável e as componentes restantes são independentes.</p>
 </div>
 </section>
-<section id="identificação-não-paramétrica-do-efeito-causal-10" class="slide level2">
+<section id="identificação-não-paramétrica-do-efeito-causal-12" class="slide level2">
 <h2>Identificação não paramétrica do efeito causal</h2>
 <p>Seja <span class="math display">\[\begin{align}
 Y(1) &amp; = g_1(X, U, V_1), \\
@@ -777,7 +808,7 @@ Z &amp; = I(g(X, U, V) \geq 0),
 </div>
 </div>
 </section>
-<section id="identificação-não-paramétrica-do-efeito-causal-11" class="slide level2">
+<section id="identificação-não-paramétrica-do-efeito-causal-13" class="slide level2">
 <h2>Identificação não paramétrica do efeito causal</h2>
 <div class="callout callout-warning callout-captioned callout-style-default">
 <div class="callout-body">
@@ -829,19 +860,19 @@ Z &amp; = I(g(X, U, V) \geq 0),
 </section>
 <section id="outcome-regression" class="slide level2">
 <h2>Outcome regression</h2>
-<p>Consiste em ajustar por MQO do tipo</p>
+<p>Consiste em ajustar por MQO uma regressão do tipo</p>
 <p><span class="math display">\[\mathbb{E}(Y | Z, X) = \beta_0 + \beta_Z Z + X \beta_X.\]</span></p>
 <div class="fragment">
 <p>Assim, <span class="math display">\[\begin{align}
 \tau(X) &amp; = \mathbb{E}(Y | Z = 1, X) - \mathbb{E}(Y | Z = 0, X), \\
-        &amp; = (\beta_0 + \beta_Z + X \beta_X) - ((\beta_0 + X \beta_X)), \\
+        &amp; = (\beta_0 + \beta_Z + X \beta_X) - (\beta_0 + X \beta_X), \\
         &amp; = \beta_Z,
 \end{align}\]</span></p>
 </div>
 <div class="fragment">
-<p>Se as suposições de ignorabilidade são válidas, então <span class="math display">\[\tau = \mathbb{E}(\tau(X)) = \beta_Z\]</span></p>
+<p>Se as suposições de <em>ignorabilidade</em> são válidas, então <span class="math display">\[\tau = \mathbb{E}(\tau(X)) = \beta_Z\]</span></p>
 <center>
-<span style="color:red">Se ignorbilidad acontece e o modelo de <span class="math inline">\(Y\)</span> for linear, o efrito causal médio é simplesemente o coeficiente associado a <span class="math inline">\(Z\)</span>.</span>
+<span style="color:red">Se <em>ignorabilidade</em> acontece e o modelo de <span class="math inline">\(Y\)</span> for linear, o efeito causal médio é simplesmente o coeficiente associado a <span class="math inline">\(Z\)</span>.</span>
 </center>
 </div>
 </section>
@@ -849,7 +880,7 @@ Z &amp; = I(g(X, U, V) \geq 0),
 <h2>Outcome regression</h2>
 <ul>
 <li class="fragment">A interpretação causal de <span class="math inline">\(\beta_Z\)</span> está sujeito a dois requisitos fortes: ignorabilidad e lineariedad.</li>
-<li class="fragment">Contudo, como discutido anteriormente (ver estimador de Lin), ignorar a heterogeneidade do efeito do tratamento inducido pela covariável <span class="math inline">\(X\)</span> produz um estimador suboptimo.</li>
+<li class="fragment">Contudo, como discutido anteriormente (ver estimador de Lin), ignorar a heterogeneidade do efeito do tratamento induzido pela covariável <span class="math inline">\(X\)</span> produz um estimador suboptimo.</li>
 <li class="fragment">Assim, se fizermos <span class="math inline">\(\mathbb{E}(Y | Z, X) = \beta_0 + \beta_Z Z + X \beta_X + ZX \beta_{ZX}\)</span>, teremos <span class="math display">\[\begin{align}
 \tau(X) &amp; = \mathbb{E}(Y | Z = 1, X) - \mathbb{E}(Y | Z = 0, X), \\
       &amp; = (\beta_0 + \beta_Z  + X \beta_X + X \beta_{ZX}) - ((\beta_0 + X \beta_X)), \\
@@ -871,7 +902,7 @@ Z &amp; = I(g(X, U, V) \geq 0),
 <h2>Outcome regression</h2>
 <ul>
 <li class="fragment">Em geral, outros modelos mais complexos poderiam ser utilizados.</li>
-<li class="fragment">Por exemplo, podemos construis dois preditores <span class="math inline">\(\hat{\mu}_1(X)\)</span> e <span class="math inline">\(\hat{\mu}_0(X)\)</span> baseados nos dados de tratamento e controle, respectivamente.</li>
+<li class="fragment">Por exemplo, podemos construir dois preditores <span class="math inline">\(\hat{\mu}_1(X)\)</span> e <span class="math inline">\(\hat{\mu}_0(X)\)</span> baseados nos dados de tratamento e controle, respectivamente.</li>
 <li class="fragment">Então um estimador para <span class="math inline">\(\tau(X)\)</span> é dado por <span class="math inline">\(\hat{\tau}(X) = \hat{\mu}_1(X) - \hat{\mu}_0(X)\)</span>.</li>
 <li class="fragment">Assim, um estimador para <span class="math inline">\(\tau\)</span> é dado por <span class="math display">\[\hat{\tau}^{reg} = n^{-1} \displaystyle \sum_{i = 1}^n [\hat{\mu}_1(X_i) - \hat{\mu}_0(X_i)]\]</span></li>
 <li class="fragment">Este estimador é comumente chamado de <em>outcome regression estimator</em> e podemos utilizar Bootstrap para estimar o erro padrão do estimador.</li>

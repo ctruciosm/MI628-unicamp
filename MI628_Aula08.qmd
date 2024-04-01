@@ -149,8 +149,8 @@ Assumiremos que $$\{X_i, Z_i, Y_i(1), Y_i(0)\}_{i = 1}^n  \overset{IID}{\sim} \{
 Os efeitos causais de interesse são:
 
 - Efeito causal médio: $\tau = \mathbb{E}(Y(1) - Y(0)).$
-- Efeito causal médio no grupo de tratamento: $\tau_T = \mathbb{E}(Y(1) - Y(0)| Z = 1) = \mathbb{E}(Y | Z = 1) - \mathbb{E}(Y(0)| Z = 1).$
-- Efeito causal médio no grupo de controle: $\tau_C = \mathbb{E}(Y(1) - Y(0)| Z = 0) = \mathbb{E}(Y(1) | Z = 0) - \mathbb{E}(Y| Z = 0).$
+- Efeito causal médio no grupo de tratamento: $$\tau_T = \mathbb{E}(Y(1) - Y(0)| Z = 1) = \mathbb{E}(Y | Z = 1) - \mathbb{E}(Y(0)| Z = 1).$$
+- Efeito causal médio no grupo de controle: $$\tau_C = \mathbb{E}(Y(1) - Y(0)| Z = 0) = \mathbb{E}(Y(1) | Z = 0) - \mathbb{E}(Y| Z = 0).$$
 
 . . . 
 
@@ -242,9 +242,27 @@ Equações (1) e (2) implicam que, condicionado em $X$, o vies de seleção é z
 
 ## Identificação não paramétrica do efeito causal
 
-Sejam $$\tau(X), \tau_T(X), \tau_C(X), \text{ e }\tau_{PF}(X)$$ as versões condicionadas em $X$ de $$\tau, \tau_T, \tau_C, \text{ e } \tau_{PF}, \text{ respectivamente.}$$
+Sejam $$\tau(X), \tau_T(X), \tau_C(X), \text{ e }\tau_{PF}(X)$$ as versões condicionadas em $X$ de $\tau, \tau_T, \tau_C, \text{ e } \tau_{PF}, \text{ respectivamente.}$
 
-Equações (1) e (2) garantem que $$\tau_{T}(X) = \tau_C(X) = \tau_{PF}(X) = \tau(X).$$
+- $\tau(X) = \mathbb{E}[Y(1) - Y(0) | X],$
+- $\tau_T(X) = \mathbb{E}[Y(1) - Y(0) | Z = 1, X],$
+- $\tau_C(X) = \mathbb{E}[Y(1) - Y(0) | Z = 0, X],$
+- $\tau_{PF}(X) = \mathbb{E}[Y | Z = 1, X] - \mathbb{E}[Y | Z = 0, X]$
+
+## Identificação não paramétrica do efeito causal
+
+
+
+::: {.callout-tip}
+### Suposições:
+$$\mathbb{E}(Y(0)| Z = 1, X) = \mathbb{E}(Y(0)| Z = 0, X)$$
+
+$$\mathbb{E}(Y(1)| Z = 1, X) = \mathbb{E}(Y(1)| Z = 0, X)$$
+
+:::
+
+
+As equações acima garantem que $$\tau_{T}(X) = \tau_C(X) = \tau_{PF}(X) = \tau(X).$$
 
 
 ## Identificação não paramétrica do efeito causal
@@ -256,6 +274,12 @@ Um parâmetro $\theta$ é dito identificável se pode ser escrito como uma funç
 
 :::
 
+- $\theta = \mathbb{E}(Y)$ é identificável não parametricamente (se temos amostras IID de $Y$).
+- $\theta = \rho_{YX} = \mathbb{E}[Y - \mu_Y][X - \mu_X]$ é identificável não parametricamente (se temos amostras IID de $Y$ e $X$).
+- O que podemos dizer de $\tau = \mathbb{E}[Y(1) - Y(0)]$?
+
+
+## Identificação não paramétrica do efeito causal
 
 . . . 
 
@@ -415,7 +439,7 @@ Um método padrão é criar estratos com base nas covariáveis iniciais e depois
 ## Outcome regression
 
 
-Consiste em ajustar por MQO do tipo
+Consiste em ajustar por MQO uma regressão do tipo
 
 $$\mathbb{E}(Y | Z, X) = \beta_0 + \beta_Z Z + X \beta_X.$$
 
@@ -424,17 +448,17 @@ $$\mathbb{E}(Y | Z, X) = \beta_0 + \beta_Z Z + X \beta_X.$$
 
 Assim, \begin{align}
 \tau(X) & = \mathbb{E}(Y | Z = 1, X) - \mathbb{E}(Y | Z = 0, X), \\
-        & = (\beta_0 + \beta_Z + X \beta_X) - ((\beta_0 + X \beta_X)), \\
+        & = (\beta_0 + \beta_Z + X \beta_X) - (\beta_0 + X \beta_X), \\
         & = \beta_Z,
 \end{align}
 
 . . . 
 
-Se as suposições de ignorabilidade são válidas, então $$\tau = \mathbb{E}(\tau(X)) = \beta_Z$$
+Se as suposições de _ignorabilidade_ são válidas, então $$\tau = \mathbb{E}(\tau(X)) = \beta_Z$$
 
 
 <center>
-[Se ignorbilidad acontece e o modelo de $Y$ for linear, o efrito causal médio é simplesemente o coeficiente associado a $Z$.]{style="color:red"}
+[Se _ignorabilidade_ acontece e o modelo de $Y$ for linear, o efeito causal médio é simplesmente o coeficiente associado a $Z$.]{style="color:red"}
 </center>
 
 
@@ -442,7 +466,7 @@ Se as suposições de ignorabilidade são válidas, então $$\tau = \mathbb{E}(\
 
 
 - A interpretação causal de $\beta_Z$ está sujeito a dois requisitos fortes: ignorabilidad e lineariedad.
-- Contudo, como discutido anteriormente (ver estimador de Lin), ignorar a heterogeneidade do efeito do tratamento inducido pela covariável $X$ produz um estimador suboptimo.
+- Contudo, como discutido anteriormente (ver estimador de Lin), ignorar a heterogeneidade do efeito do tratamento induzido pela covariável $X$ produz um estimador suboptimo.
 - Assim, se fizermos $\mathbb{E}(Y | Z, X) = \beta_0 + \beta_Z Z + X \beta_X + ZX \beta_{ZX}$, teremos \begin{align}
 \tau(X) & = \mathbb{E}(Y | Z = 1, X) - \mathbb{E}(Y | Z = 0, X), \\
         & = (\beta_0 + \beta_Z  + X \beta_X + X \beta_{ZX}) - ((\beta_0 + X \beta_X)), \\
@@ -463,7 +487,7 @@ Sob a suposição de ignorabilidade, temos que $$\tau = \mathbb{E}(\tau(X)) = \m
 ## Outcome regression
 
 - Em geral, outros modelos mais complexos poderiam ser utilizados.
-- Por exemplo, podemos construis dois preditores $\hat{\mu}_1(X)$ e $\hat{\mu}_0(X)$ baseados nos dados de tratamento e controle, respectivamente. 
+- Por exemplo, podemos construir dois preditores $\hat{\mu}_1(X)$ e $\hat{\mu}_0(X)$ baseados nos dados de tratamento e controle, respectivamente. 
 - Então um estimador para $\tau(X)$ é dado por $\hat{\tau}(X) = \hat{\mu}_1(X) - \hat{\mu}_0(X)$.
 - Assim, um estimador para $\tau$ é dado por $$\hat{\tau}^{reg} = n^{-1} \displaystyle \sum_{i = 1}^n [\hat{\mu}_1(X_i) - \hat{\mu}_0(X_i)]$$
 - Este estimador é comumente chamado de _outcome regression estimator_ e podemos utilizar Bootstrap para estimar o erro padrão do estimador.
