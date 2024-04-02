@@ -499,7 +499,7 @@ z           -8506.495   584.999 -14.541       0</code></pre>
 </div>
 </div>
 <div class="fragment">
-<p><span style="color:blue">De fato, LaLonde (1986) encontrou que muitos métodos estatísticos/econométricos tradicionais davan resultados diferentes quando utilizados dados experimentais vs.&nbsp;observacionais 😭</span> <span style="color:red">(tempo depois, Dehejia e Wahba (1999) encontram que, se utilizarmos métodos motivados pela inferência causal, estes problemas não aparecem 😄)</span>.</p>
+<p><span style="color:blue">De fato, LaLonde (1986) encontrou que muitos métodos estatísticos/econométricos tradicionais davan resultados diferentes quando utilizados dados experimentais vs.&nbsp;observacionais 😢</span> <span style="color:red">(tempo depois, Dehejia e Wahba (1999) encontram que, se utilizarmos métodos motivados pela inferência causal, estes problemas não aparecem 😄)</span>.</p>
 </div>
 </section></section>
 <section>
@@ -864,19 +864,25 @@ Z &amp; = I(g(X, U, V) \geq 0),
 <p><span class="math display">\[\mathbb{E}(Y | Z, X) = \beta_0 + \beta_Z Z + X \beta_X.\]</span></p>
 <div class="fragment">
 <p>Assim, <span class="math display">\[\begin{align}
-\tau(X) &amp; = \mathbb{E}(Y | Z = 1, X) - \mathbb{E}(Y | Z = 0, X), \\
+\tau(X) &amp; = \mathbb{E}(Y(1) - Y(0) | X), \\
+        &amp; = \mathbb{E}[\mathbb{E}(Y(1) - Y(0)| Z, X) | X], \\
+        &amp; = \mathbb{E}[\mathbb{E}(Y(1) | Z, X) - \mathbb{E}(Y(0) | Z, X) | X], \\
+        &amp; = \mathbb{E}[\mathbb{E}(Y(1) | Z = 1, X) - \mathbb{E}(Y(0) | Z = 0, X) | X], \\
+        &amp; = \mathbb{E}(Y(1) | Z = 1, X) - \mathbb{E}(Y(0) | Z = 0, X), \\
+        &amp; = \mathbb{E}(Y | Z = 1, X) - \mathbb{E}(Y | Z = 0, X), \\
         &amp; = (\beta_0 + \beta_Z + X \beta_X) - (\beta_0 + X \beta_X), \\
         &amp; = \beta_Z,
 \end{align}\]</span></p>
 </div>
-<div class="fragment">
-<p>Se as suposições de <em>ignorabilidade</em> são válidas, então <span class="math display">\[\tau = \mathbb{E}(\tau(X)) = \beta_Z\]</span></p>
+</section>
+<section id="outcome-regression-1" class="slide level2">
+<h2>Outcome regression</h2>
+<p>Então <span class="math display">\[\tau = \mathbb{E}(\tau(X)) = \beta_Z.\]</span></p>
 <center>
 <span style="color:red">Se <em>ignorabilidade</em> acontece e o modelo de <span class="math inline">\(Y\)</span> for linear, o efeito causal médio é simplesmente o coeficiente associado a <span class="math inline">\(Z\)</span>.</span>
 </center>
-</div>
 </section>
-<section id="outcome-regression-1" class="slide level2">
+<section id="outcome-regression-2" class="slide level2">
 <h2>Outcome regression</h2>
 <ul>
 <li class="fragment">A interpretação causal de <span class="math inline">\(\beta_Z\)</span> está sujeito a dois requisitos fortes: ignorabilidad e lineariedad.</li>
@@ -888,9 +894,9 @@ Z &amp; = I(g(X, U, V) \geq 0),
 \end{align}\]</span></li>
 </ul>
 </section>
-<section id="outcome-regression-2" class="slide level2">
+<section id="outcome-regression-3" class="slide level2">
 <h2>Outcome regression</h2>
-<p>Sob a suposição de ignorabilidade, temos que <span class="math display">\[\tau = \mathbb{E}(\tau(X)) = \mathbb{E}(\beta_Z + X \beta_{ZX}) = \beta_Z + \mathbb{E}(X)  \beta_{ZX}\]</span></p>
+<p>Então, <span class="math display">\[\tau = \mathbb{E}(\tau(X)) = \mathbb{E}(\beta_Z + X \beta_{ZX}) = \beta_Z + \mathbb{E}(X)  \beta_{ZX}.\]</span></p>
 <div class="fragment">
 <ul>
 <li class="fragment">Um estimador para <span class="math inline">\(\tau\)</span> é então <span class="math inline">\(\hat{\tau} = \hat{\beta}_Z + \bar{X} \hat{\beta}_{ZX}\)</span>.</li>
@@ -898,7 +904,7 @@ Z &amp; = I(g(X, U, V) \geq 0),
 </ul>
 </div>
 </section>
-<section id="outcome-regression-3" class="slide level2">
+<section id="outcome-regression-4" class="slide level2">
 <h2>Outcome regression</h2>
 <ul>
 <li class="fragment">Em geral, outros modelos mais complexos poderiam ser utilizados.</li>
@@ -908,7 +914,7 @@ Z &amp; = I(g(X, U, V) \geq 0),
 <li class="fragment">Este estimador é comumente chamado de <em>outcome regression estimator</em> e podemos utilizar Bootstrap para estimar o erro padrão do estimador.</li>
 </ul>
 </section>
-<section id="outcome-regression-4" class="slide level2">
+<section id="outcome-regression-5" class="slide level2">
 <h2>Outcome regression</h2>
 <div class="callout callout-note callout-captioned callout-style-default">
 <div class="callout-body">
@@ -930,7 +936,7 @@ Z &amp; = I(g(X, U, V) \geq 0),
 <p>Em econometria, este estimador é chamado de <em>efeito parcial médio</em> ou <em>efeito marginal médio</em> do tratamento no modelo logístico.</p>
 </div>
 </section>
-<section id="outcome-regression-5" class="slide level2">
+<section id="outcome-regression-6" class="slide level2">
 <h2>Outcome regression</h2>
 <h4 id="comentário-finais">Comentário finais</h4>
 <ul>

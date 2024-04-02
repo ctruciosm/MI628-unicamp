@@ -447,14 +447,19 @@ $$\mathbb{E}(Y | Z, X) = \beta_0 + \beta_Z Z + X \beta_X.$$
 
 
 Assim, \begin{align}
-\tau(X) & = \mathbb{E}(Y | Z = 1, X) - \mathbb{E}(Y | Z = 0, X), \\
+\tau(X) & = \mathbb{E}(Y(1) - Y(0) | X), \\
+        & = \mathbb{E}[\mathbb{E}(Y(1) - Y(0)| Z, X) | X], \\
+        & = \mathbb{E}[\mathbb{E}(Y(1) | Z, X) - \mathbb{E}(Y(0) | Z, X) | X], \\
+        & = \mathbb{E}[\mathbb{E}(Y(1) | Z = 1, X) - \mathbb{E}(Y(0) | Z = 0, X) | X], \\
+        & = \mathbb{E}(Y(1) | Z = 1, X) - \mathbb{E}(Y(0) | Z = 0, X), \\
+        & = \mathbb{E}(Y | Z = 1, X) - \mathbb{E}(Y | Z = 0, X), \\
         & = (\beta_0 + \beta_Z + X \beta_X) - (\beta_0 + X \beta_X), \\
         & = \beta_Z,
 \end{align}
 
-. . . 
+## Outcome regression
 
-Se as suposições de _ignorabilidade_ são válidas, então $$\tau = \mathbb{E}(\tau(X)) = \beta_Z$$
+Então $$\tau = \mathbb{E}(\tau(X)) = \beta_Z.$$
 
 
 <center>
@@ -476,7 +481,7 @@ Se as suposições de _ignorabilidade_ são válidas, então $$\tau = \mathbb{E}
 
 ## Outcome regression
 
-Sob a suposição de ignorabilidade, temos que $$\tau = \mathbb{E}(\tau(X)) = \mathbb{E}(\beta_Z + X \beta_{ZX}) = \beta_Z + \mathbb{E}(X)  \beta_{ZX}$$
+Então, $$\tau = \mathbb{E}(\tau(X)) = \mathbb{E}(\beta_Z + X \beta_{ZX}) = \beta_Z + \mathbb{E}(X)  \beta_{ZX}.$$
 
 . . . 
 
