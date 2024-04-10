@@ -162,7 +162,7 @@ Os efeitos causais de interesse são:
 
 ## Vies de seleção
 
-E se utilizarmos a diferença de médias?
+E se utilizarmos a diferença de médias? `r emo::ji("hope")`
 
 \begin{align*}
 \tau_{PF} & = \mathbb{E}(Y | Z = 1) - \mathbb{E}(Y | Z = 0), \\
@@ -171,14 +171,21 @@ E se utilizarmos a diferença de médias?
 
 . . . 
 
-Note que
+
+$\tau_{PF}$ tem a vantagem de ser facilmente estimável (`r emo::ji("smile")`). Contudo, é geralmente viesado para os efeitos cuasais de interesse (`r emo::ji("sad")`).
+
+
+. . . 
+
+Por exemplo
 
 ::: {.nonincremental}
 - $\tau_{PF} - \tau_T = \mathbb{E}(Y(0) | Z = 1) -  \mathbb{E}(Y(0) | Z = 0)$.
 - $\tau_{PF} - \tau_C = \mathbb{E}(Y(1) | Z = 1) -  \mathbb{E}(Y(1) | Z = 0)$.
 :::
 
-que, em geral, são $\neq 0$, o que significa um _vies de seleção_.
+em geral são $\neq 0$, o que significa um _vies de seleção_.
+
 
 
 <aside>
@@ -236,13 +243,17 @@ $$\mathbb{E}(Y(1)| Z = 1, X) = \mathbb{E}(Y(1)| Z = 0, X)$${#eq-suposicao2}
 . . . 
 
 
-Equações (1) e (2) implicam que, condicionado em $X$, o vies de seleção é zero. Ou seja, a diferença nas médias dos resultados potenciais entre os grupos de tratamento e controle devem-se à diferença nas covariais observadas $X$. Assim, dado o mesmo valor de $X$, os resultados potenciais tem a mesma média entre tratamento e controle.
+Eq. (1) e (2) implicam que, condicionado em $X$, o vies de seleção é zero. Ou seja, a diferença nas médias dos resultados potenciais entre tratamento e controle devem-se à diferença nas covariais observadas $X$. Assim, dado o mesmo valor de $X$, os resultados potenciais tem a mesma média entre tratamento e controle.
+
+. . . 
+
+Eq. (1) e (2) garantem que as versões condicionais de $\tau$, $\tau_T$, $\tau_C$ e $\tau_{PF}$ sejam todas iguais.
 
 
 
 ## Identificação não paramétrica do efeito causal
 
-Sejam $$\tau(X), \tau_T(X), \tau_C(X), \text{ e }\tau_{PF}(X)$$ as versões condicionadas em $X$ de $\tau, \tau_T, \tau_C, \text{ e } \tau_{PF}, \text{ respectivamente.}$
+Sejam $$\tau(X), \tau_T(X), \tau_C(X), \text{ e }\tau_{PF}(X)$$ as versões condicionadas em $X$ de $\tau, \tau_T, \tau_C, \text{ e } \tau_{PF}, \text{ respectivamente.}$ Ou seja,
 
 - $\tau(X) = \mathbb{E}[Y(1) - Y(0) | X],$
 - $\tau_T(X) = \mathbb{E}[Y(1) - Y(0) | Z = 1, X],$
@@ -263,6 +274,17 @@ $$\mathbb{E}(Y(1)| Z = 1, X) = \mathbb{E}(Y(1)| Z = 0, X)$$
 
 
 As equações acima garantem que $$\tau_{T}(X) = \tau_C(X) = \tau_{PF}(X) = \tau(X).$$
+
+
+. . . 
+
+<center>
+[**Demostração:** (no quadro)]{style="color:red"}
+</center>
+
+. . . 
+
+O principal resultado desta aula é que, sob as suposições acima, o efeito causal médio, $\tau$ é _**identificável não parametricamente**_.
 
 
 ## Identificação não paramétrica do efeito causal
@@ -290,9 +312,6 @@ Sob (1) e (2), o efeito causal médio, $\tau$, é identificável não parametric
 :::
 
 
-## Identificação não paramétrica do efeito causal
-
-
 - Por definição, $\tau_{PF}(X) = \mathbb{E}(Y | Z = 1, X) - \mathbb{E}(Y | Z = 0, X)$ é identificável não parametricamente pois depende apenas dos observáveis.
 - Por (1) e (2), $\tau_{T}(X) = \tau_C(X) = \tau_{PF}(X) = \tau(X)$ e então todos dependem apenas dos observáveis. Tornando-se todos identificáveis não parametricamente.
 - Por propriedade de esperança:
@@ -309,6 +328,7 @@ Sob (1) e (2),
 
 \begin{align}
 \tau & = \mathbb{E}(\tau(X)) \\
+     & = \mathbb{E}(\tau_{PF}(X)) \\
      & = \mathbb{E}[\mathbb{E}(Y | Z = 1, X) - \mathbb{E}(Y | Z = 0, X)] \\
      & = \int [\mathbb{E}(Y | Z = 1, X = x) - \mathbb{E}(Y | Z = 0, X = x)]f(x)dx \\
      & \text{ou} \\
@@ -323,6 +343,8 @@ Ademais, $$\tau_{PF} = \displaystyle \sum_x \mathbb{E}(Y | Z = 1, X = x) P(X = x
 
 ## Identificação não paramétrica do efeito causal
 
+Mais duas suposiões:
+
 
 ::: {.callout-tip}
 ### Suposições:
@@ -335,19 +357,47 @@ $$\text{Ignorabilidade forte:} \quad\{Y(1), Y(0)\} \perp\!\!\!\perp  Z | X.$${#e
 
 A suposição de _ignorabilidade forte_ (4) requer que o vetor de resultados potenciais seja independente do tratamento dadas as covariáveis. Já a suposição de _ignorabilidade_ (3) requer apenas que cada resultado potencial seja independente do tratamento dadas as covariáveis.
 
+
 . . . 
+
+
+[**Observação:** as suposições de ignorabilidade e ignorabilidade forte não são necessárias para identificar $\tau$ (para isso temos as outras suspoções vistas anteriormente que são mais fracas). Contudo, se o parâmetro de interesse é outro (quantil, distribuição, alguma transformação de Y), estas suposições não podem ser relaxadas.]{style="color:blue"}
+
+
 
 <center>
 [A suposição de _ignorabilidade_ é condição suficiente para identificação não paramétrica.]{style="color:red"}
 </center>
 
+## Identificação não paramétrica do efeito causal
+
+
+::: {.callout-warning}
+### Importante
+Ignorabilidade e ignorabilidade forte não são a mesma coisa. Isto está relacionado com o caso em que $$A \perp\!\!\!\perp C \quad e \quad B \perp\!\!\!\perp C \quad mas \quad (A, B) \not\perp\!\!\!\not\perp C.$$
+
+:::
+
+Para ilustrar, seja $X$ vazio, $\epsilon_1$ e $\epsilon_0$ v.a independentes com $$P(\epsilon_1 = 1) = P(\epsilon_1 = -1) = P(\epsilon_0 = 1) = P(\epsilon_0 = -1) = 0.5$$
+
+Defina $Y(1) = \epsilon_1$, $Y(0) = \epsilon_0$ e $Z = I(\epsilon_1 = \epsilon_0).$
+
+
+| Z \\ Y(1)    |    -1      |      1      |
+|:-----------:|:----------:|:-----------:|
+|     1       |   1/4      |    1/4      |
+|     0       |   1/4      |    1/4      |
+
+$Z \perp\!\!\!\perp Y(1)$ ($Z \perp\!\!\!\perp Y(1)$). Contudo, isso não acontece para $Z \perp\!\!\!\perp (Y(1), Y(0)).$
+
 
 ## Identificação não paramétrica do efeito causal
 
-- A  diferença entre ambas suposições (*ignorabilidade* e *ignorabilidade forte*) é técnica e com interesses puramente teóricos. Aqui diferenciaremos  entre as duas e nos referiremos a elas apenas como _ignorabilidade_.
+- A  diferença entre ambas suposições (*ignorabilidade* e *ignorabilidade forte*) é técnica e com interesses puramente teóricos. Aqui não diferenciaremos  entre as duas e nos referiremos a elas apenas como _ignorabilidade_.
 - _Ignorabilidade_,  exclui todas as covariáveis não medidas que afetam o tratamento e o resultado simultaneamente. 
 - Ou seja, _ignorabilidade_ exclui as variáveis de confusão.
 - Por isso, ignorabilidade também é chamada de suposição de inconfundibilidade. 
+- Para entendermos melhor a ideia, pensemos no seguinte exemplo:
 
 
 ## Identificação não paramétrica do efeito causal
@@ -357,11 +407,11 @@ Seja \begin{align}
 Y(1) & = g_1(X, V_1), \\
 Y(0) & = g_0(X, V_0), \\
 Z & = I(g(X, V) \geq 0),
-\end{align}em que $g(\cdot)s$, $g_0(\cdot)$ e $g(\cdot)$ são funções e os termos de erro $(V_1, V_0) \perp\!\!\!\perp V$.
+\end{align}em que os termos de erro $(V_1, V_0) \perp\!\!\!\perp V$. Veja que $X$ é a causa commúm do tratamento e do resultado.
 
 . . . 
 
-Note que suposições (3) e (4) são ambas verificadas. No PGD a causa comum do tratamento e do resultado ($X$) é observável e as componentes restantes são independentes.
+Note que suposições de ignorabilidade e ignorabilidade forte são ambas verificadas. 
 
 
 ## Identificação não paramétrica do efeito causal
@@ -371,11 +421,11 @@ Seja \begin{align}
 Y(1) & = g_1(X, U, V_1), \\
 Y(0) & = g_0(X, U, V_0), \\
 Z & = I(g(X, U, V) \geq 0),
-\end{align}em que $g(\cdot)s$, $g_0(\cdot)$ e $g(\cdot)$ são funções e os termos de erro $(V_1, V_0) \perp\!\!\!\perp V$.
+\end{align}em que os termos de erro $(V_1, V_0) \perp\!\!\!\perp V$. Ademais, $X$ e $U$ são as causas comums do tratamento e do resultado.
 
 . . . 
 
-Neste caso, nem (3) nem (4) são verificadas. A variável $U$ induce dependência entre tratamento e os resultados potencais (mesmo condicionando em $X$). 
+Neste caso as suposições de ignorabilidade não são verificadas. A variável $U$ induce dependência entre tratamento e os resultados potencais (mesmo condicionando em $X$). 
 
 
 . . . 
@@ -383,8 +433,8 @@ Neste caso, nem (3) nem (4) são verificadas. A variável $U$ induce dependênci
 
 ::: {.callout-important}
 ### Observação
-Se não temos acesso a $U$ e analisamos os dados baseados apenas em $(X, Y, Z)$, teremos um estimador viesado. Este problema é conhecido em econometria como [vies por variáveis omitiddas](https://ctruciosm.github.io/ME715-unicamp/ME715_Aula05.html#/vari%C3%A1veis-omitidas).
-
+- Se não temos acesso a $U$ e analisamos os dados baseados apenas em $(X, Y, Z)$, teremos um estimador viesado. Este problema é conhecido em econometria como [vies por variáveis omitiddas](https://ctruciosm.github.io/ME715-unicamp/ME715_Aula05.html#/vari%C3%A1veis-omitidas).
+- Ao assumirmos ignorabilidade, estamos dizendo que não existem variáveis de confusão.
 :::
 
 
@@ -394,6 +444,7 @@ Se não temos acesso a $U$ e analisamos os dados baseados apenas em $(X, Y, Z)$,
 ::: {.callout-warning}
 ### Importante
 ::: {.nonincremental}
+- Um problema fundamental em inferência causal com dados observacionais é a plausibilidade da suposição de ignorabilidade.
 - A suposição de ignorabilidade é razoável se tivermos um conjunto rico de covariáveis $X$ que afetam tanto o tratamento quanto o resultado simultaneamente.
 - Na prática não temos certeza se esta suposição é verificada ou não.
 - Justificamos sua veracidade baseados no conhecimento científico da área de conhecimento.
@@ -427,7 +478,7 @@ Então, podemos estimar $\tau$ por $$\hat{\tau} = \displaystyle \sum_{k = 1}^K \
 
 Embora o método seja amplamente utilizado, duas dificuldades aparecem: 
 
-1. Funciona bem para $K$ pequenos. Para valores grandes de $K$, a chance de termos $n_{[k]1} = 0$ o $n_{[k]0} = 0$ aumentam (gerando estimadores pobremente definidos).
+1. Funciona bem para $K$ pequenos. Para valores grandes de $K$, a chance de termos $n_{[k]1} = 0$ ou $n_{[k]0} = 0$ aumentam (gerando estimadores pobremente definidos).
 2. Não é obvio como proceder com $X \in \mathbb{R}^p$ ($p \geq 2$) ou com $X$ contínua.
 
 . . . 
@@ -439,25 +490,21 @@ Um método padrão é criar estratos com base nas covariáveis iniciais e depois
 ## Outcome regression
 
 
-Consiste em ajustar por MQO uma regressão do tipo
+**A abordagem mais utiliza** consiste em ajustar por MQO uma regressão do tipo
 
 $$\mathbb{E}(Y | Z, X) = \beta_0 + \beta_Z Z + X \beta_X.$$
 
 . . . 
 
 
-Assim, \begin{align}
-\tau(X) & = \mathbb{E}(Y(1) - Y(0) | X), \\
-        & = \mathbb{E}[\mathbb{E}(Y(1) - Y(0)| Z, X) | X], \\
-        & = \mathbb{E}[\mathbb{E}(Y(1) | Z, X) - \mathbb{E}(Y(0) | Z, X) | X], \\
-        & = \mathbb{E}[\mathbb{E}(Y(1) | Z = 1, X) - \mathbb{E}(Y(0) | Z = 0, X) | X], \\
-        & = \mathbb{E}(Y(1) | Z = 1, X) - \mathbb{E}(Y(0) | Z = 0, X), \\
-        & = \mathbb{E}(Y | Z = 1, X) - \mathbb{E}(Y | Z = 0, X), \\
+Assim, se o modelo for correto e assumirmos ignorabilidade: \begin{align}
+\tau(X) & = \mathbb{E}(Y | Z = 1, X) - \mathbb{E}(Y | Z = 0, X), \\
         & = (\beta_0 + \beta_Z + X \beta_X) - (\beta_0 + X \beta_X), \\
         & = \beta_Z,
 \end{align}
 
-## Outcome regression
+. . . 
+
 
 Então $$\tau = \mathbb{E}(\tau(X)) = \beta_Z.$$
 

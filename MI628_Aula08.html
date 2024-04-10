@@ -556,20 +556,23 @@ Um (correto) planejamento de um estudo observacional deve responder à seguinte 
 </section>
 <section id="vies-de-seleção-3" class="slide level2">
 <h2>Vies de seleção</h2>
-<p>E se utilizarmos a diferença de médias?</p>
+<p>E se utilizarmos a diferença de médias? 🙏</p>
 <p><span class="math display">\[\begin{align*}
 \tau_{PF} &amp; = \mathbb{E}(Y | Z = 1) - \mathbb{E}(Y | Z = 0), \\
           &amp; = \mathbb{E}(Y(1) | Z = 1) - \mathbb{E}(Y(0) | Z = 0).
 \end{align*}\]</span></p>
 <div class="fragment">
-<p>Note que</p>
+<p><span class="math inline">\(\tau_{PF}\)</span> tem a vantagem de ser facilmente estimável (😄). Contudo, é geralmente viesado para os efeitos cuasais de interesse (😿).</p>
+</div>
+<div class="fragment">
+<p>Por exemplo</p>
 <div>
 <ul>
 <li><span class="math inline">\(\tau_{PF} - \tau_T = \mathbb{E}(Y(0) | Z = 1) - \mathbb{E}(Y(0) | Z = 0)\)</span>.</li>
 <li><span class="math inline">\(\tau_{PF} - \tau_C = \mathbb{E}(Y(1) | Z = 1) - \mathbb{E}(Y(1) | Z = 0)\)</span>.</li>
 </ul>
 </div>
-<p>que, em geral, são <span class="math inline">\(\neq 0\)</span>, o que significa um <em>vies de seleção</em>.</p>
+<p>em geral são <span class="math inline">\(\neq 0\)</span>, o que significa um <em>vies de seleção</em>.</p>
 
 </div>
 <aside><div>
@@ -638,12 +641,15 @@ Sob CRE,
 </div>
 </div>
 <div class="fragment">
-<p>Equações (1) e (2) implicam que, condicionado em <span class="math inline">\(X\)</span>, o vies de seleção é zero. Ou seja, a diferença nas médias dos resultados potenciais entre os grupos de tratamento e controle devem-se à diferença nas covariais observadas <span class="math inline">\(X\)</span>. Assim, dado o mesmo valor de <span class="math inline">\(X\)</span>, os resultados potenciais tem a mesma média entre tratamento e controle.</p>
+<p>Eq. (1) e (2) implicam que, condicionado em <span class="math inline">\(X\)</span>, o vies de seleção é zero. Ou seja, a diferença nas médias dos resultados potenciais entre tratamento e controle devem-se à diferença nas covariais observadas <span class="math inline">\(X\)</span>. Assim, dado o mesmo valor de <span class="math inline">\(X\)</span>, os resultados potenciais tem a mesma média entre tratamento e controle.</p>
+</div>
+<div class="fragment">
+<p>Eq. (1) e (2) garantem que as versões condicionais de <span class="math inline">\(\tau\)</span>, <span class="math inline">\(\tau_T\)</span>, <span class="math inline">\(\tau_C\)</span> e <span class="math inline">\(\tau_{PF}\)</span> sejam todas iguais.</p>
 </div>
 </section>
 <section id="identificação-não-paramétrica-do-efeito-causal-2" class="slide level2">
 <h2>Identificação não paramétrica do efeito causal</h2>
-<p>Sejam <span class="math display">\[\tau(X), \tau_T(X), \tau_C(X), \text{ e }\tau_{PF}(X)\]</span> as versões condicionadas em <span class="math inline">\(X\)</span> de <span class="math inline">\(\tau, \tau_T, \tau_C, \text{ e } \tau_{PF}, \text{ respectivamente.}\)</span></p>
+<p>Sejam <span class="math display">\[\tau(X), \tau_T(X), \tau_C(X), \text{ e }\tau_{PF}(X)\]</span> as versões condicionadas em <span class="math inline">\(X\)</span> de <span class="math inline">\(\tau, \tau_T, \tau_C, \text{ e } \tau_{PF}, \text{ respectivamente.}\)</span> Ou seja,</p>
 <ul>
 <li class="fragment"><span class="math inline">\(\tau(X) = \mathbb{E}[Y(1) - Y(0) | X],\)</span></li>
 <li class="fragment"><span class="math inline">\(\tau_T(X) = \mathbb{E}[Y(1) - Y(0) | Z = 1, X],\)</span></li>
@@ -668,6 +674,14 @@ Sob CRE,
 </div>
 </div>
 <p>As equações acima garantem que <span class="math display">\[\tau_{T}(X) = \tau_C(X) = \tau_{PF}(X) = \tau(X).\]</span></p>
+<div class="fragment">
+<center>
+<span style="color:red"><strong>Demostração:</strong> (no quadro)</span>
+</center>
+</div>
+<div class="fragment">
+<p>O principal resultado desta aula é que, sob as suposições acima, o efeito causal médio, <span class="math inline">\(\tau\)</span> é <em><strong>identificável não parametricamente</strong></em>.</p>
+</div>
 </section>
 <section id="identificação-não-paramétrica-do-efeito-causal-4" class="slide level2">
 <h2>Identificação não paramétrica do efeito causal</h2>
@@ -706,10 +720,6 @@ Sob CRE,
 </div>
 </div>
 </div>
-</div>
-</section>
-<section id="identificação-não-paramétrica-do-efeito-causal-6" class="slide level2">
-<h2>Identificação não paramétrica do efeito causal</h2>
 <ul>
 <li class="fragment">Por definição, <span class="math inline">\(\tau_{PF}(X) = \mathbb{E}(Y | Z = 1, X) - \mathbb{E}(Y | Z = 0, X)\)</span> é identificável não parametricamente pois depende apenas dos observáveis.</li>
 <li class="fragment">Por (1) e (2), <span class="math inline">\(\tau_{T}(X) = \tau_C(X) = \tau_{PF}(X) = \tau(X)\)</span> e então todos dependem apenas dos observáveis. Tornando-se todos identificáveis não parametricamente.</li>
@@ -721,24 +731,27 @@ Sob CRE,
 </ul></li>
 <li class="fragment">Assim, <span class="math inline">\(\tau\)</span> também é identificável não parametricamente</li>
 </ul>
+</div>
 </section>
-<section id="identificação-não-paramétrica-do-efeito-causal-7" class="slide level2">
+<section id="identificação-não-paramétrica-do-efeito-causal-6" class="slide level2">
 <h2>Identificação não paramétrica do efeito causal</h2>
 <p>Sob (1) e (2),</p>
 <p><span class="math display">\[\begin{align}
 \tau &amp; = \mathbb{E}(\tau(X)) \\
+     &amp; = \mathbb{E}(\tau_{PF}(X)) \\
      &amp; = \mathbb{E}[\mathbb{E}(Y | Z = 1, X) - \mathbb{E}(Y | Z = 0, X)] \\
      &amp; = \int [\mathbb{E}(Y | Z = 1, X = x) - \mathbb{E}(Y | Z = 0, X = x)]f(x)dx \\
      &amp; \text{ou} \\
      &amp; = \displaystyle \sum_x \mathbb{E}(Y | Z = 1, X = x) P(X = x) - \mathbb{E}(Y | Z = 0, X = x) P(X = x),
 \end{align}\]</span> dependendo se <span class="math inline">\(X\)</span> for contínuo ou discreto.</p>
 </section>
-<section id="identificação-não-paramétrica-do-efeito-causal-8" class="slide level2">
+<section id="identificação-não-paramétrica-do-efeito-causal-7" class="slide level2">
 <h2>Identificação não paramétrica do efeito causal</h2>
 <p>Ademais, <span class="math display">\[\tau_{PF} = \displaystyle \sum_x \mathbb{E}(Y | Z = 1, X = x) P(X = x| Z = 1) - \mathbb{E}(Y | Z = 0, X = x) P(X = x | Z = 0)\]</span></p>
 </section>
-<section id="identificação-não-paramétrica-do-efeito-causal-9" class="slide level2">
+<section id="identificação-não-paramétrica-do-efeito-causal-8" class="slide level2">
 <h2>Identificação não paramétrica do efeito causal</h2>
+<p>Mais duas suposiões:</p>
 <div class="callout callout-tip callout-captioned callout-style-default">
 <div class="callout-body">
 <div class="callout-caption">
@@ -757,18 +770,60 @@ Sob CRE,
 <p>A suposição de <em>ignorabilidade forte</em> (4) requer que o vetor de resultados potenciais seja independente do tratamento dadas as covariáveis. Já a suposição de <em>ignorabilidade</em> (3) requer apenas que cada resultado potencial seja independente do tratamento dadas as covariáveis.</p>
 </div>
 <div class="fragment">
+<p><span style="color:blue"><strong>Observação:</strong> as suposições de ignorabilidade e ignorabilidade forte não são necessárias para identificar <span class="math inline">\(\tau\)</span> (para isso temos as outras suspoções vistas anteriormente que são mais fracas). Contudo, se o parâmetro de interesse é outro (quantil, distribuição, alguma transformação de Y), estas suposições não podem ser relaxadas.</span></p>
 <center>
 <span style="color:red">A suposição de <em>ignorabilidade</em> é condição suficiente para identificação não paramétrica.</span>
 </center>
 </div>
 </section>
+<section id="identificação-não-paramétrica-do-efeito-causal-9" class="slide level2">
+<h2>Identificação não paramétrica do efeito causal</h2>
+<div class="callout callout-warning callout-captioned callout-style-default">
+<div class="callout-body">
+<div class="callout-caption">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Importante</strong></p>
+</div>
+<div class="callout-content">
+<p>Ignorabilidade e ignorabilidade forte não são a mesma coisa. Isto está relacionado com o caso em que <span class="math display">\[A \perp\!\!\!\perp C \quad e \quad B \perp\!\!\!\perp C \quad mas \quad (A, B) \not\perp\!\!\!\not\perp C.\]</span></p>
+</div>
+</div>
+</div>
+<p>Para ilustrar, seja <span class="math inline">\(X\)</span> vazio, <span class="math inline">\(\epsilon_1\)</span> e <span class="math inline">\(\epsilon_0\)</span> v.a independentes com <span class="math display">\[P(\epsilon_1 = 1) = P(\epsilon_1 = -1) = P(\epsilon_0 = 1) = P(\epsilon_0 = -1) = 0.5\]</span></p>
+<p>Defina <span class="math inline">\(Y(1) = \epsilon_1\)</span>, <span class="math inline">\(Y(0) = \epsilon_0\)</span> e <span class="math inline">\(Z = I(\epsilon_1 = \epsilon_0).\)</span></p>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: center;">Z \ Y(1)</th>
+<th style="text-align: center;">-1</th>
+<th style="text-align: center;">1</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;">1</td>
+<td style="text-align: center;">1/4</td>
+<td style="text-align: center;">1/4</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">1/4</td>
+<td style="text-align: center;">1/4</td>
+</tr>
+</tbody>
+</table>
+<p><span class="math inline">\(Z \perp\!\!\!\perp Y(1)\)</span> (<span class="math inline">\(Z \perp\!\!\!\perp Y(1)\)</span>). Contudo, isso não acontece para <span class="math inline">\(Z \perp\!\!\!\perp (Y(1), Y(0)).\)</span></p>
+</section>
 <section id="identificação-não-paramétrica-do-efeito-causal-10" class="slide level2">
 <h2>Identificação não paramétrica do efeito causal</h2>
 <ul>
-<li class="fragment">A diferença entre ambas suposições (<em>ignorabilidade</em> e <em>ignorabilidade forte</em>) é técnica e com interesses puramente teóricos. Aqui diferenciaremos entre as duas e nos referiremos a elas apenas como <em>ignorabilidade</em>.</li>
+<li class="fragment">A diferença entre ambas suposições (<em>ignorabilidade</em> e <em>ignorabilidade forte</em>) é técnica e com interesses puramente teóricos. Aqui não diferenciaremos entre as duas e nos referiremos a elas apenas como <em>ignorabilidade</em>.</li>
 <li class="fragment"><em>Ignorabilidade</em>, exclui todas as covariáveis não medidas que afetam o tratamento e o resultado simultaneamente.</li>
 <li class="fragment">Ou seja, <em>ignorabilidade</em> exclui as variáveis de confusão.</li>
 <li class="fragment">Por isso, ignorabilidade também é chamada de suposição de inconfundibilidade.</li>
+<li class="fragment">Para entendermos melhor a ideia, pensemos no seguinte exemplo:</li>
 </ul>
 </section>
 <section id="identificação-não-paramétrica-do-efeito-causal-11" class="slide level2">
@@ -777,9 +832,9 @@ Sob CRE,
 Y(1) &amp; = g_1(X, V_1), \\
 Y(0) &amp; = g_0(X, V_0), \\
 Z &amp; = I(g(X, V) \geq 0),
-\end{align}\]</span>em que <span class="math inline">\(g(\cdot)s\)</span>, <span class="math inline">\(g_0(\cdot)\)</span> e <span class="math inline">\(g(\cdot)\)</span> são funções e os termos de erro <span class="math inline">\((V_1, V_0) \perp\!\!\!\perp V\)</span>.</p>
+\end{align}\]</span>em que os termos de erro <span class="math inline">\((V_1, V_0) \perp\!\!\!\perp V\)</span>. Veja que <span class="math inline">\(X\)</span> é a causa commúm do tratamento e do resultado.</p>
 <div class="fragment">
-<p>Note que suposições (3) e (4) são ambas verificadas. No PGD a causa comum do tratamento e do resultado (<span class="math inline">\(X\)</span>) é observável e as componentes restantes são independentes.</p>
+<p>Note que suposições de ignorabilidade e ignorabilidade forte são ambas verificadas.</p>
 </div>
 </section>
 <section id="identificação-não-paramétrica-do-efeito-causal-12" class="slide level2">
@@ -788,9 +843,9 @@ Z &amp; = I(g(X, V) \geq 0),
 Y(1) &amp; = g_1(X, U, V_1), \\
 Y(0) &amp; = g_0(X, U, V_0), \\
 Z &amp; = I(g(X, U, V) \geq 0),
-\end{align}\]</span>em que <span class="math inline">\(g(\cdot)s\)</span>, <span class="math inline">\(g_0(\cdot)\)</span> e <span class="math inline">\(g(\cdot)\)</span> são funções e os termos de erro <span class="math inline">\((V_1, V_0) \perp\!\!\!\perp V\)</span>.</p>
+\end{align}\]</span>em que os termos de erro <span class="math inline">\((V_1, V_0) \perp\!\!\!\perp V\)</span>. Ademais, <span class="math inline">\(X\)</span> e <span class="math inline">\(U\)</span> são as causas comums do tratamento e do resultado.</p>
 <div class="fragment">
-<p>Neste caso, nem (3) nem (4) são verificadas. A variável <span class="math inline">\(U\)</span> induce dependência entre tratamento e os resultados potencais (mesmo condicionando em <span class="math inline">\(X\)</span>).</p>
+<p>Neste caso as suposições de ignorabilidade não são verificadas. A variável <span class="math inline">\(U\)</span> induce dependência entre tratamento e os resultados potencais (mesmo condicionando em <span class="math inline">\(X\)</span>).</p>
 </div>
 <div class="fragment">
 <div class="callout callout-important callout-captioned callout-style-default">
@@ -802,7 +857,10 @@ Z &amp; = I(g(X, U, V) \geq 0),
 <p><strong>Observação</strong></p>
 </div>
 <div class="callout-content">
-<p>Se não temos acesso a <span class="math inline">\(U\)</span> e analisamos os dados baseados apenas em <span class="math inline">\((X, Y, Z)\)</span>, teremos um estimador viesado. Este problema é conhecido em econometria como <a href="https://ctruciosm.github.io/ME715-unicamp/ME715_Aula05.html#/vari%C3%A1veis-omitidas">vies por variáveis omitiddas</a>.</p>
+<ul>
+<li class="fragment">Se não temos acesso a <span class="math inline">\(U\)</span> e analisamos os dados baseados apenas em <span class="math inline">\((X, Y, Z)\)</span>, teremos um estimador viesado. Este problema é conhecido em econometria como <a href="https://ctruciosm.github.io/ME715-unicamp/ME715_Aula05.html#/vari%C3%A1veis-omitidas">vies por variáveis omitiddas</a>.</li>
+<li class="fragment">Ao assumirmos ignorabilidade, estamos dizendo que não existem variáveis de confusão.</li>
+</ul>
 </div>
 </div>
 </div>
@@ -821,6 +879,7 @@ Z &amp; = I(g(X, U, V) \geq 0),
 <div class="callout-content">
 <div>
 <ul>
+<li>Um problema fundamental em inferência causal com dados observacionais é a plausibilidade da suposição de ignorabilidade.</li>
 <li>A suposição de ignorabilidade é razoável se tivermos um conjunto rico de covariáveis <span class="math inline">\(X\)</span> que afetam tanto o tratamento quanto o resultado simultaneamente.</li>
 <li>Na prática não temos certeza se esta suposição é verificada ou não.</li>
 <li>Justificamos sua veracidade baseados no conhecimento científico da área de conhecimento.</li>
@@ -851,7 +910,7 @@ Z &amp; = I(g(X, U, V) \geq 0),
 <h2>Estratificação baseados em covariável discreta</h2>
 <p>Embora o método seja amplamente utilizado, duas dificuldades aparecem:</p>
 <ol type="1">
-<li class="fragment">Funciona bem para <span class="math inline">\(K\)</span> pequenos. Para valores grandes de <span class="math inline">\(K\)</span>, a chance de termos <span class="math inline">\(n_{[k]1} = 0\)</span> o <span class="math inline">\(n_{[k]0} = 0\)</span> aumentam (gerando estimadores pobremente definidos).</li>
+<li class="fragment">Funciona bem para <span class="math inline">\(K\)</span> pequenos. Para valores grandes de <span class="math inline">\(K\)</span>, a chance de termos <span class="math inline">\(n_{[k]1} = 0\)</span> ou <span class="math inline">\(n_{[k]0} = 0\)</span> aumentam (gerando estimadores pobremente definidos).</li>
 <li class="fragment">Não é obvio como proceder com <span class="math inline">\(X \in \mathbb{R}^p\)</span> (<span class="math inline">\(p \geq 2\)</span>) ou com <span class="math inline">\(X\)</span> contínua.</li>
 </ol>
 <div class="fragment">
@@ -860,29 +919,23 @@ Z &amp; = I(g(X, U, V) \geq 0),
 </section>
 <section id="outcome-regression" class="slide level2">
 <h2>Outcome regression</h2>
-<p>Consiste em ajustar por MQO uma regressão do tipo</p>
+<p><strong>A abordagem mais utiliza</strong> consiste em ajustar por MQO uma regressão do tipo</p>
 <p><span class="math display">\[\mathbb{E}(Y | Z, X) = \beta_0 + \beta_Z Z + X \beta_X.\]</span></p>
 <div class="fragment">
-<p>Assim, <span class="math display">\[\begin{align}
-\tau(X) &amp; = \mathbb{E}(Y(1) - Y(0) | X), \\
-        &amp; = \mathbb{E}[\mathbb{E}(Y(1) - Y(0)| Z, X) | X], \\
-        &amp; = \mathbb{E}[\mathbb{E}(Y(1) | Z, X) - \mathbb{E}(Y(0) | Z, X) | X], \\
-        &amp; = \mathbb{E}[\mathbb{E}(Y(1) | Z = 1, X) - \mathbb{E}(Y(0) | Z = 0, X) | X], \\
-        &amp; = \mathbb{E}(Y(1) | Z = 1, X) - \mathbb{E}(Y(0) | Z = 0, X), \\
-        &amp; = \mathbb{E}(Y | Z = 1, X) - \mathbb{E}(Y | Z = 0, X), \\
+<p>Assim, se o modelo for correto e assumirmos ignorabilidade: <span class="math display">\[\begin{align}
+\tau(X) &amp; = \mathbb{E}(Y | Z = 1, X) - \mathbb{E}(Y | Z = 0, X), \\
         &amp; = (\beta_0 + \beta_Z + X \beta_X) - (\beta_0 + X \beta_X), \\
         &amp; = \beta_Z,
 \end{align}\]</span></p>
 </div>
-</section>
-<section id="outcome-regression-1" class="slide level2">
-<h2>Outcome regression</h2>
+<div class="fragment">
 <p>Então <span class="math display">\[\tau = \mathbb{E}(\tau(X)) = \beta_Z.\]</span></p>
 <center>
 <span style="color:red">Se <em>ignorabilidade</em> acontece e o modelo de <span class="math inline">\(Y\)</span> for linear, o efeito causal médio é simplesmente o coeficiente associado a <span class="math inline">\(Z\)</span>.</span>
 </center>
+</div>
 </section>
-<section id="outcome-regression-2" class="slide level2">
+<section id="outcome-regression-1" class="slide level2">
 <h2>Outcome regression</h2>
 <ul>
 <li class="fragment">A interpretação causal de <span class="math inline">\(\beta_Z\)</span> está sujeito a dois requisitos fortes: ignorabilidad e lineariedad.</li>
@@ -894,7 +947,7 @@ Z &amp; = I(g(X, U, V) \geq 0),
 \end{align}\]</span></li>
 </ul>
 </section>
-<section id="outcome-regression-3" class="slide level2">
+<section id="outcome-regression-2" class="slide level2">
 <h2>Outcome regression</h2>
 <p>Então, <span class="math display">\[\tau = \mathbb{E}(\tau(X)) = \mathbb{E}(\beta_Z + X \beta_{ZX}) = \beta_Z + \mathbb{E}(X)  \beta_{ZX}.\]</span></p>
 <div class="fragment">
@@ -904,7 +957,7 @@ Z &amp; = I(g(X, U, V) \geq 0),
 </ul>
 </div>
 </section>
-<section id="outcome-regression-4" class="slide level2">
+<section id="outcome-regression-3" class="slide level2">
 <h2>Outcome regression</h2>
 <ul>
 <li class="fragment">Em geral, outros modelos mais complexos poderiam ser utilizados.</li>
@@ -914,7 +967,7 @@ Z &amp; = I(g(X, U, V) \geq 0),
 <li class="fragment">Este estimador é comumente chamado de <em>outcome regression estimator</em> e podemos utilizar Bootstrap para estimar o erro padrão do estimador.</li>
 </ul>
 </section>
-<section id="outcome-regression-5" class="slide level2">
+<section id="outcome-regression-4" class="slide level2">
 <h2>Outcome regression</h2>
 <div class="callout callout-note callout-captioned callout-style-default">
 <div class="callout-body">
@@ -936,7 +989,7 @@ Z &amp; = I(g(X, U, V) \geq 0),
 <p>Em econometria, este estimador é chamado de <em>efeito parcial médio</em> ou <em>efeito marginal médio</em> do tratamento no modelo logístico.</p>
 </div>
 </section>
-<section id="outcome-regression-6" class="slide level2">
+<section id="outcome-regression-5" class="slide level2">
 <h2>Outcome regression</h2>
 <h4 id="comentário-finais">Comentário finais</h4>
 <ul>
