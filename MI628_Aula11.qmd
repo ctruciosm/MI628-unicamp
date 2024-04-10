@@ -1,0 +1,204 @@
+---
+title: "Inferência Causal"
+subtitle: "Efeito causal médio das unidades sob tratamento"
+author: "Prof. Carlos Trucíos </br> ctrucios@unicamp.br"
+Email: "ctrucios@unicamp.br"
+institute: "Instituto de Matemática, Estatística e Computação Científica (IMECC), </br> Universidade Estadual de Campinas (UNICAMP)."
+toc: true
+toc-depth: 1
+toc-title: "Conteúdo"
+knitr:
+    opts_chunk: 
+      fig.align: 'center'
+execute:
+    message: false
+    warning: false
+format:
+    revealjs:
+        slide-number: true
+        show-slide-number: print
+        self-contained: false
+        chalkboard: true
+        width: 1600
+        height: 900
+        theme: [default, styles.scss]
+        incremental: true
+        code-fold: true
+        logo: "imagens/imecc.png"
+        footer: "Carlos Trucíos (IMECC/UNICAMP)  |  ME920/MI628 - Inferência Causal |  [ctruciosm.github.io](https://ctruciosm.github.io/)"
+        highlight-style: "a11y"
+        title-slide-attributes:
+            data-background-image: "imagens/unicamp.png"
+            data-background-size: 20%
+            data-background-position: 99% 5%
+            data-background-opacity: "1"
+---
+
+
+
+# Introdução
+## Introdução
+
+- Nas últimas aulas, temos focado na estimação de $\tau = \mathbb{E}[Y(1) - Y(0)]$ em um contexto de dados observacionais.
+- Hoje, focaremos na estimação de:
+    * $\tau_T = \mathbb{E}[Y(1) - Y(0) | Z = 1]$
+    * $\tau_C = \mathbb{E}[Y(1) - Y(0) | Z = 0]$
+- Se devemos estimar $\tau$, $\tau_T$ ou $\tau_C$ depende apenas de interesses práticos.
+
+
+. . . 
+
+
+
+<center>
+[Se $\tau_T$ e $\tau_C$ diferirem de $\tau$, dizemos que o efeitos causais médios são heterogeneos entre os grupos de tratameno e controle]{style="color:red"}
+</center>
+
+
+# $\tau_T$
+## $\tau_T$
+
+O efeito causal médio sob as unidades de tratamento é dado por $$\tau_T = \mathbb{E}[Y(1) - Y(0) | Z = 1] = \underbrace{\mathbb{E}[Y(1) | Z = 1]}_{\mathbb{E}[Y | Z = 1]} - \mathbb{E}[Y(0) | Z = 1]$$
+
+
+. . . 
+
+O principal problema com estimar $\tau_T$ é o fato de $\mathbb{E}[Y(0) | Z = 1]$ ser contrafactual.
+
+
+. . . 
+
+
+Contudo, teremos uma forma de estimar se assumirmos que $$Z \perp\!\!\!\perp  Y(0) | X \quad e \quad e(X) < 1$${#eq-suposicao13.1}
+
+
+## $\tau_T$
+
+
+::: {.callout-tip}
+### Teorema
+Sob a suposição @eq-suposicao13.1, temos que 
+\begin{align}
+\mathbb{E}[Y(0) | Z = 1] &= \mathbb{E}[\mathbb{E}(Y | Z = 0, X) | Z = 1] \\
+      &= \int \mathbb{E}[Y| Z = 0, X] f(x |Z = 1)dx \quad \text{ou} \\
+      &= \sum_{k = 1}^K \mathbb{E}[Y| Z = 0, X = k]P(X = k | Z = 1)
+\end{align}
+:::
+
+
+. . . 
+
+Isto significa que podemos então estimar $\tau_T$ por:
+
+
+
+:::: {.columns}
+::: {.column width="50%"}
+$$\hat{\tau}_T = \hat{\bar{Y}}(1) -  \sum_{k = 1}^K \hat{\pi}_{[k] | 1} \hat{\bar{Y}}_{[k]}(0),$$ em que $\hat{\pi}_{[k] | 1}= n_{[k]1}/n1$.
+
+:::
+
+::: {.column width="50%"}
+$$\hat{\tau}_T^{reg} = \hat{\bar{Y}}(1) - n_1^{-1}\sum_{i = 1}^N Z_i \hat{\mu}_0(X_i),$$ em que $\hat{\mu}_0(X_i)$ são os valores ajustados da regressão $\mathbb{E}(Y | Z = 0, X)$ utilizando apenas os dados de controle.
+
+:::
+
+::::
+
+## $\tau_T$
+
+::: {.callout-note}
+### Exemplo
+
+Seja o modelo linear para todas as unidades dado por $$\mathbb{E}[Y | Z, X] = \beta_0 + \beta_z Z + X \beta_x.$$
+
+Então, \begin{align}
+\tau_T &= \mathbb{E}[Y | Z = 1] - \mathbb{E}[Y(0) | Z = 1] \\
+       &=  \mathbb{E}[Y | Z = 1] - \mathbb{E}[\mathbb{E}(Y | Z = 0, X) | Z = 1] \\
+      &=  \mathbb{E}[\mathbb{E}(Y | Z = 1, X) | Z = 1] - \mathbb{E}[\mathbb{E}(Y | Z = 0, X) | Z = 1] \\
+      &=  \mathbb{E}[\mathbb{E}(Y | Z = 1, X) - \mathbb{E}(Y | Z = 0, X) | Z = 1] \\
+      &= \beta_z
+\end{align}
+:::
+
+
+. . .
+
+Se ajustarmos o modelo de regressão por MQO e obtermos $\hat{\beta}_0$, $\hat{\beta}_z$ e $\hat{\beta}_x$, podemos utilizar $\hat{\beta}_z$ como estimador de $\tau_T$.
+
+
+## $\tau_T$
+
+:::: {.columns}
+
+::: {.column width="40%"}
+![](imagens/cat-surprised-meme.jpg)
+:::
+
+::: {.column width="60%"}
+::: {.nonincremental}
+- [Anteriormente](https://ctruciosm.github.io/MI628-unicamp/MI628_Aula08#/outcome-regression) vimos que $\hat{\beta}_z$ era um estimador para $\tau$.
+- Agomas vimos que $\hat{\beta}_z$ era um estimador para $\tau_T$.
+- É então $\hat{\beta}_z$ um estimador para ambos?
+- **Sim!**, o modelo linear assumque o efeito causal é constante entre unidades.
+:::
+:::
+::::
+
+
+## $\tau_T$
+
+::: {.callout-note}
+### Exemplo
+Segundo o Teorema, precisamos apenas de $\mathbb{E}[Y | Z = 0, X]$ para poder estimar $\tau_T$. Ou seja, precisamos apenas especificar o modelo para as unidades de controle. Quando o modelo é linear da forma $$\mathbb{E}[Y | Z = 0, X] = \beta_{0|0} + X\beta_{x|0}.$$
+
+Então, \begin{align}
+\tau_T &= \mathbb{E}[Y | Z = 1] - \mathbb{E}[Y(0)| Z = 1] \\
+      &= \mathbb{E}[Y | Z = 1] - \mathbb{E}[\mathbb{E}[Y | Z = 0, X]| Z = 1] \\
+      &= \mathbb{E}[Y | Z = 1] - \beta_{0|0} - \mathbb{E}[X| Z = 1]\beta_{x|0}
+\end{align}
+
+Se ajustarmos o modelo de regressão por MQO, temos que: $$\hat{\tau}_T = \hat{\bar{Y}}(1) - \hat{\beta}_{0|0} - \hat{\bar{X}}(1) \hat{\beta}_{x|0}$$
+
+
+:::
+
+# IPW e DR para $\tau_T$
+
+## IPW e DR para $\tau_T$
+
+::: {.callout-tip}
+### Teorema
+Sob @eq-suposicao13.1, temos que $$\mathbb{E}[Y(0) | Z = 1] = \mathbb{E} \Big [ \dfrac{e(X)}{e} \dfrac{1-Z}{1 - e(X)}Y \Big] \quad e$$
+
+$$\tau_T = \mathbb{E}[Y | Z = 1] - \mathbb{E} \Big [ \dfrac{e(X)}{e} \dfrac{1-Z}{1 - e(X)}Y \Big],$$ em que $e = P(Z = 1)$ é a probabilidade marginal do tratamento.
+
+:::
+
+
+**Demostração:** (no quadro)
+
+## IPW e DR para $\tau_T$
+
+Então, temos dois estimadors para $\tau_T$:
+
+- $\hat{\tau}_T^{HT} = \hat{\bar{Y}}(1) - n_1^{-1} \displaystyle \sum_{i = 1}^n \hat{o}(X_i)(1 - Z_i)Y_i,$
+- $\hat{\tau}_T^{hajek} = \hat{\bar{Y}}(1) -  \dfrac{\displaystyle \sum_{i = 1}^n \hat{o}(X_i)(1 - Z_i)Y_i}{\displaystyle \sum_{i = 1}^n \hat{o}(X_i)(1 - Z_i)},$
+
+. . . 
+
+em que $\hat{o}(X_i) = \hat{e}(X_i) / (1 - \hat{e}(X_i))$.
+
+
+
+
+## Referências
+
+::: {.nonincremental}
+
+- Peng Ding (2023). A First Course in Causal Inference. Capítulo 12.
+
+
+
+
+:::
