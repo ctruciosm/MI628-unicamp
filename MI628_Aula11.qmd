@@ -180,15 +180,173 @@ $$\tau_T = \mathbb{E}[Y | Z = 1] - \mathbb{E} \Big [ \dfrac{e(X)}{e} \dfrac{1-Z}
 
 ## IPW e DR para $\tau_T$
 
-Então, temos dois estimadors para $\tau_T$:
+Então, temos dois estimadores IPW para $\tau_T$:
 
-- $\hat{\tau}_T^{HT} = \hat{\bar{Y}}(1) - n_1^{-1} \displaystyle \sum_{i = 1}^n \hat{o}(X_i)(1 - Z_i)Y_i,$
-- $\hat{\tau}_T^{hajek} = \hat{\bar{Y}}(1) -  \dfrac{\displaystyle \sum_{i = 1}^n \hat{o}(X_i)(1 - Z_i)Y_i}{\displaystyle \sum_{i = 1}^n \hat{o}(X_i)(1 - Z_i)},$
-
-. . . 
+$$\hat{\tau}_T^{HT} = \hat{\bar{Y}}(1) - n_1^{-1} \displaystyle \sum_{i = 1}^n \hat{o}(X_i)(1 - Z_i)Y_i \quad e \quad \hat{\tau}_T^{hajek} = \hat{\bar{Y}}(1) -  \dfrac{\displaystyle \sum_{i = 1}^n \hat{o}(X_i)(1 - Z_i)Y_i}{\displaystyle \sum_{i = 1}^n \hat{o}(X_i)(1 - Z_i)},$$
 
 em que $\hat{o}(X_i) = \hat{e}(X_i) / (1 - \hat{e}(X_i))$.
 
+
+
+## IPW e DR para $\tau_T$
+
+Ademais, podemos também obter um estimador DR para $\mathbb{E}[Y(0) | Z = 1]$.
+
+. . . 
+
+Definamos $$\tilde{\mu}_{0T} = \mathbb{E}[o(X, \alpha)(1 - Z) \{Y - \mu_0(X, \beta_0) + Z \mu_0 (X_1, \beta_0) \}]/e,$$ em que $o(X \alpha) = e(X, \alpha) / [1 - e(X, \alpha)].$
+
+. . . 
+
+
+::: {.callout-tip}
+### Teorema
+Sob @eq-suposicao13.1, se $e(X, \alpha) = e(X)$ ou $\mu_0(X, \beta_0) = \mu_0(X)$, então $$\tilde{\mu}_{0T} = \mathbb{E}[Y(0) | Z = 1].$$
+
+:::
+
+
+
+
+## IPW e DR para $\tau_T$
+
+::: {.callout-tip}
+### Estimador DR para $\tau_T$
+Baseados em $(X_i, Z_i, Y_i)_{i = 1}^n$, podemos obter um estimador DR para $\tau_T$ através dos seguintes passos.
+
+
+::: {.nonincremental}
+
+1. Obter os valores ajustados do _propensity score_ ($e(X_i, \hat{\alpha})$) e do _odds_ ($o(X_i, \hat{\alpha}) = e(X_i, \hat{\alpha}) / [1 - e(X_i, \hat{\alpha})]$).
+2. Obter os valores ajustados do resultado sob controle ($\mu_0(X_i, \hat{\beta}_0)$).
+3. Construir o estimador DR para $\tau_T$ como $\hat{\tau}_T^{DR} = \hat{\bar{Y}}(1) - \hat{\mu}_{0T}^{DR},$ em que $$\hat{\mu}_{0T}^{DR} = \dfrac{1}{n} \sum_{i = 1}^n [o(X_i, \hat{\alpha}) (1 - Z_i) \{Y_i - \mu_0(X_i, \hat{\beta}_0) + Z_i\mu_0(X_i, \hat{\beta}_0) \}]$$
+:::
+
+:::
+
+
+## IPW e DR para $\tau_T$
+
+
+#### Observação
+
+Note que, podemos re-escrever $\hat{\tau}_T^{DR}$ como $$\hat{\tau}_T^{reg} - \dfrac{1}{n_1} \sum_{i = 1}^n o(X_i, \hat{\alpha}) (1 - Z_i) \{Y_i - \mu_0(X_i, \hat{\beta}_0)\} \quad \text{ou}$$
+
+$$\hat{\tau}_T^{HT} - \dfrac{1}{n_1}\sum_{i = 1}^n \{o(X_i, \hat{\alpha})(1 - Z_i) + Z_i\} \mu_0(X_i, \hat{\beta}_0).$$
+
+
+. . . 
+
+
+<center>
+[Para estimar a variância de $\hat{\tau}_T^{DR}$, assim como no caso para $\hat{\tau}^{DR}$, podemos utilizar Bootstrap.]{style="color:red"}
+</center>
+
+
+
+
+# Exemplo
+## Implementação
+
+A seguir, vamos implementar 5 estimadores para $\tau_T$:
+
+::: {.nonincremental}
+- 2 _outcome regression_,
+- 2 IPW,
+- DR.
+:::
+
+
+## Implementação
+
+
+::: {.callout-note}
+### Implementação
+```{r}
+#| echo: true
+att_est <- function(z, y, x, out_family = gaussian, Utruncps = 1) {
+  # Outcome regression
+  ace_reg_1 <- lm(y ~ z + x)$coef[2]
+  outcome_0 <- glm(y ~ x, weights = (1 - z), family = out_family)$fitted.values
+  ace_reg_2 <- mean(y[z == 1]) - mean(outcome_0[z == 1])
+  
+  # IPW
+  n <- length(z)
+  n_1 <- sum(z)
+  ps <- glm(z ~ x, family = binomial)$fitted.values
+  ps <- pmin(ps, Utruncps)
+  odds <- ps / (1 - ps)
+  ace_ipw_1 <- mean(y[z == 1]) - mean(odds * (1 - z) * y) * n / n_1
+  ace_ipw_2 <- mean(y[z == 1]) - mean(odds * (1 - z) * y) / mean(odds * (1 - z))
+  
+  # DR
+  res <- y - outcome_0
+  ace_dr <- ace_reg_2 - mean(odds * (1 - z) * res) * n / n_1
+  
+  out <- c(ace_reg_1, ace_reg_2, ace_ipw_1, ace_ipw_2, ace_dr)
+  return(out)
+}
+```
+
+:::
+
+
+
+
+## Implementação
+
+
+::: {.callout-note}
+### Implementação
+```{r}
+#| echo: true
+os_att <- function(z, y, x, n_boot = 1000, out_family = gaussian, Utruncps = 1) {
+  point_estimate <- att_est(z, y, x, out_family, Utruncps)
+  
+  # NP Bootstrap
+  n <- length(z)
+  boot_est <- replicate(n_boot, {
+    id_boot <- sample(1:n, n, replace = TRUE)
+    x <- as.matrix(x)
+    att_est(z[id_boot], y[id_boot], x[id_boot, ], out_family, Utruncps)
+  })
+  boot_sd <- apply(boot_est, 1, sd)
+  out <- rbind(point_estimate, boot_sd)
+  colnames(out) <- c("Reg1", "Reg2", "HT", "Hajek", "DR")
+  rownames(out) <- c("Estim", "SE")
+  return(out)
+}
+```
+
+:::
+
+
+Como esperado, o estimador HT é sensível ao truncamento. Ademais, `Reg1` é bastante diferentes das outras estimativas (**Por quê?**), já `Reg2` é mais parecido com os outros estimadores. Repare que os resultados são diferentes dos resultados obtidos na aula anterir (quando estimamos $\tau$) sugerindo a existencia de heterogeneidade entre $\tau_T$ e $\tau$.
+
+
+## Exemplo
+
+::: {.callout-note}
+### Exemplo
+[_Dataset_ disponível aqui](https://dataverse.harvard.edu/file.xhtml?fileId=7440222&version=3.0). [Chang et al. (2016)](https://academic.oup.com/jrsssb/article/78/3/673/7040940?login=false) estudam se a participação no programa da merenda nas escolas (`School_meal`) leva a um aumento no índice de massa muscular (`BMI`) das crianças. Em particula, os pesquisadores querem estimar $\tau_T$ 12 outras covariáveis também estão disponíveis no _dataset_. 
+
+```{r}
+#| echo: true
+dados <- read.csv("datasets/nhanes_bmi.csv")[, -1]
+z <- dados$School_meal
+y <- dados$BMI
+x <- scale(dados[, -c(1, 2)])
+resultados_trunc <- os_att(z, y, z, Utruncps = 0.9)
+resultados_without_trunc <- os_att(z, y, z)
+resultados_trunc
+resultados_without_trunc 
+```
+
+:::
+
+
+# Outros estimadores
+## Outros estimadores
 
 
 
@@ -197,8 +355,5 @@ em que $\hat{o}(X_i) = \hat{e}(X_i) / (1 - \hat{e}(X_i))$.
 ::: {.nonincremental}
 
 - Peng Ding (2023). A First Course in Causal Inference. Capítulo 12.
-
-
-
 
 :::
