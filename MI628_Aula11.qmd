@@ -140,7 +140,7 @@ Se ajustarmos o modelo de regressão por MQO e obtermos $\hat{\beta}_0$, $\hat{\
 - [Anteriormente](https://ctruciosm.github.io/MI628-unicamp/MI628_Aula08#/outcome-regression) vimos que $\hat{\beta}_z$ era um estimador para $\tau$.
 - Agomas vimos que $\hat{\beta}_z$ era um estimador para $\tau_T$.
 - É então $\hat{\beta}_z$ um estimador para ambos?
-- **Sim!**, o modelo linear assumque o efeito causal é constante entre unidades.
+- **Sim!**, o modelo linear assume que o efeito causal é constante entre unidades.
 :::
 :::
 ::::
@@ -349,11 +349,47 @@ resultados_without_trunc
 ## Outros estimadores
 
 
+[Li et al. (2018)](https://www.tandfonline.com/doi/full/10.1080/01621459.2016.1260466) propõem uma classe geral de estimadores para efeitos causais. Considere o seguinte caso geral:
+
+$$\tau^h = \dfrac{\mathbb{E}[h(X) \tau(X)]}{\mathbb{E}[h(X)]},$$ em que $\mathbb{E}(h(X)) \neq 0$. 
+
+. . . 
+
+Assumindo ignorabilidade,
+
+$$\tau_h = \dfrac{\mathbb{E}[h(X) \{ \mu_1(X) - \mu_0(X) \}]}{\mathbb{E}[h(X)]},$$
+
+. . . 
+
+O que motiva o seguinte estimador,
+
+$$\hat{\tau}^h = \dfrac{\displaystyle \sum_{i = 1}^n h(X_i) [\hat{\mu}_1(X_i) - \hat{\mu}_0(X_i)]}{\displaystyle \sum_{i = 1}^n h(X_i)}.$$
+
+
+## Outros estimadores
+
+
+Pode-se mostrar que, sob as suposições de ignorabilidade e sobreposição,
+
+$$\tau^h = \mathbb{E} \Big[\dfrac{ZYh(X)}{e(X)} - \dfrac{(1-Z)Yh(X)}{1 - e(X)} \Big] \Big / \mathbb{E}[h(X)],$$ o que motiva o estimador IPW para $\tau^ h$. Note que as unidades de tratamento são ponderadas por $h(X)/e(X)$ e as unidades de controle por $h(X)/(1-e(X))$. [Li et al. (2018)](https://www.tandfonline.com/doi/full/10.1080/01621459.2016.1260466) fornecem um resumo para cada um dos casos particulares de interesse:
+
+
+|              | $h(X)$             |  Pesos                    | 
+|:------------:|:------------------:|:-------------------------:|
+| $\tau$       | 1                  | $1/e(X)$ e $1/[1 - e(X)]$ |
+| $\tau_T$     | $e(X)$             | 1 e $e(X)/[1 - e(X)]$ |
+| $\tau_C$     | $1 - e(X)$         | $[1 - e(X)]/e(X)$ e 1 |
+| $\tau_O$     | $e(X) [1 - e(X)]$  | $1 - e(X)$ e $e(X)$ |
+
+
+<aside>
+$\tau_O = \dfrac{\mathbb{E}[e(X) \{1 - e(X)\} \tau(X)]}{\mathbb{E}[e(X) \{1 - e(X)\}]} \quad \text{(falaremos mais dele na próxima aula).}$
+</aside>
 
 ## Referências
 
 ::: {.nonincremental}
 
-- Peng Ding (2023). A First Course in Causal Inference. Capítulo 12.
+- Peng Ding (2023). A First Course in Causal Inference. Capítulo 13.
 
 :::

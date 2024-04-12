@@ -7,7 +7,7 @@
 <link href="MI628_Aula11_files/libs/quarto-html/tippy.css" rel="stylesheet">
 <link href="MI628_Aula11_files/libs/quarto-html/quarto-html.min.css" rel="stylesheet" data-mode="light">
 <link href="MI628_Aula11_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
-  <meta name="generator" content="quarto-1.2.269">
+  <meta name="generator" content="quarto-1.2.280">
 
   <meta name="author" content="Prof.&nbsp;Carlos Trucíos  ctrucios@unicamp.br">
   <title>Inferência Causal</title>
@@ -412,6 +412,7 @@ Prof.&nbsp;Carlos Trucíos <br> ctrucios@unicamp.br
 <li class="fragment"><a href="#/tau_t" id="/toc-tau_t"><span class="math inline">\(\tau_T\)</span></a></li>
 <li class="fragment"><a href="#/ipw-e-dr-para-tau_t" id="/toc-ipw-e-dr-para-tau_t">IPW e DR para <span class="math inline">\(\tau_T\)</span></a></li>
 <li class="fragment"><a href="#/exemplo-2" id="/toc-exemplo-2">Exemplo</a></li>
+<li class="fragment"><a href="#/outros-estimadores" id="/toc-outros-estimadores">Outros estimadores</a></li>
 </ul>
 </nav>
 </section>
@@ -519,7 +520,7 @@ Prof.&nbsp;Carlos Trucíos <br> ctrucios@unicamp.br
 <li><a href="https://ctruciosm.github.io/MI628-unicamp/MI628_Aula08#/outcome-regression">Anteriormente</a> vimos que <span class="math inline">\(\hat{\beta}_z\)</span> era um estimador para <span class="math inline">\(\tau\)</span>.</li>
 <li>Agomas vimos que <span class="math inline">\(\hat{\beta}_z\)</span> era um estimador para <span class="math inline">\(\tau_T\)</span>.</li>
 <li>É então <span class="math inline">\(\hat{\beta}_z\)</span> um estimador para ambos?</li>
-<li><strong>Sim!</strong>, o modelo linear assumque o efeito causal é constante entre unidades.</li>
+<li><strong>Sim!</strong>, o modelo linear assume que o efeito causal é constante entre unidades.</li>
 </ul>
 </div>
 </div>
@@ -753,27 +754,84 @@ Prof.&nbsp;Carlos Trucíos <br> ctrucios@unicamp.br
 <div class="cell-output cell-output-stdout">
 <pre><code>           Reg1      Reg2         HT     Hajek        DR
 Estim 0.5339044 0.5339044 20.3501090 0.5339044 0.5339044
-SE    0.2211825 0.2211825  0.1480375 0.2211825 0.2211825</code></pre>
+SE    0.2234131 0.2234131  0.1525112 0.2234131 0.2234131</code></pre>
 </div>
 <details>
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a>resultados_without_trunc </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
-<pre><code>           Reg1      Reg2        HT     Hajek        DR
-Estim 0.5339044 0.5339044 20.350109 0.5339044 0.5339044
-SE    0.2330011 0.2330011  0.160613 0.2330011 0.2330011</code></pre>
+<pre><code>           Reg1      Reg2         HT     Hajek        DR
+Estim 0.5339044 0.5339044 20.3501090 0.5339044 0.5339044
+SE    0.2254842 0.2254842  0.1552704 0.2254842 0.2254842</code></pre>
 </div>
 </div>
 </div>
 </div>
+</div>
+</section></section>
+<section>
+<section id="outros-estimadores" class="title-slide slide level1 center">
+<h1>Outros estimadores</h1>
+
+</section>
+<section id="outros-estimadores-1" class="slide level2">
+<h2>Outros estimadores</h2>
+<p><a href="https://www.tandfonline.com/doi/full/10.1080/01621459.2016.1260466">Li et al.&nbsp;(2018)</a> propõem uma classe geral de estimadores para efeitos causais. Considere o seguinte caso geral:</p>
+<p><span class="math display">\[\tau^h = \dfrac{\mathbb{E}[h(X) \tau(X)]}{\mathbb{E}[h(X)]},\]</span> em que <span class="math inline">\(\mathbb{E}(h(X)) \neq 0\)</span>.</p>
+<div class="fragment">
+<p>Assumindo ignorabilidade,</p>
+<p><span class="math display">\[\tau_h = \dfrac{\mathbb{E}[h(X) \{ \mu_1(X) - \mu_0(X) \}]}{\mathbb{E}[h(X)]},\]</span></p>
+</div>
+<div class="fragment">
+<p>O que motiva o seguinte estimador,</p>
+<p><span class="math display">\[\hat{\tau}^h = \dfrac{\displaystyle \sum_{i = 1}^n h(X_i) [\hat{\mu}_1(X_i) - \hat{\mu}_0(X_i)]}{\displaystyle \sum_{i = 1}^n h(X_i)}.\]</span></p>
 </div>
 </section>
+<section id="outros-estimadores-2" class="slide level2">
+<h2>Outros estimadores</h2>
+<p>Pode-se mostrar que, sob as suposições de ignorabilidade e sobreposição,</p>
+<p><span class="math display">\[\tau^h = \mathbb{E} \Big[\dfrac{ZYh(X)}{e(X)} - \dfrac{(1-Z)Yh(X)}{1 - e(X)} \Big] \Big / \mathbb{E}[h(X)],\]</span> o que motiva o estimador IPW para <span class="math inline">\(\tau^ h\)</span>. Note que as unidades de tratamento são ponderadas por <span class="math inline">\(h(X)/e(X)\)</span> e as unidades de controle por <span class="math inline">\(h(X)/(1-e(X))\)</span>. <a href="https://www.tandfonline.com/doi/full/10.1080/01621459.2016.1260466">Li et al.&nbsp;(2018)</a> fornecem um resumo para cada um dos casos particulares de interesse:</p>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: center;"></th>
+<th style="text-align: center;"><span class="math inline">\(h(X)\)</span></th>
+<th style="text-align: center;">Pesos</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;"><span class="math inline">\(\tau\)</span></td>
+<td style="text-align: center;">1</td>
+<td style="text-align: center;"><span class="math inline">\(1/e(X)\)</span> e <span class="math inline">\(1/[1 - e(X)]\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><span class="math inline">\(\tau_T\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(e(X)\)</span></td>
+<td style="text-align: center;">1 e <span class="math inline">\(e(X)/[1 - e(X)]\)</span></td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;"><span class="math inline">\(\tau_C\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(1 - e(X)\)</span></td>
+<td style="text-align: center;"><span class="math inline">\([1 - e(X)]/e(X)\)</span> e 1</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><span class="math inline">\(\tau_O\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(e(X) [1 - e(X)]\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(1 - e(X)\)</span> e <span class="math inline">\(e(X)\)</span></td>
+</tr>
+</tbody>
+</table>
+
+<aside><div>
+<span class="math inline">\(\tau_O = \dfrac{\mathbb{E}[e(X) \{1 - e(X)\} \tau(X)]}{\mathbb{E}[e(X) \{1 - e(X)\}]} \quad \text{(falaremos mais dele na próxima aula).}\)</span>
+</div></aside></section>
 <section id="referências" class="slide level2">
 <h2>Referências</h2>
 <div>
 <ul>
-<li>Peng Ding (2023). A First Course in Causal Inference. Capítulo 12.</li>
+<li>Peng Ding (2023). A First Course in Causal Inference. Capítulo 13.</li>
 </ul>
 </div>
 
