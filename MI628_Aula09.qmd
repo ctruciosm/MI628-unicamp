@@ -40,7 +40,7 @@ format:
 ## Introdução
 
 - Introduzido por Rosembaum e Rubin (1983), _propensity score_ desempenha um papel crucial na inferência causal quando trabalhamos com estudos observacionais.
-- 
+- _Propensity score_ é uma ferramenta importante na inferência causal. O foco da aula de hoje está em entender o motivo pelo qual é tão importante.
 
 
 # Propensity score
@@ -56,8 +56,10 @@ Assumindo uma amostragem IID, temos quatro variáveis aleatórias associadas a c
 
 . . . 
 
-Ademais, $$P(X, Z, Y(1), Y(0)) = P(X) \times P(Y(1), Y(0) | X) \times P(Z | Y(1), Y(0), X)$$
-
+Ademais, \begin{align}
+P(X, Z, Y(1), Y(0)) &= P(Z, Y(1), Y(0) | X) \times P(X), \\
+                    &= P(Z | X, Y(1), Y(0)) \times P(Y(1), Y(0) | X) \times P(X)
+\end{align}
 
 
 
@@ -71,9 +73,13 @@ Definimos $$e(X, Y(1), Y(0)) = P(Z = 1| X, Y(1), Y(0))$$ como o _propensity scor
 
 . . . 
 
+<center>
+$e(X)$ apresenta uma série de propriedades que serão bastante úteis para inferirmos causalidade.
+</center>
+
 
 <aside>
-**Observação:** alguns autores definem _propensity score_ apenas como $e(1) = P(Z = 1 | X)$ seguindo a notação de Rosembaum e Rubin (1983). Essa notação é utilizada pois os autores focam em estudos observacionais. A definição $e(X, Y(1), Y(0)) = P(Z = 1| X, Y(1), Y(0))$ pode ser vista como uma generalização da definição de Rosembaum e Rubin (1983).
+**Observação:** alguns autores definem _propensity score_ apenas como $e(X) = P(Z = 1 | X)$ seguindo a notação de Rosembaum e Rubin (1983). Essa notação é utilizada pois os autores focam em estudos observacionais sob ignorabilidade forte. A definição $e(X, Y(1), Y(0)) = P(Z = 1| X, Y(1), Y(0))$ é uma definição mais geral e em alguns casos pode ser de interesse.
 </aside>
 
 
@@ -106,7 +112,7 @@ O Teorema anterior motiva um método para estimar efeitos causais: **Propensity 
 
 - Assuma que o _propensity score_ é conhecido e com apenas $K$ ($K << n$) possíveis valores $\{e_1, e_2, \cdots, e_K \}$.
 - Neste caso, o Teorema anterior pode ser re-escrito como $$Z \perp\!\!\!\perp  \{ Y(1), Y(0)\} | e(X) = e_k \quad (k = 1, \cdots, K).$$
-- Assim, temos $K$ CRES independentes em cada estrato do _propensity score_ e podemos analizar os dados observacionais da mesma forma como no SRE (mas agora estratificado em $e(X)$) `r emo::ji("smile")`
+- Assim, temos um [SRE](https://ctruciosm.github.io/MI628-unicamp/MI628_Aula07#/popula%C3%A7%C3%A3o-finita-super-popula%C3%A7%C3%A3o-11), o que implica em $K$ CRES independentes em cada estrato do _propensity score_ e podemos analizar os dados observacionais da mesma forma como no SRE (mas agora estratificado em $e(X)$) `r emo::ji("smile")`
 
 
 ## Propensity Score: Redução de Dimensão
@@ -118,19 +124,19 @@ O Teorema anterior motiva um método para estimar efeitos causais: **Propensity 
 
 . . . 
 
-### Como então utilizar propensity score para estratificar?
+### E agora?
 
 - Ajustamos um modelo para $P(Z = 1 | X)$, por exemplo, um modelo logístico.
 - Os valores ajustados serão os _propensity score_ estimados, $\hat{e}(X)$.
--$\hat{e}(X)$ pode assumir tantos valores quanto o tamanho do conjunto de dados ($n$) `r emo::ji("sad")`.
-- Contudo, podemos discretizar (utilizando os quantis ou algum outro método) $\hat{e}(X)$ e termos (aproximadamente) $$Z \perp\!\!\!\perp  \{ Y(1), Y(0)\} | \hat{e}'(X) = e_k \quad (k = 1, \cdots, K),$$ em que $\hat{e}'(X)$ são os quantis `r emo::ji("smile")`.
+- $\hat{e}(X)$ não precisa ser discreto (de fato pode assumir tanto valores quantas observações disponíveis) `r emo::ji("sad")`.
+- Contudo, podemos discretizar (utilizando os quantis ou algum outro método) $\hat{e}(X)$ e termos (aproximadamente) $$Z \perp\!\!\!\perp  \{ Y(1), Y(0)\} | \hat{e}'(X) = e_k \quad (k = 1, \cdots, K),$$ em que $\hat{e}'(X)$ são os valores discretizados `r emo::ji("smile")`.
 
 
 ## Propensity Score: Redução de Dimensão
 
 - Para obtermos $\hat{e}(X)$ precisamos ajustar um modelo, o que nos leva a pensar se o estimador final é dependente do modelo escolhido.
 - Note que a estratificação utilizando _propensity score_ apenas precisa que a ordem esteja correta em lugar do que seus valores exatos.
-- Isto torna o método um pouco robusto à escolha do modelo.
+- Isto torna o método (um pouco) robusto à escolha do modelo.
 
 ## Propensity Score: Redução de Dimensão
 
@@ -181,7 +187,7 @@ Calculamos $\hat{e}(X)$
 
 ```{r}
 #| echo: true
-prop_score <- glm(z ~ x, family = binomial)$fitted.values 
+prop_score <- glm(z ~ x, family = binomial)$fitted.values
 ```
 
 ## Propensity Score: Redução de Dimensão
@@ -253,6 +259,26 @@ resultados
 O estimador de Lin e o método de _propensity score stratification_ fornecem, qualitativamente, os mesmo resultados. Já o estimador Naive difere bastante dos outros métodos (**Why?**) enquanto que Fisher devolve um efeito positivo, porém, insignificante.
 
 
+## Propensity Score: Redução de Dimensão
+
+
+```{r}
+#| echo: true
+mahalanobis2 = function(z, x) {
+  x1 <- x[z == 1, ]
+  x0 <- x[z == 0, ]
+  n1 <- nrow(x1)
+  n0 <- nrow(x0)
+  diff <- apply(x1, 2, mean) - apply(x0, 2, mean)
+  covar <- (n1 + n0)/(n1 * n0) * cov(x)
+  M <- t(diff) %*% solve(covar) %*% diff
+  return(M)
+}
+mahalanobis2(z, x)
+```
+
+O (alto) nível de desbalanceameto explica o motivo pelo qual o método Naive difere tanto dos outros métodos.
+
 # Propensity Score: Ponderação
 ## Propensity Score: Ponderação
 
@@ -264,7 +290,7 @@ Se $Z \perp\!\!\!\perp \{ Y(1), Y(0)\} | X$ e $0 < e(X) < 1$, então: $$\mathbb{
 :::
 
 <aside>
-A condição $0 < e(X) < 1$ é conhecida como a condição de sobreposição (*overlap*) ou positividade (*positivity*)
+A condição $0 < e(X) < 1$ é conhecida como a condição de sobreposição (*overlap*) ou positividade (*positivity*). Ela é necessária para o Teorema estar bem definido.
 </aside>
 
 
@@ -303,7 +329,7 @@ O estimador IPW (Inverse Propensity Score Weighting), também conhecido como est
 ## Estimador IPW
 
 - Muitos resultados assintóticos requerem que $0 < \alpha_L <e(X) < \alpha_U < 1$ (condicação conhecida como sobreposição forte).
-- Contudo, esta suposição é bastante forte (D'Amour et al. 2021) e mesmo se a condição é verificada para $e(X)$ não há garantia que seja verificada para $\hat{e}(X)$ fazendo com que o estimador _exploda_, tornando os resultados bastante instáveis.
+- Contudo, esta suposição é bastante forte (D'Amour et al. 2021) e mesmo se a condição é verificada para $e(X)$ não há garantia que seja verificada para $\hat{e}(X)$ (o que permite que o estimador _exploda_, tornando os resultados bastante instáveis).
 - Para evitar isto, podemos: substituir $\hat{e}(X)$ por $\max [\alpha_L, \min[\hat{e}(X_i), \alpha_U]]$.
 - Algumas escolhas comuns para $\alpha_L$ e $\alpha_U$ são 0.1 e 0.9 ou 0.05 e 0.95.
 
@@ -369,14 +395,13 @@ x <- scale(dados[, -c(1, 2)])
 ```
 
 A maneira de exemplo, utilizaremos diversos valores de $\alpha_L$ e $\alpha_U$:
-::: {.non-incremenral}
+
+::: {.nonincremenral}
 - (0, 1)
 - (0.01, 0.99)
 - (0.05, 0.95)
 - (0.1, 0.9)
 :::
-
-
 :::
 
 
@@ -385,6 +410,7 @@ A maneira de exemplo, utilizaremos diversos valores de $\alpha_L$ e $\alpha_U$:
 ::: {.callout-note}
 ### Exemplo (Merenda e BMI)
 ```{r}
+#| echo: true
 l_alphas <- list(alpha_01 = c(0, 1), alpha_02 = c(0.01, 0.99),
                alpha_03 = c(0.05, 0.95), alpha_04 = c(0.1, .9))
 
@@ -405,7 +431,7 @@ trim_estim
 
 ::: {.callout-tip}
 ### Teorema
-O _propensity score_ satisfaz $$Z \perp\!\!\!\perp Z \ e(X).$$ Ademais, para qualquer função $h(\cdot)$, temos que $$\mathbb{E} \Big [\dfrac{Zh(X)}{e(X)} \Big] = \mathbb{E} \Big[\dfrac{(1 - Z) h(X)}{1- e(X)} \Big],$$ desde que ambas as $\mathbb{E}(\cdot)$ existam.
+O _propensity score_ satisfaz $$Z \perp\!\!\!\perp X | e(X).$$ Ademais, para qualquer função $h(\cdot)$, temos que $$\mathbb{E} \Big [\dfrac{Zh(X)}{e(X)} \Big] = \mathbb{E} \Big[\dfrac{(1 - Z) h(X)}{1- e(X)} \Big],$$ desde que ambas as $\mathbb{E}(\cdot)$ existam.
 :::
 
 . . . 
@@ -416,7 +442,7 @@ O _propensity score_ satisfaz $$Z \perp\!\!\!\perp Z \ e(X).$$ Ademais, para qua
 
 
 - Condicional no _propensity score_, a indicadora de tratamento e as covariáveis são independentes.
-- Dentro de cada nível do _propensity score_, a distribuição das covariáveis é balanceada entre tratamento e controle.
+- Portanto, dentro de cada nível do _propensity score_, a distribuição das covariáveis é balanceada entre tratamento e controle.
 
 
 ## Propensity Score: Balanceamento
