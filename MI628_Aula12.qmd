@@ -1,0 +1,84 @@
+---
+title: "Inferência Causal"
+subtitle: "Propensity score em modelos de regressão"
+author: "Prof. Carlos Trucíos </br> ctrucios@unicamp.br"
+Email: "ctrucios@unicamp.br"
+institute: "Instituto de Matemática, Estatística e Computação Científica (IMECC), </br> Universidade Estadual de Campinas (UNICAMP)."
+toc: true
+toc-depth: 1
+toc-title: "Conteúdo"
+knitr:
+    opts_chunk: 
+      fig.align: 'center'
+execute:
+    message: false
+    warning: false
+format:
+    revealjs:
+        slide-number: true
+        show-slide-number: print
+        self-contained: false
+        chalkboard: true
+        width: 1600
+        height: 900
+        theme: [default, styles.scss]
+        incremental: true
+        code-fold: true
+        logo: "imagens/imecc.png"
+        footer: "Carlos Trucíos (IMECC/UNICAMP)  |  ME920/MI628 - Inferência Causal |  [ctruciosm.github.io](https://ctruciosm.github.io/)"
+        highlight-style: "a11y"
+        title-slide-attributes:
+            data-background-image: "imagens/unicamp.png"
+            data-background-size: 20%
+            data-background-position: 99% 5%
+            data-background-opacity: "1"
+---
+
+
+
+# Introdução
+## Introdução
+
+- Desde que [Rosenbaum e Rubin (1983)](https://academic.oup.com/biomet/article/70/1/41/240879) introduziram _propensity score_, diversos usos tem aparecido na literatura.
+- Hoje discutiremos dois métodos que utilizam _propensity score_:
+    *   Incluir _propensity score_ como covariável num modelo de regressão.
+    *   Ajustar uma regressão ponderada com pesos dados pelo inverso do _propensity score_.
+- Estas propostas são fáceis de implementar e tem propriedades semelhantes a muitas das propostas mais complexas.
+
+
+# Propensity score como covariável
+## Propensity score como covariável
+
+[Anteriormente](https://ctruciosm.github.io/MI628-unicamp/MI628_Aula09#/propensity-score-redu%C3%A7%C3%A3o-de-dimens%C3%A3o-1), vimos que se ignorabilidade acontece (condicionada em $X$), também acontece condicionada em $e(X)$. Ou seja, $$Z \perp\!\!\!\perp  \{ Y(1), Y(0)\} | e(X).$$
+
+
+. . . 
+
+
+Ademais, \begin{align}
+\tau & = \mathbb{E}[Y(1) - Y(0)], \\
+     & = \mathbb{E}[Y(1)] - \mathbb{E}[Y(1)], \\
+     & = \mathbb{E}[\mathbb{E} \{ Y(1)| Z = 1, e(X) \}] - \mathbb{E}[\mathbb{E} \{ Y(0)| Z = 0, e(X) \}], \\
+     & = \mathbb{E}[\mathbb{E} \{ Y| Z = 1, e(X) \} - \mathbb{E} \{ Y| Z = 0, e(X) \}].
+\end{align}
+
+. . . 
+
+<center>
+[Isto, motiva um método baseado na regressão de $Y$ com $Z$ e $e(X)$.]{style="color:red"}
+</center>
+
+
+
+
+
+
+
+
+## Referências
+
+::: {.nonincremental}
+
+- Peng Ding (2023). A First Course in Causal Inference. Capítulo 14.
+
+:::
