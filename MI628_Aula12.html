@@ -346,6 +346,7 @@ Prof.&nbsp;Carlos Trucíos <br> ctrucios@unicamp.br
 <ul>
 <li class="fragment"><a href="#/introdução" id="/toc-introdução">Introdução</a></li>
 <li class="fragment"><a href="#/propensity-score-como-covariável" id="/toc-propensity-score-como-covariável">Propensity score como covariável</a></li>
+<li class="fragment"><a href="#/mqp" id="/toc-mqp">MQP</a></li>
 </ul>
 </nav>
 </section>
@@ -384,8 +385,137 @@ Prof.&nbsp;Carlos Trucíos <br> ctrucios@unicamp.br
 </div>
 <div class="fragment">
 <center>
-Isto, motiva um método baseado na regressão de <span class="math inline">\(Y\)</span> com <span class="math inline">\(Z\)</span> e <span class="math inline">\(e(X)\)</span>.
+<span style="color:red">Isto, motiva um método baseado na regressão de <span class="math inline">\(Y\)</span> com <span class="math inline">\(Z\)</span> e <span class="math inline">\(e(X)\)</span>.</span>
 </center>
+</div>
+</section>
+<section id="propensity-score-como-covariável-2" class="slide level2">
+<h2>Propensity score como covariável</h2>
+<ul>
+<li class="fragment">A especificação mais simples é ajustar, por MQO, uma regressão linear múltiple de <span class="math inline">\(Y\)</span> sob <span class="math inline">\((1, Z, e(X))\)</span>.</li>
+<li class="fragment">O estimador desejado será o coeficiente associado a <span class="math inline">\(Z\)</span> e será denotado por <span class="math inline">\(\tau_e\)</span>.</li>
+<li class="fragment">Se o modelo do <em>propensity score</em> for correto e <span class="math inline">\(Y\)</span> for linear em <span class="math inline">\(Z\)</span> e <span class="math inline">\(e(X)\)</span>, então <span class="math inline">\(\tau_e\)</span> é consistente para <span class="math inline">\(\tau\)</span>.</li>
+<li class="fragment">Ademais, <span class="math inline">\(\tau_e\)</span> estima <span class="math inline">\(\tau_O\)</span> se o modelo do <em>propensity score</em> for correto, mesmo se <span class="math inline">\(Y\)</span> for má-especificado.</li>
+</ul>
+</section>
+<section id="propensity-score-como-covariável-3" class="slide level2">
+<h2>Propensity score como covariável</h2>
+<div class="callout callout-tip callout-captioned callout-style-default">
+<div class="callout-body">
+<div class="callout-caption">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Teorema</strong></p>
+</div>
+<div class="callout-content">
+<p>Se <span class="math inline">\(Z \perp\!\!\!\perp \{ Y(1), Y(0)\} | X\)</span>, então o coeficiente associado a <span class="math inline">\(Z\)</span> na regressão (populacional) por MQO de <span class="math inline">\(Y\)</span> sob <span class="math inline">\((1, Z, e(X))\)</span> é igual a:</p>
+<p><span class="math display">\[\tau_e = \tau_O = \dfrac{\mathbb{E}[h_O(X)\tau(X)]}{\mathbb{E}[h_O(X)]},\]</span> em que <span class="math inline">\(h_O(X) = e(X)(1 - e(X))\)</span> e <span class="math inline">\(\tau(X) = \mathbb{E}[Y(1) - Y(0)|X].\)</span></p>
+</div>
+</div>
+</div>
+<center>
+<span style="color:red"><strong>Demostração</strong> (no quadro)</span>
+</center>
+</section>
+<section id="propensity-score-como-covariável-4" class="slide level2">
+<h2>Propensity score como covariável</h2>
+<div class="callout callout-tip callout-captioned callout-style-default">
+<div class="callout-body">
+<div class="callout-caption">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Corolário</strong></p>
+</div>
+<div class="callout-content">
+<p>Se <span class="math inline">\(Z \perp\!\!\!\perp \{ Y(1), Y(0)\} | X\)</span>, então:</p>
+<div>
+<ol type="1">
+<li>O coeficiente associado a <span class="math inline">\(Z - e(X)\)</span> na regressão (populacional) por MQO de <span class="math inline">\(Y\)</span> sob <span class="math inline">\((1, Z - e(X))\)</span> é igual a <span class="math inline">\(\tau_O\)</span>.</li>
+<li>O coeficiente associado a <span class="math inline">\(Z\)</span> na regressão (populacional) por MQO de <span class="math inline">\(Y\)</span> sob <span class="math inline">\((1, Z, e(X), X)\)</span> é igual a <span class="math inline">\(\tau_O\)</span>.</li>
+</ol>
+</div>
+</div>
+</div>
+</div>
+<center>
+<span style="color:red"><strong>Demostração</strong> (no quadro)</span>
+</center>
+</section>
+<section id="propensity-score-como-covariável-5" class="slide level2">
+<h2>Propensity score como covariável</h2>
+<p>Os resultados teóricos anunciados anteriormente, motivam os seguines estimadores:</p>
+<div class="columns">
+<div class="column" style="width:33.3%;">
+<h4 id="estimador-1">Estimador 1</h4>
+<div>
+<ol type="1">
+<li>Ajustar um modelo de <em>propensity score</em> e obter <span class="math inline">\(\hat{e}(X_i).\)</span></li>
+<li>Ajustar, por MQO, a regressão de <span class="math inline">\(Y\)</span> sob <span class="math inline">\((1, Z, \hat{e}(X))\)</span> e obter o coeficiente associado a <span class="math inline">\(Z\)</span>.</li>
+</ol>
+</div>
+</div><div class="column" style="width:33.4%;">
+<h4 id="estimador-2">Estimador 2</h4>
+<div>
+<ol type="1">
+<li>Ajustar um modelo de <em>propensity score</em> e obter <span class="math inline">\(\hat{e}(X_i).\)</span></li>
+<li>Ajustar, por MQO, a regressão de <span class="math inline">\(Y\)</span> sob <span class="math inline">\((1, Z - \hat{e}(X))\)</span> e obter o coeficiente associado a <span class="math inline">\(Z - \hat{e}(X)\)</span>.</li>
+</ol>
+</div>
+</div><div class="column" style="width:33.3%;">
+<h4 id="estimador-3">Estimador 3</h4>
+<div>
+<ol type="1">
+<li>Ajustar um modelo de <em>propensity score</em> e obter <span class="math inline">\(\hat{e}(X_i).\)</span></li>
+<li>Ajustar, por MQO, a regressão de <span class="math inline">\(Y\)</span> sob <span class="math inline">\((1, Z, \hat{e}(X), X)\)</span> e obter o coeficiente associado a <span class="math inline">\(Z\)</span>.</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="fragment">
+<center>
+<span style="color:blue">Embora MQO é conveniente para obtermos estmadores pontuais, os correspondentes desvios padrão são incorretos devido à incerteza no passo 1. Uma alternativa é utilizar Bootstrap.</span>
+</center>
+</div>
+</section></section>
+<section>
+<section id="mqp" class="title-slide slide level1 center">
+<h1>MQP</h1>
+
+</section>
+<section id="mqp-1" class="slide level2">
+<h2>MQP</h2>
+<p>Lembremos do estimador de Hajek para <span class="math inline">\(\tau\)</span>:</p>
+<p><span class="math display">\[\hat{\tau}^{Hajek} = \dfrac{\displaystyle \sum_{i = 1}^n \dfrac{Z_iY_i}{\hat{e}(X_i)}}{\displaystyle \sum_{i = 1}^n \dfrac{Z_i}{\hat{e}(X_i)}} - \dfrac{\displaystyle \sum_{i = 1}^n \dfrac{(1 - Z_i)Y_i}{(1 - \hat{e}(X_i))}}{\displaystyle \sum_{i = 1}^n \dfrac{(1 - Z_i)}{(1 - \hat{e}(X_i))}}.\]</span></p>
+<div class="fragment">
+<center>
+<span style="color:red"><span class="math inline">\(\hat{\tau}^{Hajek}\)</span> concide com o coeficiente associado a <span class="math inline">\(Z\)</span> da regressão por MQP de <span class="math inline">\(Y\)</span> sob <span class="math inline">\((1, Z).\)</span></span>
+</center>
+</div>
+</section>
+<section id="mqp-2" class="slide level2">
+<h2>MQP</h2>
+<div class="callout callout-tip callout-captioned callout-style-default">
+<div class="callout-body">
+<div class="callout-caption">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Proposição</strong></p>
+</div>
+<div class="callout-content">
+<p><span class="math inline">\(\hat{\tau}^{Hajek}\)</span> é igual ao <span class="math inline">\(\hat{\beta}\)</span> da regressão por MQP, i.e, <span class="math display">\[(\hat{\alpha}, \hat{\beta}) = arg\min_{\alpha, \beta} \displaystyle \sum_{i = 1}^n w_i (Y_i - \alpha - \beta Z_i)^2,\]</span> em que <span class="math inline">\(w_i = \dfrac{Z_i}{\hat{e}(X_i)} + \dfrac{1 - Z_i}{1 - \hat{e}(X_i)} = \left\{ \begin{array}{ll}  \dfrac{1}{\hat{e}(X_i)} &amp; \text{se } Z_i = 1,\\  \dfrac{1}{1 - \hat{e}(X_i)} &amp; \text{se } Z_i = 0.  \end{array}\right.\)</span></p>
+</div>
+</div>
+</div>
+<div class="fragment">
+<h4 id="observação">Observação:</h4>
+<ul>
+<li class="fragment">Por simplicidade, é conveniente utilizar MQP para obter <span class="math inline">\(\hat{\tau}^{Hajek}\)</span>.</li>
+<li class="fragment">Contudo, devemos ter cuidado com o desvio padrão reportado por MQP pois este não leva em consideração a incerteza da estimação do <em>propensity score.</em></li>
+<li class="fragment">Uma forma de contornar o problema é utilizando Bootstrap para estimar o desvio padrão.</li>
+</ul>
 </div>
 </section>
 <section id="referências" class="slide level2">

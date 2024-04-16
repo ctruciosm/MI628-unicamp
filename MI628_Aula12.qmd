@@ -69,11 +69,121 @@ Ademais, \begin{align}
 </center>
 
 
+## Propensity score como covariável
+
+- A especificação mais simples é ajustar, por MQO, uma regressão linear múltiple de $Y$ sob $(1, Z, e(X))$.
+- O estimador desejado será o coeficiente associado a $Z$ e será denotado por $\tau_e$.
+- Se o modelo do _propensity score_ for correto e $Y$ for linear em $Z$ e $e(X)$, então $\tau_e$ é consistente para $\tau$.
+- Ademais, $\tau_e$ estima $\tau_O$ se o modelo do _propensity score_ for correto, mesmo se $Y$ for má-especificado.
 
 
+## Propensity score como covariável
+
+::: {.callout-tip}
+### Teorema
+Se $Z \perp\!\!\!\perp  \{ Y(1), Y(0)\} | X$, então o coeficiente associado a $Z$ na regressão (populacional) por MQO de $Y$ sob $(1, Z, e(X))$ é igual a: 
 
 
+$$\tau_e = \tau_O = \dfrac{\mathbb{E}[h_O(X)\tau(X)]}{\mathbb{E}[h_O(X)]},$$ em que $h_O(X) = e(X)(1 - e(X))$ e $\tau(X) = \mathbb{E}[Y(1) - Y(0)|X].$
 
+:::
+
+<center>
+[**Demostração** (no quadro)]{style="color:red"}
+</center>
+
+
+## Propensity score como covariável
+
+::: {.callout-tip}
+### Corolário
+Se $Z \perp\!\!\!\perp  \{ Y(1), Y(0)\} | X$, então:
+
+::: {.nonincremental}
+1. O coeficiente associado a $Z - e(X)$ na regressão (populacional) por MQO de $Y$ sob $(1, Z - e(X))$ é igual a $\tau_O$.
+2. O coeficiente associado a $Z$ na regressão (populacional) por MQO de $Y$ sob $(1, Z, e(X), X)$ é igual a $\tau_O$.
+:::
+
+:::
+
+<center>
+[**Demostração** (no quadro)]{style="color:red"}
+</center>
+
+## Propensity score como covariável
+
+Os resultados teóricos anunciados anteriormente, motivam os seguines estimadores:
+
+
+:::: {.columns}
+
+::: {.column width="33.3%"}
+#### Estimador 1
+::: {.nonincremental}
+1. Ajustar um modelo de _propensity score_ e obter $\hat{e}(X_i).$
+2. Ajustar, por MQO, a regressão de $Y$ sob $(1, Z, \hat{e}(X))$ e obter o coeficiente associado a $Z$.
+:::
+:::
+
+::: {.column width="33.4%"}
+#### Estimador 2
+::: {.nonincremental}
+1. Ajustar um modelo de _propensity score_ e obter $\hat{e}(X_i).$
+2. Ajustar, por MQO, a regressão de $Y$ sob $(1, Z - \hat{e}(X))$ e obter o coeficiente associado a $Z - \hat{e}(X)$.
+:::
+:::
+
+::: {.column width="33.3%"}
+#### Estimador 3
+::: {.nonincremental}
+1. Ajustar um modelo de _propensity score_ e obter $\hat{e}(X_i).$
+2. Ajustar, por MQO, a regressão de $Y$ sob $(1, Z, \hat{e}(X), X)$ e obter o coeficiente associado a $Z$.
+:::
+:::
+
+::::
+
+. . . 
+
+<center>
+[Embora MQO é conveniente para obtermos estmadores pontuais, os correspondentes desvios padrão são incorretos devido à incerteza no passo 1. Uma alternativa é utilizar Bootstrap.]{style="color:blue"}
+</center>
+
+
+# MQP
+## MQP
+
+Lembremos do estimador de Hajek para $\tau$: 
+
+$$\hat{\tau}^{Hajek} = \dfrac{\displaystyle \sum_{i = 1}^n \dfrac{Z_iY_i}{\hat{e}(X_i)}}{\displaystyle \sum_{i = 1}^n \dfrac{Z_i}{\hat{e}(X_i)}} - \dfrac{\displaystyle \sum_{i = 1}^n \dfrac{(1 - Z_i)Y_i}{(1 - \hat{e}(X_i))}}{\displaystyle \sum_{i = 1}^n \dfrac{(1 - Z_i)}{(1 - \hat{e}(X_i))}}.$$
+
+
+. . . 
+
+<center>
+[$\hat{\tau}^{Hajek}$ concide com o coeficiente associado a $Z$ da regressão por MQP de $Y$ sob $(1, Z).$]{style="color:red"}
+</center>
+
+
+## MQP
+
+
+::: {.callout-tip}
+### Proposição
+$\hat{\tau}^{Hajek}$ é igual ao $\hat{\beta}$ da regressão por MQP, i.e, $$(\hat{\alpha}, \hat{\beta}) = arg\min_{\alpha, \beta} \displaystyle \sum_{i = 1}^n w_i (Y_i - \alpha - \beta Z_i)^2,$$ em que $w_i = \dfrac{Z_i}{\hat{e}(X_i)} + \dfrac{1 - Z_i}{1 - \hat{e}(X_i)} = \left\{ \begin{array}{ll}
+		\dfrac{1}{\hat{e}(X_i)} & \text{se }  Z_i = 1,\\
+		\dfrac{1}{1 - \hat{e}(X_i)} & \text{se }  Z_i = 0.
+	\end{array}\right.$
+
+:::
+
+. . . 
+
+#### Observação:
+
+- Por simplicidade, é conveniente utilizar MQP para obter $\hat{\tau}^{Hajek}$.
+- Contudo, devemos ter cuidado com o desvio padrão reportado por MQP pois este não leva em consideração a incerteza da estimação do _propensity score._
+- Uma forma de contornar o problema é utilizando Bootstrap para estimar o desvio padrão.
 
 ## Referências
 
