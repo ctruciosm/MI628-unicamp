@@ -182,8 +182,97 @@ $\hat{\tau}^{Hajek}$ é igual ao $\hat{\beta}$ da regressão por MQP, i.e, $$(\h
 #### Observação:
 
 - Por simplicidade, é conveniente utilizar MQP para obter $\hat{\tau}^{Hajek}$.
-- Contudo, devemos ter cuidado com o desvio padrão reportado por MQP pois este não leva em consideração a incerteza da estimação do _propensity score._
-- Uma forma de contornar o problema é utilizando Bootstrap para estimar o desvio padrão.
+- Contudo, devemos ter cuidado com o desvio padrão reportado por MQP pois este não leva em consideração a incerteza da estimação do _propensity score._ Uma forma de contornar o problema é utilizando Bootstrap para estimar o desvio padrão.
+
+
+## MQP
+
+
+- No CRE tinhamos visto que, para melhorar a eficiência, podiamos ajustar a regressão de $Y$ sob $(1, Z, X, Z \times X)$ (Estimador de Lin).
+- Seré no contexto de estudos observacionais podemos ajustar MQP $Y$ sob $(1, Z, X, Z \times X)$?
+    *   **Sim!**
+    *   De fato, Hirano e Imbens (2001) utilizam esta mesma ideia.
+    *   Esta proposta é interessante pois o estimador obtido por MQP será também DR
+    
+    
+## MQP
+
+::: {.callout-tip}
+### Teorema
+Se $\bar{X} = 0$ and $(\mu_1(X, \hat{\beta}_1), \mu_0(X, \hat{\beta}_0)) = (\hat{\beta}_{10} + X \hat{\beta}_{11}, \hat{\beta}_{00} + X \hat{\beta}_{01})$ baseado na regressão por MQP de $Y$ sob $(1, Z, X, Z \times X)$ com $w_i = \left\{ \begin{array}{ll}
+		\dfrac{1}{\hat{e}(X_i)} & \text{se }  Z_i = 1,\\
+		\dfrac{1}{1 - \hat{e}(X_i)} & \text{se }  Z_i = 0.
+	\end{array}\right,$ então $$\hat{\tau}_{MQP}^{DR} = \hat{\tau}_{MQP}^{Reg} = \hat{\beta}_{10} - \hat{\beta}_{00},$$ que é o coeficiente associado a $Z$ na regressão por MQP
+:::
+
+<center>
+[**Demostração** (no quadro)]{style="color:red"}
+</center>
+
+
+## MQP
+
+
+::: {.callout-note}
+### Estimadors
+
+|                    | CRE        | Estudos Observacionais     |
+|:------------------:|:----------:|:--------------------------:|
+| Sem $X$            | $Y~(1, Z)$ | $Y~(1, Z)$ com pesos $w_i$ |
+| Com $X$            | $Y~(1, Z, X, Z \times X)$ | $Y~(1, Z, X, Z \times X)$ com pesos $w_i$ |
+
+:::
+
+
+<aside>
+Os estudos observacionais mencionados aqui assumem que a suposição de ignorabilidade acontece, ou seja, não existe nenhuma variável de confusão que não tenha sido medida.
+</aside>
+
+
+# Efeito causal médio nas unidades de tratamento
+## Efeito causal médio nas unidades de tratamento
+
+O estimador de Hajek para $\tau_T$ é dado por
+
+$$\hat{\tau}_T^{Hajek} = \hat{\bar{Y}}(1) - \dfrac{\sum_{i = 1}^n \hat{o}(X_i)(1 - Z_i) Y_i}{\sum_{i = 1}^n \hat{o}(X_i)(1 - Z_i)},$$ com $\hat{o}(X_i) = \hat{e}(X_i) /(1 - \hat{e}(X_i))$.
+
+
+#### Observação:
+<center>
+$\hat{\tau}_T^{Hajek}$ coincide com coeficiente associado a $Z$ na regressão por MQP de $Y$ sob $(1, Z)$ com $w_{Ti} = Z_i+ (1 - Z_i)\hat{o}(X_i)= \left\{ \begin{array}{ll}
+		1& \text{se }  Z_i = 1,\\
+		\hat{o}(X_i) & \text{se }  Z_i = 0.
+	\end{array}\right.$
+</center>
+
+
+## Efeito causal médio nas unidades de tratamento
+
+
+De forma semelhante ao desenvolvido para $\tau$, se $\bar{X}(1) = 0$ podemos estimar $\tau_T$ como o coeficiente associado a $Z$ da regressão por MQP de $Y$ sob $(1, Z, X, Z \times X)$ com pesos $w_{Ti} = \left\{ \begin{array}{ll}
+		1& \text{se }  Z_i = 1,\\
+		\hat{o}(X_i) & \text{se }  Z_i = 0.
+	\end{array}\right.$
+
+Este estimador é igual ao estimador de regressão $$\hat{\tau}_{T, MQP}^{Reg} = \hat{\bar{Y}}(1) - \dfrac{1}{n_1} \sum_{i = 1}^n Z_i \mu_0(X_i, \hat{\beta}_0),$$ que por sua vez, é igual ao estimador DR
+
+$$\hat{\tau}_{T, MQP}^{DR} = \hat{\tau}_{T, MQP}^{Reg} - \dfrac{1}{n_1}\sum_{i = 1}^n\hat{o}(X_i)(1 - Z_i)(Y_i - \mu_0(X_i, \hat{\beta}_0)).$$
+
+
+## Efeito causal médio nas unidades de tratamento
+
+
+
+::: {.callout-tip}
+### Teorema
+Se $\bar{X}(1) = 0$ e $\mu_0(X_i, \hat{\beta}_0) = \hat{\beta}_{00} + X_i \hat{\beta}_{01}$ baseado na regressão por MQP de $Y$ sob $(1, Z, X, Z \times X)$ com pesos $w_{Ti} = \left\{ \begin{array}{ll}
+		1& \text{se }  Z_i = 1,\\
+		\hat{o}(X_i) & \text{se }  Z_i = 0.
+	\end{array}\right,$
+
+$$\hat{\tau}_{T, MQP}^{DR} = \hat{\tau}_{T, MQP}^{Reg} = \hat{\beta}_{10} - \hat{\beta}_{00},$$ que é o coeficiente associado a $Z$ na regressão por MQP.
+:::
+
 
 ## Referências
 

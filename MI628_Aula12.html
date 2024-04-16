@@ -7,7 +7,7 @@
 <link href="MI628_Aula12_files/libs/quarto-html/tippy.css" rel="stylesheet">
 <link href="MI628_Aula12_files/libs/quarto-html/quarto-html.min.css" rel="stylesheet" data-mode="light">
 <link href="MI628_Aula12_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
-  <meta name="generator" content="quarto-1.2.269">
+  <meta name="generator" content="quarto-1.2.280">
 
   <meta name="author" content="Prof.&nbsp;Carlos Trucíos  ctrucios@unicamp.br">
   <title>Inferência Causal</title>
@@ -347,6 +347,7 @@ Prof.&nbsp;Carlos Trucíos <br> ctrucios@unicamp.br
 <li class="fragment"><a href="#/introdução" id="/toc-introdução">Introdução</a></li>
 <li class="fragment"><a href="#/propensity-score-como-covariável" id="/toc-propensity-score-como-covariável">Propensity score como covariável</a></li>
 <li class="fragment"><a href="#/mqp" id="/toc-mqp">MQP</a></li>
+<li class="fragment"><a href="#/efeito-causal-médio-nas-unidades-de-tratamento" id="/toc-efeito-causal-médio-nas-unidades-de-tratamento">Efeito causal médio nas unidades de tratamento</a></li>
 </ul>
 </nav>
 </section>
@@ -513,9 +514,120 @@ Prof.&nbsp;Carlos Trucíos <br> ctrucios@unicamp.br
 <h4 id="observação">Observação:</h4>
 <ul>
 <li class="fragment">Por simplicidade, é conveniente utilizar MQP para obter <span class="math inline">\(\hat{\tau}^{Hajek}\)</span>.</li>
-<li class="fragment">Contudo, devemos ter cuidado com o desvio padrão reportado por MQP pois este não leva em consideração a incerteza da estimação do <em>propensity score.</em></li>
-<li class="fragment">Uma forma de contornar o problema é utilizando Bootstrap para estimar o desvio padrão.</li>
+<li class="fragment">Contudo, devemos ter cuidado com o desvio padrão reportado por MQP pois este não leva em consideração a incerteza da estimação do <em>propensity score.</em> Uma forma de contornar o problema é utilizando Bootstrap para estimar o desvio padrão.</li>
 </ul>
+</div>
+</section>
+<section id="mqp-3" class="slide level2">
+<h2>MQP</h2>
+<ul>
+<li class="fragment">No CRE tinhamos visto que, para melhorar a eficiência, podiamos ajustar a regressão de <span class="math inline">\(Y\)</span> sob <span class="math inline">\((1, Z, X, Z \times X)\)</span> (Estimador de Lin).</li>
+<li class="fragment">Seré no contexto de estudos observacionais podemos ajustar MQP <span class="math inline">\(Y\)</span> sob <span class="math inline">\((1, Z, X, Z \times X)\)</span>?
+<ul>
+<li class="fragment"><strong>Sim!</strong></li>
+<li class="fragment">De fato, Hirano e Imbens (2001) utilizam esta mesma ideia.</li>
+<li class="fragment">Esta proposta é interessante pois o estimador obtido por MQP será também DR</li>
+</ul></li>
+</ul>
+</section>
+<section id="mqp-4" class="slide level2">
+<h2>MQP</h2>
+<div class="callout callout-tip callout-captioned callout-style-default">
+<div class="callout-body">
+<div class="callout-caption">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Teorema</strong></p>
+</div>
+<div class="callout-content">
+<p>Se <span class="math inline">\(\bar{X} = 0\)</span> and <span class="math inline">\((\mu_1(X, \hat{\beta}_1), \mu_0(X, \hat{\beta}_0)) = (\hat{\beta}_{10} + X \hat{\beta}_{11}, \hat{\beta}_{00} + X \hat{\beta}_{01})\)</span> baseado na regressão por MQP de <span class="math inline">\(Y\)</span> sob <span class="math inline">\((1, Z, X, Z \times X)\)</span> com <span class="math inline">\(w_i = \left\{ \begin{array}{ll}  \dfrac{1}{\hat{e}(X_i)} &amp; \text{se } Z_i = 1,\\  \dfrac{1}{1 - \hat{e}(X_i)} &amp; \text{se } Z_i = 0.  \end{array}\right,\)</span> então <span class="math display">\[\hat{\tau}_{MQP}^{DR} = \hat{\tau}_{MQP}^{Reg} = \hat{\beta}_{10} - \hat{\beta}_{00},\]</span> que é o coeficiente associado a <span class="math inline">\(Z\)</span> na regressão por MQP</p>
+</div>
+</div>
+</div>
+<center>
+<span style="color:red"><strong>Demostração</strong> (no quadro)</span>
+</center>
+</section>
+<section id="mqp-5" class="slide level2">
+<h2>MQP</h2>
+<div class="callout callout-note callout-captioned callout-style-default">
+<div class="callout-body">
+<div class="callout-caption">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Estimadors</strong></p>
+</div>
+<div class="callout-content">
+<table>
+<colgroup>
+<col style="width: 33%">
+<col style="width: 20%">
+<col style="width: 46%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: center;"></th>
+<th style="text-align: center;">CRE</th>
+<th style="text-align: center;">Estudos Observacionais</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;">Sem <span class="math inline">\(X\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(Y~(1, Z)\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(Y~(1, Z)\)</span> com pesos <span class="math inline">\(w_i\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">Com <span class="math inline">\(X\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(Y~(1, Z, X, Z \times X)\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(Y~(1, Z, X, Z \times X)\)</span> com pesos <span class="math inline">\(w_i\)</span></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+
+<aside><div>
+Os estudos observacionais mencionados aqui assumem que a suposição de ignorabilidade acontece, ou seja, não existe nenhuma variável de confusão que não tenha sido medida.
+</div></aside></section></section>
+<section>
+<section id="efeito-causal-médio-nas-unidades-de-tratamento" class="title-slide slide level1 center">
+<h1>Efeito causal médio nas unidades de tratamento</h1>
+
+</section>
+<section id="efeito-causal-médio-nas-unidades-de-tratamento-1" class="slide level2">
+<h2>Efeito causal médio nas unidades de tratamento</h2>
+<p>O estimador de Hajek para <span class="math inline">\(\tau_T\)</span> é dado por</p>
+<p><span class="math display">\[\hat{\tau}_T^{Hajek} = \hat{\bar{Y}}(1) - \dfrac{\sum_{i = 1}^n \hat{o}(X_i)(1 - Z_i) Y_i}{\sum_{i = 1}^n \hat{o}(X_i)(1 - Z_i)},\]</span> com <span class="math inline">\(\hat{o}(X_i) = \hat{e}(X_i) /(1 - \hat{e}(X_i))\)</span>.</p>
+<h4 id="observação-1">Observação:</h4>
+<center>
+<span class="math inline">\(\hat{\tau}_T^{Hajek}\)</span> coincide com coeficiente associado a <span class="math inline">\(Z\)</span> na regressão por MQP de <span class="math inline">\(Y\)</span> sob <span class="math inline">\((1, Z)\)</span> com <span class="math inline">\(w_{Ti} = Z_i+ (1 - Z_i)\hat{o}(X_i)= \left\{ \begin{array}{ll}  1&amp; \text{se } Z_i = 1,\\  \hat{o}(X_i) &amp; \text{se } Z_i = 0.  \end{array}\right.\)</span>
+</center>
+</section>
+<section id="efeito-causal-médio-nas-unidades-de-tratamento-2" class="slide level2">
+<h2>Efeito causal médio nas unidades de tratamento</h2>
+<p>De forma semelhante ao desenvolvido para <span class="math inline">\(\tau\)</span>, se <span class="math inline">\(\bar{X}(1) = 0\)</span> podemos estimar <span class="math inline">\(\tau_T\)</span> como o coeficiente associado a <span class="math inline">\(Z\)</span> da regressão por MQP de <span class="math inline">\(Y\)</span> sob <span class="math inline">\((1, Z, X, Z \times X)\)</span> com pesos <span class="math inline">\(w_{Ti} = \left\{ \begin{array}{ll}  1&amp; \text{se } Z_i = 1,\\  \hat{o}(X_i) &amp; \text{se } Z_i = 0.  \end{array}\right.\)</span></p>
+<p>Este estimador é igual ao estimador de regressão <span class="math display">\[\hat{\tau}_{T, MQP}^{Reg} = \hat{\bar{Y}}(1) - \dfrac{1}{n_1} \sum_{i = 1}^n Z_i \mu_0(X_i, \hat{\beta}_0),\]</span> que por sua vez, é igual ao estimador DR</p>
+<p><span class="math display">\[\hat{\tau}_{T, MQP}^{DR} = \hat{\tau}_{T, MQP}^{Reg} - \dfrac{1}{n_1}\sum_{i = 1}^n\hat{o}(X_i)(1 - Z_i)(Y_i - \mu_0(X_i, \hat{\beta}_0)).\]</span></p>
+</section>
+<section id="efeito-causal-médio-nas-unidades-de-tratamento-3" class="slide level2">
+<h2>Efeito causal médio nas unidades de tratamento</h2>
+<div class="callout callout-tip callout-captioned callout-style-default">
+<div class="callout-body">
+<div class="callout-caption">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Teorema</strong></p>
+</div>
+<div class="callout-content">
+<p>Se <span class="math inline">\(\bar{X}(1) = 0\)</span> e <span class="math inline">\(\mu_0(X_i, \hat{\beta}_0) = \hat{\beta}_{00} + X_i \hat{\beta}_{01}\)</span> baseado na regressão por MQP de <span class="math inline">\(Y\)</span> sob <span class="math inline">\((1, Z, X, Z \times X)\)</span> com pesos <span class="math inline">\(w_{Ti} = \left\{ \begin{array}{ll}  1&amp; \text{se } Z_i = 1,\\  \hat{o}(X_i) &amp; \text{se } Z_i = 0.  \end{array}\right,\)</span></p>
+<p><span class="math display">\[\hat{\tau}_{T, MQP}^{DR} = \hat{\tau}_{T, MQP}^{Reg} = \hat{\beta}_{10} - \hat{\beta}_{00},\]</span> que é o coeficiente associado a <span class="math inline">\(Z\)</span> na regressão por MQP.</p>
+</div>
+</div>
 </div>
 </section>
 <section id="referências" class="slide level2">
