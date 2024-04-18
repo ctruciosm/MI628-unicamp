@@ -1,6 +1,6 @@
 ---
 title: "Inferência Causal"
-subtitle: "Augmented IPS"
+subtitle: "Estimador DR"
 author: "Prof. Carlos Trucíos </br> ctrucios@unicamp.br"
 Email: "ctrucios@unicamp.br"
 institute: "Instituto de Matemática, Estatística e Computação Científica (IMECC), </br> Universidade Estadual de Campinas (UNICAMP)."
@@ -39,21 +39,44 @@ format:
 # Introdução
 ## Introdução
 
-- Sob _ignorabilidade_ ($Z \perp\!\!\!\perp  \{ Y(1), Y(0)\} | X$) e _sobreposição_ ($0 < e(X) < 1$), temos mostrado duas  fórmulas de identificação do ACE ($\tau = \mathbb{E}[Y(1) - Y(0)]$).
-- A primeira, $$\tau = \mathbb{E}[\mu_1(X)]- \mathbb{E}[\mu_0(X)],$$em que $\mu_i(X) = \mathbb{E}[Y(i) | X] = \mathbb{E}[Y | Z = i, X]$.
-- A segunda, $$\tau = \mathbb{E}\Big[\dfrac{ZY}{e(X)} \Big] - \mathbb{E}\Big[\dfrac{(1- Z)Y}{1 - e(X)} \Big],$$em que $e(X) = P(Z = 1 | X)$ é o _propensity score_.
+Sob _ignorabilidade_ ($Z \perp\!\!\!\perp  \{ Y(1), Y(0)\} | X$) e _sobreposição_ ($0 < e(X) < 1$), temos mostrado duas  fórmulas de identificação do ACE ($\tau = \mathbb{E}[Y(1) - Y(0)]$).
+
+. . . 
+
+
+
+:::: {.columns}
+
+::: {.column width="50%"}
+### Outcome regression
+
+$$\tau = \mathbb{E}[\mu_1(X)]- \mathbb{E}[\mu_0(X)],$$em que $\mu_i(X) = \mathbb{E}[Y(i) | X] = \mathbb{E}[Y | Z = i, X]$
+
+
+:::
+
+::: {.column width="650%"}
+### IPW
+
+$$\tau = \mathbb{E}\Big[\dfrac{ZY}{e(X)} \Big] - \mathbb{E}\Big[\dfrac{(1- Z)Y}{1 - e(X)} \Big],$$em que $e(X) = P(Z = 1 | X)$ é o _propensity score_.
+
+:::
+
+::::
+
+
 
 ## Introdução
 
 
-- A primeira abordagem, precisa ajustar um modelo para o resultado dado o tratamento e covariáveis. É consistente se o modelo utilizado está corretamente especificado. 
-- A segunda abordagem precisa ajustar um modelo para o tratamento dadas as covariáveis. É consistente se o modelo do _propensity score_ for corretamente especificado.
+- Outcome regression, precisa ajustar um modelo para o resultado ($Y$) dado o tratamento ($Z$) e as covariáveis ($X$). É consistente se o modelo utilizado está corretamente especificado. 
+- IPW precisa ajustar um modelo para o tratamento ($Z$) dadas as covariáveis ($X$). É consistente se o modelo do _propensity score_ for corretamente especificado.
 - A combinação de ambas as abordagens motiva um novo estimador que também é consistente (conhecido como estimador _augmented IPW_ ou _Doubly Robust_).
 
-# Augmented IPW
-## Augmented IPW
+# Estimador DR
+## Estimador DR
 
-- Postulemos um modelo para a média condicional do resultado, $\mu_1(X, \beta_1)$ e $\mu_0(X, \beta_0)$.
+- Postulemos um modelo para as médias condicionais do resultado, $\mu_1(X, \beta_1)$ e $\mu_0(X, \beta_0)$.
 - Por exemplo, se a média condicional for linear ou logística, os parâmetros são apenas os coeficientes da regressão.
 - Se o modelo for corretamente especificado, então $\mu_i(X, \beta_i) = \mu_i(X)$.
 - Postulemos um modelo para o _propensity score_, $e(X, \alpha)$.
@@ -61,20 +84,26 @@ format:
 
 
 
-## Augmented IPW
+## Estimador DR
 
 Definimos, $$\tilde{\mu}_1^{DR} = \mathbb{E} \Big [\dfrac{Z \{Y - \mu_1(X, \beta_1)\}}{e(X, \alpha)}  + \mu_1(X, \beta_1) \Big] = \mathbb{E} \Big[\dfrac{ZY}{e(X, \alpha)} - \dfrac{Z - e(X, \alpha)}{e(X, \alpha)}\mu_1(X, \beta_1) \Big],$$
+
+
 
 $$\tilde{\mu}_0^{DR} = \mathbb{E} \Big [\dfrac{(1 - Z) \{Y - \mu_0(X, \beta_0)\}}{e(X, \alpha)}  + \mu_0(X, \beta_0) \Big] = \mathbb{E} \Big[\dfrac{(1 - Z)Y}{e(X, \alpha)} - \dfrac{e(X, \alpha) - Z}{e(X, \alpha)}\mu_0(X, \beta_0) \Big],$$
 
 . . . 
 
-- Note que os termos do meio, aumentam $\mu_i(X, \beta_i)$ pelos residuais ponderados pelo _inverse propsensity score_.
-- Os termos finais, aumentam o IPW pelos resultados imputados.
+- Note que os termos do meio, aumentam $\mu_i(X, \beta_i)$ (os estimadores obtidos por _outcome regression_) pelos residuais ponderados pelo _inverse propsensity score_.
+- Os termos finais, aumentam o estimador IPW pelos resultados imputados.
 
+. . . 
 
+<center>
+[Por esse motivo, os estimadores DR são também conhecidos como IPW aumentados.]{style="color:red"}
+</center>
 
-## Augmented IPW
+## Estimador DR
 
 ::: {.callout-tip}
 ### Teorema
@@ -89,20 +118,28 @@ Assumindo _ignorabildiade_ ($Z \perp\!\!\!\perp  \{ Y(1), Y(0)\} | X$) e _sobrep
 :::
 
 
+<center>
+Pelo Teorem anterior, $$\tilde{\mu}_1^{DR} - \tilde{\mu}_0^{DR} = \tau,$$ se ou o modelo de _propensity score_ ou o modelo dos resultados estiver corretamente especificado (motivo pelo qual é chamado de **D**uplamente **R**obusto).
+</center>
+
+
+<center>
 **Demostração:** (no quadro)
+</center>
 
 
+## Estimador DR
 
-## Augmented IPW
+A seguir, apresentamos as versões amostrais de $\tilde{\mu}_0^{DR}$ e $\tilde{\mu}_1^{DR}$.
 
 ::: {.callout-tip}
 ### Estimador
-Baseados nos dados observados $\{X_i, Z_i, Y_i\}_{i = 1}^n$, podemos obter um estimador DR para $\tau$ através dos seguintes passos:
+Baseados em $\{X_i, Z_i, Y_i\}_{i = 1}^n$, podemos obter um estimador DR para $\tau$ através dos seguintes passos:
 
 ::: {.nonincremental}
 1. Obter os valores ajustados do _propensity score_: $e(X_i, \hat{\alpha})$.
 2. Obter $\mu_1(X_i, \hat{\beta}_1)$ e $\mu_0(X_i, \hat{\beta}_0)$
-3. Construir $\hat{\tau}^{DR} = \hat{\mu}_1^{DR} - \hat{\mu}_0^{DR}$, em que $$\hat{\mu}_1^{DR} = \dfrac{1}{n} \displaystyle \sum_{i = 1}^n \Big [\dfrac{Z_i [Y_i - \mu_1(X_i, \hat{\beta}_1)]}{e(X_i, \hat{\beta}_1)} + \mu_1(X_i, \hat{\beta}_1)\Big] \quad e$$
+3. Construir $$\hat{\tau}^{DR} = \hat{\mu}_1^{DR} - \hat{\mu}_0^{DR}$$, em que $$\hat{\mu}_1^{DR} = \dfrac{1}{n} \displaystyle \sum_{i = 1}^n \Big [\dfrac{Z_i [Y_i - \mu_1(X_i, \hat{\beta}_1)]}{e(X_i, \hat{\beta}_1)} + \mu_1(X_i, \hat{\beta}_1)\Big] \quad e$$
 
 $$\hat{\mu}_0^{DR} = \dfrac{1}{n} \displaystyle \sum_{i = 1}^n \Big [\dfrac{(1 - Z_i) [Y_i - \mu_0(X_i, \hat{\beta}_0)]}{1 - e(X_i, \hat{\beta}_0)} + \mu_0(X_i, \hat{\beta}_0)\Big]$$
 
@@ -114,11 +151,11 @@ Funk et al. (2011) sugerem aproximar $\mathbb{V}(\hat{\tau}^{DR})$ vía Bootstra
 
 
 
-## Augmented IPW
+## Estimador DR
 
 ::: {.callout-note}
 ### Implementação
-Implementaremos os quatro métodos vistos até agora. O modelo utilizado para o _propsensity score_ será o modelo logístico.
+Implementaremos os quatro métodos vistos até agora. O modelo utilizado para o _propsensity score_ será o padrão (modelo logístico).
 
 
 ```{r}
@@ -142,7 +179,9 @@ OS_est <- function(z, y, x, out_family = gaussian, alphas = c(0, 1)) {
   # DR
   res_1 <- y - outcome_1
   res_2 <- y - outcome_0
-  tau_dr <- mean(z * res_1 / e) + mean((1 - z) * res_2 / (1 - e)) + tau_reg
+  mu_1_dr <- mean(z * res_1 / e + outcome_1) 
+  mu_0_dr <- mean((1 - z) * res_2 / (1 - e) + outcome_0)
+  tau_dr <- mu_1_dr - mu_0_dr
   
   out <- c(tau_reg, tau_ipw, tau_hajek, tau_dr)
   return(out)
@@ -159,11 +198,12 @@ OS_est <- function(z, y, x, out_family = gaussian, alphas = c(0, 1)) {
 Utilizaremos Bootstrao não paramétrico para estimar a variância dos estimadores
 ```{r}
 #| echo: true
-OS_ATE <- function(z, y, x, n_boot = 500, out_family = gaussian, alphas = c(0, 1)) {
+OS_ATE <- function(z, y, x, n_boot = 1000, out_family = gaussian, alphas = c(0, 1)) {
   taus <- OS_est(z, y, x, out_family, alphas)
   
   # Bootstrap não-paramétrico
   n <- length(z)
+  x <- as.matrix(x)
   boot_est <- replicate(n_boot, {
     id_boot <- sample(1:n, n, replace = TRUE)
     OS_est(z[id_boot], y[id_boot], x[id_boot, ], out_family, alphas)
@@ -198,17 +238,19 @@ Avaliaremos as propriedades em amostras finitas dos quatro estimadores implement
 ```{r}
 #| echo: true
 mc <- 500
+n <- 500
 bias <- matrix(NA, ncol = 4, nrow = mc)
 estim_se <- matrix(NA, ncol = 4, nrow = mc)
 for (i in 1:mc) {
-  x <- cbind(1, matrix(rnorm(n * 2), n, 2))
+  x <- matrix(rnorm(n * 2), n, 2)
+  x1 <- cbind(1, x)
   beta_z <- c(0, 1, 1)
-  e <- 1 / (1 + exp(-as.vector(x %*% beta_z)))
+  e <- 1 / (1 + exp(-as.vector(x1 %*% beta_z)))
   z <- rbinom(n, 1, e)
   beta_y1 <- c(1, 2, 1)
   beta_y0 <- c(1, 2, 1)
-  y1 <- rnorm(n, x %*% beta_y1)
-  y0 <- rnorm(n, x %*% beta_y0)
+  y1 <- rnorm(n, x1 %*% beta_y1)
+  y0 <- rnorm(n, x1 %*% beta_y0)
   y <- z * y1 + (1 - z) * y0 
   ce <- OS_ATE(z, y, x)
   bias[i,] <-  ce[1, ] - 0
@@ -234,19 +276,19 @@ resultados
 ```{r}
 #| echo: true
 mc <- 500
+n <- 500
 bias <- matrix(NA, ncol = 4, nrow = mc)
 estim_se <- matrix(NA, ncol = 4, nrow = mc)
 for (i in 1:mc) {
   x <- matrix(rnorm(n*2), n, 2)
   x1 <- cbind(1, x, exp(x))
-  x <- cbind(1, x)
   beta_z <- c(-1, 0, 0, 1, -1)
   e <- 1/(1 + exp(-as.vector(x1 %*% beta_z)))
   z <- rbinom(n, 1, e)
-  beta_y1 <- c(1, 2, 1)
-  beta_y0 <- c(1, 2, 1)
-  y1 <- rnorm(n, x %*% beta_y1)
-  y0 <- rnorm(n, x %*% beta_y0)
+  beta_y1 <- c(1, 2, 1, 0, 0)
+  beta_y0 <- c(1, 2, 1, 0, 0)
+  y1 <- rnorm(n, x1 %*% beta_y1)
+  y0 <- rnorm(n, x1 %*% beta_y0)
   y <- z*y1 + (1 - z)*y0
   ce <- OS_ATE(z, y, x)
   bias[i,] <-  ce[1, ] - 0
@@ -272,14 +314,14 @@ resultados
 ```{r}
 #| echo: true
 mc <- 500
+n <- 500
 bias <- matrix(NA, ncol = 4, nrow = mc)
 estim_se <- matrix(NA, ncol = 4, nrow = mc)
 for (i in 1:mc) {
   x <- matrix(rnorm(n*2), n, 2)
   x1 <- cbind(1, x, exp(x))
-  x <- cbind(1, x)
-  beta_z <- c(0, 1, 1)
-  e <- 1 / (1 + exp(-as.vector(x %*% beta_z)))
+  beta_z <- c(0, 1, 1, 0, 0)
+  e <- 1 / (1 + exp(-as.vector(x1 %*% beta_z)))
   z <- rbinom(n, 1, e)
   beta_y1 <- c(1, 0, 0, 0.2, -0.1)
   beta_y0 <- c(1, 0, 0, -0.2, 0.1)
@@ -309,12 +351,12 @@ resultados
 ```{r}
 #| echo: true
 mc <- 500
+n <- 500
 bias <- matrix(NA, ncol = 4, nrow = mc)
 estim_se <- matrix(NA, ncol = 4, nrow = mc)
 for (i in 1:mc) {
   x <- matrix(rnorm(n*2), n, 2)
   x1 <- cbind(1, x, exp(x))
-  x <- cbind(1, x)
   beta_z <- c(-1, 0, 0, 1, -1)
   e <- 1 / (1 + exp(-as.vector(x1 %*% beta_z)))
   z <- rbinom(n, 1, e)
@@ -366,7 +408,13 @@ round(causal_effetcs_trim, 3)
 
 :::
 
+# Comentários Finais
+## Comentários Finais
 
+- Pode-se mostrar que:
+    * $\hat{\tau}^{DR} = \hat{\tau}^{Reg} + \dfrac{1}{n} \displaystyle \sum_{i = 1}^n \dfrac{Z_i (Y_i - \mu_1(X_i, \hat{\beta}_1))}{e(X_i, \hat{\alpha})} - \dfrac{1}{n} \sum_{i = 1}^n \dfrac{(1 - Z_i)(Y_i - \mu_0(X_i, \hat{\beta}_0))}{1 - e(X_i, \hat{\alpha})}.$
+    * $\hat{\tau}^{DR} = \hat{\tau}^{IPW} - \dfrac{1}{n} \displaystyle \sum_{i = 1}^n \dfrac{Z_i - e(X, \hat{\alpha})}{e(X_i, \hat{\alpha})} \mu_1(X_i, \hat{\beta}_1) + \dfrac{1}{n} \displaystyle \sum_{i = 1}^n \dfrac{e(X_i, \hat{\alpha})-Z_i}{1 - e(X_i, \hat{\alpha})} \mu_0(X_i, \hat{\beta}_0)$
+- O estimador RD foi proposto por Scharfstein et al. (1999) mas recentemente ressucitado por Chernozhukov et al. (2018) com o nome de _double machine learning_. A ideia básica é substituir o modleo utilizado no _propensity score_ e no modelo para o resultado, por modelo de aprendizado de máquina.
 
 
 ## Referências

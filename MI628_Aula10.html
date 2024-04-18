@@ -391,7 +391,7 @@
 
 <section id="title-slide" data-background-image="imagens/unicamp.png" data-background-opacity="1" data-background-position="99% 5%" data-background-size="20%" class="quarto-title-block center">
   <h1 class="title">Inferência Causal</h1>
-  <p class="subtitle">Augmented IPS</p>
+  <p class="subtitle">Estimador DR</p>
 
 <div class="quarto-title-authors">
 <div class="quarto-title-author">
@@ -409,8 +409,10 @@ Prof.&nbsp;Carlos Trucíos <br> ctrucios@unicamp.br
 <h2 id="toc-title">Conteúdo</h2>
 <ul>
 <li class="fragment"><a href="#/introdução" id="/toc-introdução">Introdução</a></li>
-<li class="fragment"><a href="#/augmented-ipw" id="/toc-augmented-ipw">Augmented IPW</a></li>
+<li class="fragment"><a href="#/estimador-dr" id="/toc-estimador-dr">Estimador DR</a></li>
 <li class="fragment"><a href="#/simulação" id="/toc-simulação">Simulação</a></li>
+<li class="fragment"><a href="#/exemplo" id="/toc-exemplo">Exemplo</a></li>
+<li class="fragment"><a href="#/comentários-finais" id="/toc-comentários-finais">Comentários Finais</a></li>
 </ul>
 </nav>
 </section>
@@ -421,48 +423,60 @@ Prof.&nbsp;Carlos Trucíos <br> ctrucios@unicamp.br
 </section>
 <section id="introdução-1" class="slide level2">
 <h2>Introdução</h2>
-<ul>
-<li class="fragment">Sob <em>ignorabilidade</em> (<span class="math inline">\(Z \perp\!\!\!\perp \{ Y(1), Y(0)\} | X\)</span>) e <em>sobreposição</em> (<span class="math inline">\(0 &lt; e(X) &lt; 1\)</span>), temos mostrado duas fórmulas de identificação do ACE (<span class="math inline">\(\tau = \mathbb{E}[Y(1) - Y(0)]\)</span>).</li>
-<li class="fragment">A primeira, <span class="math display">\[\tau = \mathbb{E}[\mu_1(X)]- \mathbb{E}[\mu_0(X)],\]</span>em que <span class="math inline">\(\mu_i(X) = \mathbb{E}[Y(i) | X] = \mathbb{E}[Y | Z = i, X]\)</span>.</li>
-<li class="fragment">A segunda, <span class="math display">\[\tau = \mathbb{E}\Big[\dfrac{ZY}{e(X)} \Big] - \mathbb{E}\Big[\dfrac{(1- Z)Y}{1 - e(X)} \Big],\]</span>em que <span class="math inline">\(e(X) = P(Z = 1 | X)\)</span> é o <em>propensity score</em>.</li>
-</ul>
+<p>Sob <em>ignorabilidade</em> (<span class="math inline">\(Z \perp\!\!\!\perp \{ Y(1), Y(0)\} | X\)</span>) e <em>sobreposição</em> (<span class="math inline">\(0 &lt; e(X) &lt; 1\)</span>), temos mostrado duas fórmulas de identificação do ACE (<span class="math inline">\(\tau = \mathbb{E}[Y(1) - Y(0)]\)</span>).</p>
+<div class="fragment">
+<div class="columns">
+<div class="column" style="width:50%;">
+<h3 id="outcome-regression">Outcome regression</h3>
+<p><span class="math display">\[\tau = \mathbb{E}[\mu_1(X)]- \mathbb{E}[\mu_0(X)],\]</span>em que <span class="math inline">\(\mu_i(X) = \mathbb{E}[Y(i) | X] = \mathbb{E}[Y | Z = i, X]\)</span></p>
+</div><div class="column" style="width:650%;">
+<h3 id="ipw">IPW</h3>
+<p><span class="math display">\[\tau = \mathbb{E}\Big[\dfrac{ZY}{e(X)} \Big] - \mathbb{E}\Big[\dfrac{(1- Z)Y}{1 - e(X)} \Big],\]</span>em que <span class="math inline">\(e(X) = P(Z = 1 | X)\)</span> é o <em>propensity score</em>.</p>
+</div>
+</div>
+</div>
 </section>
 <section id="introdução-2" class="slide level2">
 <h2>Introdução</h2>
 <ul>
-<li class="fragment">A primeira abordagem, precisa ajustar um modelo para o resultado dado o tratamento e covariáveis. É consistente se o modelo utilizado está corretamente especificado.</li>
-<li class="fragment">A segunda abordagem precisa ajustar um modelo para o tratamento dadas as covariáveis. É consistente se o modelo do <em>propensity score</em> for corretamente especificado.</li>
+<li class="fragment">Outcome regression, precisa ajustar um modelo para o resultado (<span class="math inline">\(Y\)</span>) dado o tratamento (<span class="math inline">\(Z\)</span>) e as covariáveis (<span class="math inline">\(X\)</span>). É consistente se o modelo utilizado está corretamente especificado.</li>
+<li class="fragment">IPW precisa ajustar um modelo para o tratamento (<span class="math inline">\(Z\)</span>) dadas as covariáveis (<span class="math inline">\(X\)</span>). É consistente se o modelo do <em>propensity score</em> for corretamente especificado.</li>
 <li class="fragment">A combinação de ambas as abordagens motiva um novo estimador que também é consistente (conhecido como estimador <em>augmented IPW</em> ou <em>Doubly Robust</em>).</li>
 </ul>
 </section></section>
 <section>
-<section id="augmented-ipw" class="title-slide slide level1 center">
-<h1>Augmented IPW</h1>
+<section id="estimador-dr" class="title-slide slide level1 center">
+<h1>Estimador DR</h1>
 
 </section>
-<section id="augmented-ipw-1" class="slide level2">
-<h2>Augmented IPW</h2>
+<section id="estimador-dr-1" class="slide level2">
+<h2>Estimador DR</h2>
 <ul>
-<li class="fragment">Postulemos um modelo para a média condicional do resultado, <span class="math inline">\(\mu_1(X, \beta_1)\)</span> e <span class="math inline">\(\mu_0(X, \beta_0)\)</span>.</li>
+<li class="fragment">Postulemos um modelo para as médias condicionais do resultado, <span class="math inline">\(\mu_1(X, \beta_1)\)</span> e <span class="math inline">\(\mu_0(X, \beta_0)\)</span>.</li>
 <li class="fragment">Por exemplo, se a média condicional for linear ou logística, os parâmetros são apenas os coeficientes da regressão.</li>
 <li class="fragment">Se o modelo for corretamente especificado, então <span class="math inline">\(\mu_i(X, \beta_i) = \mu_i(X)\)</span>.</li>
 <li class="fragment">Postulemos um modelo para o <em>propensity score</em>, <span class="math inline">\(e(X, \alpha)\)</span>.</li>
 <li class="fragment">Se o modelo for linear ou logiístico, <span class="math inline">\(\alpha\)</span> é o coeficiente da regressão e se o modelo for corretamente especificado, <span class="math inline">\(e(X, \alpha) = e(X)\)</span>.</li>
 </ul>
 </section>
-<section id="augmented-ipw-2" class="slide level2">
-<h2>Augmented IPW</h2>
+<section id="estimador-dr-2" class="slide level2">
+<h2>Estimador DR</h2>
 <p>Definimos, <span class="math display">\[\tilde{\mu}_1^{DR} = \mathbb{E} \Big [\dfrac{Z \{Y - \mu_1(X, \beta_1)\}}{e(X, \alpha)}  + \mu_1(X, \beta_1) \Big] = \mathbb{E} \Big[\dfrac{ZY}{e(X, \alpha)} - \dfrac{Z - e(X, \alpha)}{e(X, \alpha)}\mu_1(X, \beta_1) \Big],\]</span></p>
 <p><span class="math display">\[\tilde{\mu}_0^{DR} = \mathbb{E} \Big [\dfrac{(1 - Z) \{Y - \mu_0(X, \beta_0)\}}{e(X, \alpha)}  + \mu_0(X, \beta_0) \Big] = \mathbb{E} \Big[\dfrac{(1 - Z)Y}{e(X, \alpha)} - \dfrac{e(X, \alpha) - Z}{e(X, \alpha)}\mu_0(X, \beta_0) \Big],\]</span></p>
 <div class="fragment">
 <ul>
-<li class="fragment">Note que os termos do meio, aumentam <span class="math inline">\(\mu_i(X, \beta_i)\)</span> pelos residuais ponderados pelo <em>inverse propsensity score</em>.</li>
-<li class="fragment">Os termos finais, aumentam o IPW pelos resultados imputados.</li>
+<li class="fragment">Note que os termos do meio, aumentam <span class="math inline">\(\mu_i(X, \beta_i)\)</span> (os estimadores obtidos por <em>outcome regression</em>) pelos residuais ponderados pelo <em>inverse propsensity score</em>.</li>
+<li class="fragment">Os termos finais, aumentam o estimador IPW pelos resultados imputados.</li>
 </ul>
 </div>
+<div class="fragment">
+<center>
+<span style="color:red">Por esse motivo, os estimadores DR são também conhecidos como IPW aumentados.</span>
+</center>
+</div>
 </section>
-<section id="augmented-ipw-3" class="slide level2">
-<h2>Augmented IPW</h2>
+<section id="estimador-dr-3" class="slide level2">
+<h2>Estimador DR</h2>
 <div class="callout callout-tip callout-captioned callout-style-default">
 <div class="callout-body">
 <div class="callout-caption">
@@ -483,10 +497,16 @@ Prof.&nbsp;Carlos Trucíos <br> ctrucios@unicamp.br
 </div>
 </div>
 </div>
-<p><strong>Demostração:</strong> (no quadro)</p>
+<center>
+Pelo Teorem anterior, <span class="math display">\[\tilde{\mu}_1^{DR} - \tilde{\mu}_0^{DR} = \tau,\]</span> se ou o modelo de <em>propensity score</em> ou o modelo dos resultados estiver corretamente especificado (motivo pelo qual é chamado de <strong>D</strong>uplamente <strong>R</strong>obusto).
+</center>
+<center>
+<strong>Demostração:</strong> (no quadro)
+</center>
 </section>
-<section id="augmented-ipw-4" class="slide level2">
-<h2>Augmented IPW</h2>
+<section id="estimador-dr-4" class="slide level2">
+<h2>Estimador DR</h2>
+<p>A seguir, apresentamos as versões amostrais de <span class="math inline">\(\tilde{\mu}_0^{DR}\)</span> e <span class="math inline">\(\tilde{\mu}_1^{DR}\)</span>.</p>
 <div class="callout callout-tip callout-captioned callout-style-default">
 <div class="callout-body">
 <div class="callout-caption">
@@ -496,12 +516,12 @@ Prof.&nbsp;Carlos Trucíos <br> ctrucios@unicamp.br
 <p><strong>Estimador</strong></p>
 </div>
 <div class="callout-content">
-<p>Baseados nos dados observados <span class="math inline">\(\{X_i, Z_i, Y_i\}_{i = 1}^n\)</span>, podemos obter um estimador DR para <span class="math inline">\(\tau\)</span> através dos seguintes passos:</p>
+<p>Baseados em <span class="math inline">\(\{X_i, Z_i, Y_i\}_{i = 1}^n\)</span>, podemos obter um estimador DR para <span class="math inline">\(\tau\)</span> através dos seguintes passos:</p>
 <div>
 <ol type="1">
 <li>Obter os valores ajustados do <em>propensity score</em>: <span class="math inline">\(e(X_i, \hat{\alpha})\)</span>.</li>
 <li>Obter <span class="math inline">\(\mu_1(X_i, \hat{\beta}_1)\)</span> e <span class="math inline">\(\mu_0(X_i, \hat{\beta}_0)\)</span></li>
-<li>Construir <span class="math inline">\(\hat{\tau}^{DR} = \hat{\mu}_1^{DR} - \hat{\mu}_0^{DR}\)</span>, em que <span class="math display">\[\hat{\mu}_1^{DR} = \dfrac{1}{n} \displaystyle \sum_{i = 1}^n \Big [\dfrac{Z_i [Y_i - \mu_1(X_i, \hat{\beta}_1)]}{e(X_i, \hat{\beta}_1)} + \mu_1(X_i, \hat{\beta}_1)\Big] \quad e\]</span></li>
+<li>Construir <span class="math display">\[\hat{\tau}^{DR} = \hat{\mu}_1^{DR} - \hat{\mu}_0^{DR}\]</span>, em que <span class="math display">\[\hat{\mu}_1^{DR} = \dfrac{1}{n} \displaystyle \sum_{i = 1}^n \Big [\dfrac{Z_i [Y_i - \mu_1(X_i, \hat{\beta}_1)]}{e(X_i, \hat{\beta}_1)} + \mu_1(X_i, \hat{\beta}_1)\Big] \quad e\]</span></li>
 </ol>
 <p><span class="math display">\[\hat{\mu}_0^{DR} = \dfrac{1}{n} \displaystyle \sum_{i = 1}^n \Big [\dfrac{(1 - Z_i) [Y_i - \mu_0(X_i, \hat{\beta}_0)]}{1 - e(X_i, \hat{\beta}_0)} + \mu_0(X_i, \hat{\beta}_0)\Big]\]</span></p>
 </div>
@@ -510,8 +530,8 @@ Prof.&nbsp;Carlos Trucíos <br> ctrucios@unicamp.br
 </div>
 <p>Funk et al.&nbsp;(2011) sugerem aproximar <span class="math inline">\(\mathbb{V}(\hat{\tau}^{DR})\)</span> vía Bootstrap não paramétrico.</p>
 </section>
-<section id="augmented-ipw-5" class="slide level2">
-<h2>Augmented IPW</h2>
+<section id="estimador-dr-5" class="slide level2">
+<h2>Estimador DR</h2>
 <div class="callout callout-note callout-captioned callout-style-default">
 <div class="callout-body">
 <div class="callout-caption">
@@ -521,13 +541,13 @@ Prof.&nbsp;Carlos Trucíos <br> ctrucios@unicamp.br
 <p><strong>Implementação</strong></p>
 </div>
 <div class="callout-content">
-<p>Implementaremos os quatro métodos vistos até agora. O modelo utilizado para o <em>propsensity score</em> será o modelo logístico.</p>
+<p>Implementaremos os quatro métodos vistos até agora. O modelo utilizado para o <em>propsensity score</em> será o padrão (modelo logístico).</p>
 <div class="cell" data-layout-align="center">
 <details>
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a>OS_est <span class="ot">&lt;-</span> <span class="cf">function</span>(z, y, x, <span class="at">out_family =</span> gaussian, <span class="at">alphas =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>)) {</span>
 <span id="cb1-2"><a href="#cb1-2"></a>  <span class="co"># Propensity score</span></span>
-<span id="cb1-3"><a href="#cb1-3"></a>  e <span class="ot">&lt;-</span> <span class="fu">glm</span>(z <span class="sc">~</span> x, <span class="at">family =</span> Binomial)<span class="sc">$</span>fitted.values</span>
+<span id="cb1-3"><a href="#cb1-3"></a>  e <span class="ot">&lt;-</span> <span class="fu">glm</span>(z <span class="sc">~</span> x, <span class="at">family =</span> binomial)<span class="sc">$</span>fitted.values</span>
 <span id="cb1-4"><a href="#cb1-4"></a>  e <span class="ot">&lt;-</span> <span class="fu">pmax</span>(alphas[<span class="dv">1</span>], <span class="fu">pmin</span>(alphas[<span class="dv">2</span>], e))</span>
 <span id="cb1-5"><a href="#cb1-5"></a>  </span>
 <span id="cb1-6"><a href="#cb1-6"></a>  <span class="co"># Fitted potencial outcomes</span></span>
@@ -539,23 +559,25 @@ Prof.&nbsp;Carlos Trucíos <br> ctrucios@unicamp.br
 <span id="cb1-12"><a href="#cb1-12"></a>  </span>
 <span id="cb1-13"><a href="#cb1-13"></a>  <span class="co"># IPW</span></span>
 <span id="cb1-14"><a href="#cb1-14"></a>  tau_ipw <span class="ot">&lt;-</span> <span class="fu">mean</span>(z <span class="sc">*</span> y <span class="sc">/</span> e) <span class="sc">-</span> <span class="fu">mean</span>((<span class="dv">1</span> <span class="sc">-</span> z) <span class="sc">*</span> y <span class="sc">/</span> (<span class="dv">1</span> <span class="sc">-</span> e))</span>
-<span id="cb1-15"><a href="#cb1-15"></a>  tau_hajek <span class="ot">&lt;-</span> <span class="fu">mean</span>(z <span class="sc">*</span> y <span class="sc">/</span> e) <span class="sc">-</span> <span class="fu">mean</span>((<span class="dv">1</span> <span class="sc">-</span> z) <span class="sc">*</span> y <span class="sc">/</span> (<span class="dv">1</span> <span class="sc">-</span> e))</span>
+<span id="cb1-15"><a href="#cb1-15"></a>  tau_hajek <span class="ot">&lt;-</span> <span class="fu">mean</span>(z <span class="sc">*</span> y <span class="sc">/</span> e) <span class="sc">/</span> <span class="fu">mean</span>(z <span class="sc">/</span> e) <span class="sc">-</span> <span class="fu">mean</span>((<span class="dv">1</span> <span class="sc">-</span> z) <span class="sc">*</span> y <span class="sc">/</span> (<span class="dv">1</span> <span class="sc">-</span> e)) <span class="sc">/</span> <span class="fu">mean</span>((<span class="dv">1</span> <span class="sc">-</span> z) <span class="sc">/</span> (<span class="dv">1</span> <span class="sc">-</span> e))</span>
 <span id="cb1-16"><a href="#cb1-16"></a>  </span>
 <span id="cb1-17"><a href="#cb1-17"></a>  <span class="co"># DR</span></span>
 <span id="cb1-18"><a href="#cb1-18"></a>  res_1 <span class="ot">&lt;-</span> y <span class="sc">-</span> outcome_1</span>
 <span id="cb1-19"><a href="#cb1-19"></a>  res_2 <span class="ot">&lt;-</span> y <span class="sc">-</span> outcome_0</span>
-<span id="cb1-20"><a href="#cb1-20"></a>  tau_dr <span class="ot">&lt;-</span> <span class="fu">mean</span>(z <span class="sc">*</span> res_1 <span class="sc">/</span> e) <span class="sc">+</span> <span class="fu">mean</span>((<span class="dv">1</span> <span class="sc">-</span> z) <span class="sc">*</span> res_2 <span class="sc">/</span> (<span class="dv">1</span> <span class="sc">-</span> e)) <span class="sc">+</span> tau_reg</span>
-<span id="cb1-21"><a href="#cb1-21"></a>  </span>
-<span id="cb1-22"><a href="#cb1-22"></a>  out <span class="ot">&lt;-</span> <span class="fu">c</span>(tau_reg, tau_ipw, tau_hajek, tau_dr)</span>
-<span id="cb1-23"><a href="#cb1-23"></a>  <span class="fu">return</span>(out)</span>
-<span id="cb1-24"><a href="#cb1-24"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-20"><a href="#cb1-20"></a>  mu_1_dr <span class="ot">&lt;-</span> <span class="fu">mean</span>(z <span class="sc">*</span> res_1 <span class="sc">/</span> e <span class="sc">+</span> outcome_1) </span>
+<span id="cb1-21"><a href="#cb1-21"></a>  mu_0_dr <span class="ot">&lt;-</span> <span class="fu">mean</span>((<span class="dv">1</span> <span class="sc">-</span> z) <span class="sc">*</span> res_2 <span class="sc">/</span> (<span class="dv">1</span> <span class="sc">-</span> e) <span class="sc">+</span> outcome_0)</span>
+<span id="cb1-22"><a href="#cb1-22"></a>  tau_dr <span class="ot">&lt;-</span> mu_1_dr <span class="sc">-</span> mu_0_dr</span>
+<span id="cb1-23"><a href="#cb1-23"></a>  </span>
+<span id="cb1-24"><a href="#cb1-24"></a>  out <span class="ot">&lt;-</span> <span class="fu">c</span>(tau_reg, tau_ipw, tau_hajek, tau_dr)</span>
+<span id="cb1-25"><a href="#cb1-25"></a>  <span class="fu">return</span>(out)</span>
+<span id="cb1-26"><a href="#cb1-26"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
 </div>
 </div>
 </div>
 </section>
-<section id="augmented-ipw-6" class="slide level2">
+<section id="augmented-ipw" class="slide level2">
 <h2>Augmented IPW</h2>
 <div class="callout callout-note callout-captioned callout-style-default">
 <div class="callout-body">
@@ -570,21 +592,22 @@ Prof.&nbsp;Carlos Trucíos <br> ctrucios@unicamp.br
 <div class="cell" data-layout-align="center">
 <details>
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a>OS_ATE <span class="ot">&lt;-</span> <span class="cf">function</span>(z, y, x, <span class="at">n_boot =</span> <span class="dv">500</span>, <span class="at">out_family =</span> gaussian, <span class="at">alphas =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>)) {</span>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a>OS_ATE <span class="ot">&lt;-</span> <span class="cf">function</span>(z, y, x, <span class="at">n_boot =</span> <span class="dv">1000</span>, <span class="at">out_family =</span> gaussian, <span class="at">alphas =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>)) {</span>
 <span id="cb2-2"><a href="#cb2-2"></a>  taus <span class="ot">&lt;-</span> <span class="fu">OS_est</span>(z, y, x, out_family, alphas)</span>
 <span id="cb2-3"><a href="#cb2-3"></a>  </span>
 <span id="cb2-4"><a href="#cb2-4"></a>  <span class="co"># Bootstrap não-paramétrico</span></span>
 <span id="cb2-5"><a href="#cb2-5"></a>  n <span class="ot">&lt;-</span> <span class="fu">length</span>(z)</span>
-<span id="cb2-6"><a href="#cb2-6"></a>  boot_est <span class="ot">&lt;-</span> <span class="fu">replicate</span>(n_boot, {</span>
-<span id="cb2-7"><a href="#cb2-7"></a>    id_boot <span class="ot">&lt;-</span> <span class="fu">sample</span>(<span class="dv">1</span><span class="sc">:</span>n, n, <span class="at">replace =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb2-8"><a href="#cb2-8"></a>    <span class="fu">OS_est</span>(z[id_boot], y[id_boot], x[id_boot, ], out_family, alphas)</span>
-<span id="cb2-9"><a href="#cb2-9"></a>  })</span>
-<span id="cb2-10"><a href="#cb2-10"></a>  boot_se <span class="ot">&lt;-</span> <span class="fu">apply</span>(boot_est, <span class="dv">1</span>, sd)</span>
-<span id="cb2-11"><a href="#cb2-11"></a>  out <span class="ot">&lt;-</span> <span class="fu">rbind</span>(taus, boot_se)</span>
-<span id="cb2-12"><a href="#cb2-12"></a>  <span class="fu">colnames</span>(out) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"Estim"</span>, <span class="st">"SE"</span>)</span>
-<span id="cb2-13"><a href="#cb2-13"></a>  <span class="fu">rownames</span>(out) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"Reg"</span>, <span class="st">"IPW"</span>, <span class="st">"Hajek"</span>, <span class="st">"DR"</span>)</span>
-<span id="cb2-14"><a href="#cb2-14"></a>  <span class="fu">return</span>(out)</span>
-<span id="cb2-15"><a href="#cb2-15"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb2-6"><a href="#cb2-6"></a>  x <span class="ot">&lt;-</span> <span class="fu">as.matrix</span>(x)</span>
+<span id="cb2-7"><a href="#cb2-7"></a>  boot_est <span class="ot">&lt;-</span> <span class="fu">replicate</span>(n_boot, {</span>
+<span id="cb2-8"><a href="#cb2-8"></a>    id_boot <span class="ot">&lt;-</span> <span class="fu">sample</span>(<span class="dv">1</span><span class="sc">:</span>n, n, <span class="at">replace =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb2-9"><a href="#cb2-9"></a>    <span class="fu">OS_est</span>(z[id_boot], y[id_boot], x[id_boot, ], out_family, alphas)</span>
+<span id="cb2-10"><a href="#cb2-10"></a>  })</span>
+<span id="cb2-11"><a href="#cb2-11"></a>  boot_se <span class="ot">&lt;-</span> <span class="fu">apply</span>(boot_est, <span class="dv">1</span>, sd)</span>
+<span id="cb2-12"><a href="#cb2-12"></a>  out <span class="ot">&lt;-</span> <span class="fu">rbind</span>(taus, boot_se)</span>
+<span id="cb2-13"><a href="#cb2-13"></a>  <span class="fu">rownames</span>(out) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"Estim"</span>, <span class="st">"SE"</span>)</span>
+<span id="cb2-14"><a href="#cb2-14"></a>  <span class="fu">colnames</span>(out) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"Reg"</span>, <span class="st">"IPW"</span>, <span class="st">"Hajek"</span>, <span class="st">"DR"</span>)</span>
+<span id="cb2-15"><a href="#cb2-15"></a>  <span class="fu">return</span>(out)</span>
+<span id="cb2-16"><a href="#cb2-16"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
 </div>
@@ -620,23 +643,259 @@ Prof.&nbsp;Carlos Trucíos <br> ctrucios@unicamp.br
 <div class="cell" data-layout-align="center">
 <details>
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a>n <span class="ot">&lt;-</span> <span class="dv">500</span></span>
-<span id="cb3-2"><a href="#cb3-2"></a><span class="co"># DGP1</span></span>
-<span id="cb3-3"><a href="#cb3-3"></a>x <span class="ot">&lt;-</span> <span class="fu">cbind</span>(<span class="dv">1</span>, <span class="fu">matrix</span>(<span class="fu">rnorm</span>(n <span class="sc">*</span> <span class="dv">2</span>), n, <span class="dv">2</span>))</span>
-<span id="cb3-4"><a href="#cb3-4"></a>beta_z <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">1</span>)</span>
-<span id="cb3-5"><a href="#cb3-5"></a>e <span class="ot">&lt;-</span> <span class="dv">1</span> <span class="sc">/</span> (<span class="dv">1</span> <span class="sc">+</span> <span class="fu">exp</span>(<span class="sc">-</span><span class="fu">as.vector</span>(x <span class="sc">%*%</span> beta_z)))</span>
-<span id="cb3-6"><a href="#cb3-6"></a>z <span class="ot">&lt;-</span> <span class="fu">rbinom</span>(n, <span class="dv">1</span>, e)</span>
-<span id="cb3-7"><a href="#cb3-7"></a>beta_y1 <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">1</span>)</span>
-<span id="cb3-8"><a href="#cb3-8"></a>beta_y0 <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">1</span>)</span>
-<span id="cb3-9"><a href="#cb3-9"></a>Y1 <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(n, x <span class="sc">%*%</span> beta_y1)</span>
-<span id="cb3-10"><a href="#cb3-10"></a>Y0 <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(n, x <span class="sc">%*%</span> beta_y0)</span>
-<span id="cb3-11"><a href="#cb3-11"></a>Y <span class="ot">&lt;-</span> z <span class="sc">*</span> Y1 <span class="sc">+</span> (<span class="dv">1</span> <span class="sc">-</span> z) <span class="sc">*</span> Y0 </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a>mc <span class="ot">&lt;-</span> <span class="dv">500</span></span>
+<span id="cb3-2"><a href="#cb3-2"></a>n <span class="ot">&lt;-</span> <span class="dv">500</span></span>
+<span id="cb3-3"><a href="#cb3-3"></a>bias <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="cn">NA</span>, <span class="at">ncol =</span> <span class="dv">4</span>, <span class="at">nrow =</span> mc)</span>
+<span id="cb3-4"><a href="#cb3-4"></a>estim_se <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="cn">NA</span>, <span class="at">ncol =</span> <span class="dv">4</span>, <span class="at">nrow =</span> mc)</span>
+<span id="cb3-5"><a href="#cb3-5"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>mc) {</span>
+<span id="cb3-6"><a href="#cb3-6"></a>  x <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fu">rnorm</span>(n <span class="sc">*</span> <span class="dv">2</span>), n, <span class="dv">2</span>)</span>
+<span id="cb3-7"><a href="#cb3-7"></a>  x1 <span class="ot">&lt;-</span> <span class="fu">cbind</span>(<span class="dv">1</span>, x)</span>
+<span id="cb3-8"><a href="#cb3-8"></a>  beta_z <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">1</span>)</span>
+<span id="cb3-9"><a href="#cb3-9"></a>  e <span class="ot">&lt;-</span> <span class="dv">1</span> <span class="sc">/</span> (<span class="dv">1</span> <span class="sc">+</span> <span class="fu">exp</span>(<span class="sc">-</span><span class="fu">as.vector</span>(x1 <span class="sc">%*%</span> beta_z)))</span>
+<span id="cb3-10"><a href="#cb3-10"></a>  z <span class="ot">&lt;-</span> <span class="fu">rbinom</span>(n, <span class="dv">1</span>, e)</span>
+<span id="cb3-11"><a href="#cb3-11"></a>  beta_y1 <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">1</span>)</span>
+<span id="cb3-12"><a href="#cb3-12"></a>  beta_y0 <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">1</span>)</span>
+<span id="cb3-13"><a href="#cb3-13"></a>  y1 <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(n, x1 <span class="sc">%*%</span> beta_y1)</span>
+<span id="cb3-14"><a href="#cb3-14"></a>  y0 <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(n, x1 <span class="sc">%*%</span> beta_y0)</span>
+<span id="cb3-15"><a href="#cb3-15"></a>  y <span class="ot">&lt;-</span> z <span class="sc">*</span> y1 <span class="sc">+</span> (<span class="dv">1</span> <span class="sc">-</span> z) <span class="sc">*</span> y0 </span>
+<span id="cb3-16"><a href="#cb3-16"></a>  ce <span class="ot">&lt;-</span> <span class="fu">OS_ATE</span>(z, y, x)</span>
+<span id="cb3-17"><a href="#cb3-17"></a>  bias[i,] <span class="ot">&lt;-</span>  ce[<span class="dv">1</span>, ] <span class="sc">-</span> <span class="dv">0</span></span>
+<span id="cb3-18"><a href="#cb3-18"></a>  estim_se[i, ] <span class="ot">&lt;-</span> ce[<span class="dv">2</span>, ]</span>
+<span id="cb3-19"><a href="#cb3-19"></a>}</span>
+<span id="cb3-20"><a href="#cb3-20"></a><span class="co"># Bias, True SD, Estim SD</span></span>
+<span id="cb3-21"><a href="#cb3-21"></a>resultados <span class="ot">&lt;-</span> <span class="fu">rbind</span>(<span class="fu">apply</span>(bias, <span class="dv">2</span>, mean), </span>
+<span id="cb3-22"><a href="#cb3-22"></a>                    <span class="fu">apply</span>(bias, <span class="dv">2</span>, sd), </span>
+<span id="cb3-23"><a href="#cb3-23"></a>                    <span class="fu">apply</span>(estim_se, <span class="dv">2</span>, mean))</span>
+<span id="cb3-24"><a href="#cb3-24"></a><span class="fu">colnames</span>(resultados) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"Reg"</span>, <span class="st">"IPW"</span>, <span class="st">"Hajek"</span>, <span class="st">"DR"</span>)</span>
+<span id="cb3-25"><a href="#cb3-25"></a><span class="fu">rownames</span>(resultados) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"Bias"</span>, <span class="st">"True Var"</span>, <span class="st">"Estim Var"</span>)</span>
+<span id="cb3-26"><a href="#cb3-26"></a>resultados</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
+<div class="cell-output cell-output-stdout">
+<pre><code>                  Reg         IPW      Hajek          DR
+Bias      0.005645807 0.004843971 0.01945095 0.005782348
+True Var  0.107839132 0.313688570 0.28074983 0.123059224
+Estim Var 0.104973769 0.256120961 0.22858887 0.120900388</code></pre>
 </div>
 </div>
 </div>
 </div>
-<p>::::</p>
+</div>
+</section>
+<section id="simulação-4" class="slide level2">
+<h2>Simulação</h2>
+<div class="callout callout-note callout-captioned callout-style-default">
+<div class="callout-body">
+<div class="callout-caption">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Simulação</strong></p>
+</div>
+<div class="callout-content">
+<div class="cell" data-layout-align="center">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a>mc <span class="ot">&lt;-</span> <span class="dv">500</span></span>
+<span id="cb5-2"><a href="#cb5-2"></a>n <span class="ot">&lt;-</span> <span class="dv">500</span></span>
+<span id="cb5-3"><a href="#cb5-3"></a>bias <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="cn">NA</span>, <span class="at">ncol =</span> <span class="dv">4</span>, <span class="at">nrow =</span> mc)</span>
+<span id="cb5-4"><a href="#cb5-4"></a>estim_se <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="cn">NA</span>, <span class="at">ncol =</span> <span class="dv">4</span>, <span class="at">nrow =</span> mc)</span>
+<span id="cb5-5"><a href="#cb5-5"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>mc) {</span>
+<span id="cb5-6"><a href="#cb5-6"></a>  x <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fu">rnorm</span>(n<span class="sc">*</span><span class="dv">2</span>), n, <span class="dv">2</span>)</span>
+<span id="cb5-7"><a href="#cb5-7"></a>  x1 <span class="ot">&lt;-</span> <span class="fu">cbind</span>(<span class="dv">1</span>, x, <span class="fu">exp</span>(x))</span>
+<span id="cb5-8"><a href="#cb5-8"></a>  beta_z <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">1</span>, <span class="sc">-</span><span class="dv">1</span>)</span>
+<span id="cb5-9"><a href="#cb5-9"></a>  e <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">/</span>(<span class="dv">1</span> <span class="sc">+</span> <span class="fu">exp</span>(<span class="sc">-</span><span class="fu">as.vector</span>(x1 <span class="sc">%*%</span> beta_z)))</span>
+<span id="cb5-10"><a href="#cb5-10"></a>  z <span class="ot">&lt;-</span> <span class="fu">rbinom</span>(n, <span class="dv">1</span>, e)</span>
+<span id="cb5-11"><a href="#cb5-11"></a>  beta_y1 <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">0</span>)</span>
+<span id="cb5-12"><a href="#cb5-12"></a>  beta_y0 <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">0</span>)</span>
+<span id="cb5-13"><a href="#cb5-13"></a>  y1 <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(n, x1 <span class="sc">%*%</span> beta_y1)</span>
+<span id="cb5-14"><a href="#cb5-14"></a>  y0 <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(n, x1 <span class="sc">%*%</span> beta_y0)</span>
+<span id="cb5-15"><a href="#cb5-15"></a>  y <span class="ot">&lt;-</span> z<span class="sc">*</span>y1 <span class="sc">+</span> (<span class="dv">1</span> <span class="sc">-</span> z)<span class="sc">*</span>y0</span>
+<span id="cb5-16"><a href="#cb5-16"></a>  ce <span class="ot">&lt;-</span> <span class="fu">OS_ATE</span>(z, y, x)</span>
+<span id="cb5-17"><a href="#cb5-17"></a>  bias[i,] <span class="ot">&lt;-</span>  ce[<span class="dv">1</span>, ] <span class="sc">-</span> <span class="dv">0</span></span>
+<span id="cb5-18"><a href="#cb5-18"></a>  estim_se[i, ] <span class="ot">&lt;-</span> ce[<span class="dv">2</span>, ]</span>
+<span id="cb5-19"><a href="#cb5-19"></a>}</span>
+<span id="cb5-20"><a href="#cb5-20"></a><span class="co"># Bias, True SD, Estim SD</span></span>
+<span id="cb5-21"><a href="#cb5-21"></a>resultados <span class="ot">&lt;-</span> <span class="fu">rbind</span>(<span class="fu">apply</span>(bias, <span class="dv">2</span>, mean), </span>
+<span id="cb5-22"><a href="#cb5-22"></a>                    <span class="fu">apply</span>(bias, <span class="dv">2</span>, sd), </span>
+<span id="cb5-23"><a href="#cb5-23"></a>                    <span class="fu">apply</span>(estim_se, <span class="dv">2</span>, mean))</span>
+<span id="cb5-24"><a href="#cb5-24"></a><span class="fu">colnames</span>(resultados) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"Reg"</span>, <span class="st">"IPW"</span>, <span class="st">"Hajek"</span>, <span class="st">"DR"</span>)</span>
+<span id="cb5-25"><a href="#cb5-25"></a><span class="fu">rownames</span>(resultados) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"Bias"</span>, <span class="st">"True Var"</span>, <span class="st">"Estim Var"</span>)</span>
+<span id="cb5-26"><a href="#cb5-26"></a>resultados</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>                  Reg        IPW      Hajek          DR
+Bias      0.003172167 -0.7754680 -0.6661254 -0.01207538
+True Var  0.111727438  1.9938424  0.5684628  0.25101684
+Estim Var 0.118663850  0.6675723  0.3870083  0.19131786</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="simulação-6" class="slide level2">
+<h2>Simulação</h2>
+<div class="callout callout-note callout-captioned callout-style-default">
+<div class="callout-body">
+<div class="callout-caption">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Simulação</strong></p>
+</div>
+<div class="callout-content">
+<div class="cell" data-layout-align="center">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1"></a>mc <span class="ot">&lt;-</span> <span class="dv">500</span></span>
+<span id="cb7-2"><a href="#cb7-2"></a>n <span class="ot">&lt;-</span> <span class="dv">500</span></span>
+<span id="cb7-3"><a href="#cb7-3"></a>bias <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="cn">NA</span>, <span class="at">ncol =</span> <span class="dv">4</span>, <span class="at">nrow =</span> mc)</span>
+<span id="cb7-4"><a href="#cb7-4"></a>estim_se <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="cn">NA</span>, <span class="at">ncol =</span> <span class="dv">4</span>, <span class="at">nrow =</span> mc)</span>
+<span id="cb7-5"><a href="#cb7-5"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>mc) {</span>
+<span id="cb7-6"><a href="#cb7-6"></a>  x <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fu">rnorm</span>(n<span class="sc">*</span><span class="dv">2</span>), n, <span class="dv">2</span>)</span>
+<span id="cb7-7"><a href="#cb7-7"></a>  x1 <span class="ot">&lt;-</span> <span class="fu">cbind</span>(<span class="dv">1</span>, x, <span class="fu">exp</span>(x))</span>
+<span id="cb7-8"><a href="#cb7-8"></a>  beta_z <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">0</span>)</span>
+<span id="cb7-9"><a href="#cb7-9"></a>  e <span class="ot">&lt;-</span> <span class="dv">1</span> <span class="sc">/</span> (<span class="dv">1</span> <span class="sc">+</span> <span class="fu">exp</span>(<span class="sc">-</span><span class="fu">as.vector</span>(x1 <span class="sc">%*%</span> beta_z)))</span>
+<span id="cb7-10"><a href="#cb7-10"></a>  z <span class="ot">&lt;-</span> <span class="fu">rbinom</span>(n, <span class="dv">1</span>, e)</span>
+<span id="cb7-11"><a href="#cb7-11"></a>  beta_y1 <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="fl">0.2</span>, <span class="sc">-</span><span class="fl">0.1</span>)</span>
+<span id="cb7-12"><a href="#cb7-12"></a>  beta_y0 <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="sc">-</span><span class="fl">0.2</span>, <span class="fl">0.1</span>)</span>
+<span id="cb7-13"><a href="#cb7-13"></a>  y1 <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(n, x1 <span class="sc">%*%</span> beta_y1)</span>
+<span id="cb7-14"><a href="#cb7-14"></a>  y0 <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(n, x1 <span class="sc">%*%</span> beta_y0)</span>
+<span id="cb7-15"><a href="#cb7-15"></a>  y <span class="ot">&lt;-</span> z<span class="sc">*</span>y1 <span class="sc">+</span> (<span class="dv">1</span> <span class="sc">-</span> z)<span class="sc">*</span>y0</span>
+<span id="cb7-16"><a href="#cb7-16"></a>  ce <span class="ot">&lt;-</span> <span class="fu">OS_ATE</span>(z, y, x)</span>
+<span id="cb7-17"><a href="#cb7-17"></a>  bias[i,] <span class="ot">&lt;-</span>  ce[<span class="dv">1</span>, ]  <span class="sc">-</span> <span class="fl">0.2</span><span class="sc">*</span><span class="fu">exp</span>(<span class="dv">1</span><span class="sc">/</span><span class="dv">2</span>)</span>
+<span id="cb7-18"><a href="#cb7-18"></a>  estim_se[i, ] <span class="ot">&lt;-</span> ce[<span class="dv">2</span>, ]</span>
+<span id="cb7-19"><a href="#cb7-19"></a>}</span>
+<span id="cb7-20"><a href="#cb7-20"></a><span class="co"># Bias, True SD, Estim SD</span></span>
+<span id="cb7-21"><a href="#cb7-21"></a>resultados <span class="ot">&lt;-</span> <span class="fu">rbind</span>(<span class="fu">apply</span>(bias, <span class="dv">2</span>, mean), </span>
+<span id="cb7-22"><a href="#cb7-22"></a>                    <span class="fu">apply</span>(bias, <span class="dv">2</span>, sd), </span>
+<span id="cb7-23"><a href="#cb7-23"></a>                    <span class="fu">apply</span>(estim_se, <span class="dv">2</span>, mean))</span>
+<span id="cb7-24"><a href="#cb7-24"></a><span class="fu">colnames</span>(resultados) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"Reg"</span>, <span class="st">"IPW"</span>, <span class="st">"Hajek"</span>, <span class="st">"DR"</span>)</span>
+<span id="cb7-25"><a href="#cb7-25"></a><span class="fu">rownames</span>(resultados) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"Bias"</span>, <span class="st">"True Var"</span>, <span class="st">"Estim Var"</span>)</span>
+<span id="cb7-26"><a href="#cb7-26"></a>resultados</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>                  Reg          IPW       Hajek          DR
+Bias      -0.04640363 0.0008687522 0.002644223 0.001847562
+True Var   0.11470270 0.1729404572 0.167957141 0.164342718
+Estim Var  0.11303603 0.1511667243 0.139691558 0.140591620</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="simulação-8" class="slide level2">
+<h2>Simulação</h2>
+<div class="callout callout-note callout-captioned callout-style-default">
+<div class="callout-body">
+<div class="callout-caption">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Simulação</strong></p>
+</div>
+<div class="callout-content">
+<div class="cell" data-layout-align="center">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1"></a>mc <span class="ot">&lt;-</span> <span class="dv">500</span></span>
+<span id="cb9-2"><a href="#cb9-2"></a>n <span class="ot">&lt;-</span> <span class="dv">500</span></span>
+<span id="cb9-3"><a href="#cb9-3"></a>bias <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="cn">NA</span>, <span class="at">ncol =</span> <span class="dv">4</span>, <span class="at">nrow =</span> mc)</span>
+<span id="cb9-4"><a href="#cb9-4"></a>estim_se <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="cn">NA</span>, <span class="at">ncol =</span> <span class="dv">4</span>, <span class="at">nrow =</span> mc)</span>
+<span id="cb9-5"><a href="#cb9-5"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>mc) {</span>
+<span id="cb9-6"><a href="#cb9-6"></a>  x <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fu">rnorm</span>(n<span class="sc">*</span><span class="dv">2</span>), n, <span class="dv">2</span>)</span>
+<span id="cb9-7"><a href="#cb9-7"></a>  x1 <span class="ot">&lt;-</span> <span class="fu">cbind</span>(<span class="dv">1</span>, x, <span class="fu">exp</span>(x))</span>
+<span id="cb9-8"><a href="#cb9-8"></a>  beta_z <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">1</span>, <span class="sc">-</span><span class="dv">1</span>)</span>
+<span id="cb9-9"><a href="#cb9-9"></a>  e <span class="ot">&lt;-</span> <span class="dv">1</span> <span class="sc">/</span> (<span class="dv">1</span> <span class="sc">+</span> <span class="fu">exp</span>(<span class="sc">-</span><span class="fu">as.vector</span>(x1 <span class="sc">%*%</span> beta_z)))</span>
+<span id="cb9-10"><a href="#cb9-10"></a>  z <span class="ot">&lt;-</span> <span class="fu">rbinom</span>(n, <span class="dv">1</span>, e)</span>
+<span id="cb9-11"><a href="#cb9-11"></a>  beta_y1 <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="fl">0.2</span>, <span class="sc">-</span><span class="fl">0.1</span>)</span>
+<span id="cb9-12"><a href="#cb9-12"></a>  beta_y0 <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="sc">-</span><span class="fl">0.2</span>, <span class="fl">0.1</span>)</span>
+<span id="cb9-13"><a href="#cb9-13"></a>  y1 <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(n, x1 <span class="sc">%*%</span> beta_y1)</span>
+<span id="cb9-14"><a href="#cb9-14"></a>  y0 <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(n, x1 <span class="sc">%*%</span> beta_y0)</span>
+<span id="cb9-15"><a href="#cb9-15"></a>  y <span class="ot">&lt;-</span> z<span class="sc">*</span>y1 <span class="sc">+</span> (<span class="dv">1</span> <span class="sc">-</span> z)<span class="sc">*</span>y0</span>
+<span id="cb9-16"><a href="#cb9-16"></a>  ce <span class="ot">&lt;-</span> <span class="fu">OS_ATE</span>(z, y, x)</span>
+<span id="cb9-17"><a href="#cb9-17"></a>  bias[i,] <span class="ot">&lt;-</span>  ce[<span class="dv">1</span>, ] <span class="sc">-</span> <span class="fl">0.2</span><span class="sc">*</span><span class="fu">exp</span>(<span class="dv">1</span><span class="sc">/</span><span class="dv">2</span>)</span>
+<span id="cb9-18"><a href="#cb9-18"></a>  estim_se[i, ] <span class="ot">&lt;-</span> ce[<span class="dv">2</span>, ]</span>
+<span id="cb9-19"><a href="#cb9-19"></a>}</span>
+<span id="cb9-20"><a href="#cb9-20"></a><span class="co"># Bias, True SD, Estim SD</span></span>
+<span id="cb9-21"><a href="#cb9-21"></a>resultados <span class="ot">&lt;-</span> <span class="fu">rbind</span>(<span class="fu">apply</span>(bias, <span class="dv">2</span>, mean), </span>
+<span id="cb9-22"><a href="#cb9-22"></a>                    <span class="fu">apply</span>(bias, <span class="dv">2</span>, sd), </span>
+<span id="cb9-23"><a href="#cb9-23"></a>                    <span class="fu">apply</span>(estim_se, <span class="dv">2</span>, mean))</span>
+<span id="cb9-24"><a href="#cb9-24"></a><span class="fu">colnames</span>(resultados) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"Reg"</span>, <span class="st">"IPW"</span>, <span class="st">"Hajek"</span>, <span class="st">"DR"</span>)</span>
+<span id="cb9-25"><a href="#cb9-25"></a><span class="fu">rownames</span>(resultados) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"Bias"</span>, <span class="st">"True Var"</span>, <span class="st">"Estim Var"</span>)</span>
+<span id="cb9-26"><a href="#cb9-26"></a>resultados</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>                  Reg       IPW       Hajek        DR
+Bias      -0.06756789 0.1077739 -0.05767143 0.1441579
+True Var   0.12494688 0.2606137  0.18246527 0.2630190
+Estim Var  0.12725755 0.2407535  0.16386663 0.2357870</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section></section>
+<section>
+<section id="exemplo" class="title-slide slide level1 center">
+<h1>Exemplo</h1>
+
+</section>
+<section id="exemplo-1" class="slide level2">
+<h2>Exemplo</h2>
+<div class="callout callout-note callout-captioned callout-style-default">
+<div class="callout-body">
+<div class="callout-caption">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Exemplo</strong></p>
+</div>
+<div class="callout-content">
+<p><a href="https://dataverse.harvard.edu/file.xhtml?fileId=7440222&amp;version=3.0"><em>Dataset</em> disponível aqui</a>. <a href="https://academic.oup.com/jrsssb/article/78/3/673/7040940?login=false">Chang et al.&nbsp;(2016)</a> estudam se a participação no programa da merenda nas escolas (<code>School_meal</code>) leva a um aumento no índice de massa muscular (<code>BMI</code>) das crianças. 12 outras covariáveis também estão disponíveis no <em>dataset</em>.</p>
+<div class="cell" data-layout-align="center">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1"></a>dados <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"datasets/nhanes_bmi.csv"</span>)[, <span class="sc">-</span><span class="dv">1</span>]</span>
+<span id="cb11-2"><a href="#cb11-2"></a>z <span class="ot">&lt;-</span> dados<span class="sc">$</span>School_meal</span>
+<span id="cb11-3"><a href="#cb11-3"></a>y <span class="ot">&lt;-</span> dados<span class="sc">$</span>BMI</span>
+<span id="cb11-4"><a href="#cb11-4"></a>x <span class="ot">&lt;-</span> <span class="fu">scale</span>(dados[, <span class="sc">-</span><span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>)])</span>
+<span id="cb11-5"><a href="#cb11-5"></a>causal_effetcs <span class="ot">=</span> <span class="fu">OS_ATE</span>(z, y, x, <span class="at">n_boot =</span> <span class="dv">1000</span>)</span>
+<span id="cb11-6"><a href="#cb11-6"></a><span class="fu">round</span>(causal_effetcs, <span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>         Reg    IPW  Hajek     DR
+Estim -0.017 -1.516 -0.156 -0.019
+SE     0.220  0.484  0.242  0.223</code></pre>
+</div>
+</div>
+<div class="cell" data-layout-align="center">
+<div class="cell-output cell-output-stdout">
+<pre><code>         Reg    IPW  Hajek     DR
+Estim -0.017 -0.713 -0.054 -0.043
+SE     0.233  0.410  0.244  0.239</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section></section>
+<section>
+<section id="comentários-finais" class="title-slide slide level1 center">
+<h1>Comentários Finais</h1>
+
+</section>
+<section id="comentários-finais-1" class="slide level2">
+<h2>Comentários Finais</h2>
+<ul>
+<li class="fragment">Pode-se mostrar que:
+<ul>
+<li class="fragment"><span class="math inline">\(\hat{\tau}^{DR} = \hat{\tau}^{Reg} + \dfrac{1}{n} \displaystyle \sum_{i = 1}^n \dfrac{Z_i (Y_i - \mu_1(X_i, \hat{\beta}_1))}{e(X_i, \hat{\alpha})} - \dfrac{1}{n} \sum_{i = 1}^n \dfrac{(1 - Z_i)(Y_i - \mu_0(X_i, \hat{\beta}_0))}{1 - e(X_i, \hat{\alpha})}.\)</span></li>
+<li class="fragment"><span class="math inline">\(\hat{\tau}^{DR} = \hat{\tau}^{IPW} - \dfrac{1}{n} \displaystyle \sum_{i = 1}^n \dfrac{Z_i - e(X, \hat{\alpha})}{e(X_i, \hat{\alpha})} \mu_1(X_i, \hat{\beta}_1) + \dfrac{1}{n} \displaystyle \sum_{i = 1}^n \dfrac{e(X_i, \hat{\alpha})-Z_i}{1 - e(X_i, \hat{\alpha})} \mu_0(X_i, \hat{\beta}_0)\)</span></li>
+</ul></li>
+<li class="fragment">O estimador RD foi proposto por Scharfstein et al.&nbsp;(1999) mas recentemente ressucitado por Chernozhukov et al.&nbsp;(2018) com o nome de <em>double machine learning</em>. A ideia básica é substituir o modleo utilizado no <em>propensity score</em> e no modelo para o resultado, por modelo de aprendizado de máquina.</li>
+</ul>
 </section>
 <section id="referências" class="slide level2">
 <h2>Referências</h2>
