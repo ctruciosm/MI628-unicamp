@@ -1,0 +1,247 @@
+---
+title: "Inferência Causal"
+subtitle: "Matching"
+author: "Prof. Carlos Trucíos </br> ctrucios@unicamp.br"
+Email: "ctrucios@unicamp.br"
+institute: "Instituto de Matemática, Estatística e Computação Científica (IMECC), </br> Universidade Estadual de Campinas (UNICAMP)."
+toc: true
+toc-depth: 1
+toc-title: "Conteúdo"
+knitr:
+    opts_chunk: 
+      fig.align: 'center'
+execute:
+    message: false
+    warning: false
+format:
+    revealjs:
+        slide-number: true
+        show-slide-number: print
+        self-contained: false
+        chalkboard: true
+        width: 1600
+        height: 900
+        theme: [default, styles.scss]
+        incremental: true
+        code-fold: true
+        logo: "imagens/imecc.png"
+        footer: "Carlos Trucíos (IMECC/UNICAMP)  |  ME920/MI628 - Inferência Causal |  [ctruciosm.github.io](https://ctruciosm.github.io/)"
+        highlight-style: "a11y"
+        title-slide-attributes:
+            data-background-image: "imagens/unicamp.png"
+            data-background-size: 20%
+            data-background-position: 99% 5%
+            data-background-opacity: "1"
+---
+
+
+
+# Introdução
+## Introdução
+
+
+
+# Matching
+## Matching
+
+- Considere $n_0 >> n_1$.
+- Para cada unidade $i$ ($i = 1, \cdots, n_1$) no grupo de tratamento, buscamos a unidade $m(i)$ no grupo de controle tal que $X_i = X_{m(i)}$.
+- No caso ideal, teremos um _macth_ perfeito.
+- No par que deu _macth_ teremos $e(X_i) = e(X_{m(i)})$
+
+
+## Matching
+
+Pode-se mostrar que
+
+$$P(Z_i = 1, Z_{m(i)} = 0 | Z_i + Z_{m(i)} = 1, X_i, X_{m(i)}) = 1/2$$
+
+. . . 
+
+
+Ou seja, condicionado nas covariáveis e no fato de sabermos que em cada par temos um tratamento e um controle, temos um MPE!
+
+. . . 
+
+
+<center>
+**Podemos analisar _match_ perfeitos em estudos observacionais como se fossem um MPE!**
+</center>
+
+
+
+## Matching
+
+<center>
+![](imagens/duvida_ds.jpg){width=60%}
+
+[E se encontrarmos $M_i$ unidades no grupo de controle que fazem _match_ perfeito com a unidade $i$ no grupo de tratamento?]{style="color:red"}
+</center>
+
+
+. . . 
+
+Quando os $M_i$s variam, o procedimento é chamado _variable-ratio matching_ e pode ser analisado utilizando uma modificação do MPE, a qual apresentamos brevemente a seguir.
+
+
+
+## Matching
+
+### EMPE
+
+- Suponha que temos $n$ _matches_ ($i = 1, \cdots, n$)
+- Para cada $i$ temos $1 + M_i$ unidades (1 referente ao tratamento e $M_i$ referente ao controle)
+- Assim, o número total de unidades experimentais é $N = n + \displaystyle \sum_{i + 1}^n M_i$
+- O _index_ $ij$ representa a unidade $j$ no conjunto $i$ ($i = 1, \cdots, n$, $j = 1, \cdots, M_i$) com indicadora de tratamento $Z_{ij}$ e resultados potenciais $Y_{ij}(1)$ e $Y_{ij}(0)$
+- Dentro de cada conjunto $i$, o pesquisador seleciona uma unidade aleatoriamente para atribuir o tratamento.*
+
+## Matching
+
+### EMPE
+
+$$Y_{ij} = Z_{ij}Y_{ij}(1) + (1 - Z_{ij})Y_{ij}(0)$$
+
+. . . 
+
+O efeito causal médio para o grupo $i$ é dado por 
+
+$$\tau_i = (M_i + 1)^{-1} \displaystyle \sum_{j = 1}^{M_i + 1} Y_{ij}(1) - Y_{ij}(0)$$
+
+. . . 
+
+Cujo estimador não viesado é dado por
+
+$$\hat{\tau}_i = \displaystyle \sum_{j = 1}^{M_i + 1} Z_{ij}Y_{ij} - M_i^{-1}\sum_{j = 1}^{M_i + 1} (1 - Z_{ij}) Y_{ij}.$$
+
+
+
+## Matching
+
+### EMPE
+
+O efeito causal médio (dentro dos "estratos") é dado por
+
+$$\tau = n^{-1} \displaystyle \sum_{i = 1}^n \tau_i,$$
+
+
+Com estimador não viesado dado por 
+
+$$\hat{\tau} = n^{-1} \displaystyle \sum_{i = 1}^n \hat{\tau}_i.$$
+
+
+. . . 
+
+#### Observação:
+
+$\tau$ é o efeito causal médio dentro dos tratamentos, que não é a mesma coisa do que o efeito causal médio das $N$ unidades.
+
+
+## Matching
+
+### EMPE
+
+Efeito causal médio
+
+$$\tau* = N^{-1} \displaystyle \sum_{i = 1}^n \sum_{j = 1}^{M_i + 1}(Y_{ij}(1) - Y_{ij}(0)) = \sum_{i = 1}^n \dfrac{1 + M_i}{N} \tau_i,$$
+
+. . . 
+
+
+Em geral, podemos resumir ambos os casos em:
+
+$$\tau_{\omega} = \displaystyle \sum_{i = 1}^n \omega_i \tau_i,$$
+
+
+
+## Matching
+
+### EMPE
+
+
+Com estimador não viesado e variância (conservadora):
+
+
+$$\hat{\tau}_{\omega} = \displaystyle \sum_{i = 1}^n \omega_i \hat{\tau}_i \quad e \quad \hat{V}_{\omega} = \displaystyle \sum_{i = 1}^n c_i(\hat{\tau}_i - \hat{\tau}_{\omega})^2,$$ em que $c_i = \dfrac{\omega_i^2 / (1 - 2\omega_i)}{1 + \sum_{i = 1}^n \omega_i^2 / (1 - 2\omega_i)}$
+
+
+. . . 
+
+
+Infelizmente não sempre temos _match_ perfeito ($X_i = X_{m(i)}$), trazendo consequências negativas ao utilizar MPE ou EMPE em estudos observacionais no contexto de FRT ([Guo e Rothenhausler (2023)](https://academic.oup.com/biomet/article/110/3/631/6854970)).
+
+
+
+# $X_i \approx X_{m(i)}$
+## $X_i \approx X_{m(i)}$
+
+- Mesmo se o grupo de controle for grande, pode ser o caso de não termos _match_ perfeito mas sim  $X_i \approx X_{m(i)}$.
+- Seja $$m(i) = \arg \min_{k:Z_k = 0} d(X_i, X_k),$$ em que $d(X_i, X_k)$ é uma medida de distância entre $X_i$ e $X_k$ (tipicamente distância Euclideana ou de Mahalanobis)
+
+. . . 
+
+> **Observação:**  Daqui em diante, considerarmos _matching_ com reposição. Ou seja, uma mesma unidade pode ser utilizada mais do que uma vez.
+
+
+## Estimação pontual e correção do vies
+
+Para cada $i$ consideremos $$\hat{Y}_i(1) = Y_i \quad e \quad \hat{Y}_i(0) = M^{-1} \sum_{k \in J_i} Y_k,$$ em que $J_i$ é o conjunto de unidades no grupo de controle que fazen _match_ com a unidade de tratamento $i$. 
+
+. . . 
+
+Por exemplo, podemos calcular $d(X_i, X_k)$ $\forall k$ no grupo de controle e definir $J_i$ como os índices de $k$ com os menores $M$ valores de $d(X_i, X_k)$.
+
+
+## Estimação pontual e correção do vies
+
+O estimador _matching_ é dado por $$\hat{\tau}^m = n^{-1} \displaystyle \sum_{i = 1}^n (\hat{Y}_i(1) - \hat{Y}_i(0)),$$
+
+Abadei e Imbens mostram que este estimador é viesado e eles propoem o seguinte estimador para o vies
+
+
+$$\hat{B} = n^{-1} \displaystyle \sum_{i = 1}^n \hat{B}_i,$$ em que $\hat{B}_i = (2Z_i - 1)M^{-1} \displaystyle \sum_{k \in J_i}[\hat{\mu}_{1 -Z_i}(X_i) - \hat{\mu}_{1 -Z_i}(X_k)]$ com $\hat{\mu_1}(X_i)$ e $\hat{\mu_0}(X_i)$ sendo os valores ajustados do _outcome regression._
+
+
+## Estimação pontual e correção do vies
+
+Assim, o estimador já corrigido pelo vies é dado por
+
+
+$$\hat{\tau}^{mbc} = \hat{\tau}^m - \hat{B} \equiv n^{-1} \displaystyle \sum_{i = 1}^n\hat{\psi}_i,$$ em que $\hat{\psi}_i = \hat{\mu}_{1}(X_i) - \hat{\mu}_0(X_i) + (2Z_i - 1)(1 + K_i/M)[Y_i - \hat{\mu}_{Z_i}(X_i)]$ com $K_i$ o número de vezes que a unidade $i$ é utilizada como _match_.
+
+
+Com estimador de variâncias dado por
+
+$$\hat{V}^{mbc} = \dfrac{1}{n^2} \displaystyle \sum_{i = 1}^n (\hat{\psi_i} - \hat{\tau}^{mbc})^2$$
+
+## Conexão com o estimador DR
+
+O estimador DR é dado por $$\hat{\tau}^{DR} = \hat{\tau}^{Reg} + \dfrac{1}{n}\displaystyle \sum_{i = 1}^n \Big[ \dfrac{Z_i \hat{R_i}}{\hat{e}(X_i)}  - \dfrac{(1 - Z_i) \hat{R_i}}{1 - \hat{e}(X_i)} \Big ],$$ em que $\hat{\tau}^{Reg} = n^{-1} \displaystyle \sum_{i = 1}^n [\hat{\mu}_1(X_i) - \hat{\mu}_0(X_i)]$ e $\hat{R}_{i} = \left\{ \begin{array}{ll}
+		Y_i - \hat{\mu}_1(X_i) & \text{se }  Z_i = 1,\\
+		Y_i - \hat{\mu}_0(X_i)  & \text{se }  Z_i = 0.
+	\end{array}\right.$
+	
+Pode-se mostrar que $$\hat{\tau}^{mbc} = \hat{\tau}^{Reg} + \dfrac{1}{n}\displaystyle \sum_{i = 1}^n \Big[ \Big( 1 + \dfrac{K_i}{M} \Big ) Z_i \hat{R_i}  - \Big( 1 + \dfrac{K_i}{M} \Big )(1 - Z_i) \hat{R_i}\Big ]$$
+
+# Matching para $\tau_T$
+
+## Matching para $\tau_T$
+
+
+- Suponha agora que estamos interessados em $\tau_T = \mathbb{E}(Y | Z = 1) - \mathbb{E}(Y(0) | Z = 0)$
+- O estimador _matching_ já corrigido pelo vies, é dado por $$\hat{\tau}_T^{mbc} = \hat{\tau}_T^m - \hat{B}_T,$$ em que
+    *   $\hat{\tau}_T^m = n_1^{-1} \displaystyle \sum_{i = 1}^n Z_i[Y_i - \hat{Y}_i(0)]$, 
+    *   $\hat{B}_T = n_1^{-1} \displaystyle \sum_{i = 1}^n Z_i\hat{B}_{T, i}$ e 
+    *   $\hat{B}_{T,i} = M^{-1}\displaystyle \sum_{k \in J_i} [\hat{\mu}_0(X_i) - \hat{\mu}_0 (X_k)]$
+    
+
+
+## Matching para $\tau_T$
+
+
+## Referências
+
+::: {.nonincremental}
+
+- Peng Ding (2023). A First Course in Causal Inference. Capítulo 15.
+
+:::
