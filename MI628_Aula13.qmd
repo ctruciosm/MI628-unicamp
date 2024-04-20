@@ -46,26 +46,19 @@ format:
 
 - Considere $n_0 >> n_1$.
 - Para cada unidade $i$ ($i = 1, \cdots, n_1$) no grupo de tratamento, buscamos a unidade $m(i)$ no grupo de controle tal que $X_i = X_{m(i)}$.
-- No caso ideal, teremos um _macth_ perfeito.
 - No par que deu _macth_ teremos $e(X_i) = e(X_{m(i)})$
 
 
-## Matching
+. . . 
 
 Pode-se mostrar que
 
-$$P(Z_i = 1, Z_{m(i)} = 0 | Z_i + Z_{m(i)} = 1, X_i, X_{m(i)}) = 1/2$$
+$$P(Z_i = 1, Z_{m(i)} = 0 | Z_i + Z_{m(i)} = 1, X_i, X_{m(i)}) = 1/2.$$
 
 . . . 
-
-
-Ou seja, condicionado nas covariáveis e no fato de sabermos que em cada par temos um tratamento e um controle, temos um MPE!
-
-. . . 
-
 
 <center>
-**Podemos analisar _match_ perfeitos em estudos observacionais como se fossem um MPE!**
+[Condicionado nas covariáveis e no fato de sabermos que em cada par temos um tratamento e um controle, temos um MPE!. Ou seja, **podemos analisar _match_ perfeitos em estudos observacionais como se fossem um MPE!**]{style="color:blue"}
 </center>
 
 
@@ -89,11 +82,11 @@ Quando os $M_i$s variam, o procedimento é chamado _variable-ratio matching_ e p
 
 ### EMPE
 
-- Suponha que temos $n$ _matches_ ($i = 1, \cdots, n$)
-- Para cada $i$ temos $1 + M_i$ unidades (1 referente ao tratamento e $M_i$ referente ao controle)
-- Assim, o número total de unidades experimentais é $N = n + \displaystyle \sum_{i + 1}^n M_i$
-- O _index_ $ij$ representa a unidade $j$ no conjunto $i$ ($i = 1, \cdots, n$, $j = 1, \cdots, M_i$) com indicadora de tratamento $Z_{ij}$ e resultados potenciais $Y_{ij}(1)$ e $Y_{ij}(0)$
-- Dentro de cada conjunto $i$, o pesquisador seleciona uma unidade aleatoriamente para atribuir o tratamento.*
+- Suponha que temos $n$ _matches_ ($i = 1, \cdots, n$).
+- Para cada $i$ temos $1 + M_i$ unidades (1 referente ao tratamento e $M_i$ referente ao controle).
+- Assim, o número total de unidades experimentais é $N = n + \displaystyle \sum_{i + 1}^n M_i.$
+- O _index_ $ij$ representa a unidade $j$ no conjunto $i$ ($i = 1, \cdots, n$, $j = 1, \cdots, M_i + 1$) com indicadora de tratamento $Z_{ij}$ e resultados potenciais $Y_{ij}(1)$ e $Y_{ij}(0).$
+- *Dentro de cada conjunto $i$, o pesquisador seleciona uma unidade aleatoriamente para atribuir o tratamento.*
 
 ## Matching
 
@@ -151,7 +144,7 @@ Em geral, podemos resumir ambos os casos em:
 
 $$\tau_{\omega} = \displaystyle \sum_{i = 1}^n \omega_i \tau_i,$$
 
-
+para $\tau$ temos que $\omega_i = 1/n$ e para $\tau*$ teremos que $\omega_i = (1 + M_i) / N.$
 
 ## Matching
 
@@ -195,6 +188,8 @@ Por exemplo, podemos calcular $d(X_i, X_k)$ $\forall k$ no grupo de controle e d
 
 O estimador _matching_ é dado por $$\hat{\tau}^m = n^{-1} \displaystyle \sum_{i = 1}^n (\hat{Y}_i(1) - \hat{Y}_i(0)),$$
 
+. . . 
+
 Abadei e Imbens mostram que este estimador é viesado e eles propoem o seguinte estimador para o vies
 
 
@@ -220,7 +215,7 @@ O estimador DR é dado por $$\hat{\tau}^{DR} = \hat{\tau}^{Reg} + \dfrac{1}{n}\d
 		Y_i - \hat{\mu}_0(X_i)  & \text{se }  Z_i = 0.
 	\end{array}\right.$
 	
-Pode-se mostrar que $$\hat{\tau}^{mbc} = \hat{\tau}^{Reg} + \dfrac{1}{n}\displaystyle \sum_{i = 1}^n \Big[ \Big( 1 + \dfrac{K_i}{M} \Big ) Z_i \hat{R_i}  - \Big( 1 + \dfrac{K_i}{M} \Big )(1 - Z_i) \hat{R_i}\Big ]$$
+Pode-se mostrar que $$\hat{\tau}^{mbc} = \hat{\tau}^{Reg} + \dfrac{1}{n}\displaystyle \sum_{i = 1}^n \Big[ \Big( 1 + \dfrac{K_i}{M} \Big ) Z_i \hat{R_i}  - \Big( 1 + \dfrac{M}{K_i} \Big )(1 - Z_i) \hat{R_i}\Big ]$$
 
 # Matching para $\tau_T$
 
@@ -237,6 +232,184 @@ Pode-se mostrar que $$\hat{\tau}^{mbc} = \hat{\tau}^{Reg} + \dfrac{1}{n}\display
 
 ## Matching para $\tau_T$
 
+Ademais, se fizermos $\hat{\psi}_{T,i} = Z_i [Y_i - \hat{\mu}_0(X_i)] - (1 - Z_i)K_i/M[Y_i - \hat{\mu}_0(X_i)]$, podemos re-escrever o estimador como $$\hat{\tau}_T^{mbc} = n_1^{-1}\displaystyle \sum_{i = 1}^n \hat{\psi}_{T,i},$$ o que motiva o estimador de variância dado por $$\hat{V}_T^{mbc} = \dfrac{1}{n_1^2} \displaystyle \sum_{i = 1}^n (\hat{\psi}_{T,i} - \hat{\tau}_T^{mbc})^2.$$
+
+. . . 
+
+É possível mostrar que $\hat{\tau}_T^{mdc} = \hat{\tau}_T^{Reg}-n_1^{-1} \displaystyle \sum_{i = 1}^n \dfrac{K_i}{M}(1 - Z_i)\hat{R}_i.$
+
+# Exemplos
+## Exemplos
+
+
+::: {.callout-note}
+### Estudo experimental vs. observacional
+
+_Lalonde (1986)_ está interessado no efeito causal de um programa de treinamento sob o salario. Ele compara os resultados utilizando dados experimentais (dataset `lalonde` do pacote `Matching`) vs. dados observacionais ([`cps1re74.csv`](https://dataverse.harvard.edu/file.xhtml?fileId=7440281&version=3.0)).
+
+:::
+
+
+. . . 
+
+
+
+:::: {.columns}
+
+::: {.column width="50%"}
+#### Estudo Experimental
+```{r}
+#| echo: true
+#| message: false
+#| warning: false
+library(Matching)
+library(car)
+data(lalonde)
+y <- lalonde$re78
+z <- lalonde$treat
+modelo_ee <- lm(y ~ z)
+v_ehw_ee <- hccm(modelo_ee)
+Estimate <- coef(modelo_ee)
+Std_Error <- sqrt(diag(v_ehw_ee))
+t <- Estimate / Std_Error
+p_valor <- pnorm(abs(t), lower.tail = FALSE)
+tabela_ee <- round(cbind(Estimate,  Std_Error, t, p_valor), 3)
+tabela_ee
+```
+
+:::
+
+::: {.column width="50%"}
+#### Estudo Observacional
+```{r}
+#| echo: true
+#| message: false
+#| warning: false
+data <- read.csv("datasets/cps1re74.csv", sep = " ")
+y <- data$re78
+z <- data$treat
+modelo_eo <- lm(y ~ z)
+v_ehw_eo <- hccm(modelo_eo)
+Estimate <- coef(modelo_eo)
+Std_Error <- sqrt(diag(v_ehw_eo))
+t <- Estimate / Std_Error
+p_valor <- pnorm(abs(t), lower.tail = FALSE)
+tabela_eo <- round(cbind(Estimate,  Std_Error, t, p_valor), 3)
+tabela_eo
+```
+:::
+
+::::
+
+
+Reanalisaremos esses dados (mas agora também considerando as covariáveis)
+
+
+
+## Exemplos
+
+
+::: {.callout-note}
+### Lalonde: dados experimentais
+```{r}
+#| echo: true
+library(Matching)
+library(car)
+data(lalonde)
+y <- lalonde$re78
+z <- lalonde$treat
+x <- as.matrix(lalonde[, c("age", "educ", "black", "hisp", "married", "nodegr", "re74", "re75")])
+
+# Experimentos randomizados
+neyman_ols <- lm(y ~ z)
+fisher_ols <- lm(y ~ z + x)  # ANCOVA
+x_c <- scale(x)
+lin_ols <- lm(y ~ z*x_c)
+
+out <- c(neyman_ols$coef[2], fisher_ols$coef[2], lin_ols$coef[2],
+         sqrt(hccm(neyman_ols, type = "hc2")[2, 2]),
+         sqrt(hccm(fisher_ols, type = "hc2")[2, 2]),
+         sqrt(hccm(lin_ols, type = "hc2")[2, 2]))
+
+out <- matrix(out, nrow = 3, ncol = 2)
+colnames(out) <- c("Est", "SE")
+rownames(out) <- c("Neyman", "Fisher", "Lin")
+out
+```
+:::
+
+
+## Exemplos
+
+
+::: {.callout-note}
+### Lalonde: dados experimentais
+Analisaremos os dados experimentais como se fossem observacionais e para isto, utilizaremos _Matching_
+
+```{r}
+#| echo: true
+matching_model <- Match(Y = y, Tr = z, X = x, BiasAdjust = TRUE)
+summary(matching_model)
+```
+
+::::
+
+. . . 
+
+Ambos, o valor estimado e seu desvio padrão aumentaram. Contudo, qualitativamente as conclusões são as mesmas.
+
+## Exemplos
+
+
+::: {.callout-note}
+### Lalonde: dados observacionais
+```{r}
+#| echo: true
+data <- read.csv("datasets/cps1re74.csv", sep = " ")
+y <- data$re78
+z <- data$treat
+x <- as.matrix(data[, c("age", "educ", "black", "hispan", "married", "nodegree", "re74", "re75")])
+
+# Analisamos os dados como se fossem dados experimentais
+neyman_ols <- lm(y ~ z)
+fisher_ols <- lm(y ~ z + x)  # ANCOVA
+x_c <- scale(x)
+lin_ols <- lm(y ~ z*x_c)
+
+out <- c(neyman_ols$coef[2], fisher_ols$coef[2], lin_ols$coef[2],
+         sqrt(hccm(neyman_ols, type = "hc2")[2, 2]),
+         sqrt(hccm(fisher_ols, type = "hc2")[2, 2]),
+         sqrt(hccm(lin_ols, type = "hc2")[2, 2]))
+
+out <- matrix(out, nrow = 3, ncol = 2)
+colnames(out) <- c("Est", "SE")
+rownames(out) <- c("Neyman", "Fisher", "Lin")
+out
+```
+:::
+
+
+## Exemplos
+
+
+::: {.callout-note}
+### Lalonde: dados observacionais
+Agora utilizaremos um método próprio para dados observacionais.
+```{r}
+#| echo: true
+matching_model <- Match(Y = y, Tr = z, X = x, BiasAdjust = TRUE)
+summary(matching_model)
+```
+:::
+
+As conclusões obtidas ao analisarmos os dados observacionais com método apropriados são as mesmas obtids quando analisamos dados experimentais.
+
+
+## Observação
+
+- Quando $X$ tem dimensão grande, _matching_ sobre da maldição da dimensionalidade.
+- Uma alternativa é realizar o _matching_ baseado no _propensity score_.
+- ![Abadie e Imbens (2016)](https://onlinelibrary.wiley.com/doi/abs/10.3982/ECTA11293?casa_token=xqlx49y_M5sAAAAA:Ud8Lj6FCR7egm3ZRVuw7_OJtH3jSeIOTN00XJ-pUlYlzyJg267m-0aKsz-BCDWNJR6bZ6pz4gr7iGUBVKQ) desenvolvem toda a teoria que justifica esta alternativa.
 
 ## Referências
 
