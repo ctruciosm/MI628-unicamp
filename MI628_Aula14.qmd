@@ -165,9 +165,9 @@ Ou seja, que as distribuições dos contrafactuais $P(Y(1) | Z = 0, X)$ e $P(Y(0
 
 ## Avaliando inconfundibilidade: *negative outcomes*
 
-- Suponha que $Y^n$ é similar a $Y$ e compartilha a mesma estrutura de confusão.
-- Se $Z \perp\!\!\!\perp Y(z) | X$ então $Z \perp\!\!\!\perp Y^n(z) | X$
-- Ademais, conhecemos, a priori, o efeito de $Z$ sob $Y^n$: $$\tau(Z \rightarrow Y^n) = \mathbb{E}[Y^n(1) - Y^n(0)].$$
+- Suponha que $Yn$ é similar a $Y$ e compartilha a mesma estrutura de confusão.
+- Se $Z \perp\!\!\!\perp Y(z) | X$ então $Z \perp\!\!\!\perp Yn(z) | X$
+- Uma característica do *negative outcomes* é que conheceos, a priori, o efeito de $Z$ sob $Yn$: $$\tau(Z \rightarrow Yn) = \mathbb{E}[Yn(1) - Yn(0)].$$
 - Qual seria um diagrama que satisfaz esses requerimentos?
 
 
@@ -175,7 +175,7 @@ Ou seja, que as distribuições dos contrafactuais $P(Y(1) | Z = 0, X)$ e $P(Y(0
 ## Avaliando inconfundibilidade: *negative outcomes*
 
 
-
+<center>
 ```{r}
 DiagrammeR::grViz("
 digraph {
@@ -194,6 +194,7 @@ digraph {
 }
 ")
 ```
+</center>
 
 
 ## Avaliando inconfundibilidade: *negative outcomes*
@@ -201,14 +202,241 @@ digraph {
 
 ::: {.callout-note}
 ### Exemplo 1
+Cornfield at al. (1959) estudaram o efeito de fumar cigarros no câncer de pulmão através de um estudo observacional. Os autores incluiram diversar covariáveis mas ainda é possível que existe uma variável de confusão não medida que pode causar vies no efeito observado.
+
+Para fortalecer as evidências de causalidade, os autores também reportaram o efeito de fumar cigarros sob accidentes de auto (que foi perto de zero, como esperado). Assim, as análises baseadas no _negative outcomes_ fazem com que a evidência de causalidade entre fumar cigarros no câncer de pulmão de torne-se mais forte.
+:::
+
+
+
+## Avaliando inconfundibilidade: *negative outcomes*
+
+
+::: {.callout-note}
+### Exemplo 2
+Imbens e Rubin (2015) sugerem utilizar o resultado desafado como _negative outcome._
+
+Em muitos casos, é razoável acreditar que o resultado desafado e o resultado tem a mesma estrutura de confusão.
+
+Como o resultado defasado acontece antes do tratamento, o efeito causal médio deve ser 0. 
+
 
 
 :::
 
 
+## Avaliando inconfundibilidade: *negative outcomes*
+
+
+::: {.callout-note}
+### Exemplo 3
+Um estudo observacional com pessoas idosas mostrou que vacina contra a influenza reduz o risco de pneumonia/hospitalização por influenza, bem como mortalizade por todas as causas na temporarada seguinte.
+
+Jackson et al. (2006), céticos com os resultados, realizam uma análise suplementar com _negative outcomes._
+
+Vacinação começa outono e a transmisão da influenza é minima até o inverno. Assim, o efeito da vacinação deve ser mais proominente durante a época de influenza. Contudo, Jackson et al. (2006) encontram um efeito maior antes do período de influenza, sugerindo que o efeito observado é, na verdade, devido a variáveis de confusão não observadas.
+
+
+:::
+
+
+## Avaliando inconfundibilidade: *negative expousures*
+
+- Assuma que $Zn$ é similar a $Z$ e compartilha a mesma estrutura de confusão.
+- Se $Z \perp\!\!\!\perp Y(z) | X$ então $Zn \perp\!\!\!\perp Y(z) | X$
+- Ademais, conhecemos, a priori, o efeito de $Zn$ sob $Y$: $$\tau(Zn \rightarrow Y) = \mathbb{E}[Y(1^n) - Y(0^n)].$$
+- Qual seria o dirgamra que satisfaz estes requerimentos?
 
 
 
+## Avaliando inconfundibilidade: *negative expousures*
+
+
+<center>
+```{r}
+DiagrammeR::grViz("
+digraph {
+  graph []
+  node [shape = plaintext]
+    X
+    Z
+    Y
+    Zn
+  edge []
+    X->Y
+    X->Z
+    X->Zn
+    Z->Y
+  { rank = same; Z; Y }
+}
+")
+```
+</center>
+
+
+## Avaliando inconfundibilidade: *negative expousures*
+
+
+::: {.callout-note}
+### Exemplo 4
+Sanderson et al. (2017) dão muitos exemplos de *negative expousures* na determinação do efeito da exposição intrauterina nos resultados posteriores, comparando a associação da exposição materna durante a gravidez com o resultado de interesse, com a associação da exposição paterna com o mesmo resultado. Eles revisam estudos sobre o efeito do tabagismo materno e paterno nos resultados dos filhos, e estudos sobre o efeito do IMC materno e paterno no IMC dos filhos e no transtorno do espectro do autismo. Nestes exemplos, esperamos que a associação da exposição materna com o resultado seja maior do que a da exposição paterna com o desfecho.
+
+:::
+
+
+## Avaliando inconfundibilidade:
+
+### Alguns comentários:
+
+- Testar  inconfundibilidade não é possível, mas podemos utilizar _negative outcomes_ ou _negative exposures_ como análise suplementar a fortalecer a nossa evidência sobre causalidade.
+- Contudo, utilizar esta abordagem não é trivial, principalmente, por dois motivos:
+    *   Requer mais dados (que nem sempre teremos)
+    *   Requer um amplo conhecimento do problema em análise para saber escolher bem $Yn$ ou $Zn$.
+    
+
+# Sobreajuste
+## Sobreajuste
+
+Nas aulas anteriores discutimos como estimar efeitos causais sob e suposição de inconfundibilidade ou _ignorabilidade:_
+
+$$Z \perp\!\!\!\perp \{ Y(1), Y(0) \} | X$$
+
+
+. . . 
+
+#### Qual o conjunto "certo" de variáveis $X$?
+
+- Todas as variáveis pre-tratamento [Rosembaum (2002) e Rubin (2007)].
+- Contudo, não todos concordam com esta abordagem. De fato, Pearl da dois contraexemplos.
+
+
+## Sobreajuste
+
+### M-vies
+
+<center>
+```{r}
+DiagrammeR::grViz("
+digraph {
+  graph []
+  node [shape = plaintext]
+    U1
+    U2
+    X
+    Z
+    Y
+  edge []
+    U1->Z
+    U1->X
+    U2->X
+    U2->Y
+  { rank = same; Z; Y }
+}
+")
+```
+</center>
+
+em que $X$ é observado mas $U1$ e $U2$ não são.
+
+
+## Sobreajuste
+
+### M-vies
+
+- $U1 \perp\!\!\!\perp U2$, 
+- $Z = f_Z(U1, \epsilon_z)$, 
+- $X = f_X(U1, U2, \epsilon_x)$,
+- $Y = Y(z) = f_Y(U2, \epsilon_y)$, 
+- $(\epsilon_z, \epsilon_x, \epsilon_y)$ são termos aleatórios independentes.
+
+. . . 
+
+Note que se mudarmos o valor de $Z$, o valor de $Y$ não muda. Ou seja, o verdadeiro efeito causal de de $Z$ sob $Y$ é zero. 
+
+. . . 
+
+Ademais, $$\mathbb{E}[Y | Z = 1] - \mathbb{E}[Y | Z = 0] = 0$$
+
+
+## Sobreajuste
+
+### M-vies
+Suponha que:
+
+- $X = aU_1 + b U_2 + \epsilon_X$,
+- $Z = cU_1 + \epsilon_Z$,
+- $Y = dU_2 + \epsilon_Y$,
+- $(U_1, U_2, \epsilon_X, \epsilon_Z, \epsilon_Y) \sim N(0,1)$
+
+. . . 
+
+$$\mathbb{C}ov(Z, Y) = \mathbb{C}ov(cU_1 + \epsilon_Z, dU_2 + \epsilon_Y) = 0$$
+
+. . . 
+
+
+Contudo, $$\rho_{ZY|X} = \dfrac{\rho_{ZY} - \rho_{ZX}\rho_{YX}}{\sqrt{1 - \rho^2_{ZX}} \sqrt{1 - \rho^2_{YX}}} \propto -abdc$$
+
+## Sobreajuste
+
+### M-vies
+
+
+```{r}
+#| echo: true
+n <- 10^6
+U1 <- rnorm(n)
+U2 <- rnorm(n)
+X <- U1 + U2 + rnorm(n)
+Y <- U2 + rnorm(n)
+Z <- U1 + rnorm(n)
+tau <- summary(lm(Y ~ Z))$coef[2, 1]
+tau_adj <- summary(lm(Y ~ Z + X))$coef[2, 1]
+round(c(tau, tau_adj), 3)
+```
+
+. . . 
+
+
+<center>
+[O estimador simples é não viesado, mas o ajustado por covariáveis é viesado.]{style="color:red;"}
+</center>
+
+
+## Sobreajuste
+### Z-vies
+
+
+<center>
+```{r}
+DiagrammeR::grViz("
+digraph {
+  graph []
+  node [shape = plaintext]
+    U
+    X
+    Z
+    Y
+  edge []
+    U->Z
+    U->Y
+    X->Z
+    Z->Y
+  { rank = same; X; Z; Y }
+}
+")
+```
+</center>
+
+
+## Sobreajuste
+### Z-vies
+
+Suponha que:
+
+- $Z = aX + bU + \epsilon_Z,$
+- $Y(z) = \tau z + cU + \epsilon_y$
+- $(U, X, \epsilon_Z, \epsilon_Y) \sim N(0,1)$
 
 
 
@@ -219,5 +447,6 @@ digraph {
 ::: {.nonincremental}
 
 - Peng Ding (2023). A First Course in Causal Inference. Capítulo 16.
+- Lipsitch, M., Tchetgen, E. T., & Cohen, T. (2010). Negative controls: a tool for detecting confounding and bias in observational studies. Epidemiology, 21(3), 383-388.
 
 :::
