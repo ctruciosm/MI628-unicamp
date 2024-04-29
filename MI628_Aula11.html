@@ -7,7 +7,7 @@
 <link href="MI628_Aula11_files/libs/quarto-html/tippy.css" rel="stylesheet">
 <link href="MI628_Aula11_files/libs/quarto-html/quarto-html.min.css" rel="stylesheet" data-mode="light">
 <link href="MI628_Aula11_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
-  <meta name="generator" content="quarto-1.2.280">
+  <meta name="generator" content="quarto-1.2.269">
 
   <meta name="author" content="Prof.&nbsp;Carlos Trucíos  ctrucios@unicamp.br">
   <title>Inferência Causal</title>
@@ -410,7 +410,7 @@ Prof.&nbsp;Carlos Trucíos <br> ctrucios@unicamp.br
 <ul>
 <li class="fragment"><a href="#/introdução" id="/toc-introdução">Introdução</a></li>
 <li class="fragment"><a href="#/tau_t" id="/toc-tau_t"><span class="math inline">\(\tau_T\)</span></a></li>
-<li class="fragment"><a href="#/ipw-e-dr-para-tau_t" id="/toc-ipw-e-dr-para-tau_t">IPW e DR para <span class="math inline">\(\tau_T\)</span></a></li>
+<li class="fragment"><a href="#/ips-e-dr-para-tau_t" id="/toc-ips-e-dr-para-tau_t">IPS e DR para <span class="math inline">\(\tau_T\)</span></a></li>
 <li class="fragment"><a href="#/exemplo-2" id="/toc-exemplo-2">Exemplo</a></li>
 <li class="fragment"><a href="#/outros-estimadores" id="/toc-outros-estimadores">Outros estimadores</a></li>
 </ul>
@@ -464,11 +464,9 @@ Prof.&nbsp;Carlos Trucíos <br> ctrucios@unicamp.br
 <p><strong>Teorema</strong></p>
 </div>
 <div class="callout-content">
-<p>Sob a suposição <a href="#/eq-suposicao13.1">Equation&nbsp;1</a>, temos que <span class="math display">\[\begin{align}
-\mathbb{E}[Y(0) | Z = 1] &amp;= \mathbb{E}[\mathbb{E}(Y | Z = 0, X) | Z = 1] \\
-      &amp;= \int \mathbb{E}[Y| Z = 0, X] f(x |Z = 1)dx \quad \text{ou} \\
-      &amp;= \sum_{k = 1}^K \mathbb{E}[Y| Z = 0, X = k]P(X = k | Z = 1)
-\end{align}\]</span></p>
+<p>Sob a suposição <a href="#/eq-suposicao13.1">Equation&nbsp;1</a>, temos que <span class="math display">\[
+\mathbb{E}[Y(0) | Z = 1] = \mathbb{E}[\mathbb{E}(Y | Z = 0, X) | Z = 1] = \int \mathbb{E}[Y| Z = 0, X] f(x |Z = 1)dx \quad \text{ou} = \sum_{k = 1}^K \mathbb{E}[Y| Z = 0, X = k]P(X = k | Z = 1)
+\]</span></p>
 </div>
 </div>
 </div>
@@ -478,7 +476,7 @@ Prof.&nbsp;Carlos Trucíos <br> ctrucios@unicamp.br
 <div class="column" style="width:50%;">
 <p><span class="math display">\[\hat{\tau}_T = \hat{\bar{Y}}(1) -  \sum_{k = 1}^K \hat{\pi}_{[k] | 1} \hat{\bar{Y}}_{[k]}(0),\]</span> em que <span class="math inline">\(\hat{\pi}_{[k] | 1}= n_{[k]1}/n1\)</span>.</p>
 </div><div class="column" style="width:50%;">
-<p><span class="math display">\[\hat{\tau}_T^{reg} = \hat{\bar{Y}}(1) - n_1^{-1}\sum_{i = 1}^N Z_i \hat{\mu}_0(X_i),\]</span> em que <span class="math inline">\(\hat{\mu}_0(X_i)\)</span> são os valores ajustados da regressão <span class="math inline">\(\mathbb{E}(Y | Z = 0, X)\)</span> utilizando apenas os dados de controle.</p>
+<p><span class="math display">\[\hat{\tau}_T = \hat{\bar{Y}}(1) - n_1^{-1}\sum_{i = 1}^N Z_i \hat{\mu}_0(X_i),\]</span> em que <span class="math inline">\(\hat{\mu}_0(X_i)\)</span> são os valores ajustados da regressão <span class="math inline">\(\mathbb{E}(Y | Z = 0, X)\)</span> utilizando apenas os dados de controle.</p>
 </div>
 </div>
 </div>
@@ -549,12 +547,12 @@ Prof.&nbsp;Carlos Trucíos <br> ctrucios@unicamp.br
 </div>
 </section></section>
 <section>
-<section id="ipw-e-dr-para-tau_t" class="title-slide slide level1 center">
-<h1>IPW e DR para <span class="math inline">\(\tau_T\)</span></h1>
+<section id="ips-e-dr-para-tau_t" class="title-slide slide level1 center">
+<h1>IPS e DR para <span class="math inline">\(\tau_T\)</span></h1>
 
 </section>
-<section id="ipw-e-dr-para-tau_t-1" class="slide level2">
-<h2>IPW e DR para <span class="math inline">\(\tau_T\)</span></h2>
+<section id="ips-e-dr-para-tau_t-1" class="slide level2">
+<h2>IPS e DR para <span class="math inline">\(\tau_T\)</span></h2>
 <div class="callout callout-tip callout-captioned callout-style-default">
 <div class="callout-body">
 <div class="callout-caption">
@@ -571,17 +569,17 @@ Prof.&nbsp;Carlos Trucíos <br> ctrucios@unicamp.br
 </div>
 <p><strong>Demostração:</strong> (no quadro)</p>
 </section>
-<section id="ipw-e-dr-para-tau_t-2" class="slide level2">
-<h2>IPW e DR para <span class="math inline">\(\tau_T\)</span></h2>
+<section id="ips-e-dr-para-tau_t-2" class="slide level2">
+<h2>IPS e DR para <span class="math inline">\(\tau_T\)</span></h2>
 <p>Então, temos dois estimadores IPW para <span class="math inline">\(\tau_T\)</span>:</p>
 <p><span class="math display">\[\hat{\tau}_T^{HT} = \hat{\bar{Y}}(1) - n_1^{-1} \displaystyle \sum_{i = 1}^n \hat{o}(X_i)(1 - Z_i)Y_i \quad e \quad \hat{\tau}_T^{hajek} = \hat{\bar{Y}}(1) -  \dfrac{\displaystyle \sum_{i = 1}^n \hat{o}(X_i)(1 - Z_i)Y_i}{\displaystyle \sum_{i = 1}^n \hat{o}(X_i)(1 - Z_i)},\]</span></p>
 <p>em que <span class="math inline">\(\hat{o}(X_i) = \hat{e}(X_i) / (1 - \hat{e}(X_i))\)</span>.</p>
 </section>
-<section id="ipw-e-dr-para-tau_t-3" class="slide level2">
-<h2>IPW e DR para <span class="math inline">\(\tau_T\)</span></h2>
+<section id="ips-e-dr-para-tau_t-3" class="slide level2">
+<h2>IPS e DR para <span class="math inline">\(\tau_T\)</span></h2>
 <p>Ademais, podemos também obter um estimador DR para <span class="math inline">\(\mathbb{E}[Y(0) | Z = 1]\)</span>.</p>
 <div class="fragment">
-<p>Definamos <span class="math display">\[\tilde{\mu}_{0T} = \mathbb{E}[o(X, \alpha)(1 - Z) \{Y - \mu_0(X, \beta_0) + Z \mu_0 (X_1, \beta_0) \}]/e,\]</span> em que <span class="math inline">\(o(X \alpha) = e(X, \alpha) / [1 - e(X, \alpha)].\)</span></p>
+<p>Definamos <span class="math display">\[\tilde{\mu}_{0T} = \mathbb{E}[o(X, \alpha)(1 - Z) \{Y - \mu_0(X, \beta_0)\} + Z \mu_0 (X_1, \beta_0) ]/e,\]</span> em que <span class="math inline">\(o(X \alpha) = e(X, \alpha) / [1 - e(X, \alpha)].\)</span></p>
 </div>
 <div class="fragment">
 <div class="callout callout-tip callout-captioned callout-style-default">
@@ -599,8 +597,8 @@ Prof.&nbsp;Carlos Trucíos <br> ctrucios@unicamp.br
 </div>
 </div>
 </section>
-<section id="ipw-e-dr-para-tau_t-4" class="slide level2">
-<h2>IPW e DR para <span class="math inline">\(\tau_T\)</span></h2>
+<section id="ips-e-dr-para-tau_t-4" class="slide level2">
+<h2>IPS e DR para <span class="math inline">\(\tau_T\)</span></h2>
 <div class="callout callout-tip callout-captioned callout-style-default">
 <div class="callout-body">
 <div class="callout-caption">
@@ -615,15 +613,15 @@ Prof.&nbsp;Carlos Trucíos <br> ctrucios@unicamp.br
 <ol type="1">
 <li>Obter os valores ajustados do <em>propensity score</em> (<span class="math inline">\(e(X_i, \hat{\alpha})\)</span>) e do <em>odds</em> (<span class="math inline">\(o(X_i, \hat{\alpha}) = e(X_i, \hat{\alpha}) / [1 - e(X_i, \hat{\alpha})]\)</span>).</li>
 <li>Obter os valores ajustados do resultado sob controle (<span class="math inline">\(\mu_0(X_i, \hat{\beta}_0)\)</span>).</li>
-<li>Construir o estimador DR para <span class="math inline">\(\tau_T\)</span> como <span class="math inline">\(\hat{\tau}_T^{DR} = \hat{\bar{Y}}(1) - \hat{\mu}_{0T}^{DR},\)</span> em que <span class="math display">\[\hat{\mu}_{0T}^{DR} = \dfrac{1}{n} \sum_{i = 1}^n [o(X_i, \hat{\alpha}) (1 - Z_i) \{Y_i - \mu_0(X_i, \hat{\beta}_0) + Z_i\mu_0(X_i, \hat{\beta}_0) \}]\]</span></li>
+<li>Construir o estimador DR para <span class="math inline">\(\tau_T\)</span> como <span class="math inline">\(\hat{\tau}_T^{DR} = \hat{\bar{Y}}(1) - \hat{\mu}_{0T}^{DR},\)</span> em que <span class="math display">\[\hat{\mu}_{0T}^{DR} = \dfrac{1}{n} \sum_{i = 1}^n [o(X_i, \hat{\alpha}) (1 - Z_i) \{Y_i - \mu_0(X_i, \hat{\beta}_0) \} + Z_i\mu_0(X_i, \hat{\beta}_0)]\]</span></li>
 </ol>
 </div>
 </div>
 </div>
 </div>
 </section>
-<section id="ipw-e-dr-para-tau_t-5" class="slide level2">
-<h2>IPW e DR para <span class="math inline">\(\tau_T\)</span></h2>
+<section id="ips-e-dr-para-tau_t-5" class="slide level2">
+<h2>IPS e DR para <span class="math inline">\(\tau_T\)</span></h2>
 <h4 id="observação">Observação</h4>
 <p>Note que, podemos re-escrever <span class="math inline">\(\hat{\tau}_T^{DR}\)</span> como <span class="math display">\[\hat{\tau}_T^{reg} - \dfrac{1}{n_1} \sum_{i = 1}^n o(X_i, \hat{\alpha}) (1 - Z_i) \{Y_i - \mu_0(X_i, \hat{\beta}_0)\} \quad \text{ou}\]</span></p>
 <p><span class="math display">\[\hat{\tau}_T^{HT} - \dfrac{1}{n_1}\sum_{i = 1}^n \{o(X_i, \hat{\alpha})(1 - Z_i) + Z_i\} \mu_0(X_i, \hat{\beta}_0).\]</span></p>
@@ -726,7 +724,6 @@ Prof.&nbsp;Carlos Trucíos <br> ctrucios@unicamp.br
 </div>
 </div>
 </div>
-<p>Como esperado, o estimador HT é sensível ao truncamento. Ademais, <code>Reg1</code> é bastante diferentes das outras estimativas (<strong>Por quê?</strong>), já <code>Reg2</code> é mais parecido com os outros estimadores. Repare que os resultados são diferentes dos resultados obtidos na aula anterir (quando estimamos <span class="math inline">\(\tau\)</span>) sugerindo a existencia de heterogeneidade entre <span class="math inline">\(\tau_T\)</span> e <span class="math inline">\(\tau\)</span>.</p>
 </section>
 <section id="exemplo-3" class="slide level2">
 <h2>Exemplo</h2>
@@ -747,27 +744,30 @@ Prof.&nbsp;Carlos Trucíos <br> ctrucios@unicamp.br
 <span id="cb3-2"><a href="#cb3-2"></a>z <span class="ot">&lt;-</span> dados<span class="sc">$</span>School_meal</span>
 <span id="cb3-3"><a href="#cb3-3"></a>y <span class="ot">&lt;-</span> dados<span class="sc">$</span>BMI</span>
 <span id="cb3-4"><a href="#cb3-4"></a>x <span class="ot">&lt;-</span> <span class="fu">scale</span>(dados[, <span class="sc">-</span><span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>)])</span>
-<span id="cb3-5"><a href="#cb3-5"></a>resultados_trunc <span class="ot">&lt;-</span> <span class="fu">os_att</span>(z, y, z, <span class="at">Utruncps =</span> <span class="fl">0.9</span>)</span>
-<span id="cb3-6"><a href="#cb3-6"></a>resultados_without_trunc <span class="ot">&lt;-</span> <span class="fu">os_att</span>(z, y, z)</span>
+<span id="cb3-5"><a href="#cb3-5"></a>resultados_trunc <span class="ot">&lt;-</span> <span class="fu">os_att</span>(z, y, x, <span class="at">Utruncps =</span> <span class="fl">0.9</span>)</span>
+<span id="cb3-6"><a href="#cb3-6"></a>resultados_without_trunc <span class="ot">&lt;-</span> <span class="fu">os_att</span>(z, y, x)</span>
 <span id="cb3-7"><a href="#cb3-7"></a>resultados_trunc</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
-<pre><code>           Reg1      Reg2         HT     Hajek        DR
-Estim 0.5339044 0.5339044 20.3501090 0.5339044 0.5339044
-SE    0.2234131 0.2234131  0.1525112 0.2234131 0.2234131</code></pre>
+<pre><code>            Reg1       Reg2         HT      Hajek         DR
+Estim 0.06124785 -0.3507181 -0.5968341 -0.1922400 -0.2295022
+SE    0.22583596  0.2574767  0.5846391  0.3114981  0.2777448</code></pre>
 </div>
 <details>
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a>resultados_without_trunc </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
-<pre><code>           Reg1      Reg2         HT     Hajek        DR
-Estim 0.5339044 0.5339044 20.3501090 0.5339044 0.5339044
-SE    0.2254842 0.2254842  0.1552704 0.2254842 0.2254842</code></pre>
+<pre><code>            Reg1       Reg2         HT      Hajek         DR
+Estim 0.06124785 -0.3507181 -1.9920599 -0.3507046 -0.1871062
+SE    0.21902572  0.2489611  0.7191328  0.3314690  0.2770278</code></pre>
 </div>
 </div>
 </div>
 </div>
+</div>
+<div class="fragment">
+<p>Como esperado, o estimador HT é sensível ao truncamento. Ademais, <code>Reg1</code> é bastante diferentes das outras estimativas (<strong>Por quê?</strong>), já <code>Reg2</code> é mais parecido com os outros estimadores. Repare que os resultados são diferentes dos resultados obtidos na aula anterir (quando estimamos <span class="math inline">\(\tau\)</span>) sugerindo a existencia de heterogeneidade entre <span class="math inline">\(\tau_T\)</span> e <span class="math inline">\(\tau\)</span>.</p>
 </div>
 </section></section>
 <section>
@@ -781,11 +781,11 @@ SE    0.2254842 0.2254842  0.1552704 0.2254842 0.2254842</code></pre>
 <p><span class="math display">\[\tau^h = \dfrac{\mathbb{E}[h(X) \tau(X)]}{\mathbb{E}[h(X)]},\]</span> em que <span class="math inline">\(\mathbb{E}(h(X)) \neq 0\)</span>.</p>
 <div class="fragment">
 <p>Assumindo ignorabilidade,</p>
-<p><span class="math display">\[\tau_h = \dfrac{\mathbb{E}[h(X) \{ \mu_1(X) - \mu_0(X) \}]}{\mathbb{E}[h(X)]},\]</span></p>
+<p><span class="math display">\[\tau^h = \dfrac{\mathbb{E}[h(X) \{ \mu_1(X) - \mu_0(X) \}]}{\mathbb{E}[h(X)]},\]</span></p>
 </div>
 <div class="fragment">
 <p>O que motiva o seguinte estimador,</p>
-<p><span class="math display">\[\hat{\tau}^h = \dfrac{\displaystyle \sum_{i = 1}^n h(X_i) [\hat{\mu}_1(X_i) - \hat{\mu}_0(X_i)]}{\displaystyle \sum_{i = 1}^n h(X_i)}.\]</span></p>
+<p><span class="math display">\[\hat{\tau}^h = \displaystyle \sum_{i = 1}^n h(X_i) [\hat{\mu}_1(X_i) - \hat{\mu}_0(X_i)]  \Big / \displaystyle \sum_{i = 1}^n h(X_i).\]</span></p>
 </div>
 </section>
 <section id="outros-estimadores-2" class="slide level2">

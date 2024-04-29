@@ -1,0 +1,223 @@
+---
+title: "Inferência Causal"
+subtitle: "Ignorabilidade e sobreposição"
+author: "Prof. Carlos Trucíos </br> ctrucios@unicamp.br"
+Email: "ctrucios@unicamp.br"
+institute: "Instituto de Matemática, Estatística e Computação Científica (IMECC), </br> Universidade Estadual de Campinas (UNICAMP)."
+toc: true
+toc-depth: 1
+toc-title: "Conteúdo"
+knitr:
+    opts_chunk: 
+      fig.align: 'center'
+execute:
+    message: false
+    warning: false
+format:
+    revealjs:
+        slide-number: true
+        show-slide-number: print
+        self-contained: false
+        chalkboard: true
+        width: 1600
+        height: 900
+        theme: [default, styles.scss]
+        incremental: true
+        code-fold: true
+        logo: "imagens/imecc.png"
+        footer: "Carlos Trucíos (IMECC/UNICAMP)  |  ME920/MI628 - Inferência Causal |  [ctruciosm.github.io](https://ctruciosm.github.io/)"
+        highlight-style: "a11y"
+        title-slide-attributes:
+            data-background-image: "imagens/unicamp.png"
+            data-background-size: 20%
+            data-background-position: 99% 5%
+            data-background-opacity: "1"
+---
+
+
+
+# Introdução
+## Introdução
+
+- Até agora, temos discutido como estimar efeitos causais em estudos observacionais assumindo _ignorabilidade_ e _sobreposição_.
+- Contudo, na prática, ambas suposições são bastatnte fortes e são violadas na prática.
+- Aprenderemos quais as implicações e como lidar com este problema.
+
+
+# Diagramas
+## Diagramas
+
+- Diagramas causais ou **DAG**s (*directed acyclic graph*) foram introduzidos por [Pearl (1995).](https://academic.oup.com/biomet/article-abstract/82/4/669/251647)
+- São uma ferramenta valiosa na inferência causal.
+- Utilizaremos estes diagramas como uma forma intuitiva de ilustrar as relações causais entre variáveis.
+
+
+## Diagramas
+
+
+::: {.callout-note}
+### Exemplo 1
+
+
+:::: {.columns}
+
+::: {.column width="50%"}
+```{r}
+DiagrammeR::grViz("
+digraph {
+  graph []
+  node [shape = plaintext]
+    X
+    Z
+    Y
+  edge []
+    X->Y
+    X->Z
+    Z->Y
+  { rank = same; Z; Y }
+}
+")
+```
+:::
+
+::: {.column width="50%"}
+Se tivermos o diagrama ao lado e o foco for o efeito causal de $Z$ sob $Y$, estamos dizendo que o processo gerador de dados é da forma: 
+
+$$\begin{align}
+&X \sim F_X(x), \\
+&Z = f_Z(X, \epsilon_Z), \\
+&Y(z) = f_Y(X, z, \epsilon_y(z)),
+\end{align}$$ em que $\epsilon_Z \perp\!\!\!\perp \epsilon_Y(z)$. Ademais, é fácil ver $Z \perp\!\!\!\perp Y(z) | X$
+:::
+
+::::
+
+:::
+
+
+## Diagramas
+
+
+
+::: {.callout-note}
+### Exemplo 2
+
+
+:::: {.columns}
+
+::: {.column width="50%"}
+```{r}
+DiagrammeR::grViz("
+digraph {
+  graph []
+  node [shape = plaintext]
+    X
+    U
+    Z
+    Y
+  edge []
+    X->Y
+    X->Z
+    U->Y
+    U->Z
+    Z->Y
+  { rank = same; Z; Y }
+}
+")
+```
+:::
+
+::: {.column width="50%"}
+$$\begin{align}
+&X \sim F_X(x), \\
+&U \sim F_U(u), \\
+&Z = f_Z(X, U, \epsilon_Z), \\
+&Y(z) = f_Y(X, U, z, \epsilon_y(z)),
+\end{align}$$ em que $\epsilon_Z \perp\!\!\!\perp \epsilon_Y(z)$. Ademais, é fácil ver $Z \perp\!\!\!\perp Y(z) | (X, U)$ (*ignorabilidade* acontece condicionado em $(X, U)$ mas não condicionado apenas em $X$).
+:::
+
+::::
+
+:::
+
+$U$ é uma variável de confusão não medida.
+
+
+# Avaliando inconfundibilidade
+## Avaliando inconfundibilidade
+
+A suposição de _ignorabilidade_ (também conhecida, *inconfundibilidade*) é dada por $$Z \perp\!\!\!\perp Y(1) | X \quad e \quad Z \perp\!\!\!\perp Y(0) | X,$$ o que implica que \begin{align}
+P(Y(1) | Z = 1, X) & = P(Y(1) | Z = 0, X), \\
+P(Y(0) | Z = 1, X) & = P(Y(0) | Z = 0, X).
+\end{align}
+
+Ou seja, que as distribuições dos contrafactuais $P(Y(1) | Z = 0, X)$ e $P(Y(0) | Z = 1, X)$ sejam as mesmas do que as distribuições dos factuais $P(Y(1) | Z = 1, X)$ e $P(Y(0) | Z = 0, X)$!.
+
+
+## Avaliando inconfundibilidade
+
+
+- Sem suposições adicionais, não é possível testar a suposição de _ignorabilidade_.
+- Contudo, aprenderemos duas estratégias para _avaliar_ a suposição de _ignorabilidade_:
+    *   *negative outcomes*
+    *   *negative exposures*
+
+
+## Avaliando inconfundibilidade: *negative outcomes*
+
+- Suponha que $Y^n$ é similar a $Y$ e compartilha a mesma estrutura de confusão.
+- Se $Z \perp\!\!\!\perp Y(z) | X$ então $Z \perp\!\!\!\perp Y^n(z) | X$
+- Ademais, conhecemos, a priori, o efeito de $Z$ sob $Y^n$: $$\tau(Z \rightarrow Y^n) = \mathbb{E}[Y^n(1) - Y^n(0)].$$
+- Qual seria um diagrama que satisfaz esses requerimentos?
+
+
+
+## Avaliando inconfundibilidade: *negative outcomes*
+
+
+
+```{r}
+DiagrammeR::grViz("
+digraph {
+  graph []
+  node [shape = plaintext]
+    X
+    Z
+    Y
+    Yn
+  edge []
+    X->Y
+    X->Z
+    X->Yn
+    Z->Y
+  { rank = same; Z; Y }
+}
+")
+```
+
+
+## Avaliando inconfundibilidade: *negative outcomes*
+
+
+::: {.callout-note}
+### Exemplo 1
+
+
+:::
+
+
+
+
+
+
+
+
+
+
+## Referências
+
+::: {.nonincremental}
+
+- Peng Ding (2023). A First Course in Causal Inference. Capítulo 16.
+
+:::

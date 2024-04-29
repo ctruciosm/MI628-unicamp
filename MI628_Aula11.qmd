@@ -78,11 +78,9 @@ Contudo, teremos uma forma de estimar se assumirmos que $$Z \perp\!\!\!\perp  Y(
 ::: {.callout-tip}
 ### Teorema
 Sob a suposição @eq-suposicao13.1, temos que 
-\begin{align}
-\mathbb{E}[Y(0) | Z = 1] &= \mathbb{E}[\mathbb{E}(Y | Z = 0, X) | Z = 1] \\
-      &= \int \mathbb{E}[Y| Z = 0, X] f(x |Z = 1)dx \quad \text{ou} \\
-      &= \sum_{k = 1}^K \mathbb{E}[Y| Z = 0, X = k]P(X = k | Z = 1)
-\end{align}
+$$
+\mathbb{E}[Y(0) | Z = 1] = \mathbb{E}[\mathbb{E}(Y | Z = 0, X) | Z = 1] = \int \mathbb{E}[Y| Z = 0, X] f(x |Z = 1)dx \quad \text{ou} = \sum_{k = 1}^K \mathbb{E}[Y| Z = 0, X = k]P(X = k | Z = 1)
+$$
 :::
 
 
@@ -99,7 +97,7 @@ $$\hat{\tau}_T = \hat{\bar{Y}}(1) -  \sum_{k = 1}^K \hat{\pi}_{[k] | 1} \hat{\ba
 :::
 
 ::: {.column width="50%"}
-$$\hat{\tau}_T^{reg} = \hat{\bar{Y}}(1) - n_1^{-1}\sum_{i = 1}^N Z_i \hat{\mu}_0(X_i),$$ em que $\hat{\mu}_0(X_i)$ são os valores ajustados da regressão $\mathbb{E}(Y | Z = 0, X)$ utilizando apenas os dados de controle.
+$$\hat{\tau}_T = \hat{\bar{Y}}(1) - n_1^{-1}\sum_{i = 1}^N Z_i \hat{\mu}_0(X_i),$$ em que $\hat{\mu}_0(X_i)$ são os valores ajustados da regressão $\mathbb{E}(Y | Z = 0, X)$ utilizando apenas os dados de controle.
 
 :::
 
@@ -163,9 +161,9 @@ Se ajustarmos o modelo de regressão por MQO, temos que: $$\hat{\tau}_T = \hat{\
 
 :::
 
-# IPW e DR para $\tau_T$
+# IPS e DR para $\tau_T$
 
-## IPW e DR para $\tau_T$
+## IPS e DR para $\tau_T$
 
 ::: {.callout-tip}
 ### Teorema
@@ -178,7 +176,7 @@ $$\tau_T = \mathbb{E}[Y | Z = 1] - \mathbb{E} \Big [ \dfrac{e(X)}{e} \dfrac{1-Z}
 
 **Demostração:** (no quadro)
 
-## IPW e DR para $\tau_T$
+## IPS e DR para $\tau_T$
 
 Então, temos dois estimadores IPW para $\tau_T$:
 
@@ -188,13 +186,13 @@ em que $\hat{o}(X_i) = \hat{e}(X_i) / (1 - \hat{e}(X_i))$.
 
 
 
-## IPW e DR para $\tau_T$
+## IPS e DR para $\tau_T$
 
 Ademais, podemos também obter um estimador DR para $\mathbb{E}[Y(0) | Z = 1]$.
 
 . . . 
 
-Definamos $$\tilde{\mu}_{0T} = \mathbb{E}[o(X, \alpha)(1 - Z) \{Y - \mu_0(X, \beta_0) + Z \mu_0 (X_1, \beta_0) \}]/e,$$ em que $o(X \alpha) = e(X, \alpha) / [1 - e(X, \alpha)].$
+Definamos $$\tilde{\mu}_{0T} = \mathbb{E}[o(X, \alpha)(1 - Z) \{Y - \mu_0(X, \beta_0)\} + Z \mu_0 (X_1, \beta_0) ]/e,$$ em que $o(X \alpha) = e(X, \alpha) / [1 - e(X, \alpha)].$
 
 . . . 
 
@@ -208,7 +206,7 @@ Sob @eq-suposicao13.1, se $e(X, \alpha) = e(X)$ ou $\mu_0(X, \beta_0) = \mu_0(X)
 
 
 
-## IPW e DR para $\tau_T$
+## IPS e DR para $\tau_T$
 
 ::: {.callout-tip}
 ### Estimador DR para $\tau_T$
@@ -219,13 +217,13 @@ Baseados em $(X_i, Z_i, Y_i)_{i = 1}^n$, podemos obter um estimador DR para $\ta
 
 1. Obter os valores ajustados do _propensity score_ ($e(X_i, \hat{\alpha})$) e do _odds_ ($o(X_i, \hat{\alpha}) = e(X_i, \hat{\alpha}) / [1 - e(X_i, \hat{\alpha})]$).
 2. Obter os valores ajustados do resultado sob controle ($\mu_0(X_i, \hat{\beta}_0)$).
-3. Construir o estimador DR para $\tau_T$ como $\hat{\tau}_T^{DR} = \hat{\bar{Y}}(1) - \hat{\mu}_{0T}^{DR},$ em que $$\hat{\mu}_{0T}^{DR} = \dfrac{1}{n} \sum_{i = 1}^n [o(X_i, \hat{\alpha}) (1 - Z_i) \{Y_i - \mu_0(X_i, \hat{\beta}_0) + Z_i\mu_0(X_i, \hat{\beta}_0) \}]$$
+3. Construir o estimador DR para $\tau_T$ como $\hat{\tau}_T^{DR} = \hat{\bar{Y}}(1) - \hat{\mu}_{0T}^{DR},$ em que $$\hat{\mu}_{0T}^{DR} = \dfrac{1}{n} \sum_{i = 1}^n [o(X_i, \hat{\alpha}) (1 - Z_i) \{Y_i - \mu_0(X_i, \hat{\beta}_0) \} + Z_i\mu_0(X_i, \hat{\beta}_0)]$$
 :::
 
 :::
 
 
-## IPW e DR para $\tau_T$
+## IPS e DR para $\tau_T$
 
 
 #### Observação
@@ -321,7 +319,6 @@ os_att <- function(z, y, x, n_boot = 1000, out_family = gaussian, Utruncps = 1) 
 :::
 
 
-Como esperado, o estimador HT é sensível ao truncamento. Ademais, `Reg1` é bastante diferentes das outras estimativas (**Por quê?**), já `Reg2` é mais parecido com os outros estimadores. Repare que os resultados são diferentes dos resultados obtidos na aula anterir (quando estimamos $\tau$) sugerindo a existencia de heterogeneidade entre $\tau_T$ e $\tau$.
 
 
 ## Exemplo
@@ -336,13 +333,20 @@ dados <- read.csv("datasets/nhanes_bmi.csv")[, -1]
 z <- dados$School_meal
 y <- dados$BMI
 x <- scale(dados[, -c(1, 2)])
-resultados_trunc <- os_att(z, y, z, Utruncps = 0.9)
-resultados_without_trunc <- os_att(z, y, z)
+resultados_trunc <- os_att(z, y, x, Utruncps = 0.9)
+resultados_without_trunc <- os_att(z, y, x)
 resultados_trunc
 resultados_without_trunc 
 ```
 
 :::
+
+
+. . . 
+
+
+Como esperado, o estimador HT é sensível ao truncamento. Ademais, `Reg1` é bastante diferentes das outras estimativas (**Por quê?**), já `Reg2` é mais parecido com os outros estimadores. Repare que os resultados são diferentes dos resultados obtidos na aula anterir (quando estimamos $\tau$) sugerindo a existencia de heterogeneidade entre $\tau_T$ e $\tau$.
+
 
 
 # Outros estimadores
@@ -357,13 +361,13 @@ $$\tau^h = \dfrac{\mathbb{E}[h(X) \tau(X)]}{\mathbb{E}[h(X)]},$$ em que $\mathbb
 
 Assumindo ignorabilidade,
 
-$$\tau_h = \dfrac{\mathbb{E}[h(X) \{ \mu_1(X) - \mu_0(X) \}]}{\mathbb{E}[h(X)]},$$
+$$\tau^h = \dfrac{\mathbb{E}[h(X) \{ \mu_1(X) - \mu_0(X) \}]}{\mathbb{E}[h(X)]},$$
 
 . . . 
 
 O que motiva o seguinte estimador,
 
-$$\hat{\tau}^h = \dfrac{\displaystyle \sum_{i = 1}^n h(X_i) [\hat{\mu}_1(X_i) - \hat{\mu}_0(X_i)]}{\displaystyle \sum_{i = 1}^n h(X_i)}.$$
+$$\hat{\tau}^h = \displaystyle \sum_{i = 1}^n h(X_i) [\hat{\mu}_1(X_i) - \hat{\mu}_0(X_i)]  \Big / \displaystyle \sum_{i = 1}^n h(X_i).$$
 
 
 ## Outros estimadores
