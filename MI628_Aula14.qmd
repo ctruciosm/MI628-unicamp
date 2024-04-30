@@ -438,6 +438,102 @@ Suponha que:
 - $Y(z) = \tau z + cU + \epsilon_y$
 - $(U, X, \epsilon_Z, \epsilon_Y) \sim N(0,1)$
 
+. . . 
+
+
+
+
+:::: {.columns}
+
+::: {.column width="50%"}
+$$\tau_{unAdj} = \dfrac{\mathbb{C}ov(Z, Y)}{\mathbb{V}(Z)} = \tau + \dfrac{bc}{a^2 + b^2 + 1}$$
+
+:::
+
+::: {.column width="50%"}
+
+$$\tau_{Adj} = \tau + \dfrac{bc}{b^2 + 1}$$
+:::
+
+::::
+
+
+
+## Sobreajuste
+### Z-vies
+
+
+```{r}
+n <- 10^6
+X <- rnorm(n)
+U <- rnorm(n)
+a <- 1
+Z <- a*X + U + rnorm(n)
+Y <- U + rnorm(n)
+tau_unadj <- summary(lm(Y ~ Z))$coef[2, 1]
+tau_adj <- summary(lm(Y ~ Z + X))$coef[2, 1]
+round(c(tau_unadj, tau_adj), 3)
+a <- 5
+Z <- a*X + U + rnorm(n)
+tau_unadj <- summary(lm(Y ~ Z))$coef[2, 1]
+tau_adj <- summary(lm(Y ~ Z + X))$coef[2, 1]
+round(c(tau_unadj, tau_adj), 3)
+a <- 10
+Z <- a*X + U + rnorm(n)
+tau_unadj <- summary(lm(Y ~ Z))$coef[2, 1]
+tau_adj <- summary(lm(Y ~ Z + X))$coef[2, 1]
+round(c(tau_unadj, tau_adj), 3)
+```
+
+
+## Sobreajuste
+
+<center>
+Quais variáveis, devem, então, estar em $X$?
+</center>
+
+
+. . . 
+
+
+
+
+
+
+## Sobreajuste
+
+1. $X$ afeta tanto $Z$ quanto $Y$. Condicionar em $X$ garante _ignorabilidade_. Assim, devemos controlar por $X$.
+2. $X_R$ é completamente aleatória e não afeta nem $Z$ nem $Y$. Incluir $X_R$ não trará vies mas aumentará a variância.
+3. $X_Z$ afeta o resultado através de $Z$. Incluí-lo na análise não trará vies mas aumentará a variância. Contudo, com variáveis de confusão não medidas, aumenta o vies.
+4. $X_Y$ afeta o resultado mas não o tratamento. Sem condicional nela, _ignorabilidade_ ainda acontece. Como ela é preditiva do resultado, incluí-la aumentará a precisão.
+5. $X_I$ é afetada pelo tratamento e pelo resultado (é uma variável pós-tratamento, não pre-tratamento). Não devemos incluir esta variável.
+
+. . . 
+
+
+<center>
+Devemos incluir $X$ para remover o vies e $X_Y$ para reduzir variância.
+</center>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
