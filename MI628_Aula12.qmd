@@ -107,7 +107,7 @@ Se $Z \perp\!\!\!\perp  \{ Y(1), Y(0)\} | X$, então:
 :::
 
 <center>
-[**Demostração** (no quadro)]{style="color:red"}
+[**Demostração** (exercício)]{style="color:red"}
 </center>
 
 ## Propensity score como covariável
@@ -206,7 +206,7 @@ Se $\bar{X} = 0$ e $(\mu_1(X, \hat{\beta}_1), \mu_0(X, \hat{\beta}_0)) = (\hat{\
 :::
 
 <center>
-[**Demostração** (no quadro)]{style="color:red"}
+[**Demostração** (exercício)]{style="color:red"}
 </center>
 
 
