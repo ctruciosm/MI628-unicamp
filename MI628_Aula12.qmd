@@ -65,7 +65,7 @@ Ademais, \begin{align}
 . . . 
 
 <center>
-[Isto, motiva um método baseado na regressão de $Y$ com $Z$ e $e(X)$.]{style="color:red"}
+[Isto motiva um método baseado na regressão de $Y$ com $Z$ e $e(X)$.]{style="color:red"}
 </center>
 
 
@@ -146,7 +146,7 @@ Os resultados teóricos anunciados anteriormente, motivam os seguines estimadore
 . . . 
 
 <center>
-[Embora MQO é conveniente para obtermos estmadores pontuais, os correspondentes desvios padrão são incorretos devido à incerteza no passo 1. Uma alternativa é utilizar Bootstrap.]{style="color:blue"}
+[Embora MQO é conveniente para obtermos estimadores pontuais, os correspondentes desvios padrão são incorretos devido à incerteza no passo 1. Uma alternativa é utilizar Bootstrap.]{style="color:blue"}
 </center>
 
 
@@ -189,7 +189,7 @@ $\hat{\tau}^{Hajek}$ é igual ao $\hat{\beta}$ da regressão por MQP, i.e, $$(\h
 
 
 - No CRE tinhamos visto que, para melhorar a eficiência, podiamos ajustar a regressão de $Y$ sob $(1, Z, X, Z \times X)$ (Estimador de Lin).
-- Seré no contexto de estudos observacionais podemos ajustar MQP $Y$ sob $(1, Z, X, Z \times X)$?
+- Será que no contexto de estudos observacionais podemos ajustar MQP $Y$ sob $(1, Z, X, Z \times X)$?
     *   **Sim!**
     *   De fato, Hirano e Imbens (2001) utilizam esta mesma ideia.
     *   Esta proposta é interessante pois o estimador obtido por MQP será também DR
@@ -199,10 +199,10 @@ $\hat{\tau}^{Hajek}$ é igual ao $\hat{\beta}$ da regressão por MQP, i.e, $$(\h
 
 ::: {.callout-tip}
 ### Teorema
-Se $\bar{X} = 0$ and $(\mu_1(X, \hat{\beta}_1), \mu_0(X, \hat{\beta}_0)) = (\hat{\beta}_{10} + X \hat{\beta}_{11}, \hat{\beta}_{00} + X \hat{\beta}_{01})$ baseado na regressão por MQP de $Y$ sob $(1, Z, X, Z \times X)$ com $w_i = \left\{ \begin{array}{ll}
+Se $\bar{X} = 0$ e $(\mu_1(X, \hat{\beta}_1), \mu_0(X, \hat{\beta}_0)) = (\hat{\beta}_{10} + X \hat{\beta}_{11}, \hat{\beta}_{00} + X \hat{\beta}_{01})$ baseado na regressão por MQP de $Y$ sob $(1, Z, X, Z \times X)$ com $$w_{i} = \left\{ \begin{array}{ll}
 		\dfrac{1}{\hat{e}(X_i)} & \text{se }  Z_i = 1,\\
 		\dfrac{1}{1 - \hat{e}(X_i)} & \text{se }  Z_i = 0.
-	\end{array}\right,$ então $$\hat{\tau}_{MQP}^{DR} = \hat{\tau}_{MQP}^{Reg} = \hat{\beta}_{10} - \hat{\beta}_{00},$$ que é o coeficiente associado a $Z$ na regressão por MQP
+	\end{array}\right.$$ Então $$\hat{\tau}_{MQP}^{DR} = \hat{\tau}_{MQP}^{Reg} = \hat{\beta}_{10} - \hat{\beta}_{00},$$ que é o coeficiente associado a $Z$ na regressão por MQP
 :::
 
 <center>
@@ -214,12 +214,12 @@ Se $\bar{X} = 0$ and $(\mu_1(X, \hat{\beta}_1), \mu_0(X, \hat{\beta}_0)) = (\hat
 
 
 ::: {.callout-note}
-### Estimadors
+### Estimadores
 
 |                    | CRE        | Estudos Observacionais     |
 |:------------------:|:----------:|:--------------------------:|
-| Sem $X$            | $Y~(1, Z)$ | $Y~(1, Z)$ com pesos $w_i$ |
-| Com $X$            | $Y~(1, Z, X, Z \times X)$ | $Y~(1, Z, X, Z \times X)$ com pesos $w_i$ |
+| Sem $X$            | $Y \sim (1, Z)$ | $Y \sim (1, Z)$ com pesos $w_i$ |
+| Com $X$            | $Y \sim (1, Z, X, Z \times X)$ | $Y \sim (1, Z, X, Z \times X)$ com pesos $w_i$ |
 
 :::
 
@@ -265,10 +265,10 @@ $$\hat{\tau}_{T, MQP}^{DR} = \hat{\tau}_{T, MQP}^{Reg} - \dfrac{1}{n_1}\sum_{i =
 
 ::: {.callout-tip}
 ### Teorema
-Se $\bar{X}(1) = 0$ e $\mu_0(X_i, \hat{\beta}_0) = \hat{\beta}_{00} + X_i \hat{\beta}_{01}$ baseado na regressão por MQP de $Y$ sob $(1, Z, X, Z \times X)$ com pesos $w_{Ti} = \left\{ \begin{array}{ll}
+Se $\bar{X}(1) = 0$ e $\mu_0(X_i, \hat{\beta}_0) = \hat{\beta}_{00} + X_i \hat{\beta}_{01}$ baseado na regressão por MQP de $Y$ sob $(1, Z, X, Z \times X)$ com pesos $$w_{Ti} = \left\{ \begin{array}{ll}
 		1& \text{se }  Z_i = 1,\\
 		\hat{o}(X_i) & \text{se }  Z_i = 0.
-	\end{array}\right,$
+	\end{array}\right.$$ Então,
 
 $$\hat{\tau}_{T, MQP}^{DR} = \hat{\tau}_{T, MQP}^{Reg} = \hat{\beta}_{10} - \hat{\beta}_{00},$$ que é o coeficiente associado a $Z$ na regressão por MQP.
 :::

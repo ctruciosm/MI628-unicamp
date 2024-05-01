@@ -7,7 +7,7 @@
 <link href="MI628_Aula12_files/libs/quarto-html/tippy.css" rel="stylesheet">
 <link href="MI628_Aula12_files/libs/quarto-html/quarto-html.min.css" rel="stylesheet" data-mode="light">
 <link href="MI628_Aula12_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
-  <meta name="generator" content="quarto-1.2.280">
+  <meta name="generator" content="quarto-1.2.269">
 
   <meta name="author" content="Prof.&nbsp;Carlos Trucíos  ctrucios@unicamp.br">
   <title>Inferência Causal</title>
@@ -386,7 +386,7 @@ Prof.&nbsp;Carlos Trucíos <br> ctrucios@unicamp.br
 </div>
 <div class="fragment">
 <center>
-<span style="color:red">Isto, motiva um método baseado na regressão de <span class="math inline">\(Y\)</span> com <span class="math inline">\(Z\)</span> e <span class="math inline">\(e(X)\)</span>.</span>
+<span style="color:red">Isto motiva um método baseado na regressão de <span class="math inline">\(Y\)</span> com <span class="math inline">\(Z\)</span> e <span class="math inline">\(e(X)\)</span>.</span>
 </center>
 </div>
 </section>
@@ -476,7 +476,7 @@ Prof.&nbsp;Carlos Trucíos <br> ctrucios@unicamp.br
 </div>
 <div class="fragment">
 <center>
-<span style="color:blue">Embora MQO é conveniente para obtermos estmadores pontuais, os correspondentes desvios padrão são incorretos devido à incerteza no passo 1. Uma alternativa é utilizar Bootstrap.</span>
+<span style="color:blue">Embora MQO é conveniente para obtermos estimadores pontuais, os correspondentes desvios padrão são incorretos devido à incerteza no passo 1. Uma alternativa é utilizar Bootstrap.</span>
 </center>
 </div>
 </section></section>
@@ -522,7 +522,7 @@ Prof.&nbsp;Carlos Trucíos <br> ctrucios@unicamp.br
 <h2>MQP</h2>
 <ul>
 <li class="fragment">No CRE tinhamos visto que, para melhorar a eficiência, podiamos ajustar a regressão de <span class="math inline">\(Y\)</span> sob <span class="math inline">\((1, Z, X, Z \times X)\)</span> (Estimador de Lin).</li>
-<li class="fragment">Seré no contexto de estudos observacionais podemos ajustar MQP <span class="math inline">\(Y\)</span> sob <span class="math inline">\((1, Z, X, Z \times X)\)</span>?
+<li class="fragment">Será que no contexto de estudos observacionais podemos ajustar MQP <span class="math inline">\(Y\)</span> sob <span class="math inline">\((1, Z, X, Z \times X)\)</span>?
 <ul>
 <li class="fragment"><strong>Sim!</strong></li>
 <li class="fragment">De fato, Hirano e Imbens (2001) utilizam esta mesma ideia.</li>
@@ -541,7 +541,10 @@ Prof.&nbsp;Carlos Trucíos <br> ctrucios@unicamp.br
 <p><strong>Teorema</strong></p>
 </div>
 <div class="callout-content">
-<p>Se <span class="math inline">\(\bar{X} = 0\)</span> and <span class="math inline">\((\mu_1(X, \hat{\beta}_1), \mu_0(X, \hat{\beta}_0)) = (\hat{\beta}_{10} + X \hat{\beta}_{11}, \hat{\beta}_{00} + X \hat{\beta}_{01})\)</span> baseado na regressão por MQP de <span class="math inline">\(Y\)</span> sob <span class="math inline">\((1, Z, X, Z \times X)\)</span> com <span class="math inline">\(w_i = \left\{ \begin{array}{ll}  \dfrac{1}{\hat{e}(X_i)} &amp; \text{se } Z_i = 1,\\  \dfrac{1}{1 - \hat{e}(X_i)} &amp; \text{se } Z_i = 0.  \end{array}\right,\)</span> então <span class="math display">\[\hat{\tau}_{MQP}^{DR} = \hat{\tau}_{MQP}^{Reg} = \hat{\beta}_{10} - \hat{\beta}_{00},\]</span> que é o coeficiente associado a <span class="math inline">\(Z\)</span> na regressão por MQP</p>
+<p>Se <span class="math inline">\(\bar{X} = 0\)</span> e <span class="math inline">\((\mu_1(X, \hat{\beta}_1), \mu_0(X, \hat{\beta}_0)) = (\hat{\beta}_{10} + X \hat{\beta}_{11}, \hat{\beta}_{00} + X \hat{\beta}_{01})\)</span> baseado na regressão por MQP de <span class="math inline">\(Y\)</span> sob <span class="math inline">\((1, Z, X, Z \times X)\)</span> com <span class="math display">\[w_{i} = \left\{ \begin{array}{ll}
+        \dfrac{1}{\hat{e}(X_i)} &amp; \text{se }  Z_i = 1,\\
+        \dfrac{1}{1 - \hat{e}(X_i)} &amp; \text{se }  Z_i = 0.
+    \end{array}\right.\]</span> Então <span class="math display">\[\hat{\tau}_{MQP}^{DR} = \hat{\tau}_{MQP}^{Reg} = \hat{\beta}_{10} - \hat{\beta}_{00},\]</span> que é o coeficiente associado a <span class="math inline">\(Z\)</span> na regressão por MQP</p>
 </div>
 </div>
 </div>
@@ -557,7 +560,7 @@ Prof.&nbsp;Carlos Trucíos <br> ctrucios@unicamp.br
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
-<p><strong>Estimadors</strong></p>
+<p><strong>Estimadores</strong></p>
 </div>
 <div class="callout-content">
 <table>
@@ -576,13 +579,13 @@ Prof.&nbsp;Carlos Trucíos <br> ctrucios@unicamp.br
 <tbody>
 <tr class="odd">
 <td style="text-align: center;">Sem <span class="math inline">\(X\)</span></td>
-<td style="text-align: center;"><span class="math inline">\(Y~(1, Z)\)</span></td>
-<td style="text-align: center;"><span class="math inline">\(Y~(1, Z)\)</span> com pesos <span class="math inline">\(w_i\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(Y \sim (1, Z)\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(Y \sim (1, Z)\)</span> com pesos <span class="math inline">\(w_i\)</span></td>
 </tr>
 <tr class="even">
 <td style="text-align: center;">Com <span class="math inline">\(X\)</span></td>
-<td style="text-align: center;"><span class="math inline">\(Y~(1, Z, X, Z \times X)\)</span></td>
-<td style="text-align: center;"><span class="math inline">\(Y~(1, Z, X, Z \times X)\)</span> com pesos <span class="math inline">\(w_i\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(Y \sim (1, Z, X, Z \times X)\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(Y \sim (1, Z, X, Z \times X)\)</span> com pesos <span class="math inline">\(w_i\)</span></td>
 </tr>
 </tbody>
 </table>
@@ -624,7 +627,10 @@ Os estudos observacionais mencionados aqui assumem que a suposição de ignorabi
 <p><strong>Teorema</strong></p>
 </div>
 <div class="callout-content">
-<p>Se <span class="math inline">\(\bar{X}(1) = 0\)</span> e <span class="math inline">\(\mu_0(X_i, \hat{\beta}_0) = \hat{\beta}_{00} + X_i \hat{\beta}_{01}\)</span> baseado na regressão por MQP de <span class="math inline">\(Y\)</span> sob <span class="math inline">\((1, Z, X, Z \times X)\)</span> com pesos <span class="math inline">\(w_{Ti} = \left\{ \begin{array}{ll}  1&amp; \text{se } Z_i = 1,\\  \hat{o}(X_i) &amp; \text{se } Z_i = 0.  \end{array}\right,\)</span></p>
+<p>Se <span class="math inline">\(\bar{X}(1) = 0\)</span> e <span class="math inline">\(\mu_0(X_i, \hat{\beta}_0) = \hat{\beta}_{00} + X_i \hat{\beta}_{01}\)</span> baseado na regressão por MQP de <span class="math inline">\(Y\)</span> sob <span class="math inline">\((1, Z, X, Z \times X)\)</span> com pesos <span class="math display">\[w_{Ti} = \left\{ \begin{array}{ll}
+        1&amp; \text{se }  Z_i = 1,\\
+        \hat{o}(X_i) &amp; \text{se }  Z_i = 0.
+    \end{array}\right.\]</span> Então,</p>
 <p><span class="math display">\[\hat{\tau}_{T, MQP}^{DR} = \hat{\tau}_{T, MQP}^{Reg} = \hat{\beta}_{10} - \hat{\beta}_{00},\]</span> que é o coeficiente associado a <span class="math inline">\(Z\)</span> na regressão por MQP.</p>
 </div>
 </div>
