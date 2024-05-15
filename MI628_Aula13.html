@@ -423,6 +423,9 @@ Prof.&nbsp;Carlos Trucíos <br> ctrucios@unicamp.br
 </section>
 <section id="introdução-1" class="slide level2">
 <h2>Introdução</h2>
+<center>
+<img data-src="imagens/matching.png">
+</center>
 </section></section>
 <section>
 <section id="matching" class="title-slide slide level1 center">
@@ -462,8 +465,8 @@ Prof.&nbsp;Carlos Trucíos <br> ctrucios@unicamp.br
 <ul>
 <li class="fragment">Suponha que temos <span class="math inline">\(n\)</span> <em>matches</em> (<span class="math inline">\(i = 1, \cdots, n\)</span>).</li>
 <li class="fragment">Para cada <span class="math inline">\(i\)</span> temos <span class="math inline">\(1 + M_i\)</span> unidades (1 referente ao tratamento e <span class="math inline">\(M_i\)</span> referente ao controle).</li>
-<li class="fragment">Assim, o número total de unidades experimentais é <span class="math inline">\(N = n + \displaystyle \sum_{i + 1}^n M_i.\)</span></li>
-<li class="fragment">O <em>index</em> <span class="math inline">\(ij\)</span> representa a unidade <span class="math inline">\(j\)</span> no conjunto <span class="math inline">\(i\)</span> (<span class="math inline">\(i = 1, \cdots, n\)</span>, <span class="math inline">\(j = 1, \cdots, M_i + 1\)</span>) com indicadora de tratamento <span class="math inline">\(Z_{ij}\)</span> e resultados potenciais <span class="math inline">\(Y_{ij}(1)\)</span> e <span class="math inline">\(Y_{ij}(0).\)</span></li>
+<li class="fragment">Assim, o número total de unidades experimentais é <span class="math inline">\(N = n + \displaystyle \sum_{i = 1}^n M_i.\)</span></li>
+<li class="fragment">Seja o <em>index</em> <span class="math inline">\(ij\)</span> que representa a unidade <span class="math inline">\(j\)</span> no conjunto <span class="math inline">\(i\)</span> (<span class="math inline">\(i = 1, \cdots, n\)</span>, <span class="math inline">\(j = 1, \cdots, M_i + 1\)</span>) com indicadora de tratamento <span class="math inline">\(Z_{ij}\)</span> e resultados potenciais <span class="math inline">\(Y_{ij}(1)\)</span> e <span class="math inline">\(Y_{ij}(0).\)</span></li>
 <li class="fragment"><em>Dentro de cada conjunto <span class="math inline">\(i\)</span>, o pesquisador seleciona uma unidade aleatoriamente para atribuir o tratamento.</em></li>
 </ul>
 </section>
@@ -821,12 +824,12 @@ Matched number of observations  (unweighted).  227 </code></pre>
 </div>
 </div>
 </div>
-<p>As conclusões obtidas ao analisarmos os dados observacionais com método apropriados são as mesmas obtids quando analisamos dados experimentais.</p>
+<p>As conclusões obtidas ao analisarmos os dados observacionais com método apropriados são as mesmas obtidas quando analisamos dados experimentais.</p>
 </section>
 <section id="observação-1" class="slide level2">
 <h2>Observação</h2>
 <ul>
-<li class="fragment">Quando <span class="math inline">\(X\)</span> tem dimensão grande, <em>matching</em> sobre da maldição da dimensionalidade.</li>
+<li class="fragment">Quando <span class="math inline">\(X\)</span> tem dimensão grande, <em>matching</em> sofre com a maldição da dimensionalidade.</li>
 <li class="fragment">Uma alternativa é realizar o <em>matching</em> baseado no <em>propensity score</em>.</li>
 <li class="fragment"><img data-src="https://onlinelibrary.wiley.com/doi/abs/10.3982/ECTA11293?casa_token=xqlx49y_M5sAAAAA:Ud8Lj6FCR7egm3ZRVuw7_OJtH3jSeIOTN00XJ-pUlYlzyJg267m-0aKsz-BCDWNJR6bZ6pz4gr7iGUBVKQ.png" alt="Abadie e Imbens (2016)"> desenvolvem toda a teoria que justifica esta alternativa.</li>
 </ul>

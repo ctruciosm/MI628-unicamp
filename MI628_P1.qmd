@@ -1,0 +1,27 @@
+---
+title: "MI628 / ME920 - Inferência Causal"
+subtitle: "-- $P_1$ --"
+author: "Carlos Trucíos"
+format: pdf
+editor: source
+---
+
+## Instruções
+
+- A prova é individual mas é com consulta.
+- Apenas um material impresso ou notas de aula feitas à mâo são permitidas
+- Resolva cada questão de forma clara e detalhada.
+
+
+## Questões
+
+1. Qual a motivação para utilizar:
+    a. SRE em lugar de CRE **(0.5 pontos)**
+    b. ReM em lugar de CRE **(0.5 pontos)**
+2. Dado um conjunto de dados, $p_{FRT}$ é fixo mas $\hat{p}_{FRT}$ é aleatório. Mostre que:
+    a. $\mathbb{E}(\hat{p}_{FRT}) = p_{FRT}$ **(1 ponto)**
+    b. $\mathbb{V}(\hat{p}_{FRT}) \leq \dfrac{1}{4R}$ **(1.5 pontos)**
+3. Mostre que $2S(1,0) = S^2(1) + S^2(0) - S^2(\tau)$ **(1.5 pontos)**
+4. Mostre que $$\hat{\tau}_F = \hat{\tau} - \hat{\gamma}^t \hat{\tau}_X,$$ em que $\hat{\gamma}$ é o coeficiente da regressão por MQO de $X$ sob $(1, Z, X)$. **(2.5 pontos)**
+5. Você realiza um CRE e, entre as variáveis disponíveis no seu conjunto de dados, temos o resultado ($Y$), o indicador de tratamento ($Z$) e outras 15 covariáveis ($X$), todas numéricas. Escreva um pseudo-código para estimar o efeito causal médio ($\tau$) de forma mais assintóticamente eficiante possível. **(2.5 pontos)**
+

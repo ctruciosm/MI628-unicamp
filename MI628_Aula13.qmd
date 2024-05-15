@@ -40,6 +40,10 @@ format:
 ## Introdução
 
 
+<center>
+![](imagens/matching.png)
+</center>
+
 
 # Matching
 ## Matching
@@ -84,8 +88,8 @@ Quando os $M_i$s variam, o procedimento é chamado _variable-ratio matching_ e p
 
 - Suponha que temos $n$ _matches_ ($i = 1, \cdots, n$).
 - Para cada $i$ temos $1 + M_i$ unidades (1 referente ao tratamento e $M_i$ referente ao controle).
-- Assim, o número total de unidades experimentais é $N = n + \displaystyle \sum_{i + 1}^n M_i.$
-- O _index_ $ij$ representa a unidade $j$ no conjunto $i$ ($i = 1, \cdots, n$, $j = 1, \cdots, M_i + 1$) com indicadora de tratamento $Z_{ij}$ e resultados potenciais $Y_{ij}(1)$ e $Y_{ij}(0).$
+- Assim, o número total de unidades experimentais é $N = n + \displaystyle \sum_{i = 1}^n M_i.$
+- Seja o _index_ $ij$ que representa a unidade $j$ no conjunto $i$ ($i = 1, \cdots, n$, $j = 1, \cdots, M_i + 1$) com indicadora de tratamento $Z_{ij}$ e resultados potenciais $Y_{ij}(1)$ e $Y_{ij}(0).$
 - *Dentro de cada conjunto $i$, o pesquisador seleciona uma unidade aleatoriamente para atribuir o tratamento.*
 
 ## Matching
@@ -402,12 +406,12 @@ summary(matching_model)
 ```
 :::
 
-As conclusões obtidas ao analisarmos os dados observacionais com método apropriados são as mesmas obtids quando analisamos dados experimentais.
+As conclusões obtidas ao analisarmos os dados observacionais com método apropriados são as mesmas obtidas quando analisamos dados experimentais.
 
 
 ## Observação
 
-- Quando $X$ tem dimensão grande, _matching_ sobre da maldição da dimensionalidade.
+- Quando $X$ tem dimensão grande, _matching_ sofre com a maldição da dimensionalidade.
 - Uma alternativa é realizar o _matching_ baseado no _propensity score_.
 - ![Abadie e Imbens (2016)](https://onlinelibrary.wiley.com/doi/abs/10.3982/ECTA11293?casa_token=xqlx49y_M5sAAAAA:Ud8Lj6FCR7egm3ZRVuw7_OJtH3jSeIOTN00XJ-pUlYlzyJg267m-0aKsz-BCDWNJR6bZ6pz4gr7iGUBVKQ) desenvolvem toda a teoria que justifica esta alternativa.
 
