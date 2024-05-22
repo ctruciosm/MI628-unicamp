@@ -1,0 +1,208 @@
+---
+title: "Inferência Causal"
+subtitle: "E-Value"
+author: "Prof. Carlos Trucíos </br> ctrucios@unicamp.br"
+Email: "ctrucios@unicamp.br"
+institute: "Instituto de Matemática, Estatística e Computação Científica (IMECC), </br> Universidade Estadual de Campinas (UNICAMP)."
+toc: true
+toc-depth: 1
+toc-title: "Conteúdo"
+knitr:
+    opts_chunk: 
+      fig.align: 'center'
+execute:
+    message: false
+    warning: false
+format:
+    revealjs:
+        slide-number: true
+        show-slide-number: print
+        self-contained: false
+        chalkboard: true
+        width: 1600
+        height: 900
+        theme: [default, styles.scss]
+        incremental: true
+        code-fold: true
+        logo: "imagens/imecc.png"
+        footer: "Carlos Trucíos (IMECC/UNICAMP)  |  ME920/MI628 - Inferência Causal |  [ctruciosm.github.io](https://ctruciosm.github.io/)"
+        highlight-style: "a11y"
+        title-slide-attributes:
+            data-background-image: "imagens/unicamp.png"
+            data-background-size: 20%
+            data-background-position: 99% 5%
+            data-background-opacity: "1"
+---
+
+
+
+# Introdução
+## Introdução
+
+- Os métodos para estudos observacionais vistos nas aulas anteriores são construidos sob a hipósete de _ignorabilidade_, o que implica controlar por todas as variáveis de confusão.
+- Como não é possível verificar esta suposição, estudos observacionais são criticados devido á possibilidade de não controlar por todas as variáveis de confusão.
+- Variáveis de confusão não medidas são mais problemáticas se fortemente correlacionadas com ambos, $Y$ e $z$.
+- Discutiremos algumas ferramentas para quantificar a evidência de causalidade em estudos observacionais.
+
+# Valor E
+## Valor E
+
+O valor E (VanderWeele e Ding; 2017) é particularmente útil em estudos observacionais que utilizem regressão logística para estimar o RR de um tratamento sob um resultado binário.
+
+
+. . . 
+
+
+$${\rm RR} \text{ (risk ratio)}= \dfrac{P(Y = 1 | Z = 1)}{P(Y = 1 | Z = 0)}.$$
+
+. . . 
+
+
+Não assumiremos _ignorabilidade_ dado $X$, ou seja $$Z  \not\perp\!\!\!\!\not\perp \{Y(1), Y(0) \} | X.$$
+
+
+## Valor E
+
+Contudo, ainda assumiremos ignorabilidade dados $X$ e uma variável de confusão não observada $U$, ou seja 
+
+$$Z  \perp\!\!\!\!\perp \{Y(1), Y(0) \} | (X, U)$$
+
+
+. . . 
+
+Assim, se $Y$ for binário, o verdadeiro e observado RR condicional são dados por:
+
+$$RR^{\rm{True}}_{ZY | x} = \dfrac{P(Y(1) = 1 | X = x)}{P(Y(0) = 1 | X = x)} \quad e \quad  RR^{\rm{Obs}}_{ZY | x} = \dfrac{P(Y = 1 | Z = 1, X = x)}{P(Y = 1 | Z = 0, X = x)}.$$
+
+. . . 
+
+
+<center>
+[Se $U$ for uma varável de confusão não observada, em geral, $$RR^{\rm{True}}_{ZY | x} \neq RR^{\rm{Obs}}_{ZY | x}.$$]{style="color:red;"}
+</center>
+
+## Valor E
+
+::: {.callout-note}
+### Exemplo
+
+- Doll e Hill (1950) encontraram que o RR de fumar cigarros sob o câncer de pulmão era 9 (mesmo depois de ajustar por muitas covariáveis observadas $X$).
+- Fisher (1957) questionou o estudo, argumentando o motivo das pessos fumarem e terem câncer de pulmâo pode ser um gene.
+- Cornfields et al. (1959) tomam uma perspectiva mais construtiva e perguntam-se: Quão forte esse vcariável de confusão deve ser para explicar a associação observada entre $Z$ (fumar cigarro) e $Y$ (câncer de pulmão)?
+:::
+
+
+## Valor E
+
+Pensemos no seguinte diagrama causal
+
+<center>
+```{r}
+DiagrammeR::grViz("
+digraph {
+  graph []
+  node [shape = plaintext]
+    U
+    Z
+    Y
+  edge []
+    U->Z
+    U->Y
+  { rank = same; Z; Y }
+}
+")
+```
+</center>
+
+Condicionado em $(X, U)$ não observamos nenhuma associação entre $Z$ e $Y$. Já apenas condicionado em $X$, observamos uma assoação entre $Z$ e $Y$.
+
+
+## Valor E
+
+Definamos dois parãmetros de sensibilidade: 
+$$RR_{ZU|x} = \dfrac{P(U = 1 | Z = 1, X = x)}{P(U = 1 | Z = 0, X = X)} \quad e \quad RR_{UY|x} = \dfrac{P(Y = 1 | U = 1, X = x)}{P(Y = 0 | U = 0, X = x)},$$
+
+que medem, condicionado em $X$, a associação entre $Z$ e a variável de confusão e entre $Y$ e a variável de confusão, respectivamente.
+
+
+## Valor E
+
+
+::: {.callout-tip}
+### Teorema
+Sob $$Z  \perp\!\!\!\!\perp Y | (X, U)$$, assuma sem perda de generalidade que $$RR^{\rm{Obs}}_{ZY|x} > 1, \quad RR_{ZU|x} > 1, \quad RR_{UY|x} > 1.$$
+
+Então, temos que $$RR^{\rm{Obs}}_{ZY|x} \leq \dfrac{RR_{ZU|x} \times  RR_{UY|x}}{RR_{ZU|x} +  RR_{UY|x} - 1}.$$
+
+:::
+
+<center>
+Demostração: (no quadro)
+</center>
+
+
+## Valor E
+
+::: {.callout-tip}
+### Lema
+Definimos $\beta(\omega_1, \omega_2) = \omega_1 \omega_2 / (\omega_1 + \omega_2 - 1)$ para $\omega_1 > 1$ e $\omega_2 > 1$. 
+
+1. $\beta(\omega_1, \omega_2)$ é simétrico em $\omega_1$ e $\omega_2$.
+2. $\beta(\omega_1, \omega_2)$ é crescente em $\omega_1$ e $\omega_2$.
+3. $\beta(\omega_1, \omega_2) \leq \omega_1$ e $\beta(\omega_1, \omega_2) \leq \omega_2$.
+4. $\beta(\omega_1, \omega_2) \leq \omega^2/(2 \omega - 1)$, em que $\omega = \max(\omega_1, \omega_2)$
+
+:::
+
+
+## Valor E
+
+Utilizando o Teorema anterior e o Lema (3), temos que $$RR_{ZU|x} \geq RR_{ZY|x}^{\rm{Obs}}, \quad RR_{UY|x} \geq RR_{ZY|x}^{\rm{Obs}}.$$
+
+
+. . . 
+
+
+Assim, para explicar o RR, $RR_{ZU|x}$ ou $RR_{UY|x}$ devem ser pelo menos iguais a $RR_{ZY|x}^{\rm{Obs}}$.
+
+. . . 
+
+
+Por outro lado, utilizando o Teorema e o Lemma (4), temos que $$\omega^2 - 2 RR^{\rm{Obs}}_{ZXY | x} + RR^{\rm{Obs}}_{ZXY | x} \geq 0$$
+
+. . . 
+
+
+Assim, para explicar o RR, $\omega = \max(RR_{ZU|x}, RR_{UY|x})$ deve ser pelo menos iguail a $$RR^{\rm{Obs}}_{ZY|x} + \sqrt{RR^{\rm{Obs}}_{ZY|x} (RR^{\rm{Obs}}_{ZY|x} - 1)}$$.
+
+## Valor E
+
+::: {.callout-tip}
+### Definição:
+O valor E é dado por $$RR^{\rm{Obs}}_{ZY|x} + \sqrt{RR^{\rm{Obs}}_{ZY|x} (RR^{\rm{Obs}}_{ZY|x} - 1)}$$
+
+:::
+
+- O p-valor do teste de Fisher traz evidência de efeito causal em experimentos randomizados.
+- Em estudos observacionais com tamanhos de amostra grandes, o p-valor pode ser uma medida pobre para mediur a evidência do efeito causal.
+- Mesmo se o efeito causal for zero, uma pequena quantidade de variáveis de confusão não observadas trazem vies, o que pode gerar um p-valor pequeno dada uma pequena incerteza de amostragem.
+
+## Valor E
+
+::: {.callout-tip}
+### Definição:
+O valor E é dado por $$RR^{\rm{Obs}}_{ZY|x} + \sqrt{RR^{\rm{Obs}}_{ZY|x} (RR^{\rm{Obs}}_{ZY|x} - 1)}$$
+
+:::
+
+
+- Embora incerteza na amostragem seja usualmente de interesse secundário em estudos com amostras grandes, a incerteza devido a variáveis de confusão não observadas é um problema que não pode ser minimizado aumentando o tamanho amostral.
+- VanderWeele e Ding (2017) introduzem o e-valor, que é uma melhor medida de evidência causal em estudos observacionais.
+
+## Referências
+
+::: {.nonincremental}
+
+- Peng Ding (2023). A First Course in Causal Inference. Capítulo 17.
+
+:::
