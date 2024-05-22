@@ -28,6 +28,70 @@
       margin: 0 0.8em 0.2em -1.6em;
       vertical-align: middle;
     }
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #767676;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #767676;  padding-left: 4px; }
+    div.sourceCode
+      { color: #545454; background-color: #fefefe; }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span { color: #545454; } /* Normal */
+    code span.al { color: #7928a1; } /* Alert */
+    code span.an { color: #696969; } /* Annotation */
+    code span.at { color: #a55a00; } /* Attribute */
+    code span.bn { color: #7928a1; } /* BaseN */
+    code span.bu { } /* BuiltIn */
+    code span.cf { color: #d91e18; } /* ControlFlow */
+    code span.ch { color: #008000; } /* Char */
+    code span.cn { color: #d91e18; } /* Constant */
+    code span.co { color: #696969; } /* Comment */
+    code span.cv { color: #696969; font-style: italic; } /* CommentVar */
+    code span.do { color: #696969; font-style: italic; } /* Documentation */
+    code span.dt { color: #7928a1; } /* DataType */
+    code span.dv { color: #7928a1; } /* DecVal */
+    code span.er { color: #7928a1; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #a55a00; } /* Float */
+    code span.fu { color: #06287e; } /* Function */
+    code span.im { } /* Import */
+    code span.in { color: #696969; } /* Information */
+    code span.kw { color: #d91e18; } /* Keyword */
+    code span.op { color: #00769e; } /* Operator */
+    code span.ot { color: #d91e18; } /* Other */
+    code span.pp { color: #7928a1; } /* Preprocessor */
+    code span.sc { color: #00769e; } /* SpecialChar */
+    code span.ss { color: #008000; } /* SpecialString */
+    code span.st { color: #008000; } /* String */
+    code span.va { color: #a55a00; } /* Variable */
+    code span.vs { color: #008000; } /* VerbatimString */
+    code span.wa { color: #696969; font-style: italic; } /* Warning */
   </style>
   <link rel="stylesheet" href="MI628_Aula15_files/libs/revealjs/dist/theme/quarto.css" id="theme">
   <link href="MI628_Aula15_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
@@ -320,7 +384,7 @@
       margin-right: 0; 
     }
   </style>
-  <script src="MI628_Aula15_files/libs/htmlwidgets-1.6.3/htmlwidgets.js"></script>
+  <script src="MI628_Aula15_files/libs/htmlwidgets-1.5.4/htmlwidgets.js"></script>
   <script src="MI628_Aula15_files/libs/viz-1.8.2/viz.js"></script>
   <link href="MI628_Aula15_files/libs/DiagrammeR-styles-0.2/styles.css" rel="stylesheet">
   <script src="MI628_Aula15_files/libs/grViz-binding-1.0.11/grViz.js"></script>
@@ -363,7 +427,7 @@ Prof.&nbsp;Carlos Trucíos <br> ctrucios@unicamp.br
 <ul>
 <li class="fragment">Os métodos para estudos observacionais vistos nas aulas anteriores são construidos sob a hipósete de <em>ignorabilidade</em>, o que implica controlar por todas as variáveis de confusão.</li>
 <li class="fragment">Como não é possível verificar esta suposição, estudos observacionais são criticados devido á possibilidade de não controlar por todas as variáveis de confusão.</li>
-<li class="fragment">Variáveis de confusão não medidas são mais problemáticas se fortemente correlacionadas com ambos, <span class="math inline">\(Y\)</span> e <span class="math inline">\(z\)</span>.</li>
+<li class="fragment">Variáveis de confusão não medidas são mais problemáticas se fortemente correlacionadas com ambos, <span class="math inline">\(Y\)</span> e <span class="math inline">\(Z\)</span>.</li>
 <li class="fragment">Discutiremos algumas ferramentas para quantificar a evidência de causalidade em estudos observacionais.</li>
 </ul>
 </section></section>
@@ -409,8 +473,8 @@ Prof.&nbsp;Carlos Trucíos <br> ctrucios@unicamp.br
 <div class="callout-content">
 <ul>
 <li class="fragment">Doll e Hill (1950) encontraram que o RR de fumar cigarros sob o câncer de pulmão era 9 (mesmo depois de ajustar por muitas covariáveis observadas <span class="math inline">\(X\)</span>).</li>
-<li class="fragment">Fisher (1957) questionou o estudo, argumentando o motivo das pessos fumarem e terem câncer de pulmâo pode ser um gene.</li>
-<li class="fragment">Cornfields et al.&nbsp;(1959) tomam uma perspectiva mais construtiva e perguntam-se: Quão forte esse vcariável de confusão deve ser para explicar a associação observada entre <span class="math inline">\(Z\)</span> (fumar cigarro) e <span class="math inline">\(Y\)</span> (câncer de pulmão)?</li>
+<li class="fragment">Fisher (1957) questionou o estudo, argumentando o motivo das pesosas fumarem e terem câncer de pulmâo pode ser um gene.</li>
+<li class="fragment">Cornfields et al.&nbsp;(1959) tomam uma perspectiva mais construtiva e perguntam-se: Quão forte esse variável de confusão deve ser para explicar a associação observada entre <span class="math inline">\(Z\)</span> (fumar cigarro) e <span class="math inline">\(Y\)</span> (câncer de pulmão)?</li>
 </ul>
 </div>
 </div>
@@ -418,20 +482,20 @@ Prof.&nbsp;Carlos Trucíos <br> ctrucios@unicamp.br
 </section>
 <section id="valor-e-4" class="slide level2">
 <h2>Valor E</h2>
-<p>Pensemos no seguinte diagrama causal</p>
+<p>Pensemos no seguinte diagrama causal (já condicionao em <span class="math inline">\(X\)</span>):</p>
 <center>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
-<div class="grViz html-widget html-fill-item" id="htmlwidget-61a2abb1bd3804547853" style="width:960px;height:480px;"></div>
-<script type="application/json" data-for="htmlwidget-61a2abb1bd3804547853">{"x":{"diagram":"\ndigraph {\n  graph []\n  node [shape = plaintext]\n    U\n    Z\n    Y\n  edge []\n    U->Z\n    U->Y\n  { rank = same; Z; Y }\n}\n","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-61337d663e11085887a9" style="width:960px;height:480px;" class="grViz html-widget"></div>
+<script type="application/json" data-for="htmlwidget-61337d663e11085887a9">{"x":{"diagram":"\ndigraph {\n  graph []\n  node [shape = plaintext]\n    U\n    Z\n    Y\n  edge []\n    U->Z\n    U->Y\n  { rank = same; Z; Y }\n}\n","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script>
 </div>
 </div>
 </center>
-<p>Condicionado em <span class="math inline">\((X, U)\)</span> não observamos nenhuma associação entre <span class="math inline">\(Z\)</span> e <span class="math inline">\(Y\)</span>. Já apenas condicionado em <span class="math inline">\(X\)</span>, observamos uma assoação entre <span class="math inline">\(Z\)</span> e <span class="math inline">\(Y\)</span>.</p>
+<p>Condicionado em <span class="math inline">\((X, U)\)</span> não observamos nenhuma associação entre <span class="math inline">\(Z\)</span> e <span class="math inline">\(Y\)</span>. Já apenas condicionado em <span class="math inline">\(X\)</span>, observamos uma associação entre <span class="math inline">\(Z\)</span> e <span class="math inline">\(Y\)</span>.</p>
 </section>
 <section id="valor-e-5" class="slide level2">
 <h2>Valor E</h2>
-<p>Definamos dois parãmetros de sensibilidade: <span class="math display">\[RR_{ZU|x} = \dfrac{P(U = 1 | Z = 1, X = x)}{P(U = 1 | Z = 0, X = X)} \quad e \quad RR_{UY|x} = \dfrac{P(Y = 1 | U = 1, X = x)}{P(Y = 0 | U = 0, X = x)},\]</span></p>
+<p>Assumindo <span class="math inline">\(U\)</span> sendo binário, definamos dois parãmetros de sensibilidade: <span class="math display">\[RR_{ZU|x} = \dfrac{P(U = 1 | Z = 1, X = x)}{P(U = 1 | Z = 0, X = X)} \quad e \quad RR_{UY|x} = \dfrac{P(Y = 1 | U = 1, X = x)}{P(Y = 0 | U = 0, X = x)},\]</span></p>
 <p>que medem, condicionado em <span class="math inline">\(X\)</span>, a associação entre <span class="math inline">\(Z\)</span> e a variável de confusão e entre <span class="math inline">\(Y\)</span> e a variável de confusão, respectivamente.</p>
 </section>
 <section id="valor-e-6" class="slide level2">
@@ -445,14 +509,19 @@ Prof.&nbsp;Carlos Trucíos <br> ctrucios@unicamp.br
 <p><strong>Teorema</strong></p>
 </div>
 <div class="callout-content">
-<p>Sob <span class="math display">\[Z  \perp\!\!\!\!\perp Y | (X, U)\]</span>, assuma sem perda de generalidade que <span class="math display">\[RR^{\rm{Obs}}_{ZY|x} &gt; 1, \quad RR_{ZU|x} &gt; 1, \quad RR_{UY|x} &gt; 1.\]</span></p>
+<p>Sob <span class="math display">\[Z  \perp\!\!\!\!\perp Y | (X, U),\]</span> assuma sem perda de generalidade que <span class="math display">\[RR^{\rm{Obs}}_{ZY|x} &gt; 1, \quad RR_{ZU|x} &gt; 1, \quad RR_{UY|x} &gt; 1.\]</span></p>
 <p>Então, temos que <span class="math display">\[RR^{\rm{Obs}}_{ZY|x} \leq \dfrac{RR_{ZU|x} \times  RR_{UY|x}}{RR_{ZU|x} +  RR_{UY|x} - 1}.\]</span></p>
 </div>
 </div>
 </div>
+<div class="fragment">
+<p>Este teorema nos da um valor máximo para <span class="math inline">\(RR^{\rm{Obs}}_{ZY|x}\)</span> se <span class="math inline">\(Z \perp\!\!\!\!\perp Y | (X, U)\)</span> for verdade.</p>
+</div>
+<div class="fragment">
 <center>
 Demostração: (no quadro)
 </center>
+</div>
 </section>
 <section id="valor-e-7" class="slide level2">
 <h2>Valor E</h2>
@@ -506,10 +575,114 @@ Demostração: (no quadro)
 </div>
 <ul>
 <li class="fragment">O p-valor do teste de Fisher traz evidência de efeito causal em experimentos randomizados.</li>
-<li class="fragment">Em estudos observacionais com tamanhos de amostra grandes, o p-valor pode ser uma medida pobre para mediur a evidência do efeito causal.</li>
+<li class="fragment">Em estudos observacionais com tamanhos de amostra grandes, o p-valor pode ser uma medida pobre para medir a evidência do efeito causal.</li>
 <li class="fragment">Mesmo se o efeito causal for zero, uma pequena quantidade de variáveis de confusão não observadas trazem vies, o que pode gerar um p-valor pequeno dada uma pequena incerteza de amostragem.</li>
-<li class="fragment">Embora incerteza na amostragem seja usualmente de interesse secundário em estudos com amostras grandes, a incerteza devido a variáveis de confusão não observadas é um problema que não pode ser minimizado aumentando o tamanho amostral</li>
 </ul>
+</section>
+<section id="valor-e-10" class="slide level2">
+<h2>Valor E</h2>
+<div class="callout callout-tip callout-captioned callout-style-default">
+<div class="callout-body">
+<div class="callout-caption">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Definição:</strong></p>
+</div>
+<div class="callout-content">
+<p>O valor E é dado por <span class="math display">\[RR^{\rm{Obs}}_{ZY|x} + \sqrt{RR^{\rm{Obs}}_{ZY|x} (RR^{\rm{Obs}}_{ZY|x} - 1)}\]</span></p>
+</div>
+</div>
+</div>
+<ul>
+<li class="fragment">Embora incerteza na amostragem seja usualmente de interesse secundário em estudos com amostras grandes, a incerteza devido a variáveis de confusão não observadas é um problema que não pode ser minimizado aumentando o tamanho amostral.</li>
+<li class="fragment">VanderWeele e Ding (2017) introduzem o e-valor, que é uma melhor medida de evidência causal em estudos observacionais.</li>
+</ul>
+</section>
+<section id="valor-e-11" class="slide level2">
+<h2>Valor E</h2>
+<div class="callout callout-note callout-captioned callout-style-default">
+<div class="callout-body">
+<div class="callout-caption">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Exemplo</strong></p>
+</div>
+<div class="callout-content">
+<p>Hammond and Horn (1958) utilizando dando da população dos estados unidos para estudar a relação entre fumar e câncer de pulmão. Ignorando covariáveis, os dados podem ser representados na seguinta Tabela de contigência.</p>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: center;"></th>
+<th style="text-align: center;">Câncer</th>
+<th style="text-align: center;">Não câncer</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;">Fuma</td>
+<td style="text-align: center;">397</td>
+<td style="text-align: center;">78557</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">Não fuma</td>
+<td style="text-align: center;">51</td>
+<td style="text-align: center;">108778</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<div class="fragment">
+<ul>
+<li class="fragment"><span class="math inline">\(\hat{p}_1 = 397 / (397 + 78557) = 0.005028244\)</span></li>
+<li class="fragment"><span class="math inline">\(\hat{p}_0 = 51 / (51 + 108778) = 0.0004686251\)</span></li>
+<li class="fragment"><span class="math inline">\(\hat{RR} = \hat{p}_1 / \hat{p}_0 = 10.72978\)</span></li>
+</ul>
+</div>
+</section>
+<section id="valor-e-12" class="slide level2">
+<h2>Valor E</h2>
+<h3 id="exemplo-2">Exemplo</h3>
+<div class="cell" data-layout-align="center">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a>p1 <span class="ot">&lt;-</span> <span class="dv">397</span> <span class="sc">/</span> (<span class="dv">397</span> <span class="sc">+</span> <span class="dv">78557</span>)</span>
+<span id="cb1-2"><a href="#cb1-2"></a>p0 <span class="ot">&lt;-</span> <span class="dv">51</span> <span class="sc">/</span> (<span class="dv">51</span> <span class="sc">+</span> <span class="dv">108778</span>)</span>
+<span id="cb1-3"><a href="#cb1-3"></a>n1 <span class="ot">&lt;-</span> <span class="dv">397</span> <span class="sc">+</span> <span class="dv">78557</span></span>
+<span id="cb1-4"><a href="#cb1-4"></a>n0 <span class="ot">&lt;-</span> <span class="dv">51</span> <span class="sc">+</span> <span class="dv">108778</span></span>
+<span id="cb1-5"><a href="#cb1-5"></a>rr <span class="ot">&lt;-</span> p1<span class="sc">/</span>p0</span>
+<span id="cb1-6"><a href="#cb1-6"></a>logrr <span class="ot">&lt;-</span> <span class="fu">log</span>(rr)</span>
+<span id="cb1-7"><a href="#cb1-7"></a>se <span class="ot">&lt;-</span> <span class="fu">sqrt</span>((<span class="dv">1</span> <span class="sc">-</span> p1)<span class="sc">/</span>(n1<span class="sc">*</span>p1) <span class="sc">+</span> (<span class="dv">1</span> <span class="sc">-</span> p0)<span class="sc">/</span>(n0<span class="sc">*</span>p0))</span>
+<span id="cb1-8"><a href="#cb1-8"></a>upper <span class="ot">&lt;-</span> <span class="fu">exp</span>(logrr <span class="sc">+</span> <span class="fl">1.96</span> <span class="sc">*</span> se)</span>
+<span id="cb1-9"><a href="#cb1-9"></a>lower <span class="ot">&lt;-</span> <span class="fu">exp</span>(logrr <span class="sc">-</span> <span class="fl">1.96</span> <span class="sc">*</span> se)</span>
+<span id="cb1-10"><a href="#cb1-10"></a><span class="fu">c</span>(lower, rr, upper)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1]  8.017414 10.729780 14.359765</code></pre>
+</div>
+</div>
+<p>O valor-e é dado por</p>
+<div class="cell" data-layout-align="center">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a>valor_e <span class="ot">&lt;-</span> rr <span class="sc">+</span> <span class="fu">sqrt</span>(rr<span class="sc">*</span>(rr <span class="sc">-</span> <span class="dv">1</span>))</span>
+<span id="cb3-2"><a href="#cb3-2"></a>valor_e</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 20.94733</code></pre>
+</div>
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a><span class="co"># Valor_e o Lim Inf</span></span>
+<span id="cb5-2"><a href="#cb5-2"></a>lower <span class="sc">+</span> <span class="fu">sqrt</span>(lower<span class="sc">*</span>(lower <span class="sc">-</span> <span class="dv">1</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 15.51818</code></pre>
+</div>
+</div>
 </section>
 <section id="referências" class="slide level2">
 <h2>Referências</h2>

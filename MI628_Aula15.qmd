@@ -41,7 +41,7 @@ format:
 
 - Os métodos para estudos observacionais vistos nas aulas anteriores são construidos sob a hipósete de _ignorabilidade_, o que implica controlar por todas as variáveis de confusão.
 - Como não é possível verificar esta suposição, estudos observacionais são criticados devido á possibilidade de não controlar por todas as variáveis de confusão.
-- Variáveis de confusão não medidas são mais problemáticas se fortemente correlacionadas com ambos, $Y$ e $z$.
+- Variáveis de confusão não medidas são mais problemáticas se fortemente correlacionadas com ambos, $Y$ e $Z$.
 - Discutiremos algumas ferramentas para quantificar a evidência de causalidade em estudos observacionais.
 
 # Valor E
@@ -87,14 +87,14 @@ $$RR^{\rm{True}}_{ZY | x} = \dfrac{P(Y(1) = 1 | X = x)}{P(Y(0) = 1 | X = x)} \qu
 ### Exemplo
 
 - Doll e Hill (1950) encontraram que o RR de fumar cigarros sob o câncer de pulmão era 9 (mesmo depois de ajustar por muitas covariáveis observadas $X$).
-- Fisher (1957) questionou o estudo, argumentando o motivo das pessos fumarem e terem câncer de pulmâo pode ser um gene.
-- Cornfields et al. (1959) tomam uma perspectiva mais construtiva e perguntam-se: Quão forte esse vcariável de confusão deve ser para explicar a associação observada entre $Z$ (fumar cigarro) e $Y$ (câncer de pulmão)?
+- Fisher (1957) questionou o estudo, argumentando o motivo das pesosas fumarem e terem câncer de pulmâo pode ser um gene.
+- Cornfields et al. (1959) tomam uma perspectiva mais construtiva e perguntam-se: Quão forte esse variável de confusão deve ser para explicar a associação observada entre $Z$ (fumar cigarro) e $Y$ (câncer de pulmão)?
 :::
 
 
 ## Valor E
 
-Pensemos no seguinte diagrama causal
+Pensemos no seguinte diagrama causal  (já condicionao em $X$):
 
 <center>
 ```{r}
@@ -114,12 +114,13 @@ digraph {
 ```
 </center>
 
-Condicionado em $(X, U)$ não observamos nenhuma associação entre $Z$ e $Y$. Já apenas condicionado em $X$, observamos uma assoação entre $Z$ e $Y$.
+Condicionado em $(X, U)$ não observamos nenhuma associação entre $Z$ e $Y$. Já apenas condicionado em $X$, observamos uma associação entre $Z$ e $Y$.
 
 
 ## Valor E
 
-Definamos dois parãmetros de sensibilidade: 
+
+Assumindo $U$ sendo binário, definamos dois parãmetros de sensibilidade: 
 $$RR_{ZU|x} = \dfrac{P(U = 1 | Z = 1, X = x)}{P(U = 1 | Z = 0, X = X)} \quad e \quad RR_{UY|x} = \dfrac{P(Y = 1 | U = 1, X = x)}{P(Y = 0 | U = 0, X = x)},$$
 
 que medem, condicionado em $X$, a associação entre $Z$ e a variável de confusão e entre $Y$ e a variável de confusão, respectivamente.
@@ -130,11 +131,17 @@ que medem, condicionado em $X$, a associação entre $Z$ e a variável de confus
 
 ::: {.callout-tip}
 ### Teorema
-Sob $$Z  \perp\!\!\!\!\perp Y | (X, U)$$, assuma sem perda de generalidade que $$RR^{\rm{Obs}}_{ZY|x} > 1, \quad RR_{ZU|x} > 1, \quad RR_{UY|x} > 1.$$
+Sob $$Z  \perp\!\!\!\!\perp Y | (X, U),$$ assuma sem perda de generalidade que $$RR^{\rm{Obs}}_{ZY|x} > 1, \quad RR_{ZU|x} > 1, \quad RR_{UY|x} > 1.$$
 
 Então, temos que $$RR^{\rm{Obs}}_{ZY|x} \leq \dfrac{RR_{ZU|x} \times  RR_{UY|x}}{RR_{ZU|x} +  RR_{UY|x} - 1}.$$
 
 :::
+
+. . . 
+
+Este teorema nos da um valor máximo para $RR^{\rm{Obs}}_{ZY|x}$ se $Z  \perp\!\!\!\!\perp Y | (X, U)$ for verdade.
+
+. . . 
 
 <center>
 Demostração: (no quadro)
@@ -184,7 +191,7 @@ O valor E é dado por $$RR^{\rm{Obs}}_{ZY|x} + \sqrt{RR^{\rm{Obs}}_{ZY|x} (RR^{\
 :::
 
 - O p-valor do teste de Fisher traz evidência de efeito causal em experimentos randomizados.
-- Em estudos observacionais com tamanhos de amostra grandes, o p-valor pode ser uma medida pobre para mediur a evidência do efeito causal.
+- Em estudos observacionais com tamanhos de amostra grandes, o p-valor pode ser uma medida pobre para medir a evidência do efeito causal.
 - Mesmo se o efeito causal for zero, uma pequena quantidade de variáveis de confusão não observadas trazem vies, o que pode gerar um p-valor pequeno dada uma pequena incerteza de amostragem.
 
 ## Valor E
@@ -198,6 +205,61 @@ O valor E é dado por $$RR^{\rm{Obs}}_{ZY|x} + \sqrt{RR^{\rm{Obs}}_{ZY|x} (RR^{\
 
 - Embora incerteza na amostragem seja usualmente de interesse secundário em estudos com amostras grandes, a incerteza devido a variáveis de confusão não observadas é um problema que não pode ser minimizado aumentando o tamanho amostral.
 - VanderWeele e Ding (2017) introduzem o e-valor, que é uma melhor medida de evidência causal em estudos observacionais.
+
+## Valor E
+
+::: {.callout-note}
+### Exemplo
+
+Hammond and Horn (1958) utilizando dando da população dos estados unidos para estudar a relação entre fumar e câncer de pulmão. Ignorando covariáveis, os dados podem ser representados na seguinta Tabela de contigência.
+
+|          | Câncer | Não câncer |
+|:--------:|:------:|:----------:|
+| Fuma     | 397    | 78557      |
+| Não fuma | 51     |  108778    |
+
+:::
+
+
+. . . 
+
+- $\hat{p}_1 = 397 / (397 + 78557) = 0.005028244$
+- $\hat{p}_0 = 51 / (51 + 108778) = 0.0004686251$
+- $\hat{RR} = \hat{p}_1  / \hat{p}_0 = 10.72978$
+
+
+## Valor E
+
+### Exemplo
+
+
+
+```{r}
+#| echo: true
+p1 <- 397 / (397 + 78557)
+p0 <- 51 / (51 + 108778)
+n1 <- 397 + 78557
+n0 <- 51 + 108778
+rr <- p1/p0
+logrr <- log(rr)
+se <- sqrt((1 - p1)/(n1*p1) + (1 - p0)/(n0*p0))
+upper <- exp(logrr + 1.96 * se)
+lower <- exp(logrr - 1.96 * se)
+c(lower, rr, upper)
+```
+
+O valor-e é dado por
+
+```{r}
+#| echo: true
+valor_e <- rr + sqrt(rr*(rr - 1))
+valor_e
+# Valor_e o Lim Inf
+lower + sqrt(lower*(lower - 1))
+```
+
+
+
 
 ## Referências
 
