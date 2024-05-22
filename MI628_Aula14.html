@@ -7,7 +7,7 @@
 <link href="MI628_Aula14_files/libs/quarto-html/tippy.css" rel="stylesheet">
 <link href="MI628_Aula14_files/libs/quarto-html/quarto-html.min.css" rel="stylesheet" data-mode="light">
 <link href="MI628_Aula14_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
-  <meta name="generator" content="quarto-1.2.280">
+  <meta name="generator" content="quarto-1.2.269">
 
   <meta name="author" content="Prof.&nbsp;Carlos Trucíos  ctrucios@unicamp.br">
   <title>Inferência Causal</title>
@@ -384,7 +384,7 @@
       margin-right: 0; 
     }
   </style>
-  <script src="MI628_Aula14_files/libs/htmlwidgets-1.6.1/htmlwidgets.js"></script>
+  <script src="MI628_Aula14_files/libs/htmlwidgets-1.5.4/htmlwidgets.js"></script>
   <script src="MI628_Aula14_files/libs/viz-1.8.2/viz.js"></script>
   <link href="MI628_Aula14_files/libs/DiagrammeR-styles-0.2/styles.css" rel="stylesheet">
   <script src="MI628_Aula14_files/libs/grViz-binding-1.0.11/grViz.js"></script>
@@ -460,8 +460,8 @@ Prof.&nbsp;Carlos Trucíos <br> ctrucios@unicamp.br
 <div class="column" style="width:50%;">
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
-<div class="grViz html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-c6e985ae00ff2b0aa4b0" style="width:960px;height:480px;"></div>
-<script type="application/json" data-for="htmlwidget-c6e985ae00ff2b0aa4b0">{"x":{"diagram":"\ndigraph {\n  graph []\n  node [shape = plaintext]\n    X\n    Z\n    Y\n  edge []\n    X->Y\n    X->Z\n    Z->Y\n  { rank = same; Z; Y }\n}\n","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-7d5f2a0502cad6d0d4f2" style="width:960px;height:480px;" class="grViz html-widget"></div>
+<script type="application/json" data-for="htmlwidget-7d5f2a0502cad6d0d4f2">{"x":{"diagram":"\ndigraph {\n  graph []\n  node [shape = plaintext]\n    X\n    Z\n    Y\n  edge []\n    X->Y\n    X->Z\n    Z->Y\n  { rank = same; Z; Y }\n}\n","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script>
 </div>
 </div>
 </div><div class="column" style="width:50%;">
@@ -492,8 +492,8 @@ Prof.&nbsp;Carlos Trucíos <br> ctrucios@unicamp.br
 <div class="column" style="width:50%;">
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
-<div class="grViz html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-2d4538847fb0ff8761a2" style="width:960px;height:480px;"></div>
-<script type="application/json" data-for="htmlwidget-2d4538847fb0ff8761a2">{"x":{"diagram":"\ndigraph {\n  graph []\n  node [shape = plaintext]\n    X\n    U\n    Z\n    Y\n  edge []\n    X->Y\n    X->Z\n    U->Y\n    U->Z\n    Z->Y\n  { rank = same; Z; Y }\n}\n","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-2d815f50c20fe45bbd16" style="width:960px;height:480px;" class="grViz html-widget"></div>
+<script type="application/json" data-for="htmlwidget-2d815f50c20fe45bbd16">{"x":{"diagram":"\ndigraph {\n  graph []\n  node [shape = plaintext]\n    X\n    U\n    Z\n    Y\n  edge []\n    X->Y\n    X->Z\n    U->Y\n    U->Z\n    Z->Y\n  { rank = same; Z; Y }\n}\n","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script>
 </div>
 </div>
 </div><div class="column" style="width:50%;">
@@ -537,9 +537,9 @@ P(Y(0) | Z = 1, X) &amp; = P(Y(0) | Z = 0, X).
 <section id="avaliando-inconfundibilidade-negative-outcomes" class="slide level2">
 <h2>Avaliando inconfundibilidade: <em>negative outcomes</em></h2>
 <ul>
-<li class="fragment">Suponha que <span class="math inline">\(Yn\)</span> é similar a <span class="math inline">\(Y\)</span> e compartilha a mesma estrutura de confusão.</li>
+<li class="fragment">Suponha que <span class="math inline">\(Yn\)</span> é similar a <span class="math inline">\(Y\)</span> (idealmente, compartilha a mesma estrutura de confusão).</li>
 <li class="fragment">Se <span class="math inline">\(Z \perp\!\!\!\perp Y(z) | X\)</span> então <span class="math inline">\(Z \perp\!\!\!\perp Yn(z) | X\)</span></li>
-<li class="fragment">Uma característica do <em>negative outcomes</em> é que conheceos, a priori, o efeito de <span class="math inline">\(Z\)</span> sob <span class="math inline">\(Yn\)</span>: <span class="math display">\[\tau(Z \rightarrow Yn) = \mathbb{E}[Yn(1) - Yn(0)].\]</span></li>
+<li class="fragment"><span class="math inline">\(Yn\)</span> deve ser de tal forma que conheçamos, a priori, o efeito de <span class="math inline">\(Z\)</span> sob <span class="math inline">\(Yn\)</span>: <span class="math display">\[\tau(Z \rightarrow Yn) = \mathbb{E}[Yn(1) - Yn(0)],\]</span> sendo um exemplo importante quanto <span class="math inline">\(\tau(Z \rightarrow Yn) = 0.\)</span></li>
 <li class="fragment">Qual seria um diagrama que satisfaz esses requerimentos?</li>
 </ul>
 </section>
@@ -548,8 +548,8 @@ P(Y(0) | Z = 1, X) &amp; = P(Y(0) | Z = 0, X).
 <center>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
-<div class="grViz html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-ac7db72997970e911340" style="width:960px;height:480px;"></div>
-<script type="application/json" data-for="htmlwidget-ac7db72997970e911340">{"x":{"diagram":"\ndigraph {\n  graph []\n  node [shape = plaintext]\n    X\n    Z\n    Y\n    Yn\n  edge []\n    X->Y\n    X->Z\n    X->Yn\n    Z->Y\n  { rank = same; Z; Y }\n}\n","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-2d7ae7b5d37b3c51d68d" style="width:960px;height:480px;" class="grViz html-widget"></div>
+<script type="application/json" data-for="htmlwidget-2d7ae7b5d37b3c51d68d">{"x":{"diagram":"\ndigraph {\n  graph []\n  node [shape = plaintext]\n    X\n    Z\n    Y\n    Yn\n  edge []\n    X->Y\n    X->Z\n    X->Yn\n    Z->Y\n  { rank = same; Z; Y }\n}\n","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script>
 </div>
 </div>
 </center>
@@ -565,10 +565,15 @@ P(Y(0) | Z = 1, X) &amp; = P(Y(0) | Z = 0, X).
 <p><strong>Exemplo 1</strong></p>
 </div>
 <div class="callout-content">
-<p>Cornfield at al.&nbsp;(1959) estudaram o efeito de fumar cigarros no câncer de pulmão através de um estudo observacional. Os autores incluiram diversar covariáveis mas ainda é possível que existe uma variável de confusão não medida que pode causar vies no efeito observado.</p>
+<p>Cornfield et al.&nbsp;(1959) estudaram o efeito de fumar cigarros no câncer de pulmão através de um estudo observacional. Os autores incluiram diversar covariáveis mas ainda existe a possibilidade de termos uma variável de confusão não medida que pode causar vies no efeito observado.</p>
 <p>Para fortalecer as evidências de causalidade, os autores também reportaram o efeito de fumar cigarros sob accidentes de auto (que foi perto de zero, como esperado). Assim, as análises baseadas no <em>negative outcomes</em> fazem com que a evidência de causalidade entre fumar cigarros no câncer de pulmão de torne-se mais forte.</p>
 </div>
 </div>
+</div>
+<div class="fragment">
+<center>
+<span style="color:red;"><em>Negative outcomes</em> consiste em, utilizando <span class="math inline">\(Yn\)</span> e sabendo que o efeito causal de <span class="math inline">\(Z\)</span> sob <span class="math inline">\(Yn\)</span> é nulo, verificar através dos dados, se é nulo mesmo. Desta forma, descartamos que o efeito causal de <span class="math inline">\(Z\)</span> sob <span class="math inline">\(Y\)</span> seja por causa de uma variável de confusão não medida.</span>
+</center>
 </div>
 </section>
 <section id="avaliando-inconfundibilidade-negative-outcomes-3" class="slide level2">
@@ -582,8 +587,8 @@ P(Y(0) | Z = 1, X) &amp; = P(Y(0) | Z = 0, X).
 <p><strong>Exemplo 2</strong></p>
 </div>
 <div class="callout-content">
-<p>Imbens e Rubin (2015) sugerem utilizar o resultado desafado como <em>negative outcome.</em></p>
-<p>Em muitos casos, é razoável acreditar que o resultado desafado e o resultado tem a mesma estrutura de confusão.</p>
+<p>Imbens e Rubin (2015) sugerem utilizar o resultado defasado como <em>negative outcome.</em></p>
+<p>Em muitos casos, é razoável acreditar que o resultado defasado e o resultado tem a mesma estrutura de confusão.</p>
 <p>Como o resultado defasado acontece antes do tratamento, o efeito causal médio deve ser 0.</p>
 </div>
 </div>
@@ -600,20 +605,25 @@ P(Y(0) | Z = 1, X) &amp; = P(Y(0) | Z = 0, X).
 <p><strong>Exemplo 3</strong></p>
 </div>
 <div class="callout-content">
-<p>Um estudo observacional com pessoas idosas mostrou que vacina contra a influenza reduz o risco de pneumonia/hospitalização por influenza, bem como mortalizade por todas as causas na temporarada seguinte.</p>
-<p>Jackson et al.&nbsp;(2006), céticos com os resultados, realizam uma análise suplementar com <em>negative outcomes.</em></p>
+<p>Um estudo observacional com pessoas idosas mostrou que vacina contra a influenza reduz o risco de pneumonia/hospitalização por influenza, bem como mortalidade (por todas as causas) na temporarada seguinte.</p>
+<p>Jackson et al.&nbsp;(2006), duvidando das conclusões, realizam uma análise suplementar com <em>negative outcomes.</em></p>
 <p>Vacinação começa outono e a transmisão da influenza é minima até o inverno. Assim, o efeito da vacinação deve ser mais proominente durante a época de influenza. Contudo, Jackson et al.&nbsp;(2006) encontram um efeito maior antes do período de influenza, sugerindo que o efeito observado é, na verdade, devido a variáveis de confusão não observadas.</p>
 </div>
 </div>
+</div>
+<div class="fragment">
+<center>
+<p><span style="color:blue;"><em>Negative outcomes</em> é uma estratégia interessante. Contudo, encontrar <span class="math inline">\(Yn\)</span> não é trivial e precisa de um amplo conhecimento do problema em estudo.</span></p>
+</center>
 </div>
 </section>
 <section id="avaliando-inconfundibilidade-negative-expousures" class="slide level2">
 <h2>Avaliando inconfundibilidade: <em>negative expousures</em></h2>
 <ul>
-<li class="fragment">Assuma que <span class="math inline">\(Zn\)</span> é similar a <span class="math inline">\(Z\)</span> e compartilha a mesma estrutura de confusão.</li>
+<li class="fragment">Assuma que <span class="math inline">\(Zn\)</span> é similar a <span class="math inline">\(Z\)</span> (idealmente compartilha a mesma estrutura de confusão).</li>
 <li class="fragment">Se <span class="math inline">\(Z \perp\!\!\!\perp Y(z) | X\)</span> então <span class="math inline">\(Zn \perp\!\!\!\perp Y(z) | X\)</span></li>
 <li class="fragment">Ademais, conhecemos, a priori, o efeito de <span class="math inline">\(Zn\)</span> sob <span class="math inline">\(Y\)</span>: <span class="math display">\[\tau(Zn \rightarrow Y) = \mathbb{E}[Y(1^n) - Y(0^n)].\]</span></li>
-<li class="fragment">Qual seria o dirgamra que satisfaz estes requerimentos?</li>
+<li class="fragment">Um exemplo importante é quando <span class="math inline">\(\tau(Zn \rightarrow Y) = 0\)</span>. Qual seria o dirgamra que satisfaz estes requerimentos?</li>
 </ul>
 </section>
 <section id="avaliando-inconfundibilidade-negative-expousures-1" class="slide level2">
@@ -621,8 +631,8 @@ P(Y(0) | Z = 1, X) &amp; = P(Y(0) | Z = 0, X).
 <center>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
-<div class="grViz html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-f3c25a3791a69247f455" style="width:960px;height:480px;"></div>
-<script type="application/json" data-for="htmlwidget-f3c25a3791a69247f455">{"x":{"diagram":"\ndigraph {\n  graph []\n  node [shape = plaintext]\n    X\n    Z\n    Y\n    Zn\n  edge []\n    X->Y\n    X->Z\n    X->Zn\n    Z->Y\n  { rank = same; Z; Y }\n}\n","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-3bd255e114611c98855c" style="width:960px;height:480px;" class="grViz html-widget"></div>
+<script type="application/json" data-for="htmlwidget-3bd255e114611c98855c">{"x":{"diagram":"\ndigraph {\n  graph []\n  node [shape = plaintext]\n    X\n    Z\n    Y\n    Zn\n  edge []\n    X->Y\n    X->Z\n    X->Zn\n    Z->Y\n  { rank = same; Z; Y }\n}\n","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script>
 </div>
 </div>
 </center>
@@ -638,7 +648,7 @@ P(Y(0) | Z = 1, X) &amp; = P(Y(0) | Z = 0, X).
 <p><strong>Exemplo 4</strong></p>
 </div>
 <div class="callout-content">
-<p>Sanderson et al.&nbsp;(2017) dão muitos exemplos de <em>negative expousures</em> na determinação do efeito da exposição intrauterina nos resultados posteriores, comparando a associação da exposição materna durante a gravidez com o resultado de interesse, com a associação da exposição paterna com o mesmo resultado. Eles revisam estudos sobre o efeito do tabagismo materno e paterno nos resultados dos filhos, e estudos sobre o efeito do IMC materno e paterno no IMC dos filhos e no transtorno do espectro do autismo. Nestes exemplos, esperamos que a associação da exposição materna com o resultado seja maior do que a da exposição paterna com o desfecho.</p>
+<p>Sanderson et al.&nbsp;(2017) dão muitos exemplos de <em>negative expousures</em> na determinação do efeito da exposição intrauterina nos resultados posteriores. Eles comparam a <strong>associação da exposição materna durante a gravidez com o resultado de interesse</strong>, com a <strong>associação da exposição paterna com o mesmo resultado</strong>. Eles revisam estudos sobre o efeito do tabagismo materno e paterno nos resultados dos filhos, e estudos sobre o efeito do IMC materno e paterno no IMC dos filhos e no transtorno do espectro autista. Nestes exemplos, esperamos que a associação da exposição materna (<span class="math inline">\(Z\)</span>) com o resultado seja maior do que a da exposição paterna (<span class="math inline">\(Zn\)</span>) com resultado.</p>
 </div>
 </div>
 </div>
@@ -665,9 +675,11 @@ P(Y(0) | Z = 1, X) &amp; = P(Y(0) | Z = 0, X).
 <p>Nas aulas anteriores discutimos como estimar efeitos causais sob e suposição de inconfundibilidade ou <em>ignorabilidade:</em></p>
 <p><span class="math display">\[Z \perp\!\!\!\perp \{ Y(1), Y(0) \} | X\]</span></p>
 <div class="fragment">
-<h4 id="qual-o-conjunto-certo-de-variáveis-x">Qual o conjunto “certo” de variáveis <span class="math inline">\(X\)</span>?</h4>
+<center>
+<span style="color:red;"><strong>Nesta suposição, é vital escolhermos o conjunto <em>certo</em> de covariáveis <span class="math inline">\(X\)</span>. Mas, qual é esse conjunto <em>certo</em>?</strong></span>
+</center>
 <ul>
-<li class="fragment">Todas as variáveis pre-tratamento [Rosembaum (2002) e Rubin (2007)].</li>
+<li class="fragment">Todas as variáveis <strong>pre-tratamento</strong> [Rosembaum (2002) e Rubin (2007)].</li>
 <li class="fragment">Contudo, não todos concordam com esta abordagem. De fato, Pearl da dois contraexemplos.</li>
 </ul>
 </div>
@@ -675,11 +687,12 @@ P(Y(0) | Z = 1, X) &amp; = P(Y(0) | Z = 0, X).
 <section id="sobreajuste-2" class="slide level2">
 <h2>Sobreajuste</h2>
 <h3 id="m-vies">M-vies</h3>
+<p>M-vies aparece no seguinte DAG (com forma de “M”).</p>
 <center>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
-<div class="grViz html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-b2db3aab9dd7b404b68e" style="width:960px;height:480px;"></div>
-<script type="application/json" data-for="htmlwidget-b2db3aab9dd7b404b68e">{"x":{"diagram":"\ndigraph {\n  graph []\n  node [shape = plaintext]\n    U1\n    U2\n    X\n    Z\n    Y\n  edge []\n    U1->Z\n    U1->X\n    U2->X\n    U2->Y\n  { rank = same; Z; Y }\n}\n","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-f63026828350b99622f2" style="width:960px;height:480px;" class="grViz html-widget"></div>
+<script type="application/json" data-for="htmlwidget-f63026828350b99622f2">{"x":{"diagram":"\ndigraph {\n  graph []\n  node [shape = plaintext]\n    U1\n    U2\n    X\n    Z\n    Y\n  edge []\n    U1->Z\n    U1->X\n    U2->X\n    U2->Y\n  { rank = same; Z; Y }\n}\n","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script>
 </div>
 </div>
 </center>
@@ -698,13 +711,18 @@ P(Y(0) | Z = 1, X) &amp; = P(Y(0) | Z = 0, X).
 <div class="fragment">
 <p>Note que se mudarmos o valor de <span class="math inline">\(Z\)</span>, o valor de <span class="math inline">\(Y\)</span> não muda. Ou seja, o verdadeiro efeito causal de de <span class="math inline">\(Z\)</span> sob <span class="math inline">\(Y\)</span> é zero.</p>
 </div>
-<div class="fragment">
-<p>Ademais, <span class="math display">\[\mathbb{E}[Y | Z = 1] - \mathbb{E}[Y | Z = 0] = 0\]</span></p>
-</div>
 </section>
 <section id="sobreajuste-4" class="slide level2">
 <h2>Sobreajuste</h2>
 <h3 id="m-vies-2">M-vies</h3>
+<p>Ademais, <span class="math display">\[\tau_{PF} = \mathbb{E}[Y | Z = 1] - \mathbb{E}[Y | Z = 0] = 0\]</span></p>
+<div class="fragment">
+<p>Isto significa que, sem ajustar por covariáveis, teremos um estimador não viesado para o verdadeiro valor do parâmetro.</p>
+</div>
+</section>
+<section id="sobreajuste-5" class="slide level2">
+<h2>Sobreajuste</h2>
+<h3 id="m-vies-3">M-vies</h3>
 <p>Suponha que:</p>
 <ul>
 <li class="fragment"><span class="math inline">\(X = aU_1 + b U_2 + \epsilon_X\)</span>,</li>
@@ -716,12 +734,12 @@ P(Y(0) | Z = 1, X) &amp; = P(Y(0) | Z = 0, X).
 <p><span class="math display">\[\mathbb{C}ov(Z, Y) = \mathbb{C}ov(cU_1 + \epsilon_Z, dU_2 + \epsilon_Y) = 0\]</span></p>
 </div>
 <div class="fragment">
-<p>Contudo, <span class="math display">\[\rho_{ZY|X} = \dfrac{\rho_{ZY} - \rho_{ZX}\rho_{YX}}{\sqrt{1 - \rho^2_{ZX}} \sqrt{1 - \rho^2_{YX}}} \propto -abdc\]</span></p>
+<p>Contudo, <span class="math display">\[\rho_{ZY|X} = \dfrac{\rho_{ZY} - \rho_{ZX}\rho_{YX}}{\sqrt{1 - \rho^2_{ZX}} \sqrt{1 - \rho^2_{YX}}} \propto -\mathbb{C}ov(Z, X) \mathbb{C}ov(Y, X) \propto -abdc\]</span></p>
 </div>
 </section>
-<section id="sobreajuste-5" class="slide level2">
+<section id="sobreajuste-6" class="slide level2">
 <h2>Sobreajuste</h2>
-<h3 id="m-vies-3">M-vies</h3>
+<h3 id="m-vies-4">M-vies</h3>
 <div class="cell" data-layout-align="center">
 <details>
 <summary>Code</summary>
@@ -736,7 +754,7 @@ P(Y(0) | Z = 1, X) &amp; = P(Y(0) | Z = 0, X).
 <span id="cb1-9"><a href="#cb1-9"></a><span class="fu">round</span>(<span class="fu">c</span>(tau, tau_adj), <span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1]  0.001 -0.199</code></pre>
+<pre><code>[1]  0.0 -0.2</code></pre>
 </div>
 </div>
 <div class="fragment">
@@ -744,20 +762,27 @@ P(Y(0) | Z = 1, X) &amp; = P(Y(0) | Z = 0, X).
 <span style="color:red;">O estimador simples é não viesado, mas o ajustado por covariáveis é viesado.</span>
 </center>
 </div>
+<div class="fragment">
+<p>Ou seja, neste caso, condicionar por todas as covariáveis pre-tratamento não é benéfico 😞.</p>
+</div>
+<div class="fragment">
+<p>Em geral, quando o PGD é da forma do diagrama apresentado anteriormente (com forma de “M”), condicionar por todas as covariáveis pre-tratamento causará um vies.</p>
+</div>
 </section>
-<section id="sobreajuste-6" class="slide level2">
+<section id="sobreajuste-7" class="slide level2">
 <h2>Sobreajuste</h2>
 <h3 id="z-vies">Z-vies</h3>
+<p>Consideremos o seguinte diagrama causal:</p>
 <center>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
-<div class="grViz html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-b30d476ad3679d2dd030" style="width:960px;height:480px;"></div>
-<script type="application/json" data-for="htmlwidget-b30d476ad3679d2dd030">{"x":{"diagram":"\ndigraph {\n  graph []\n  node [shape = plaintext]\n    U\n    X\n    Z\n    Y\n  edge []\n    U->Z\n    U->Y\n    X->Z\n    Z->Y\n  { rank = same; X; Z; Y }\n}\n","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-162a595c3d6ec13c4db6" style="width:960px;height:480px;" class="grViz html-widget"></div>
+<script type="application/json" data-for="htmlwidget-162a595c3d6ec13c4db6">{"x":{"diagram":"\ndigraph {\n  graph []\n  node [shape = plaintext]\n    U\n    X\n    Z\n    Y\n  edge []\n    U->Z\n    U->Y\n    X->Z\n    Z->Y\n  { rank = same; X; Z; Y }\n}\n","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script>
 </div>
 </div>
 </center>
 </section>
-<section id="sobreajuste-7" class="slide level2">
+<section id="sobreajuste-8" class="slide level2">
 <h2>Sobreajuste</h2>
 <h3 id="z-vies-1">Z-vies</h3>
 <p>Suponha que:</p>
@@ -776,33 +801,67 @@ P(Y(0) | Z = 1, X) &amp; = P(Y(0) | Z = 0, X).
 </div>
 </div>
 </section>
-<section id="sobreajuste-8" class="slide level2">
+<section id="sobreajuste-9" class="slide level2">
 <h2>Sobreajuste</h2>
 <h3 id="z-vies-2">Z-vies</h3>
 <div class="cell" data-layout-align="center">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a>n <span class="ot">&lt;-</span> <span class="dv">10</span><span class="sc">^</span><span class="dv">6</span></span>
+<span id="cb3-2"><a href="#cb3-2"></a>X <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(n)</span>
+<span id="cb3-3"><a href="#cb3-3"></a>U <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(n)</span>
+<span id="cb3-4"><a href="#cb3-4"></a>a <span class="ot">&lt;-</span> <span class="dv">1</span></span>
+<span id="cb3-5"><a href="#cb3-5"></a>Z <span class="ot">&lt;-</span> a<span class="sc">*</span>X <span class="sc">+</span> U <span class="sc">+</span> <span class="fu">rnorm</span>(n)</span>
+<span id="cb3-6"><a href="#cb3-6"></a>Y <span class="ot">&lt;-</span> U <span class="sc">+</span> <span class="fu">rnorm</span>(n)</span>
+<span id="cb3-7"><a href="#cb3-7"></a>tau_unadj <span class="ot">&lt;-</span> <span class="fu">summary</span>(<span class="fu">lm</span>(Y <span class="sc">~</span> Z))<span class="sc">$</span>coef[<span class="dv">2</span>, <span class="dv">1</span>]</span>
+<span id="cb3-8"><a href="#cb3-8"></a>tau_adj <span class="ot">&lt;-</span> <span class="fu">summary</span>(<span class="fu">lm</span>(Y <span class="sc">~</span> Z <span class="sc">+</span> X))<span class="sc">$</span>coef[<span class="dv">2</span>, <span class="dv">1</span>]</span>
+<span id="cb3-9"><a href="#cb3-9"></a><span class="fu">round</span>(<span class="fu">c</span>(tau_unadj, tau_adj), <span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.334 0.502</code></pre>
+<pre><code>[1] 0.334 0.500</code></pre>
 </div>
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a>a <span class="ot">&lt;-</span> <span class="dv">5</span></span>
+<span id="cb5-2"><a href="#cb5-2"></a>Z <span class="ot">&lt;-</span> a<span class="sc">*</span>X <span class="sc">+</span> U <span class="sc">+</span> <span class="fu">rnorm</span>(n)</span>
+<span id="cb5-3"><a href="#cb5-3"></a>tau_unadj <span class="ot">&lt;-</span> <span class="fu">summary</span>(<span class="fu">lm</span>(Y <span class="sc">~</span> Z))<span class="sc">$</span>coef[<span class="dv">2</span>, <span class="dv">1</span>]</span>
+<span id="cb5-4"><a href="#cb5-4"></a>tau_adj <span class="ot">&lt;-</span> <span class="fu">summary</span>(<span class="fu">lm</span>(Y <span class="sc">~</span> Z <span class="sc">+</span> X))<span class="sc">$</span>coef[<span class="dv">2</span>, <span class="dv">1</span>]</span>
+<span id="cb5-5"><a href="#cb5-5"></a><span class="fu">round</span>(<span class="fu">c</span>(tau_unadj, tau_adj), <span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.037 0.501</code></pre>
+<pre><code>[1] 0.037 0.500</code></pre>
 </div>
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1"></a>a <span class="ot">&lt;-</span> <span class="dv">10</span></span>
+<span id="cb7-2"><a href="#cb7-2"></a>Z <span class="ot">&lt;-</span> a<span class="sc">*</span>X <span class="sc">+</span> U <span class="sc">+</span> <span class="fu">rnorm</span>(n)</span>
+<span id="cb7-3"><a href="#cb7-3"></a>tau_unadj <span class="ot">&lt;-</span> <span class="fu">summary</span>(<span class="fu">lm</span>(Y <span class="sc">~</span> Z))<span class="sc">$</span>coef[<span class="dv">2</span>, <span class="dv">1</span>]</span>
+<span id="cb7-4"><a href="#cb7-4"></a>tau_adj <span class="ot">&lt;-</span> <span class="fu">summary</span>(<span class="fu">lm</span>(Y <span class="sc">~</span> Z <span class="sc">+</span> X))<span class="sc">$</span>coef[<span class="dv">2</span>, <span class="dv">1</span>]</span>
+<span id="cb7-5"><a href="#cb7-5"></a><span class="fu">round</span>(<span class="fu">c</span>(tau_unadj, tau_adj), <span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.010 0.502</code></pre>
+<pre><code>[1] 0.01 0.50</code></pre>
 </div>
+</div>
+<div class="fragment">
+<p>Ou seja, neste caso, condicionar por todas as covariáveis pre-tratamento não é benéfico 😿.</p>
 </div>
 </section>
-<section id="sobreajuste-9" class="slide level2">
+<section id="sobreajuste-10" class="slide level2">
 <h2>Sobreajuste</h2>
 <center>
 Quais variáveis, devem, então, estar em <span class="math inline">\(X\)</span>?
 </center>
+<center>
+<img data-src="imagens/what_x.png">
+</center>
 </section>
-<section id="sobreajuste-10" class="slide level2">
+<section id="sobreajuste-11" class="slide level2">
 <h2>Sobreajuste</h2>
 <ol type="1">
 <li class="fragment"><span class="math inline">\(X\)</span> afeta tanto <span class="math inline">\(Z\)</span> quanto <span class="math inline">\(Y\)</span>. Condicionar em <span class="math inline">\(X\)</span> garante <em>ignorabilidade</em>. Assim, devemos controlar por <span class="math inline">\(X\)</span>.</li>
-<li class="fragment"><span class="math inline">\(X_R\)</span> é completamente aleatória e não afeta nem <span class="math inline">\(Z\)</span> nem <span class="math inline">\(Y\)</span>. Incluir <span class="math inline">\(X_R\)</span> não trará vies mas aumentará a variância.</li>
-<li class="fragment"><span class="math inline">\(X_Z\)</span> afeta o resultado através de <span class="math inline">\(Z\)</span>. Incluí-lo na análise não trará vies mas aumentará a variância. Contudo, com variáveis de confusão não medidas, aumenta o vies.</li>
+<li class="fragment"><span class="math inline">\(X_R\)</span> é um ruido e não afeta nem <span class="math inline">\(Z\)</span> nem <span class="math inline">\(Y\)</span>. Incluir <span class="math inline">\(X_R\)</span> não trará vies mas aumentará a variância <a href="https://ctruciosm.github.io/ME715-unicamp/ME715_Aula05.html#/title-slide">(o velho problema de inclur variáveis irrelevantes)</a></li>
+<li class="fragment"><span class="math inline">\(X_Z\)</span> afeta o resultado apenas através de <span class="math inline">\(Z\)</span>. Incluí-lo na análise não trará vies mas aumentará a variância. Contudo, com variáveis de confusão não medidas, aumenta o vies.</li>
 <li class="fragment"><span class="math inline">\(X_Y\)</span> afeta o resultado mas não o tratamento. Sem condicional nela, <em>ignorabilidade</em> ainda acontece. Como ela é preditiva do resultado, incluí-la aumentará a precisão.</li>
 <li class="fragment"><span class="math inline">\(X_I\)</span> é afetada pelo tratamento e pelo resultado (é uma variável pós-tratamento, não pre-tratamento). Não devemos incluir esta variável.</li>
 </ol>

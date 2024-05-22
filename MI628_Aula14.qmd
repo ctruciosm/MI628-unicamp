@@ -165,9 +165,9 @@ Ou seja, que as distribuições dos contrafactuais $P(Y(1) | Z = 0, X)$ e $P(Y(0
 
 ## Avaliando inconfundibilidade: *negative outcomes*
 
-- Suponha que $Yn$ é similar a $Y$ e compartilha a mesma estrutura de confusão.
+- Suponha que $Yn$ é similar a $Y$ (idealmente, compartilha a mesma estrutura de confusão).
 - Se $Z \perp\!\!\!\perp Y(z) | X$ então $Z \perp\!\!\!\perp Yn(z) | X$
-- Uma característica do *negative outcomes* é que conheceos, a priori, o efeito de $Z$ sob $Yn$: $$\tau(Z \rightarrow Yn) = \mathbb{E}[Yn(1) - Yn(0)].$$
+- $Yn$ deve ser de tal forma que conheçamos, a priori, o efeito de $Z$ sob $Yn$: $$\tau(Z \rightarrow Yn) = \mathbb{E}[Yn(1) - Yn(0)],$$ sendo um exemplo importante quanto $\tau(Z \rightarrow Yn) = 0.$
 - Qual seria um diagrama que satisfaz esses requerimentos?
 
 
@@ -202,11 +202,18 @@ digraph {
 
 ::: {.callout-note}
 ### Exemplo 1
-Cornfield at al. (1959) estudaram o efeito de fumar cigarros no câncer de pulmão através de um estudo observacional. Os autores incluiram diversar covariáveis mas ainda é possível que existe uma variável de confusão não medida que pode causar vies no efeito observado.
+Cornfield et al. (1959) estudaram o efeito de fumar cigarros no câncer de pulmão através de um estudo observacional. Os autores incluiram diversar covariáveis mas ainda existe a possibilidade de termos uma variável de confusão não medida que pode causar vies no efeito observado.
 
 Para fortalecer as evidências de causalidade, os autores também reportaram o efeito de fumar cigarros sob accidentes de auto (que foi perto de zero, como esperado). Assim, as análises baseadas no _negative outcomes_ fazem com que a evidência de causalidade entre fumar cigarros no câncer de pulmão de torne-se mais forte.
 :::
 
+
+. . . 
+
+
+<center>
+[_Negative outcomes_ consiste em, utilizando $Yn$ e sabendo que o efeito causal de $Z$ sob $Yn$ é nulo, verificar através dos dados, se é nulo mesmo. Desta forma, descartamos que o efeito causal de $Z$ sob $Y$ seja por causa de uma variável de confusão não medida.]{style="color:red;"}
+</center>
 
 
 ## Avaliando inconfundibilidade: *negative outcomes*
@@ -214,9 +221,9 @@ Para fortalecer as evidências de causalidade, os autores também reportaram o e
 
 ::: {.callout-note}
 ### Exemplo 2
-Imbens e Rubin (2015) sugerem utilizar o resultado desafado como _negative outcome._
+Imbens e Rubin (2015) sugerem utilizar o resultado defasado como _negative outcome._
 
-Em muitos casos, é razoável acreditar que o resultado desafado e o resultado tem a mesma estrutura de confusão.
+Em muitos casos, é razoável acreditar que o resultado defasado e o resultado tem a mesma estrutura de confusão.
 
 Como o resultado defasado acontece antes do tratamento, o efeito causal médio deve ser 0. 
 
@@ -230,9 +237,9 @@ Como o resultado defasado acontece antes do tratamento, o efeito causal médio d
 
 ::: {.callout-note}
 ### Exemplo 3
-Um estudo observacional com pessoas idosas mostrou que vacina contra a influenza reduz o risco de pneumonia/hospitalização por influenza, bem como mortalizade por todas as causas na temporarada seguinte.
+Um estudo observacional com pessoas idosas mostrou que vacina contra a influenza reduz o risco de pneumonia/hospitalização por influenza, bem como mortalidade (por todas as causas) na temporarada seguinte.
 
-Jackson et al. (2006), céticos com os resultados, realizam uma análise suplementar com _negative outcomes._
+Jackson et al. (2006), duvidando das conclusões, realizam uma análise suplementar com _negative outcomes._
 
 Vacinação começa outono e a transmisão da influenza é minima até o inverno. Assim, o efeito da vacinação deve ser mais proominente durante a época de influenza. Contudo, Jackson et al. (2006) encontram um efeito maior antes do período de influenza, sugerindo que o efeito observado é, na verdade, devido a variáveis de confusão não observadas.
 
@@ -240,12 +247,20 @@ Vacinação começa outono e a transmisão da influenza é minima até o inverno
 :::
 
 
+. . . 
+
+
+<center>
+[_Negative outcomes_ é uma estratégia interessante. Contudo, encontrar $Yn$ não é trivial e precisa de um amplo conhecimento do problema em estudo.]{style="color:blue;"}
+
+</center>
+
 ## Avaliando inconfundibilidade: *negative expousures*
 
-- Assuma que $Zn$ é similar a $Z$ e compartilha a mesma estrutura de confusão.
+- Assuma que $Zn$ é similar a $Z$ (idealmente compartilha a mesma estrutura de confusão).
 - Se $Z \perp\!\!\!\perp Y(z) | X$ então $Zn \perp\!\!\!\perp Y(z) | X$
 - Ademais, conhecemos, a priori, o efeito de $Zn$ sob $Y$: $$\tau(Zn \rightarrow Y) = \mathbb{E}[Y(1^n) - Y(0^n)].$$
-- Qual seria o dirgamra que satisfaz estes requerimentos?
+- Um exemplo importante é quando $\tau(Zn \rightarrow Y) = 0$. Qual seria o dirgamra que satisfaz estes requerimentos?
 
 
 
@@ -279,7 +294,7 @@ digraph {
 
 ::: {.callout-note}
 ### Exemplo 4
-Sanderson et al. (2017) dão muitos exemplos de *negative expousures* na determinação do efeito da exposição intrauterina nos resultados posteriores, comparando a associação da exposição materna durante a gravidez com o resultado de interesse, com a associação da exposição paterna com o mesmo resultado. Eles revisam estudos sobre o efeito do tabagismo materno e paterno nos resultados dos filhos, e estudos sobre o efeito do IMC materno e paterno no IMC dos filhos e no transtorno do espectro do autismo. Nestes exemplos, esperamos que a associação da exposição materna com o resultado seja maior do que a da exposição paterna com o desfecho.
+Sanderson et al. (2017) dão muitos exemplos de *negative expousures* na determinação do efeito da exposição intrauterina nos resultados posteriores. Eles comparam a **associação da exposição materna durante a gravidez com o resultado de interesse**, com a **associação da exposição paterna com o mesmo resultado**. Eles revisam estudos sobre o efeito do tabagismo materno e paterno nos resultados dos filhos, e estudos sobre o efeito do IMC materno e paterno no IMC dos filhos e no transtorno do espectro autista. Nestes exemplos, esperamos que a associação da exposição materna ($Z$) com o resultado seja maior do que a da exposição paterna ($Zn$) com resultado.
 
 :::
 
@@ -304,15 +319,21 @@ $$Z \perp\!\!\!\perp \{ Y(1), Y(0) \} | X$$
 
 . . . 
 
-#### Qual o conjunto "certo" de variáveis $X$?
+<center>
+[**Nesta suposição, é vital escolhermos o conjunto _certo_ de covariáveis $X$. Mas, qual é esse conjunto _certo_?**]{style="color:red;"}
+</center>
 
-- Todas as variáveis pre-tratamento [Rosembaum (2002) e Rubin (2007)].
+
+
+- Todas as variáveis **pre-tratamento** [Rosembaum (2002) e Rubin (2007)].
 - Contudo, não todos concordam com esta abordagem. De fato, Pearl da dois contraexemplos.
 
 
 ## Sobreajuste
 
 ### M-vies
+
+M-vies aparece no seguinte DAG (com forma de "M").
 
 <center>
 ```{r}
@@ -353,9 +374,18 @@ em que $X$ é observado mas $U1$ e $U2$ não são.
 
 Note que se mudarmos o valor de $Z$, o valor de $Y$ não muda. Ou seja, o verdadeiro efeito causal de de $Z$ sob $Y$ é zero. 
 
+## Sobreajuste
+
+### M-vies
+
+Ademais, $$\tau_{PF} = \mathbb{E}[Y | Z = 1] - \mathbb{E}[Y | Z = 0] = 0$$
+
 . . . 
 
-Ademais, $$\mathbb{E}[Y | Z = 1] - \mathbb{E}[Y | Z = 0] = 0$$
+Isto significa que, sem ajustar por covariáveis, teremos um estimador não viesado para o verdadeiro valor do parâmetro.
+
+. . . 
+
 
 
 ## Sobreajuste
@@ -375,7 +405,7 @@ $$\mathbb{C}ov(Z, Y) = \mathbb{C}ov(cU_1 + \epsilon_Z, dU_2 + \epsilon_Y) = 0$$
 . . . 
 
 
-Contudo, $$\rho_{ZY|X} = \dfrac{\rho_{ZY} - \rho_{ZX}\rho_{YX}}{\sqrt{1 - \rho^2_{ZX}} \sqrt{1 - \rho^2_{YX}}} \propto -abdc$$
+Contudo, $$\rho_{ZY|X} = \dfrac{\rho_{ZY} - \rho_{ZX}\rho_{YX}}{\sqrt{1 - \rho^2_{ZX}} \sqrt{1 - \rho^2_{YX}}} \propto -\mathbb{C}ov(Z, X) \mathbb{C}ov(Y, X) \propto -abdc$$
 
 ## Sobreajuste
 
@@ -403,9 +433,23 @@ round(c(tau, tau_adj), 3)
 </center>
 
 
+. . . 
+
+
+Ou seja, neste caso, condicionar por todas as covariáveis pre-tratamento não é benéfico `r emo::ji("sad")`.
+
+. . . 
+
+
+Em geral, quando o PGD é da forma do diagrama apresentado anteriormente (com forma de "M"), condicionar por todas as covariáveis pre-tratamento causará um vies.
+
+
+
+
 ## Sobreajuste
 ### Z-vies
 
+Consideremos o seguinte diagrama causal:
 
 <center>
 ```{r}
@@ -464,6 +508,7 @@ $$\tau_{Adj} = \tau + \dfrac{bc}{b^2 + 1}$$
 
 
 ```{r}
+#| echo: true
 n <- 10^6
 X <- rnorm(n)
 U <- rnorm(n)
@@ -486,6 +531,14 @@ round(c(tau_unadj, tau_adj), 3)
 ```
 
 
+
+. . . 
+
+
+Ou seja, neste caso, condicionar por todas as covariáveis pre-tratamento não é benéfico `r emo::ji("sad")`.
+
+
+
 ## Sobreajuste
 
 <center>
@@ -493,9 +546,10 @@ Quais variáveis, devem, então, estar em $X$?
 </center>
 
 
-. . . 
 
-
+<center>
+![](imagens/what_x.png)
+</center>
 
 
 
@@ -503,8 +557,8 @@ Quais variáveis, devem, então, estar em $X$?
 ## Sobreajuste
 
 1. $X$ afeta tanto $Z$ quanto $Y$. Condicionar em $X$ garante _ignorabilidade_. Assim, devemos controlar por $X$.
-2. $X_R$ é completamente aleatória e não afeta nem $Z$ nem $Y$. Incluir $X_R$ não trará vies mas aumentará a variância.
-3. $X_Z$ afeta o resultado através de $Z$. Incluí-lo na análise não trará vies mas aumentará a variância. Contudo, com variáveis de confusão não medidas, aumenta o vies.
+2. $X_R$ é um ruido e não afeta nem $Z$ nem $Y$. Incluir $X_R$ não trará vies mas aumentará a variância [(o velho problema de inclur variáveis irrelevantes)](https://ctruciosm.github.io/ME715-unicamp/ME715_Aula05.html#/title-slide)
+3. $X_Z$ afeta o resultado apenas através de $Z$. Incluí-lo na análise não trará vies mas aumentará a variância. Contudo, com variáveis de confusão não medidas, aumenta o vies.
 4. $X_Y$ afeta o resultado mas não o tratamento. Sem condicional nela, _ignorabilidade_ ainda acontece. Como ela é preditiva do resultado, incluí-la aumentará a precisão.
 5. $X_I$ é afetada pelo tratamento e pelo resultado (é uma variável pós-tratamento, não pre-tratamento). Não devemos incluir esta variável.
 
