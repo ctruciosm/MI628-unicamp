@@ -1,6 +1,6 @@
 ---
 title: "Inferência Causal"
-subtitle: "E-Value"
+subtitle: "Valor E"
 author: "Prof. Carlos Trucíos </br> ctrucios@unicamp.br"
 Email: "ctrucios@unicamp.br"
 institute: "Instituto de Matemática, Estatística e Computação Científica (IMECC), </br> Universidade Estadual de Campinas (UNICAMP)."
@@ -42,7 +42,8 @@ format:
 - Os métodos para estudos observacionais vistos nas aulas anteriores são construidos sob a hipósete de _ignorabilidade_, o que implica controlar por todas as variáveis de confusão.
 - Como não é possível verificar esta suposição, estudos observacionais são criticados devido á possibilidade de não controlar por todas as variáveis de confusão.
 - Variáveis de confusão não medidas são mais problemáticas se fortemente correlacionadas com ambos, $Y$ e $Z$.
-- Discutiremos algumas ferramentas para quantificar a evidência de causalidade em estudos observacionais.
+- Discutiremos uma ferramenta para quantificar a evidência de causalidade em estudos observacionais.
+- Este ferramenta chama-se de **Valor E**
 
 # Valor E
 ## Valor E
@@ -83,12 +84,22 @@ $$RR^{\rm{True}}_{ZY | x} = \dfrac{P(Y(1) = 1 | X = x)}{P(Y(0) = 1 | X = x)} \qu
 
 ## Valor E
 
+$$RR^{\rm{True}}_{ZY | x} \neq RR^{\rm{Obs}}_{ZY | x}.$$
+
+Pois,
+
+- $RR_{ZY|x}^{true} = \dfrac{\int P(Y = 1 | Z = 1, X = x, U = u)f(u | X = x) du}{\int P(Y = 1 | Z = 0, X = x, U = u)f(u | X = x)du}$
+- $RR_{ZY|x}^{Obs} = \dfrac{\int P(Y = 1 | Z = 1, X = x, U = u)f(u | Z = 1, X = x)du}{\int P(Y = 1 | Z = 0, X = x, U = u)f(u | Z = 0, X = x)du}$
+
+
+## Valor E
+
 ::: {.callout-note}
 ### Exemplo
 
 - Doll e Hill (1950) encontraram que o RR de fumar cigarros sob o câncer de pulmão era 9 (mesmo depois de ajustar por muitas covariáveis observadas $X$).
 - Fisher (1957) questionou o estudo, argumentando o motivo das pesosas fumarem e terem câncer de pulmâo pode ser um gene.
-- Cornfields et al. (1959) tomam uma perspectiva mais construtiva e perguntam-se: Quão forte esse variável de confusão deve ser para explicar a associação observada entre $Z$ (fumar cigarro) e $Y$ (câncer de pulmão)?
+- Cornfields et al. (1959) tomam uma perspectiva mais construtiva e perguntam-se: Quão forte a variável de confusão deve ser para explicar a associação observada entre $Z$ (fumar cigarro) e $Y$ (câncer de pulmão)?
 :::
 
 
@@ -139,7 +150,8 @@ Então, temos que $$RR^{\rm{Obs}}_{ZY|x} \leq \dfrac{RR_{ZU|x} \times  RR_{UY|x}
 
 . . . 
 
-Este teorema nos da um valor máximo para $RR^{\rm{Obs}}_{ZY|x}$ se $Z  \perp\!\!\!\!\perp Y | (X, U)$ for verdade.
+
+Sob $Z  \perp\!\!\!\!\perp Y | (X, U)$, este teorema nos da um valor máximo para $RR^{\rm{Obs}}_{ZY|x}$ (que depende apenas de $RR_{ZU|x}$ e $RR_{UY|x}$).
 
 . . . 
 
@@ -180,7 +192,7 @@ Por outro lado, utilizando o Teorema e o Lemma (4), temos que $$\omega^2 - 2 RR^
 . . . 
 
 
-Assim, para explicar o RR, $\omega = \max(RR_{ZU|x}, RR_{UY|x})$ deve ser pelo menos iguail a $$RR^{\rm{Obs}}_{ZY|x} + \sqrt{RR^{\rm{Obs}}_{ZY|x} (RR^{\rm{Obs}}_{ZY|x} - 1)}$$.
+Assim, para explicar o RR, $\omega = \max(RR_{ZU|x}, RR_{UY|x})$ deve ser pelo menos iguail a $$RR^{\rm{Obs}}_{ZY|x} + \sqrt{RR^{\rm{Obs}}_{ZY|x} (RR^{\rm{Obs}}_{ZY|x} - 1)}.$$
 
 ## Valor E
 
@@ -228,10 +240,13 @@ Hammond and Horn (1958) utilizando dando da população dos estados unidos para 
 - $\hat{RR} = \hat{p}_1  / \hat{p}_0 = 10.72978$
 
 
+. . . 
+
+A seguir veremos os IC e o valor-e
+
 ## Valor E
 
 ### Exemplo
-
 
 
 ```{r}
@@ -248,17 +263,138 @@ lower <- exp(logrr - 1.96 * se)
 c(lower, rr, upper)
 ```
 
+
+Observação: $$\dfrac{\log RR - \log \hat{RR}}{\sqrt{(1 - \hat{p}_1)/(n_1 \hat{p}_1) + (1 - \hat{p}_0) / (n_0 \hat{p}_0)}} \sim N(0, 1)$$
+
+
+## Valor E
+
+### Exemplo
+
+
 O valor-e é dado por
 
 ```{r}
 #| echo: true
 valor_e <- rr + sqrt(rr*(rr - 1))
 valor_e
+```
+
+para que as variáveis de confusão não medidas expliquem o alto valor de RR, $\max (RR_{ZU|x}, RR_{UY|x})$ deve ser pelo menos 20.95.
+
+
+. . . 
+
+O valor-e do limite inferior do IC é dado por:
+```{r}
+#| echo: true
 # Valor_e o Lim Inf
 lower + sqrt(lower*(lower - 1))
 ```
 
 
+# Extensões
+## Valor-e e Brandford Hill
+
+- O valor e fornece evidências de efeito causal.
+- A medida que o valor-e for grande, precisamos uma variável de confusão mais _forte_ para explicar o RR observado.
+- Com um valor-e pequeno, precisamos apenas de uma variável de confusão fraca para explicar o RR observado.
+- Assim, um RR observado grande fornece maiores indĩcios de causalidade (e isto está relacionado com uma das idéias de Bradford Hill acerca de causalidade).
+
+## Valor-e e Brandford Hill
+
+
+::: {.callout-note}
+### Definição
+Bradford Hill dá nove critérios para causaliade:
+
+::: {.nonincremental}
+1.    Força;
+2.    consistência;
+3.    Especificidade;
+4.    Temporalidade;
+5.    Gradiente biológico;
+6     Plausibilidade;
+7.    Coerência;
+8.    Experimentação;
+9.    Analogia.
+:::
+
+:::
+
+
+. . . 
+
+Assim, o valor-e é uma forma de justificar o primeiro critério: "associação forte frequentemente fornece evidência forte de causalidade. Isto, pois para explicar esta forte associação seria necessário uma variável de confusão mais forte ainda."
+
+
+
+## Valor-e e regressão logística
+
+- Com $Y$ binário, é comum utilizarmos a regressão logística de $Y$ sob $Z$ e $X$. Assim $$P(Y_i = 1 | Z_i, X_i) = \dfrac{\exp (\beta_0 + \beta_1 Z_i + \boldsymbol{\beta}_2 \textbf{X}_i)}{1 + \exp (\beta_0 + \beta_1 Z_i + \boldsymbol{\beta}_2 \textbf{X}_i)}$$
+- No modelo logístico, o coeficiente associado a $Z$ pode ser escrito como $$\beta_1 = \log \Big(\dfrac{P(Y_i = 1 | Z_i = 1, X_i = x_i) \big / P(Y_i = 0 | Z_i = 1, X_i = x_i)}{P(Y_i = 1 | Z_i = 0, X_i = x_i) \big / P(Y_i = 0 | Z_i = 0, X_i = x_i)} \Big).$$
+
+## Valor-e e regressão logística
+
+- Quando o resultado é raro, temos que $P(Y_i = 1 | Z_i = 1, X_i = x_i), P(Y_i = 1 | Z_i = 0, X_i = x_i) \approx 0$ e então, $$\beta_1 \approx \log \dfrac{P(Y_i = 1 | Z_i = 1, X_i = x_i)}{P(Y_i = 1 | Z_i = 0, X_i = x_i)} = \log RR_{ZY|x}^{Obs}$$
+- Assim, no modelo logístico temos uma forma imediata de calcular o valor-e
+
+
+
+## Valor-e e regressão logística
+
+::: {.callout-note}
+### Exemplo
+O conjunto de dados [`NCHS2003.txt`](https://dataverse.harvard.edu/dataset.xhtml?persistentId=doi:10.7910/DVN/ZX3VEV) contém 10 variáveis binárias: `asian`, `nativeamerican`, `black`, `hispanic`, `drinking`, `smoking`, `mar` (se casada ou nao), `somecollege` (se tem ou não educação superior), `ageabove35` e `PTbirth`(nascimento prematuro ou não).
+
+Estamos interessados em estudar se `ageabove35` tem algum efeito causal em `PTbirth` (controlando por todas as outras covariáveis)
+
+```{r}
+#| echo: true
+nchs2003 <- read.table("datasets/NCHS2003.txt", header = TRUE, sep = "\t")
+nchs2003 <- nchs2003 |> dplyr::select(-MINDEXSUM, -agebelow20, -preeclampsia)
+modelo <- glm(PTbirth ~ ., data = nchs2003, family = binomial)
+```
+
+:::
+
+
+## Valor-e e regressão logística
+
+```{r}
+#| echo: true
+summary(modelo)$coef
+
+log_or <- summary(modelo)$coef[9, 1:2]
+rr <- exp(log_or[1])
+ci <- c(exp(log_or[1] - 1.96* log_or[2]), exp(log_or[1] + 1.96* log_or[2]))
+```
+
+## Valor-e e regressão logística
+
+```{r}
+#| echo: true
+## RR e conf intervals
+rr
+ci
+## Valores-e
+valor_e <- rr + sqrt(rr*(rr - 1))
+valor_e_lower <- ci[1] + sqrt(ci[1]*(ci[1] - 1))
+
+c(valor_e, valor_e_lower)
+```
+
+
+. . . 
+
+Para explicar RR (sem que seja um efeito causal), o máximo RR das variáveis de confusão deve ser 1.94 (e 1.91 de focarmos no limite inferior). Apesar de que estes valores não são muito grandes, em epidemiologia são grandes sim.
+
+# Comentários finais
+## Comentários finais 
+
+
+- $U$ é não observado, por isso não é facil decidirmos de o valor-e é grande ou não.
+- O valor-e oferece evidencia de causalidade, mas esta evidência deve ser vista a partir do conhecimento do problema de interesse.
 
 
 ## Referências

@@ -384,7 +384,7 @@
       margin-right: 0; 
     }
   </style>
-  <script src="MI628_Aula15_files/libs/htmlwidgets-1.5.4/htmlwidgets.js"></script>
+  <script src="MI628_Aula15_files/libs/htmlwidgets-1.6.3/htmlwidgets.js"></script>
   <script src="MI628_Aula15_files/libs/viz-1.8.2/viz.js"></script>
   <link href="MI628_Aula15_files/libs/DiagrammeR-styles-0.2/styles.css" rel="stylesheet">
   <script src="MI628_Aula15_files/libs/grViz-binding-1.0.11/grViz.js"></script>
@@ -395,7 +395,7 @@
 
 <section id="title-slide" data-background-image="imagens/unicamp.png" data-background-opacity="1" data-background-position="99% 5%" data-background-size="20%" class="quarto-title-block center">
   <h1 class="title">Inferência Causal</h1>
-  <p class="subtitle">E-Value</p>
+  <p class="subtitle">Valor E</p>
 
 <div class="quarto-title-authors">
 <div class="quarto-title-author">
@@ -414,6 +414,8 @@ Prof.&nbsp;Carlos Trucíos <br> ctrucios@unicamp.br
 <ul>
 <li class="fragment"><a href="#/introdução" id="/toc-introdução">Introdução</a></li>
 <li class="fragment"><a href="#/valor-e" id="/toc-valor-e">Valor E</a></li>
+<li class="fragment"><a href="#/extensões" id="/toc-extensões">Extensões</a></li>
+<li class="fragment"><a href="#/comentários-finais" id="/toc-comentários-finais">Comentários finais</a></li>
 </ul>
 </nav>
 </section>
@@ -428,7 +430,8 @@ Prof.&nbsp;Carlos Trucíos <br> ctrucios@unicamp.br
 <li class="fragment">Os métodos para estudos observacionais vistos nas aulas anteriores são construidos sob a hipósete de <em>ignorabilidade</em>, o que implica controlar por todas as variáveis de confusão.</li>
 <li class="fragment">Como não é possível verificar esta suposição, estudos observacionais são criticados devido á possibilidade de não controlar por todas as variáveis de confusão.</li>
 <li class="fragment">Variáveis de confusão não medidas são mais problemáticas se fortemente correlacionadas com ambos, <span class="math inline">\(Y\)</span> e <span class="math inline">\(Z\)</span>.</li>
-<li class="fragment">Discutiremos algumas ferramentas para quantificar a evidência de causalidade em estudos observacionais.</li>
+<li class="fragment">Discutiremos uma ferramenta para quantificar a evidência de causalidade em estudos observacionais.</li>
+<li class="fragment">Este ferramenta chama-se de <strong>Valor E</strong></li>
 </ul>
 </section></section>
 <section>
@@ -462,6 +465,15 @@ Prof.&nbsp;Carlos Trucíos <br> ctrucios@unicamp.br
 </section>
 <section id="valor-e-3" class="slide level2">
 <h2>Valor E</h2>
+<p><span class="math display">\[RR^{\rm{True}}_{ZY | x} \neq RR^{\rm{Obs}}_{ZY | x}.\]</span></p>
+<p>Pois,</p>
+<ul>
+<li class="fragment"><span class="math inline">\(RR_{ZY|x}^{true} = \dfrac{\int P(Y = 1 | Z = 1, X = x, U = u)f(u | X = x) du}{\int P(Y = 1 | Z = 0, X = x, U = u)f(u | X = x)du}\)</span></li>
+<li class="fragment"><span class="math inline">\(RR_{ZY|x}^{Obs} = \dfrac{\int P(Y = 1 | Z = 1, X = x, U = u)f(u | Z = 1, X = x)du}{\int P(Y = 1 | Z = 0, X = x, U = u)f(u | Z = 0, X = x)du}\)</span></li>
+</ul>
+</section>
+<section id="valor-e-4" class="slide level2">
+<h2>Valor E</h2>
 <div class="callout callout-note callout-captioned callout-style-default">
 <div class="callout-body">
 <div class="callout-caption">
@@ -474,31 +486,31 @@ Prof.&nbsp;Carlos Trucíos <br> ctrucios@unicamp.br
 <ul>
 <li class="fragment">Doll e Hill (1950) encontraram que o RR de fumar cigarros sob o câncer de pulmão era 9 (mesmo depois de ajustar por muitas covariáveis observadas <span class="math inline">\(X\)</span>).</li>
 <li class="fragment">Fisher (1957) questionou o estudo, argumentando o motivo das pesosas fumarem e terem câncer de pulmâo pode ser um gene.</li>
-<li class="fragment">Cornfields et al.&nbsp;(1959) tomam uma perspectiva mais construtiva e perguntam-se: Quão forte esse variável de confusão deve ser para explicar a associação observada entre <span class="math inline">\(Z\)</span> (fumar cigarro) e <span class="math inline">\(Y\)</span> (câncer de pulmão)?</li>
+<li class="fragment">Cornfields et al.&nbsp;(1959) tomam uma perspectiva mais construtiva e perguntam-se: Quão forte a variável de confusão deve ser para explicar a associação observada entre <span class="math inline">\(Z\)</span> (fumar cigarro) e <span class="math inline">\(Y\)</span> (câncer de pulmão)?</li>
 </ul>
 </div>
 </div>
 </div>
 </section>
-<section id="valor-e-4" class="slide level2">
+<section id="valor-e-5" class="slide level2">
 <h2>Valor E</h2>
 <p>Pensemos no seguinte diagrama causal (já condicionao em <span class="math inline">\(X\)</span>):</p>
 <center>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
-<div id="htmlwidget-61337d663e11085887a9" style="width:960px;height:480px;" class="grViz html-widget"></div>
-<script type="application/json" data-for="htmlwidget-61337d663e11085887a9">{"x":{"diagram":"\ndigraph {\n  graph []\n  node [shape = plaintext]\n    U\n    Z\n    Y\n  edge []\n    U->Z\n    U->Y\n  { rank = same; Z; Y }\n}\n","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script>
+<div class="grViz html-widget html-fill-item" id="htmlwidget-5705cf909d4de62b2e05" style="width:960px;height:480px;"></div>
+<script type="application/json" data-for="htmlwidget-5705cf909d4de62b2e05">{"x":{"diagram":"\ndigraph {\n  graph []\n  node [shape = plaintext]\n    U\n    Z\n    Y\n  edge []\n    U->Z\n    U->Y\n  { rank = same; Z; Y }\n}\n","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script>
 </div>
 </div>
 </center>
 <p>Condicionado em <span class="math inline">\((X, U)\)</span> não observamos nenhuma associação entre <span class="math inline">\(Z\)</span> e <span class="math inline">\(Y\)</span>. Já apenas condicionado em <span class="math inline">\(X\)</span>, observamos uma associação entre <span class="math inline">\(Z\)</span> e <span class="math inline">\(Y\)</span>.</p>
 </section>
-<section id="valor-e-5" class="slide level2">
+<section id="valor-e-6" class="slide level2">
 <h2>Valor E</h2>
 <p>Assumindo <span class="math inline">\(U\)</span> sendo binário, definamos dois parãmetros de sensibilidade: <span class="math display">\[RR_{ZU|x} = \dfrac{P(U = 1 | Z = 1, X = x)}{P(U = 1 | Z = 0, X = X)} \quad e \quad RR_{UY|x} = \dfrac{P(Y = 1 | U = 1, X = x)}{P(Y = 0 | U = 0, X = x)},\]</span></p>
 <p>que medem, condicionado em <span class="math inline">\(X\)</span>, a associação entre <span class="math inline">\(Z\)</span> e a variável de confusão e entre <span class="math inline">\(Y\)</span> e a variável de confusão, respectivamente.</p>
 </section>
-<section id="valor-e-6" class="slide level2">
+<section id="valor-e-7" class="slide level2">
 <h2>Valor E</h2>
 <div class="callout callout-tip callout-captioned callout-style-default">
 <div class="callout-body">
@@ -515,7 +527,7 @@ Prof.&nbsp;Carlos Trucíos <br> ctrucios@unicamp.br
 </div>
 </div>
 <div class="fragment">
-<p>Este teorema nos da um valor máximo para <span class="math inline">\(RR^{\rm{Obs}}_{ZY|x}\)</span> se <span class="math inline">\(Z \perp\!\!\!\!\perp Y | (X, U)\)</span> for verdade.</p>
+<p>Sob <span class="math inline">\(Z \perp\!\!\!\!\perp Y | (X, U)\)</span>, este teorema nos da um valor máximo para <span class="math inline">\(RR^{\rm{Obs}}_{ZY|x}\)</span> (que depende apenas de <span class="math inline">\(RR_{ZU|x}\)</span> e <span class="math inline">\(RR_{UY|x}\)</span>).</p>
 </div>
 <div class="fragment">
 <center>
@@ -523,7 +535,7 @@ Demostração: (no quadro)
 </center>
 </div>
 </section>
-<section id="valor-e-7" class="slide level2">
+<section id="valor-e-8" class="slide level2">
 <h2>Valor E</h2>
 <div class="callout callout-tip callout-captioned callout-style-default">
 <div class="callout-body">
@@ -545,7 +557,7 @@ Demostração: (no quadro)
 </div>
 </div>
 </section>
-<section id="valor-e-8" class="slide level2">
+<section id="valor-e-9" class="slide level2">
 <h2>Valor E</h2>
 <p>Utilizando o Teorema anterior e o Lema (3), temos que <span class="math display">\[RR_{ZU|x} \geq RR_{ZY|x}^{\rm{Obs}}, \quad RR_{UY|x} \geq RR_{ZY|x}^{\rm{Obs}}.\]</span></p>
 <div class="fragment">
@@ -555,10 +567,10 @@ Demostração: (no quadro)
 <p>Por outro lado, utilizando o Teorema e o Lemma (4), temos que <span class="math display">\[\omega^2 - 2 RR^{\rm{Obs}}_{ZXY | x} + RR^{\rm{Obs}}_{ZXY | x} \geq 0\]</span></p>
 </div>
 <div class="fragment">
-<p>Assim, para explicar o RR, <span class="math inline">\(\omega = \max(RR_{ZU|x}, RR_{UY|x})\)</span> deve ser pelo menos iguail a <span class="math display">\[RR^{\rm{Obs}}_{ZY|x} + \sqrt{RR^{\rm{Obs}}_{ZY|x} (RR^{\rm{Obs}}_{ZY|x} - 1)}\]</span>.</p>
+<p>Assim, para explicar o RR, <span class="math inline">\(\omega = \max(RR_{ZU|x}, RR_{UY|x})\)</span> deve ser pelo menos iguail a <span class="math display">\[RR^{\rm{Obs}}_{ZY|x} + \sqrt{RR^{\rm{Obs}}_{ZY|x} (RR^{\rm{Obs}}_{ZY|x} - 1)}.\]</span></p>
 </div>
 </section>
-<section id="valor-e-9" class="slide level2">
+<section id="valor-e-10" class="slide level2">
 <h2>Valor E</h2>
 <div class="callout callout-tip callout-captioned callout-style-default">
 <div class="callout-body">
@@ -579,7 +591,7 @@ Demostração: (no quadro)
 <li class="fragment">Mesmo se o efeito causal for zero, uma pequena quantidade de variáveis de confusão não observadas trazem vies, o que pode gerar um p-valor pequeno dada uma pequena incerteza de amostragem.</li>
 </ul>
 </section>
-<section id="valor-e-10" class="slide level2">
+<section id="valor-e-11" class="slide level2">
 <h2>Valor E</h2>
 <div class="callout callout-tip callout-captioned callout-style-default">
 <div class="callout-body">
@@ -599,7 +611,7 @@ Demostração: (no quadro)
 <li class="fragment">VanderWeele e Ding (2017) introduzem o e-valor, que é uma melhor medida de evidência causal em estudos observacionais.</li>
 </ul>
 </section>
-<section id="valor-e-11" class="slide level2">
+<section id="valor-e-12" class="slide level2">
 <h2>Valor E</h2>
 <div class="callout callout-note callout-captioned callout-style-default">
 <div class="callout-body">
@@ -642,8 +654,11 @@ Demostração: (no quadro)
 <li class="fragment"><span class="math inline">\(\hat{RR} = \hat{p}_1 / \hat{p}_0 = 10.72978\)</span></li>
 </ul>
 </div>
+<div class="fragment">
+<p>A seguir veremos os IC e o valor-e</p>
+</div>
 </section>
-<section id="valor-e-12" class="slide level2">
+<section id="valor-e-13" class="slide level2">
 <h2>Valor E</h2>
 <h3 id="exemplo-2">Exemplo</h3>
 <div class="cell" data-layout-align="center">
@@ -664,6 +679,11 @@ Demostração: (no quadro)
 <pre><code>[1]  8.017414 10.729780 14.359765</code></pre>
 </div>
 </div>
+<p>Observação: <span class="math display">\[\dfrac{\log RR - \log \hat{RR}}{\sqrt{(1 - \hat{p}_1)/(n_1 \hat{p}_1) + (1 - \hat{p}_0) / (n_0 \hat{p}_0)}} \sim N(0, 1)\]</span></p>
+</section>
+<section id="valor-e-14" class="slide level2">
+<h2>Valor E</h2>
+<h3 id="exemplo-3">Exemplo</h3>
 <p>O valor-e é dado por</p>
 <div class="cell" data-layout-align="center">
 <details>
@@ -674,6 +694,11 @@ Demostração: (no quadro)
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 20.94733</code></pre>
 </div>
+</div>
+<p>para que as variáveis de confusão não medidas expliquem o alto valor de RR, <span class="math inline">\(\max (RR_{ZU|x}, RR_{UY|x})\)</span> deve ser pelo menos 20.95.</p>
+<div class="fragment">
+<p>O valor-e do limite inferior do IC é dado por:</p>
+<div class="cell" data-layout-align="center">
 <details>
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a><span class="co"># Valor_e o Lim Inf</span></span>
@@ -683,6 +708,168 @@ Demostração: (no quadro)
 <pre><code>[1] 15.51818</code></pre>
 </div>
 </div>
+</div>
+</section></section>
+<section>
+<section id="extensões" class="title-slide slide level1 center">
+<h1>Extensões</h1>
+
+</section>
+<section id="valor-e-e-brandford-hill" class="slide level2">
+<h2>Valor-e e Brandford Hill</h2>
+<ul>
+<li class="fragment">O valor e fornece evidências de efeito causal.</li>
+<li class="fragment">A medida que o valor-e for grande, precisamos uma variável de confusão mais <em>forte</em> para explicar o RR observado.</li>
+<li class="fragment">Com um valor-e pequeno, precisamos apenas de uma variável de confusão fraca para explicar o RR observado.</li>
+<li class="fragment">Assim, um RR observado grande fornece maiores indĩcios de causalidade (e isto está relacionado com uma das idéias de Bradford Hill acerca de causalidade).</li>
+</ul>
+</section>
+<section id="valor-e-e-brandford-hill-1" class="slide level2">
+<h2>Valor-e e Brandford Hill</h2>
+<div class="callout callout-note callout-captioned callout-style-default">
+<div class="callout-body">
+<div class="callout-caption">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Definição</strong></p>
+</div>
+<div class="callout-content">
+<p>Bradford Hill dá nove critérios para causaliade:</p>
+<div>
+<ol type="1">
+<li>Força;</li>
+<li>consistência;</li>
+<li>Especificidade;</li>
+<li>Temporalidade;</li>
+<li>Gradiente biológico; 6 Plausibilidade;</li>
+<li>Coerência;</li>
+<li>Experimentação;</li>
+<li>Analogia.</li>
+</ol>
+</div>
+</div>
+</div>
+</div>
+<div class="fragment">
+<p>Assim, o valor-e é uma forma de justificar o primeiro critério: “associação forte frequentemente fornece evidência forte de causalidade. Isto, pois para explicar esta forte associação seria necessário uma variável de confusão mais forte ainda.”</p>
+</div>
+</section>
+<section id="valor-e-e-regressão-logística" class="slide level2">
+<h2>Valor-e e regressão logística</h2>
+<ul>
+<li class="fragment">Com <span class="math inline">\(Y\)</span> binário, é comum utilizarmos a regressão logística de <span class="math inline">\(Y\)</span> sob <span class="math inline">\(Z\)</span> e <span class="math inline">\(X\)</span>. Assim <span class="math display">\[P(Y_i = 1 | Z_i, X_i) = \dfrac{\exp (\beta_0 + \beta_1 Z_i + \boldsymbol{\beta}_2 \textbf{X}_i)}{1 + \exp (\beta_0 + \beta_1 Z_i + \boldsymbol{\beta}_2 \textbf{X}_i)}\]</span></li>
+<li class="fragment">No modelo logístico, o coeficiente associado a <span class="math inline">\(Z\)</span> pode ser escrito como <span class="math display">\[\beta_1 = \log \Big(\dfrac{P(Y_i = 1 | Z_i = 1, X_i = x_i) \big / P(Y_i = 0 | Z_i = 1, X_i = x_i)}{P(Y_i = 1 | Z_i = 0, X_i = x_i) \big / P(Y_i = 0 | Z_i = 0, X_i = x_i)} \Big).\]</span></li>
+</ul>
+</section>
+<section id="valor-e-e-regressão-logística-1" class="slide level2">
+<h2>Valor-e e regressão logística</h2>
+<ul>
+<li class="fragment">Quando o resultado é raro, temos que <span class="math inline">\(P(Y_i = 1 | Z_i = 1, X_i = x_i), P(Y_i = 1 | Z_i = 0, X_i = x_i) \approx 0\)</span> e então, <span class="math display">\[\beta_1 \approx \log \dfrac{P(Y_i = 1 | Z_i = 1, X_i = x_i)}{P(Y_i = 1 | Z_i = 0, X_i = x_i)} = \log RR_{ZY|x}^{Obs}\]</span></li>
+<li class="fragment">Assim, no modelo logístico temos uma forma imediata de calcular o valor-e</li>
+</ul>
+</section>
+<section id="valor-e-e-regressão-logística-2" class="slide level2">
+<h2>Valor-e e regressão logística</h2>
+<div class="callout callout-note callout-captioned callout-style-default">
+<div class="callout-body">
+<div class="callout-caption">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Exemplo</strong></p>
+</div>
+<div class="callout-content">
+<p>O conjunto de dados <a href="https://dataverse.harvard.edu/dataset.xhtml?persistentId=doi:10.7910/DVN/ZX3VEV"><code>NCHS2003.txt</code></a> contém 10 variáveis binárias: <code>asian</code>, <code>nativeamerican</code>, <code>black</code>, <code>hispanic</code>, <code>drinking</code>, <code>smoking</code>, <code>mar</code> (se casada ou nao), <code>somecollege</code> (se tem ou não educação superior), <code>ageabove35</code> e <code>PTbirth</code>(nascimento prematuro ou não).</p>
+<p>Estamos interessados em estudar se <code>ageabove35</code> tem algum efeito causal em <code>PTbirth</code> (controlando por todas as outras covariáveis)</p>
+<div class="cell" data-layout-align="center">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1"></a>nchs2003 <span class="ot">&lt;-</span> <span class="fu">read.table</span>(<span class="st">"datasets/NCHS2003.txt"</span>, <span class="at">header =</span> <span class="cn">TRUE</span>, <span class="at">sep =</span> <span class="st">"</span><span class="sc">\t</span><span class="st">"</span>)</span>
+<span id="cb7-2"><a href="#cb7-2"></a>nchs2003 <span class="ot">&lt;-</span> nchs2003 <span class="sc">|&gt;</span> dplyr<span class="sc">::</span><span class="fu">select</span>(<span class="sc">-</span>MINDEXSUM, <span class="sc">-</span>agebelow20, <span class="sc">-</span>preeclampsia)</span>
+<span id="cb7-3"><a href="#cb7-3"></a>modelo <span class="ot">&lt;-</span> <span class="fu">glm</span>(PTbirth <span class="sc">~</span> ., <span class="at">data =</span> nchs2003, <span class="at">family =</span> binomial)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="valor-e-e-regressão-logística-3" class="slide level2">
+<h2>Valor-e e regressão logística</h2>
+<div class="cell" data-layout-align="center">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1"></a><span class="fu">summary</span>(modelo)<span class="sc">$</span>coef</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>                  Estimate  Std. Error     z value      Pr(&gt;|z|)
+(Intercept)    -2.19593446 0.006135235 -357.921825  0.000000e+00
+mar             0.15288266 0.003736842   40.912264  0.000000e+00
+smoking         0.17100612 0.005399514   31.670649 3.941400e-220
+drinking       -0.29663169 0.006932649  -42.787641  0.000000e+00
+hispanic        0.03514394 0.004401999    7.983632  1.420888e-15
+black           0.45306208 0.004516759  100.306889  0.000000e+00
+nativeamerican  0.12555607 0.015583687    8.056892  7.825898e-16
+asian          -0.03522949 0.007836976   -4.495291  6.947486e-06
+ageabove35      0.26695548 0.004458659   59.873487  0.000000e+00
+somecollege    -0.12675842 0.003601967  -35.191442 2.703013e-271</code></pre>
+</div>
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1"></a>log_or <span class="ot">&lt;-</span> <span class="fu">summary</span>(modelo)<span class="sc">$</span>coef[<span class="dv">9</span>, <span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>]</span>
+<span id="cb10-2"><a href="#cb10-2"></a>rr <span class="ot">&lt;-</span> <span class="fu">exp</span>(log_or[<span class="dv">1</span>])</span>
+<span id="cb10-3"><a href="#cb10-3"></a>ci <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fu">exp</span>(log_or[<span class="dv">1</span>] <span class="sc">-</span> <span class="fl">1.96</span><span class="sc">*</span> log_or[<span class="dv">2</span>]), <span class="fu">exp</span>(log_or[<span class="dv">1</span>] <span class="sc">+</span> <span class="fl">1.96</span><span class="sc">*</span> log_or[<span class="dv">2</span>]))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+</section>
+<section id="valor-e-e-regressão-logística-4" class="slide level2">
+<h2>Valor-e e regressão logística</h2>
+<div class="cell" data-layout-align="center">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1"></a><span class="do">## RR e conf intervals</span></span>
+<span id="cb11-2"><a href="#cb11-2"></a>rr</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>Estimate 
+1.305982 </code></pre>
+</div>
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1"></a>ci</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>Estimate Estimate 
+1.294619 1.317445 </code></pre>
+</div>
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1"></a><span class="do">## Valores-e</span></span>
+<span id="cb15-2"><a href="#cb15-2"></a>valor_e <span class="ot">&lt;-</span> rr <span class="sc">+</span> <span class="fu">sqrt</span>(rr<span class="sc">*</span>(rr <span class="sc">-</span> <span class="dv">1</span>))</span>
+<span id="cb15-3"><a href="#cb15-3"></a>valor_e_lower <span class="ot">&lt;-</span> ci[<span class="dv">1</span>] <span class="sc">+</span> <span class="fu">sqrt</span>(ci[<span class="dv">1</span>]<span class="sc">*</span>(ci[<span class="dv">1</span>] <span class="sc">-</span> <span class="dv">1</span>))</span>
+<span id="cb15-4"><a href="#cb15-4"></a></span>
+<span id="cb15-5"><a href="#cb15-5"></a><span class="fu">c</span>(valor_e, valor_e_lower)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>Estimate Estimate 
+1.938127 1.912211 </code></pre>
+</div>
+</div>
+<div class="fragment">
+<p>Para explicar RR (sem que seja um efeito causal), o máximo RR das variáveis de confusão deve ser 1.94 (e 1.91 de focarmos no limite inferior). Apesar de que estes valores não são muito grandes, em epidemiologia são grandes sim.</p>
+</div>
+</section></section>
+<section>
+<section id="comentários-finais" class="title-slide slide level1 center">
+<h1>Comentários finais</h1>
+
+</section>
+<section id="comentários-finais-1" class="slide level2">
+<h2>Comentários finais</h2>
+<ul>
+<li class="fragment"><span class="math inline">\(U\)</span> é não observado, por isso não é facil decidirmos de o valor-e é grande ou não.</li>
+<li class="fragment">O valor-e oferece evidencia de causalidade, mas esta evidência deve ser vista a partir do conhecimento do problema de interesse.</li>
+</ul>
 </section>
 <section id="referências" class="slide level2">
 <h2>Referências</h2>
