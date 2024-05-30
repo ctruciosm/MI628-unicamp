@@ -101,6 +101,58 @@ De forma semelhante,
 
 $$\mathbb{E}[Y | Z = 0]P(Z = 0) + \underline{y}P(Z = 1) \leq \mathbb{E}[Y(0)] \leq \mathbb{E}[Y | Z = 0]P(Z = 0) + \overline{y}P(Z = 1)$$
 
+. . . 
+
+Assim, 
+
+
+\begin{align}
+\mathbb{E}[Y | Z = 1]P(Z = 1) & + \underline{y}P(Z = 0) - \mathbb{E}[Y | Z = 0]P(Z = 0) - \overline{y}P(Z = 1) \\
+& \leq \underbrace{\mathbb{E}[Y(1) - Y(0)]}_{\tau} \leq \\
+\mathbb{E}[Y | Z = 1]P(Z = 1) & + \overline{y}P(Z = 0) - \mathbb{E}[Y | Z = 0]P(Z = 0) - \underline{y}P(Z = 1)
+\end{align}
+
+
+. . . 
+
+Sem suposições adicionais, a distribuição dos dados não determina unicamente $\tau$. Neste caso, dizemos que $\tau$ é parcialmente identificável.
+
+
+## Manski
+
+
+::: {.callout-tip}
+### Definição: identificação
+
+Um parâmetro $\theta$ é dito identificável se pode ser escrito como uma função da distribuição dos dados observados sob certas suposições do modelo. Um parâmetro $\theta$ é dito identificável não parametricamente se pode ser escrito como uma função da distribuição dos dados observados sem quaisquer suposição do modelo.
+:::
+
+::: {.callout-tip}
+### Definição: identificação parcial.
+
+Um parâmetro $\theta$ é dito parcialmente identificável se a distribuição dos dados observados é compativel com múltiplos valores de $\theta$.
+:::
+
+
+. . . 
+
+
+<center>
+[Se o parâmetro $\theta$ for unicamente determinado pela distribuição dos dados observados é **identificável**. Caso contrário, é apenas **parcialmente identificável**. Assim, $\tau$ é idenficiável sob a suposição de ignorabilidade, mas apenas parcialmente identificável sem a suposição de ignorabilidade]{style="color:red;"}
+</center>
+
+
+## Manski
+
+A ideia de limitar parâmetros causais com suposições mínimas foi explorada por Manski ([1990](https://www.jstor.org/stable/2006592), [2003](https://books.google.com.br/books?hl=pt-BR&lr=&id=Zr0H7jMBqjkC&oi=fnd&pg=PA1&dq=manski+2003+partial+identification&ots=wONbugMojH&sig=dPV81Et6l_Wm-9NLi74EtkQn5tg&redir_esc=y#v=onepage&q=manski%202003%20partial%20identification&f=false)) e é uma ferramente poderosa quando acompanhada de outras suposições qualitativas.
+
+. . . 
+
+Por exemplo, podemos acreditar que o tratamento não faz mal para nenhuma unidade experimental, ou seja $$Y(1) \leq Y(0),$$
+
+Desta forma, o limite inferior de $\tau$ é zero mas o limite superior ainda é dado por $$\mathbb{E}[Y | Z = 1]P(Z = 1) + \overline{y}P(Z = 0) - \mathbb{E}[Y | Z = 0]P(Z = 0) - \underline{y}P(Z = 1)$$
+
+
 
 ## Referências
 
