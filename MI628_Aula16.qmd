@@ -1,0 +1,111 @@
+---
+title: "Inferência Causal"
+subtitle: "Análise de sensibilidade"
+author: "Prof. Carlos Trucíos </br> ctrucios@unicamp.br"
+Email: "ctrucios@unicamp.br"
+institute: "Instituto de Matemática, Estatística e Computação Científica (IMECC), </br> Universidade Estadual de Campinas (UNICAMP)."
+toc: true
+toc-depth: 1
+toc-title: "Conteúdo"
+knitr:
+    opts_chunk: 
+      fig.align: 'center'
+execute:
+    message: false
+    warning: false
+format:
+    revealjs:
+        slide-number: true
+        show-slide-number: print
+        self-contained: false
+        chalkboard: true
+        width: 1600
+        height: 900
+        theme: [default, styles.scss]
+        incremental: true
+        code-fold: true
+        logo: "imagens/imecc.png"
+        footer: "Carlos Trucíos (IMECC/UNICAMP)  |  ME920/MI628 - Inferência Causal |  [ctruciosm.github.io](https://ctruciosm.github.io/)"
+        highlight-style: "a11y"
+        title-slide-attributes:
+            data-background-image: "imagens/unicamp.png"
+            data-background-size: 20%
+            data-background-position: 99% 5%
+            data-background-opacity: "1"
+---
+
+
+
+# Introdução
+## Introdução
+
+Sejam $\{Z_i, X_i, Y_i(1), Y_i(0) \}_{i = 1}^n \sim IID \{Z, X, Y(1), Y(0) \}$, $n$ observações de um estudo observacional e seja $\tau$ o efeito causal médio, $$\tau = \mathbb{E} \big [ Y(1) - Y(0) \big ].$$
+
+. . . 
+
+Equivalentemente, podemos re-escrever $\tau$ como 
+\begin{align}
+\tau  &= \underbrace{\mathbb{E} [Y | Z = 1]P(Z = 1) + \mathbb{E}[Y(1) | Z = 0] P(Z = 0)}_{\mathbb{E}[Y(1)]} \\
+      &- \underbrace{\Big [ \mathbb{E}[Y(0) | Z = 1]P(Z = 1) + \mathbb{E} [Y | Z = 0] P(Z = 0) \Big ]}_{\mathbb{E}[Y(0)]},
+\end{align}
+
+em que a dificuldade é estimar os contrafactuais $\mathbb{E}[Y(1) | Z = 0]$ e $\mathbb{E}[Y(0) | Z = 1].$
+ 
+
+## Introdução
+
+Existem duas estratégias para estimar $\mathbb{E}[Y(1) | Z = 0]$ e $\mathbb{E}[Y(0) | Z = 1].$
+
+. . . 
+
+1. **Primeira Estratégia:** Assumir ignorabilidade
+2. **Segunda Estratégia:** não assume nada além de que os resultados são limitados entre $\underline{y}$ e $\overline{y}$ (foco da aula de hoje).
+
+. . . 
+
+Se $Y$ for binário, naturalmente $\underline{y} = 0$ e $\overline{y} = 1$.
+
+. . . 
+
+
+Sob esta suposição, $\mathbb{E}[Y(1) | Z = 0]$ e $\mathbb{E}[Y(0) | Z = 1]$ são também limitados entre $\underline{y} = 0$ e $\bar{y} = 1$, sendo estes limites os casos mais extremos que $\underline{y} = 0$ e $\overline{y} = 1$ podem assumir.
+
+
+# Manski
+## Manski
+
+Assuma que os resultados são limitados entre $\underline{y} = 0$ e $\overline{y} = 1$.
+
+. . . 
+
+Então,
+
+
+$$\mathbb{E}[Y(1)] = \mathbb{E}[Y | Z = 1]P(Z = 1) + \underbrace{\mathbb{E}[Y(1) | Z = 0]}_{\geq \underline{y}}P(Z = 0), \quad e$$
+
+. . . 
+
+
+$$\mathbb{E}[Y(1)] = \mathbb{E}[Y | Z = 1]P(Z = 1) + \underbrace{\mathbb{E}[Y(1) | Z = 0]}_{\leq \overline{y}}P(Z = 0).$$
+
+. . . 
+
+
+Assim, 
+
+$$\mathbb{E}[Y | Z = 1]P(Z = 1) + \underline{y}P(Z = 0) \leq \mathbb{E}[Y(1)] \leq \mathbb{E}[Y | Z = 1]P(Z = 1) + \overline{y}P(Z = 0)$$
+
+## Manski
+
+De forma semelhante, 
+
+$$\mathbb{E}[Y | Z = 0]P(Z = 0) + \underline{y}P(Z = 1) \leq \mathbb{E}[Y(0)] \leq \mathbb{E}[Y | Z = 0]P(Z = 0) + \overline{y}P(Z = 1)$$
+
+
+## Referências
+
+::: {.nonincremental}
+
+- Peng Ding (2023). A First Course in Causal Inference. Capítulo 18.
+
+:::
