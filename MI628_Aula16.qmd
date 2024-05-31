@@ -68,7 +68,7 @@ Se $Y$ for binário, naturalmente $\underline{y} = 0$ e $\overline{y} = 1$.
 . . . 
 
 
-Sob esta suposição, $\mathbb{E}[Y(1) | Z = 0]$ e $\mathbb{E}[Y(0) | Z = 1]$ são também limitados entre $\underline{y} = 0$ e $\bar{y} = 1$, sendo estes limites os casos mais extremos que $\underline{y} = 0$ e $\overline{y} = 1$ podem assumir.
+Sob esta suposição, $\mathbb{E}[Y(1) | Z = 0]$ e $\mathbb{E}[Y(0) | Z = 1]$ são também limitados entre $\underline{y} = 0$ e $\bar{y} = 1$, sendo estes limites os casos mais extremos que $\mathbb{E}[Y(1) | Z = 0]$ e $\mathbb{E}[Y(0) | Z = 1]$ podem assumir.
 
 
 # Manski
@@ -152,7 +152,7 @@ A ideia de limitar parâmetros causais com suposições mínimas foi explorada p
 ::: {.callout-note}
 ### Exemplo
 
-Podemos acreditar que o tratamento não faz mal para nenhuma unidade experimental, ou seja $$Y(1) \leq Y(0),$$
+Podemos acreditar que o tratamento não faz mal para nenhuma unidade experimental, ou seja $$Y(1) \geq Y(0),$$
 
 Desta forma, o limite inferior de $\tau$ é zero mas o limite superior ainda é dado por $$\mathbb{E}[Y | Z = 1]P(Z = 1) + \overline{y}P(Z = 0) - \mathbb{E}[Y | Z = 0]P(Z = 0) - \underline{y}P(Z = 1)$$
 
@@ -175,12 +175,158 @@ Com $\varepsilon_1(X)$ e $\varepsilon_0(X)$ conhecidos, temos que
 
 <center>
 \begin{align}
-
-
+\mathbb{E} [Y(1) | Z = 0] & = \mathbb{E} [\mu_1(X) / \varepsilon_1(X) | Z = 0] \\
+\mathbb{E} [Y(0) | Z = 1] & = \mathbb{E} [\mu_0(X) / \varepsilon_0(X) | Z = 1].
 \end{align}
 </center>
 
+Ademais,
+
+\begin{align}
+\tau & = \mathbb{E}[ZY + (1 - Z) \mu_1(X)/\varepsilon_1(X)] - \mathbb{E}[Z \mu_0(X)\varepsilon_0(X) + (1 - Z) Y] \\
+& = \mathbb{E}[Z \mu_1(X) + (1 - Z) \mu_1(X)/\varepsilon_1(X)] - \mathbb{E}[Z \mu_0(X) \varepsilon_0((X) + (1 - Z) \mu_0(X)].
+\end{align}
+
+
 :::
+
+
+## Análise de sensibilidade
+
+O Teorema anterior, motiva os seguintes estimadores para $\tau$:
+
+
+$$\hat{\tau} = \dfrac{\displaystyle \sum_{i = 1}^n Z_i Y_i}{n} + \dfrac{\displaystyle \sum_{i = 1}^n (1-Z_i) \hat{\mu}_1(X_1)/\varepsilon_1(X_1)}{n} - \Big [\dfrac{\displaystyle \sum_{i = 1}^n Z_i \hat{\mu}_0(X_i) \varepsilon_0(X_i)}{n} + \dfrac{\displaystyle \sum_{i = 1}^n(1 - Z_i) Y_i}{n}  \Big]$$
+
+<center>
+e
+</center>
+
+$$\hat{\tau} = \dfrac{\displaystyle \sum_{i = 1}^n Z_i \hat{\mu}_1(X_i)}{n} + \dfrac{\displaystyle \sum_{i = 1}^n \dfrac{(1-Z_i) \hat{\mu}_1(X_1)}{\varepsilon_1(X_1)}}{n} - \Big [\dfrac{\displaystyle \sum_{i = 1}^n Z_i \hat{\mu}_0(X_i) \varepsilon_0(X_i)}{n} + \dfrac{\displaystyle \sum_{i = 1}^n(1 - Z_i) \hat{\mu}_0(X_i)}{n}  \Big]$$
+
+ 
+<center>
+Qual a diferença entre ambos os estimadores?
+</center>
+
+
+## Análise de sensibilidade
+
+::: {.callout-tip}
+### Teorema
+Com $\varepsilon_1(X)$ e $\varepsilon_0(X)$ conhecidos, temos: 
+
+$$\mathbb{E}[Y(1)] = \mathbb{E} \Big [\omega_1(X) \dfrac{Z}{e(X)} Y \Big ] \quad e \quad 
+\mathbb{E}[Y(0)] = \mathbb{E} \Big [\omega_0(X) \dfrac{1 - Z}{1 - e(X)} Y \Big ],$$ em que $\omega_1(X) = e(X) + (1 - e(X))/\varepsilon_1(X)$ e $\omega_0(X) = e(X)\varepsilon_0(X) + 1 - e(X)$.
+
+:::
+
+. . . 
+
+O Teorema modifica o clássico IPW, incluindo os termos $\omega_1(X)$ e $\omega_0(X)$ que dependem tanto do _propensity score_ quando dos parâmetros de sensibilidade $\varepsilon_0(X)$ e $\varepsilon_1(X)$.
+
+
+## Análise de sensibilidade
+
+
+O Teorema motiva os seguintes estimadores
+
+
+$$\hat{\tau}^{ht} = \dfrac{1}{n} \displaystyle \sum_{i = 1}^n \dfrac{[\hat{e}(X_i) \varepsilon_1(X_1) + 1 - \hat{e}(X_i)] Z_i Y_i}{\varepsilon_1(X_i) \hat{e}(X_i)} - \dfrac{1}{n} \displaystyle \sum_{i = 1}^n \dfrac{[\hat{e}(X_i) \varepsilon_0(X_1) + 1 - \hat{e}(X_i)] (1 - Z_i) Y_i}{1 - \hat{e}(X_i)},$$
+
+. . . 
+
+
+$$\hat{\tau}^{haj} = \dfrac{\displaystyle \sum_{i = 1}^n \dfrac{[\hat{e}(X_i) \varepsilon_1(X_1) + 1 - \hat{e}(X_i)] Z_i Y_i}{\varepsilon_1(X_i) \hat{e}(X_i)}}{\displaystyle \sum_{i = 1}^n \dfrac{Z_i}{\hat{e}(X_i)}} - \dfrac{ \displaystyle \sum_{i = 1}^n \dfrac{[\hat{e}(X_i) \varepsilon_0(X_1) + 1 - \hat{e}(X_i)] (1 - Z_i) Y_i}{1 - \hat{e}(X_i)}}{\displaystyle \sum_{i = 1}^n \dfrac{1 - Z_i}{1 - \hat{e}(X_i)}} $$
+
+## Análise de sensibilidade
+
+
+Ademais,
+
+$$\hat{\tau}^{dr} = \hat{\tau}^{ht} - \dfrac{1}{n} \displaystyle \sum_{i = 1}^n [Z_i - \hat{e}(X_i)] \Big (\dfrac{\hat{\mu}_1(X_i)}{\hat{e}(X_i)\varepsilon_1(X_1)} + \dfrac{\hat{\mu}_0(X_1) \varepsilon_0(X_i)}{1 - \hat{e}(X_i)}\Big ).$$
+
+
+Como podemos calcular as variâncias?
+
+. . . 
+
+
+**Bootstrap!**
+
+# Exemplo
+## Implementação
+
+
+```{r}
+#| echo: true
+
+os_est <- function(z, y, x, out.family = gaussian, truncps = c(0, 1), e1 = 1, e0 = 0) {
+  propensity_score <- glm(z ~ x, family = binomial)$fitted.values
+  propensity_score <- pmax(truncps[1], pmin(truncps[2], propensity_score))
+  
+  outcome_regression_1 <- glm(y ~ x, weights = z, family = out.family)$fitted.values
+  outcome_regression_0 <- glm(y ~ x, weights = 1 - z, family = out.family)$fitted.values
+  
+  # Estimador 1
+  tau_hat_1 <- mean(z * y) + mean((1 - z) * outcome_regression_1 / e1) - 
+    mean(z * outcome_regression_0 * e0) - mean((1 - z) * y)
+  
+  # Estimador 2 e 3
+  w1 <- propensity_score + (1 - propensity_score) / e1
+  w0 <- propensity_score * e0 + 1 - propensity_score
+  tau_hat_2 <- mean(w1 * z * y / propensity_score) - mean(w0 * (1 - z) * y / (1 - propensity_score))
+  tau_hat_3 <- mean(w1 * z * y / propensity_score)/mean(z / propensity_score) - mean(w0 * (1 - z) * y / (1 - propensity_score)) / mean((1 - z) / (1 - propensity_score))
+  
+  # Estimador 4
+  tau_hat_4 <- tau_hat_2 + mean( (z - propensity_score) * (outcome_regression_1 / (propensity_score * e1) + outcome_regression_0 * e0 / (1 - propensity_score)))
+  
+  return(c(tau_hat_1, tau_hat_2, tau_hat_3, tau_hat_4))
+}
+```
+
+
+## Exemplo
+
+::: {.callout-note}
+### Exemplo
+
+[_Dataset_ disponível aqui](https://dataverse.harvard.edu/file.xhtml?fileId=7440222&version=3.0). [Chang et al. (2016)](https://academic.oup.com/jrsssb/article/78/3/673/7040940?login=false) estudam se a participação no programa da merenda nas escolas (`School_meal`) leva a um aumento no índice de massa muscular (`BMI`) das crianças. 12 outras covariáveis também estão disponíveis no _dataset_.
+
+Consideraremos diversos valores para os parâmetros de sensibilidade: 
+
+$$\varepsilon_1(X) = \varepsilon_0(X)  \in \{1/2, 1/7, 1/1.5, 1/1.3, 1, 1.3, 1.5, 1.7, 2 \}$$
+:::
+
+
+
+## Exemplo
+
+```{r}
+#| echo: true
+dados <- read.csv("datasets/nhanes_bmi.csv")[, -1]
+z <- dados$School_meal
+y <- dados$BMI
+x <- scale(dados[, -c(1, 2)])
+E1 <- c(1/2, 1/7, 1/1.5, 1/1.3, 1, 1.3, 1.5, 1.7, 2)
+E0 <- c(1/2, 1/7, 1/1.5, 1/1.3, 1, 1.3, 1.5, 1.7, 2)
+E <- outer(E1, E0)
+k_1 <- length(E1)
+k_0 <- length(E0)
+
+for (i in 1:k_1) {
+  for (j in 1:k_0) {
+    E[i, j] <- os_est(z, y, x, e1 = E1[i], e0 = E0[j])[4]
+  }
+}
+colnames(E) <- c("1/2", "1/1.7", "1/1.5", "1/1.3", "1", "1.3", "1.5", "1.7", "2")
+row.names(E) <-  c("1/2", "1/1.7", "1/1.5", "1/1.3", "1", "1.3", "1.5", "1.7", "2")
+round(E, 2)
+```
+
+. . . 
+
+Note que o sinal do efeito causal não é sensível aos parâmetros de sensibilidade maiores do que 1. Ou seja, quando os participantes do programa da merenda escolar tem maiores IMC (i.e, $\varepsilon_1(X) > 1$ e $\varepsilon_0(X)>1$), o efeito causal médio é negativo. Contudo, esta conclusão é bastante sensível se os participantes do programa tem IMC baixos.
 
 
 

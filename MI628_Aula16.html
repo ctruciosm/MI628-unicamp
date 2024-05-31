@@ -28,6 +28,70 @@
       margin: 0 0.8em 0.2em -1.6em;
       vertical-align: middle;
     }
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #767676;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #767676;  padding-left: 4px; }
+    div.sourceCode
+      { color: #545454; background-color: #fefefe; }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span { color: #545454; } /* Normal */
+    code span.al { color: #7928a1; } /* Alert */
+    code span.an { color: #696969; } /* Annotation */
+    code span.at { color: #a55a00; } /* Attribute */
+    code span.bn { color: #7928a1; } /* BaseN */
+    code span.bu { } /* BuiltIn */
+    code span.cf { color: #d91e18; } /* ControlFlow */
+    code span.ch { color: #008000; } /* Char */
+    code span.cn { color: #d91e18; } /* Constant */
+    code span.co { color: #696969; } /* Comment */
+    code span.cv { color: #696969; font-style: italic; } /* CommentVar */
+    code span.do { color: #696969; font-style: italic; } /* Documentation */
+    code span.dt { color: #7928a1; } /* DataType */
+    code span.dv { color: #7928a1; } /* DecVal */
+    code span.er { color: #7928a1; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #a55a00; } /* Float */
+    code span.fu { color: #06287e; } /* Function */
+    code span.im { } /* Import */
+    code span.in { color: #696969; } /* Information */
+    code span.kw { color: #d91e18; } /* Keyword */
+    code span.op { color: #00769e; } /* Operator */
+    code span.ot { color: #d91e18; } /* Other */
+    code span.pp { color: #7928a1; } /* Preprocessor */
+    code span.sc { color: #00769e; } /* SpecialChar */
+    code span.ss { color: #008000; } /* SpecialString */
+    code span.st { color: #008000; } /* String */
+    code span.va { color: #a55a00; } /* Variable */
+    code span.vs { color: #008000; } /* VerbatimString */
+    code span.wa { color: #696969; font-style: italic; } /* Warning */
   </style>
   <link rel="stylesheet" href="MI628_Aula16_files/libs/revealjs/dist/theme/quarto.css" id="theme">
   <link href="MI628_Aula16_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
@@ -347,6 +411,7 @@ Prof.&nbsp;Carlos Trucíos <br> ctrucios@unicamp.br
 <li class="fragment"><a href="#/introdução" id="/toc-introdução">Introdução</a></li>
 <li class="fragment"><a href="#/manski" id="/toc-manski">Manski</a></li>
 <li class="fragment"><a href="#/análise-de-sensibilidade" id="/toc-análise-de-sensibilidade">Análise de sensibilidade</a></li>
+<li class="fragment"><a href="#/exemplo-1" id="/toc-exemplo-1">Exemplo</a></li>
 </ul>
 </nav>
 </section>
@@ -379,7 +444,7 @@ Prof.&nbsp;Carlos Trucíos <br> ctrucios@unicamp.br
 <p>Se <span class="math inline">\(Y\)</span> for binário, naturalmente <span class="math inline">\(\underline{y} = 0\)</span> e <span class="math inline">\(\overline{y} = 1\)</span>.</p>
 </div>
 <div class="fragment">
-<p>Sob esta suposição, <span class="math inline">\(\mathbb{E}[Y(1) | Z = 0]\)</span> e <span class="math inline">\(\mathbb{E}[Y(0) | Z = 1]\)</span> são também limitados entre <span class="math inline">\(\underline{y} = 0\)</span> e <span class="math inline">\(\bar{y} = 1\)</span>, sendo estes limites os casos mais extremos que <span class="math inline">\(\underline{y} = 0\)</span> e <span class="math inline">\(\overline{y} = 1\)</span> podem assumir.</p>
+<p>Sob esta suposição, <span class="math inline">\(\mathbb{E}[Y(1) | Z = 0]\)</span> e <span class="math inline">\(\mathbb{E}[Y(0) | Z = 1]\)</span> são também limitados entre <span class="math inline">\(\underline{y} = 0\)</span> e <span class="math inline">\(\bar{y} = 1\)</span>, sendo estes limites os casos mais extremos que <span class="math inline">\(\mathbb{E}[Y(1) | Z = 0]\)</span> e <span class="math inline">\(\mathbb{E}[Y(0) | Z = 1]\)</span> podem assumir.</p>
 </div>
 </section></section>
 <section>
@@ -465,7 +530,7 @@ Prof.&nbsp;Carlos Trucíos <br> ctrucios@unicamp.br
 <p><strong>Exemplo</strong></p>
 </div>
 <div class="callout-content">
-<p>Podemos acreditar que o tratamento não faz mal para nenhuma unidade experimental, ou seja <span class="math display">\[Y(1) \leq Y(0),\]</span></p>
+<p>Podemos acreditar que o tratamento não faz mal para nenhuma unidade experimental, ou seja <span class="math display">\[Y(1) \geq Y(0),\]</span></p>
 <p>Desta forma, o limite inferior de <span class="math inline">\(\tau\)</span> é zero mas o limite superior ainda é dado por <span class="math display">\[\mathbb{E}[Y | Z = 1]P(Z = 1) + \overline{y}P(Z = 0) - \mathbb{E}[Y | Z = 0]P(Z = 0) - \underline{y}P(Z = 1)\]</span></p>
 </div>
 </div>
@@ -494,13 +559,162 @@ Prof.&nbsp;Carlos Trucíos <br> ctrucios@unicamp.br
 <p>Com <span class="math inline">\(\varepsilon_1(X)\)</span> e <span class="math inline">\(\varepsilon_0(X)\)</span> conhecidos, temos que</p>
 <center>
 <span class="math display">\[\begin{align}
-
-
+\mathbb{E} [Y(1) | Z = 0] &amp; = \mathbb{E} [\mu_1(X) / \varepsilon_1(X) | Z = 0] \\
+\mathbb{E} [Y(0) | Z = 1] &amp; = \mathbb{E} [\mu_0(X) / \varepsilon_0(X) | Z = 1].
 \end{align}\]</span>
 </center>
+<p>Ademais,</p>
+<p><span class="math display">\[\begin{align}
+\tau &amp; = \mathbb{E}[ZY + (1 - Z) \mu_1(X)/\varepsilon_1(X)] - \mathbb{E}[Z \mu_0(X)\varepsilon_0(X) + (1 - Z) Y] \\
+&amp; = \mathbb{E}[Z \mu_1(X) + (1 - Z) \mu_1(X)/\varepsilon_1(X)] - \mathbb{E}[Z \mu_0(X) \varepsilon_0((X) + (1 - Z) \mu_0(X)].
+\end{align}\]</span></p>
 </div>
 </div>
 </div>
+</div>
+</section>
+<section id="análise-de-sensibilidade-2" class="slide level2">
+<h2>Análise de sensibilidade</h2>
+<p>O Teorema anterior, motiva os seguintes estimadores para <span class="math inline">\(\tau\)</span>:</p>
+<p><span class="math display">\[\hat{\tau} = \dfrac{\displaystyle \sum_{i = 1}^n Z_i Y_i}{n} + \dfrac{\displaystyle \sum_{i = 1}^n (1-Z_i) \hat{\mu}_1(X_1)/\varepsilon_1(X_1)}{n} - \Big [\dfrac{\displaystyle \sum_{i = 1}^n Z_i \hat{\mu}_0(X_i) \varepsilon_0(X_i)}{n} + \dfrac{\displaystyle \sum_{i = 1}^n(1 - Z_i) Y_i}{n}  \Big]\]</span></p>
+<center>
+e
+</center>
+<p><span class="math display">\[\hat{\tau} = \dfrac{\displaystyle \sum_{i = 1}^n Z_i \hat{\mu}_1(X_i)}{n} + \dfrac{\displaystyle \sum_{i = 1}^n \dfrac{(1-Z_i) \hat{\mu}_1(X_1)}{\varepsilon_1(X_1)}}{n} - \Big [\dfrac{\displaystyle \sum_{i = 1}^n Z_i \hat{\mu}_0(X_i) \varepsilon_0(X_i)}{n} + \dfrac{\displaystyle \sum_{i = 1}^n(1 - Z_i) \hat{\mu}_0(X_i)}{n}  \Big]\]</span></p>
+<center>
+Qual a diferença entre ambos os estimadores?
+</center>
+</section>
+<section id="análise-de-sensibilidade-3" class="slide level2">
+<h2>Análise de sensibilidade</h2>
+<div class="callout callout-tip callout-captioned callout-style-default">
+<div class="callout-body">
+<div class="callout-caption">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Teorema</strong></p>
+</div>
+<div class="callout-content">
+<p>Com <span class="math inline">\(\varepsilon_1(X)\)</span> e <span class="math inline">\(\varepsilon_0(X)\)</span> conhecidos, temos:</p>
+<p><span class="math display">\[\mathbb{E}[Y(1)] = \mathbb{E} \Big [\omega_1(X) \dfrac{Z}{e(X)} Y \Big ] \quad e \quad
+\mathbb{E}[Y(0)] = \mathbb{E} \Big [\omega_0(X) \dfrac{1 - Z}{1 - e(X)} Y \Big ],\]</span> em que <span class="math inline">\(\omega_1(X) = e(X) + (1 - e(X))/\varepsilon_1(X)\)</span> e <span class="math inline">\(\omega_0(X) = e(X)\varepsilon_0(X) + 1 - e(X)\)</span>.</p>
+</div>
+</div>
+</div>
+<div class="fragment">
+<p>O Teorema modifica o clássico IPW, incluindo os termos <span class="math inline">\(\omega_1(X)\)</span> e <span class="math inline">\(\omega_0(X)\)</span> que dependem tanto do <em>propensity score</em> quando dos parâmetros de sensibilidade <span class="math inline">\(\varepsilon_0(X)\)</span> e <span class="math inline">\(\varepsilon_1(X)\)</span>.</p>
+</div>
+</section>
+<section id="análise-de-sensibilidade-4" class="slide level2">
+<h2>Análise de sensibilidade</h2>
+<p>O Teorema motiva os seguintes estimadores</p>
+<p><span class="math display">\[\hat{\tau}^{ht} = \dfrac{1}{n} \displaystyle \sum_{i = 1}^n \dfrac{[\hat{e}(X_i) \varepsilon_1(X_1) + 1 - \hat{e}(X_i)] Z_i Y_i}{\varepsilon_1(X_i) \hat{e}(X_i)} - \dfrac{1}{n} \displaystyle \sum_{i = 1}^n \dfrac{[\hat{e}(X_i) \varepsilon_0(X_1) + 1 - \hat{e}(X_i)] (1 - Z_i) Y_i}{1 - \hat{e}(X_i)},\]</span></p>
+<div class="fragment">
+<p><span class="math display">\[\hat{\tau}^{haj} = \dfrac{\displaystyle \sum_{i = 1}^n \dfrac{[\hat{e}(X_i) \varepsilon_1(X_1) + 1 - \hat{e}(X_i)] Z_i Y_i}{\varepsilon_1(X_i) \hat{e}(X_i)}}{\displaystyle \sum_{i = 1}^n \dfrac{Z_i}{\hat{e}(X_i)}} - \dfrac{ \displaystyle \sum_{i = 1}^n \dfrac{[\hat{e}(X_i) \varepsilon_0(X_1) + 1 - \hat{e}(X_i)] (1 - Z_i) Y_i}{1 - \hat{e}(X_i)}}{\displaystyle \sum_{i = 1}^n \dfrac{1 - Z_i}{1 - \hat{e}(X_i)}} \]</span></p>
+</div>
+</section>
+<section id="análise-de-sensibilidade-5" class="slide level2">
+<h2>Análise de sensibilidade</h2>
+<p>Ademais,</p>
+<p><span class="math display">\[\hat{\tau}^{dr} = \hat{\tau}^{ht} - \dfrac{1}{n} \displaystyle \sum_{i = 1}^n [Z_i - \hat{e}(X_i)] \Big (\dfrac{\hat{\mu}_1(X_i)}{\hat{e}(X_i)\varepsilon_1(X_1)} + \dfrac{\hat{\mu}_0(X_1) \varepsilon_0(X_i)}{1 - \hat{e}(X_i)}\Big ).\]</span></p>
+<p>Como podemos calcular as variâncias?</p>
+<div class="fragment">
+<p><strong>Bootstrap!</strong></p>
+</div>
+</section></section>
+<section>
+<section id="exemplo-1" class="title-slide slide level1 center">
+<h1>Exemplo</h1>
+
+</section>
+<section id="implementação" class="slide level2">
+<h2>Implementação</h2>
+<div class="cell" data-layout-align="center">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a>os_est <span class="ot">&lt;-</span> <span class="cf">function</span>(z, y, x, <span class="at">out.family =</span> gaussian, <span class="at">truncps =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>), <span class="at">e1 =</span> <span class="dv">1</span>, <span class="at">e0 =</span> <span class="dv">0</span>) {</span>
+<span id="cb1-2"><a href="#cb1-2"></a>  propensity_score <span class="ot">&lt;-</span> <span class="fu">glm</span>(z <span class="sc">~</span> x, <span class="at">family =</span> binomial)<span class="sc">$</span>fitted.values</span>
+<span id="cb1-3"><a href="#cb1-3"></a>  propensity_score <span class="ot">&lt;-</span> <span class="fu">pmax</span>(truncps[<span class="dv">1</span>], <span class="fu">pmin</span>(truncps[<span class="dv">2</span>], propensity_score))</span>
+<span id="cb1-4"><a href="#cb1-4"></a>  </span>
+<span id="cb1-5"><a href="#cb1-5"></a>  outcome_regression_1 <span class="ot">&lt;-</span> <span class="fu">glm</span>(y <span class="sc">~</span> x, <span class="at">weights =</span> z, <span class="at">family =</span> out.family)<span class="sc">$</span>fitted.values</span>
+<span id="cb1-6"><a href="#cb1-6"></a>  outcome_regression_0 <span class="ot">&lt;-</span> <span class="fu">glm</span>(y <span class="sc">~</span> x, <span class="at">weights =</span> <span class="dv">1</span> <span class="sc">-</span> z, <span class="at">family =</span> out.family)<span class="sc">$</span>fitted.values</span>
+<span id="cb1-7"><a href="#cb1-7"></a>  </span>
+<span id="cb1-8"><a href="#cb1-8"></a>  <span class="co"># Estimador 1</span></span>
+<span id="cb1-9"><a href="#cb1-9"></a>  tau_hat_1 <span class="ot">&lt;-</span> <span class="fu">mean</span>(z <span class="sc">*</span> y) <span class="sc">+</span> <span class="fu">mean</span>((<span class="dv">1</span> <span class="sc">-</span> z) <span class="sc">*</span> outcome_regression_1 <span class="sc">/</span> e1) <span class="sc">-</span> </span>
+<span id="cb1-10"><a href="#cb1-10"></a>    <span class="fu">mean</span>(z <span class="sc">*</span> outcome_regression_0 <span class="sc">*</span> e0) <span class="sc">-</span> <span class="fu">mean</span>((<span class="dv">1</span> <span class="sc">-</span> z) <span class="sc">*</span> y)</span>
+<span id="cb1-11"><a href="#cb1-11"></a>  </span>
+<span id="cb1-12"><a href="#cb1-12"></a>  <span class="co"># Estimador 2 e 3</span></span>
+<span id="cb1-13"><a href="#cb1-13"></a>  w1 <span class="ot">&lt;-</span> propensity_score <span class="sc">+</span> (<span class="dv">1</span> <span class="sc">-</span> propensity_score) <span class="sc">/</span> e1</span>
+<span id="cb1-14"><a href="#cb1-14"></a>  w0 <span class="ot">&lt;-</span> propensity_score <span class="sc">*</span> e0 <span class="sc">+</span> <span class="dv">1</span> <span class="sc">-</span> propensity_score</span>
+<span id="cb1-15"><a href="#cb1-15"></a>  tau_hat_2 <span class="ot">&lt;-</span> <span class="fu">mean</span>(w1 <span class="sc">*</span> z <span class="sc">*</span> y <span class="sc">/</span> propensity_score) <span class="sc">-</span> <span class="fu">mean</span>(w0 <span class="sc">*</span> (<span class="dv">1</span> <span class="sc">-</span> z) <span class="sc">*</span> y <span class="sc">/</span> (<span class="dv">1</span> <span class="sc">-</span> propensity_score))</span>
+<span id="cb1-16"><a href="#cb1-16"></a>  tau_hat_3 <span class="ot">&lt;-</span> <span class="fu">mean</span>(w1 <span class="sc">*</span> z <span class="sc">*</span> y <span class="sc">/</span> propensity_score)<span class="sc">/</span><span class="fu">mean</span>(z <span class="sc">/</span> propensity_score) <span class="sc">-</span> <span class="fu">mean</span>(w0 <span class="sc">*</span> (<span class="dv">1</span> <span class="sc">-</span> z) <span class="sc">*</span> y <span class="sc">/</span> (<span class="dv">1</span> <span class="sc">-</span> propensity_score)) <span class="sc">/</span> <span class="fu">mean</span>((<span class="dv">1</span> <span class="sc">-</span> z) <span class="sc">/</span> (<span class="dv">1</span> <span class="sc">-</span> propensity_score))</span>
+<span id="cb1-17"><a href="#cb1-17"></a>  </span>
+<span id="cb1-18"><a href="#cb1-18"></a>  <span class="co"># Estimador 4</span></span>
+<span id="cb1-19"><a href="#cb1-19"></a>  tau_hat_4 <span class="ot">&lt;-</span> tau_hat_2 <span class="sc">+</span> <span class="fu">mean</span>( (z <span class="sc">-</span> propensity_score) <span class="sc">*</span> (outcome_regression_1 <span class="sc">/</span> (propensity_score <span class="sc">*</span> e1) <span class="sc">+</span> outcome_regression_0 <span class="sc">*</span> e0 <span class="sc">/</span> (<span class="dv">1</span> <span class="sc">-</span> propensity_score)))</span>
+<span id="cb1-20"><a href="#cb1-20"></a>  </span>
+<span id="cb1-21"><a href="#cb1-21"></a>  <span class="fu">return</span>(<span class="fu">c</span>(tau_hat_1, tau_hat_2, tau_hat_3, tau_hat_4))</span>
+<span id="cb1-22"><a href="#cb1-22"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+</section>
+<section id="exemplo-2" class="slide level2">
+<h2>Exemplo</h2>
+<div class="callout callout-note callout-captioned callout-style-default">
+<div class="callout-body">
+<div class="callout-caption">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Exemplo</strong></p>
+</div>
+<div class="callout-content">
+<p><a href="https://dataverse.harvard.edu/file.xhtml?fileId=7440222&amp;version=3.0"><em>Dataset</em> disponível aqui</a>. <a href="https://academic.oup.com/jrsssb/article/78/3/673/7040940?login=false">Chang et al.&nbsp;(2016)</a> estudam se a participação no programa da merenda nas escolas (<code>School_meal</code>) leva a um aumento no índice de massa muscular (<code>BMI</code>) das crianças. 12 outras covariáveis também estão disponíveis no <em>dataset</em>.</p>
+<p>Consideraremos diversos valores para os parâmetros de sensibilidade:</p>
+<p><span class="math display">\[\varepsilon_1(X) = \varepsilon_0(X)  \in \{1/2, 1/7, 1/1.5, 1/1.3, 1, 1.3, 1.5, 1.7, 2 \}\]</span></p>
+</div>
+</div>
+</div>
+</section>
+<section id="exemplo-4" class="slide level2">
+<h2>Exemplo</h2>
+<div class="cell" data-layout-align="center">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a>dados <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"datasets/nhanes_bmi.csv"</span>)[, <span class="sc">-</span><span class="dv">1</span>]</span>
+<span id="cb2-2"><a href="#cb2-2"></a>z <span class="ot">&lt;-</span> dados<span class="sc">$</span>School_meal</span>
+<span id="cb2-3"><a href="#cb2-3"></a>y <span class="ot">&lt;-</span> dados<span class="sc">$</span>BMI</span>
+<span id="cb2-4"><a href="#cb2-4"></a>x <span class="ot">&lt;-</span> <span class="fu">scale</span>(dados[, <span class="sc">-</span><span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>)])</span>
+<span id="cb2-5"><a href="#cb2-5"></a>E1 <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">1</span><span class="sc">/</span><span class="dv">2</span>, <span class="dv">1</span><span class="sc">/</span><span class="dv">7</span>, <span class="dv">1</span><span class="sc">/</span><span class="fl">1.5</span>, <span class="dv">1</span><span class="sc">/</span><span class="fl">1.3</span>, <span class="dv">1</span>, <span class="fl">1.3</span>, <span class="fl">1.5</span>, <span class="fl">1.7</span>, <span class="dv">2</span>)</span>
+<span id="cb2-6"><a href="#cb2-6"></a>E0 <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">1</span><span class="sc">/</span><span class="dv">2</span>, <span class="dv">1</span><span class="sc">/</span><span class="dv">7</span>, <span class="dv">1</span><span class="sc">/</span><span class="fl">1.5</span>, <span class="dv">1</span><span class="sc">/</span><span class="fl">1.3</span>, <span class="dv">1</span>, <span class="fl">1.3</span>, <span class="fl">1.5</span>, <span class="fl">1.7</span>, <span class="dv">2</span>)</span>
+<span id="cb2-7"><a href="#cb2-7"></a>E <span class="ot">&lt;-</span> <span class="fu">outer</span>(E1, E0)</span>
+<span id="cb2-8"><a href="#cb2-8"></a>k_1 <span class="ot">&lt;-</span> <span class="fu">length</span>(E1)</span>
+<span id="cb2-9"><a href="#cb2-9"></a>k_0 <span class="ot">&lt;-</span> <span class="fu">length</span>(E0)</span>
+<span id="cb2-10"><a href="#cb2-10"></a></span>
+<span id="cb2-11"><a href="#cb2-11"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>k_1) {</span>
+<span id="cb2-12"><a href="#cb2-12"></a>  <span class="cf">for</span> (j <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>k_0) {</span>
+<span id="cb2-13"><a href="#cb2-13"></a>    E[i, j] <span class="ot">&lt;-</span> <span class="fu">os_est</span>(z, y, x, <span class="at">e1 =</span> E1[i], <span class="at">e0 =</span> E0[j])[<span class="dv">4</span>]</span>
+<span id="cb2-14"><a href="#cb2-14"></a>  }</span>
+<span id="cb2-15"><a href="#cb2-15"></a>}</span>
+<span id="cb2-16"><a href="#cb2-16"></a><span class="fu">colnames</span>(E) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"1/2"</span>, <span class="st">"1/1.7"</span>, <span class="st">"1/1.5"</span>, <span class="st">"1/1.3"</span>, <span class="st">"1"</span>, <span class="st">"1.3"</span>, <span class="st">"1.5"</span>, <span class="st">"1.7"</span>, <span class="st">"2"</span>)</span>
+<span id="cb2-17"><a href="#cb2-17"></a><span class="fu">row.names</span>(E) <span class="ot">&lt;-</span>  <span class="fu">c</span>(<span class="st">"1/2"</span>, <span class="st">"1/1.7"</span>, <span class="st">"1/1.5"</span>, <span class="st">"1/1.3"</span>, <span class="st">"1"</span>, <span class="st">"1.3"</span>, <span class="st">"1.5"</span>, <span class="st">"1.7"</span>, <span class="st">"2"</span>)</span>
+<span id="cb2-18"><a href="#cb2-18"></a><span class="fu">round</span>(E, <span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>        1/2 1/1.7 1/1.5 1/1.3     1    1.3    1.5    1.7      2
+1/2   11.62 16.37  9.40  8.03  4.96   0.97  -1.69  -4.35  -8.34
+1/1.7 51.49 56.24 49.27 47.91 44.84  40.85  38.18  35.52  31.53
+1/1.5  7.63 12.38  5.41  4.05  0.97  -3.02  -5.68  -8.34 -12.33
+1/1.3  6.03 10.79  3.81  2.45 -0.62  -4.61  -7.27  -9.94 -13.93
+1      3.64  8.39  1.42  0.06 -3.01  -7.01  -9.67 -12.33 -16.32
+1.3    1.80  6.55 -0.42 -1.78 -4.85  -8.85 -11.51 -14.17 -18.16
+1.5    0.98  5.73 -1.24 -2.60 -5.67  -9.66 -12.33 -14.99 -18.98
+1.7    0.36  5.11 -1.86 -3.23 -6.30 -10.29 -12.95 -15.61 -19.60
+2     -0.35  4.40 -2.57 -3.93 -7.00 -10.99 -13.65 -16.32 -20.31</code></pre>
+</div>
+</div>
+<div class="fragment">
+<p>Note que o sinal do efeito causal não é sensível aos parâmetros de sensibilidade maiores do que 1. Ou seja, quando os participantes do programa da merenda escolar tem maiores IMC (i.e, <span class="math inline">\(\varepsilon_1(X) &gt; 1\)</span> e <span class="math inline">\(\varepsilon_0(X)&gt;1\)</span>), o efeito causal médio é negativo. Contudo, esta conclusão é bastante sensível se os participantes do programa tem IMC baixos.</p>
 </div>
 </section>
 <section id="referências" class="slide level2">
