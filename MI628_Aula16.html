@@ -346,6 +346,7 @@ Prof.&nbsp;Carlos Trucíos <br> ctrucios@unicamp.br
 <ul>
 <li class="fragment"><a href="#/introdução" id="/toc-introdução">Introdução</a></li>
 <li class="fragment"><a href="#/manski" id="/toc-manski">Manski</a></li>
+<li class="fragment"><a href="#/análise-de-sensibilidade" id="/toc-análise-de-sensibilidade">Análise de sensibilidade</a></li>
 </ul>
 </nav>
 </section>
@@ -455,8 +456,51 @@ Prof.&nbsp;Carlos Trucíos <br> ctrucios@unicamp.br
 <h2>Manski</h2>
 <p>A ideia de limitar parâmetros causais com suposições mínimas foi explorada por Manski (<a href="https://www.jstor.org/stable/2006592">1990</a>, <a href="https://books.google.com.br/books?hl=pt-BR&amp;lr=&amp;id=Zr0H7jMBqjkC&amp;oi=fnd&amp;pg=PA1&amp;dq=manski+2003+partial+identification&amp;ots=wONbugMojH&amp;sig=dPV81Et6l_Wm-9NLi74EtkQn5tg&amp;redir_esc=y#v=onepage&amp;q=manski%202003%20partial%20identification&amp;f=false">2003</a>) e é uma ferramente poderosa quando acompanhada de outras suposições qualitativas.</p>
 <div class="fragment">
-<p>Por exemplo, podemos acreditar que o tratamento não faz mal para nenhuma unidade experimental, ou seja <span class="math display">\[Y(1) \leq Y(0),\]</span></p>
+<div class="callout callout-note callout-captioned callout-style-default">
+<div class="callout-body">
+<div class="callout-caption">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Exemplo</strong></p>
+</div>
+<div class="callout-content">
+<p>Podemos acreditar que o tratamento não faz mal para nenhuma unidade experimental, ou seja <span class="math display">\[Y(1) \leq Y(0),\]</span></p>
 <p>Desta forma, o limite inferior de <span class="math inline">\(\tau\)</span> é zero mas o limite superior ainda é dado por <span class="math display">\[\mathbb{E}[Y | Z = 1]P(Z = 1) + \overline{y}P(Z = 0) - \mathbb{E}[Y | Z = 0]P(Z = 0) - \underline{y}P(Z = 1)\]</span></p>
+</div>
+</div>
+</div>
+</div>
+</section></section>
+<section>
+<section id="análise-de-sensibilidade" class="title-slide slide level1 center">
+<h1>Análise de sensibilidade</h1>
+
+</section>
+<section id="análise-de-sensibilidade-1" class="slide level2">
+<h2>Análise de sensibilidade</h2>
+<p>Sejam os parâmetros de sensibilidade,</p>
+<p><span class="math display">\[\varepsilon_1(X) = \dfrac{\mathbb{E} \big[ Y(1) | Z = 1, X \big ]}{\mathbb{E} \big[ Y(1) | Z = 0, X \big ]} \quad e \quad \varepsilon_0(X) = \dfrac{\mathbb{E} \big[ Y(0) | Z = 1, X \big ]}{\mathbb{E} \big[ Y(0) | Z = 0, X \big ]}.\]</span></p>
+<div class="fragment">
+<div class="callout callout-tip callout-captioned callout-style-default">
+<div class="callout-body">
+<div class="callout-caption">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Teorema</strong></p>
+</div>
+<div class="callout-content">
+<p>Com <span class="math inline">\(\varepsilon_1(X)\)</span> e <span class="math inline">\(\varepsilon_0(X)\)</span> conhecidos, temos que</p>
+<center>
+<span class="math display">\[\begin{align}
+
+
+\end{align}\]</span>
+</center>
+</div>
+</div>
+</div>
 </div>
 </section>
 <section id="referências" class="slide level2">

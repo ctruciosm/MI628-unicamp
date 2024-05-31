@@ -148,9 +148,39 @@ A ideia de limitar parâmetros causais com suposições mínimas foi explorada p
 
 . . . 
 
-Por exemplo, podemos acreditar que o tratamento não faz mal para nenhuma unidade experimental, ou seja $$Y(1) \leq Y(0),$$
+
+::: {.callout-note}
+### Exemplo
+
+Podemos acreditar que o tratamento não faz mal para nenhuma unidade experimental, ou seja $$Y(1) \leq Y(0),$$
 
 Desta forma, o limite inferior de $\tau$ é zero mas o limite superior ainda é dado por $$\mathbb{E}[Y | Z = 1]P(Z = 1) + \overline{y}P(Z = 0) - \mathbb{E}[Y | Z = 0]P(Z = 0) - \underline{y}P(Z = 1)$$
+
+:::
+
+# Análise de sensibilidade
+## Análise de sensibilidade
+
+Sejam os parâmetros de sensibilidade, 
+
+
+$$\varepsilon_1(X) = \dfrac{\mathbb{E} \big[ Y(1) | Z = 1, X \big ]}{\mathbb{E} \big[ Y(1) | Z = 0, X \big ]} \quad e \quad \varepsilon_0(X) = \dfrac{\mathbb{E} \big[ Y(0) | Z = 1, X \big ]}{\mathbb{E} \big[ Y(0) | Z = 0, X \big ]}.$$
+
+
+. . . 
+
+::: {.callout-tip}
+### Teorema
+Com $\varepsilon_1(X)$ e $\varepsilon_0(X)$ conhecidos, temos que
+
+<center>
+\begin{align}
+
+
+\end{align}
+</center>
+
+:::
 
 
 
