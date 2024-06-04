@@ -1,0 +1,181 @@
+---
+title: "Inferência Causal"
+subtitle: "Valor-p de Rosenbaum"
+author: "Prof. Carlos Trucíos </br> ctrucios@unicamp.br"
+Email: "ctrucios@unicamp.br"
+institute: "Instituto de Matemática, Estatística e Computação Científica (IMECC), </br> Universidade Estadual de Campinas (UNICAMP)."
+toc: true
+toc-depth: 1
+toc-title: "Conteúdo"
+knitr:
+    opts_chunk: 
+      fig.align: 'center'
+execute:
+    message: false
+    warning: false
+format:
+    revealjs:
+        slide-number: true
+        show-slide-number: print
+        self-contained: false
+        chalkboard: true
+        width: 1600
+        height: 900
+        theme: [default, styles.scss]
+        incremental: true
+        code-fold: true
+        logo: "imagens/imecc.png"
+        footer: "Carlos Trucíos (IMECC/UNICAMP)  |  ME920/MI628 - Inferência Causal |  [ctruciosm.github.io](https://ctruciosm.github.io/)"
+        highlight-style: "a11y"
+        title-slide-attributes:
+            data-background-image: "imagens/unicamp.png"
+            data-background-size: 20%
+            data-background-position: 99% 5%
+            data-background-opacity: "1"
+---
+
+
+
+# Introdução
+## Introdução
+
+
+- Rosenbaum (1987) introduziu uma técnica de análise de sensibilidade para estudos obervacionais de tipo _Matching_.
+- O método funciona para _matching_ geral, mas por simplicade desenvolveremos o método para _matching_ 1-1.
+- O método é utilizado quando estamos interessados em testar a hipótese nula forte.
+
+
+# Sensibilidade e Matching
+## Sensibilidade e Matching
+
+Considere um estudo observacional do tipo _matching_, em que o índice $(i, j)$  representa a unidade $j$ no par $i$ ($i = 1, \cdots, n$ e $j = 1, 2$).
+
+. . . 
+
+Com _matching_ perfeito, as unidades $(i, 1)$ e $(i, 2)$ tem o mesmo valor de $X_i$.
+
+. . . 
+
+
+Consideremos a [versão estendida](https://ctruciosm.github.io/MI628-unicamp/MI628_Aula09#/propensity-score-2) do _propensity score_, isto é $$e_{ij} = P(Z_{ij} = 1 | X_i, Y_{ij}(1), Y_{ij}(0))$$
+
+
+## Sensibilidade e Matching
+
+
+Seja $\mathbb{S}_i = \{ Y_{i1} (1), Y_{i1}(0), Y_{i2}(1), Y_{i2}(0) \}$ o conjunto de resultados potencias do par $i$.
+
+
+. . . 
+
+
+<center>
+\begin{align}
+P(Z_{i1} = 1 | X_i, \mathbb{S}_i, Z_{i1} + Z_{i2} = 1) &= \dfrac{P(Z_{i1} = 1, Z_{i2} = 0 | X_i, \mathbb{S}_i)}{P(Z_{i1} + Z_{i2} = 1 | X_i, \mathbb{S}_i)} \\
+& = \dfrac{P(Z_{i1} = 1, Z_{i2]} | X_i, \mathbb{S}_i)}{P(Z_{i1} = 1, Z_{i2} = 0 | X_i, \mathbb{S}_i) + P(Z_{i1} = 0, Z_{i2} = 1 | X_i, \mathbb{S}_i)} \\
+& = \dfrac{e_{i1} (1 - e{i2})}{e_{i1} (1 - e{i2}) + e_{i2} (1 - e{i1})} \\
+& = \dfrac{o_{i1}}{o_{i1} + o_{i2}} = \pi_{i1}
+\end{align}
+</center> em que $o_{ij} = e_{ij}/(1 - e_{ij})$.
+
+
+## Sensibilidade e Matching
+
+
+- Assumindo ignorabilidade, $e_{ij} = P(Z_{ij} = 1 | X_i, Y_{ij}(1), Y_{ij}(0)) = P(Z_{ij} = 1 | X_i)$.
+    *   Assim, $e_{i1} = e_{i2}$ e $\pi_{i1} = 1/2$.
+    *   Isto implica que, condicionado em $X$ e $\mathbb{S}$, o mecanismo de atribuição de tratamento é o mesmo do MPE e podemos utilizar o que [aprendimos anteriormente](https://ctruciosm.github.io/MI628-unicamp/MI628_Aula06#/title-slide).
+- Contudo, $e_{ij}$ é tambem uma função dos resultados potenciais.
+    * Rousenbaum (1987) propoe uma análise de sensibilidade criando limite para a razão de chances.
+
+
+
+## Sensibilidade e Matching
+
+
+
+::: {.callout-tip}
+### Suposição de Rosenbaum
+Para algum $\Gamma \geq 1$ (pre-especificado), a razão de chances é limitada por $$o_{i1}/o_{i2} \leq \Gamma \quad e \quad o_{i2} / o_{i1} \leq \Gamma.$$ Equivalentemente, $$\dfrac{\Gamma}{1 + \Gamma} \leq \pi_{i1} \leq \dfrac{\Gamma}{1 + \Gamma}$$
+
+:::
+
+- Se $\Gamma = 1$, $\pi_{ij} = 1/2$ e temos o MPE já estudado.
+
+# Rosenbaum
+## Rosenbaum
+
+Consideremos a hipósete nula forte, ou seja, $$H_{0F}: Y_{ij}(1) = Y_{ij}(0), \quad i = 1, \cdots, n \text{ e } j = 1, 2.$$
+
+. . . 
+
+
+Consideremos a seguinte classe de estatísticas de teste: $$T = \displaystyle \sum_{i = 1}^n S_i q_i,$$ em que $S_i = \mathbb{I}(\hat{\tau}_i > 0)$, $\hat{\tau}_i = (2Z_{i1} - 1)(Y_{i1} - Y_{i2})$ e $q_i \geq 0$ uma função de $(|\hat{\tau}_1|, \cdots, |\hat{\tau}_n|).$
+
+
+## Rosenbaum
+
+
+$$T = \displaystyle \sum_{i = 1}^n S_i q_i.$$
+
+Alguns casos particulares são:
+
+- Estatística de sinais ($T = \displaystyle \sum_{i = 1}^n S_i$)
+- Estatística T pareada ($T = \displaystyle \sum_{i = 1}^n S_i |\hat{\tau}_i|$)
+- Estatística de Wilcoxon ($T = \displaystyle \sum_{i = 1}^n S_i R_i$)
+
+
+## Rosenbaum
+
+
+<center>
+[**Qual a distribuição de $T$ (sob $H_{0F}$? e a suposição de Rosenbaum)**]{style="color:red;"}
+</center>
+
+
+. . . 
+
+
+:::: {.columns}
+
+::: {.column width="50%"}
+### Más notícias
+
+- A distribuição de $T$ é bastante complicada.
+
+:::
+
+::: {.column width="50%"}
+### Boas notícias
+
+- Felizmente apenas precisamos da distribuição no _caso pior_, o caso que fornece uma distribuição de $T$ que levará ao maior p-valor sob a suposição de Rosenbaum
+:::
+
+::::
+
+
+## Rosenbaum
+
+
+No caso pior, $$S_i \sim Bernoulii(\Gamma / (1 + \Gamma)).$$
+
+. . .
+
+Assim, os primeiros momentos de $T$ são dados por:
+
+$$\mathbb{E}(T) = \dfrac{\Gamma}{1 + \Gamma} \displaystyle \sum_{i = 1}^n q_i \quad e \quad \mathbb{V}(T) = \dfrac{\Gamma}{(1 + \Gamma)^2} \displaystyle \sum_{i = 1}^n q_i^2.$$
+
+. . . 
+
+Pelo TCL, 
+
+$$\dfrac{T -\mathbb{E}(T)}{\sqrt{\mathbb{V}(T)}} \sim N(0, 1).$$
+
+
+## Referências
+
+::: {.nonincremental}
+
+- Peng Ding (2023). A First Course in Causal Inference. Capítulo 19.
+
+:::
