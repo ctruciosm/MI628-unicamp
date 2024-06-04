@@ -279,7 +279,7 @@ os_est <- function(z, y, x, out.family = gaussian, truncps = c(0, 1), e1 = 1, e0
   tau_hat_3 <- mean(w1 * z * y / propensity_score)/mean(z / propensity_score) - mean(w0 * (1 - z) * y / (1 - propensity_score)) / mean((1 - z) / (1 - propensity_score))
   
   # Estimador 4
-  tau_hat_4 <- tau_hat_2 + mean( (z - propensity_score) * (outcome_regression_1 / (propensity_score * e1) + outcome_regression_0 * e0 / (1 - propensity_score)))
+  tau_hat_4 <- tau_hat_2 - mean( (z - propensity_score) * (outcome_regression_1 / (propensity_score * e1) + outcome_regression_0 * e0 / (1 - propensity_score)))
   
   return(c(tau_hat_1, tau_hat_2, tau_hat_3, tau_hat_4))
 }
