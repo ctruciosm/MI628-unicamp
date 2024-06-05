@@ -60,23 +60,6 @@ Com _matching_ perfeito, as unidades $(i, 1)$ e $(i, 2)$ tem o mesmo valor de $X
 Consideremos a [versão estendida](https://ctruciosm.github.io/MI628-unicamp/MI628_Aula09#/propensity-score-2) do _propensity score_, isto é $$e_{ij} = P(Z_{ij} = 1 | X_i, Y_{ij}(1), Y_{ij}(0))$$
 
 
-## Sensibilidade e Matching
-
-
-Seja $\mathbb{S}_i = \{ Y_{i1} (1), Y_{i1}(0), Y_{i2}(1), Y_{i2}(0) \}$ o conjunto de resultados potencias do par $i$.
-
-
-. . . 
-
-
-<center>
-\begin{align}
-P(Z_{i1} = 1 | X_i, \mathbb{S}_i, Z_{i1} + Z_{i2} = 1) &= \dfrac{P(Z_{i1} = 1, Z_{i2} = 0 | X_i, \mathbb{S}_i)}{P(Z_{i1} + Z_{i2} = 1 | X_i, \mathbb{S}_i)} \\
-& = \dfrac{P(Z_{i1} = 1, Z_{i2]} | X_i, \mathbb{S}_i)}{P(Z_{i1} = 1, Z_{i2} = 0 | X_i, \mathbb{S}_i) + P(Z_{i1} = 0, Z_{i2} = 1 | X_i, \mathbb{S}_i)} \\
-& = \dfrac{e_{i1} (1 - e{i2})}{e_{i1} (1 - e{i2}) + e_{i2} (1 - e{i1})} \\
-& = \dfrac{o_{i1}}{o_{i1} + o_{i2}} = \pi_{i1}
-\end{align}
-</center> em que $o_{ij} = e_{ij}/(1 - e_{ij})$.
 
 
 ## Sensibilidade e Matching
@@ -85,8 +68,12 @@ P(Z_{i1} = 1 | X_i, \mathbb{S}_i, Z_{i1} + Z_{i2} = 1) &= \dfrac{P(Z_{i1} = 1, Z
 - Assumindo ignorabilidade, $e_{ij} = P(Z_{ij} = 1 | X_i, Y_{ij}(1), Y_{ij}(0)) = P(Z_{ij} = 1 | X_i)$.
     *   Assim, $e_{i1} = e_{i2}$ e $\pi_{i1} = 1/2$.
     *   Isto implica que, condicionado em $X$ e $\mathbb{S}$, o mecanismo de atribuição de tratamento é o mesmo do MPE e podemos utilizar o que [aprendimos anteriormente](https://ctruciosm.github.io/MI628-unicamp/MI628_Aula06#/title-slide).
-- Contudo, $e_{ij}$ é tambem uma função dos resultados potenciais.
-    * Rousenbaum (1987) propoe uma análise de sensibilidade criando limite para a razão de chances.
+- Contudo, sem assumirmos ignorabilidade, $e_{ij}$ é tambem uma função dos resultados potenciais.
+    * Rousenbaum (1987) propõe uma análise de sensibilidade limitando (por cima e por baixo) a razão de chances.
+
+## Sensibilidade e Matching
+
+Se denotarmos $o_{ij} = e_{ij}/(1 - e_{ij})$, a razão de chances é dada por $$\dfrac{o_{i1}}{o_{i2}} = \dfrac{e_{i1}/ (1 - e_{i1})}{e_{i2} / (1 - e_{i12})} = \dfrac{\dfrac{P(Z_{i1} = 1 |X_i, Y_{i1}(1), Y_{i1}(0))}{P(Z_{i1} = 0 |X_i, Y_{i1}(1), Y_{i1}(0))}}{\dfrac{P(Z_{i2} = 1 |X_i, Y_{i2}(1), Y_{i2}(0))}{P(Z_{i2} = 0 |X_i, Y_{i2}(1), Y_{i2}(0))}}.$$
 
 
 
@@ -96,7 +83,7 @@ P(Z_{i1} = 1 | X_i, \mathbb{S}_i, Z_{i1} + Z_{i2} = 1) &= \dfrac{P(Z_{i1} = 1, Z
 
 ::: {.callout-tip}
 ### Suposição de Rosenbaum
-Para algum $\Gamma \geq 1$ (pre-especificado), a razão de chances é limitada por $$o_{i1}/o_{i2} \leq \Gamma \quad e \quad o_{i2} / o_{i1} \leq \Gamma.$$ Equivalentemente, $$\dfrac{\Gamma}{1 + \Gamma} \leq \pi_{i1} \leq \dfrac{\Gamma}{1 + \Gamma}$$
+Para algum $\Gamma \geq 1$ (pre-especificado), a razão de chances é limitada por $$o_{i1}/o_{i2} \leq \Gamma \quad e \quad o_{i2} / o_{i1} \leq \Gamma.$$ Equivalentemente, $$\dfrac{1}{1 + \Gamma} \leq \pi_{i1} \leq \dfrac{\Gamma}{1 + \Gamma},$$ em que $\pi_{i1} = o_{i1} / (o_{i1} + o_{i2})$
 
 :::
 
@@ -129,7 +116,7 @@ Alguns casos particulares são:
 
 
 <center>
-[**Qual a distribuição de $T$ (sob $H_{0F}$? e a suposição de Rosenbaum)**]{style="color:red;"}
+[**Qual a distribuição de $T$ (sob $H_{0F}$ e a suposição de Rosenbaum)**]{style="color:red;"}
 </center>
 
 
@@ -157,7 +144,7 @@ Alguns casos particulares são:
 ## Rosenbaum
 
 
-No caso pior, $$S_i \sim Bernoulii(\Gamma / (1 + \Gamma)).$$
+No caso pior, $$S_i \sim Bernoulli(\Gamma / (1 + \Gamma)).$$
 
 . . .
 
@@ -170,6 +157,137 @@ $$\mathbb{E}(T) = \dfrac{\Gamma}{1 + \Gamma} \displaystyle \sum_{i = 1}^n q_i \q
 Pelo TCL, 
 
 $$\dfrac{T -\mathbb{E}(T)}{\sqrt{\mathbb{V}(T)}} \sim N(0, 1).$$
+
+# Exemplos
+## Exemplos 
+
+::: {.callout-note}
+### Exemplo 1
+Lalonde (1986) está interessado no efeito causal de um programa de treinamento sob o salario. Utilizaremos os dados referentes ao estudo observacional [(cps1re74.csv)](https://dataverse.harvard.edu/file.xhtml?fileId=7440281&version=3.0).
+
+```{r}
+#| echo: true
+library(Matching)
+library(dplyr)
+dados <- read.table("datasets/cps1re74.csv", head = TRUE)
+glimpse(dados)
+```
+:::
+
+
+
+## Exemplos 
+
+```{r}
+y <- dados$re78
+z <- dados$treat
+dados$u74 <- as.numeric(dados$re74 == 0)
+dados$u75 <- as.numeric(dados$re75 == 0)
+x <- as.matrix(dados[, c("age", "educ", "black", "hispan", "married", "nodegree", "re74", "re75", "u74", "u75")])
+match <- Match(Y = y, Tr = z, X = x)
+ytreated <- y[match$index.treated]
+ycontrol <- y[match$index.control]
+data_match <- cbind(ytreated, ycontrol)
+head(data_match)
+```
+
+
+
+## Exemplos
+
+$$\text{Utilizaremos } \quad T = \displaystyle \sum_{i = 1}^n S_i |\hat{\tau}_i|.$$
+
+- Se $\Gamma =1$, é possível simular a distribuição de $T$ e obsermos o p-valor
+- Se $\Gamma > 1$ utilizamos o _caso pior_ e obtemos o o-valor
+
+
+. . . 
+
+
+```{r}
+#| echo: true
+library(sensitivitymw)
+Gamma <- seq(1, 1.4, 0.001)
+pvalor <- Gamma
+for (i in 1:length(pvalor)) {
+  pvalor[i] <- senmw(data_match, gamma = Gamma[i], method = "t")$pval
+}
+```
+
+
+## Exemplos
+
+```{r}
+#| echo: true
+plot(Gamma, pvalor, type = "l")
+```
+
+. . . 
+
+- A medida que $\Gamma$ aumenta, o p-valor cresce, sendo $\Gamma = 1.232$ o valor máximo com que ainda podemos rejeitar $H_0$ para um nível de significância de 0.05.
+
+
+```{r}
+#| echo: true
+Gamma[tail(which(pvalor < 0.05), 1)]
+```
+
+
+## Exemplos
+
+
+```{r}
+#| echo: true
+gama <- Gamma[25]
+tau_i <- data_match[, "ytreated"] - data_match[, "ycontrol"]
+qi <- abs(tau_i)
+mu <- gama / (1 + gama) * sum(qi)
+sigma <- sqrt(gama / (1 + gama)^2 * sum(qi^2))
+t <-  sum((tau_i >0) * qi)
+1 - pnorm((t - mu)/sigma)
+pvalor[25]
+```
+
+
+
+## Exemplos
+
+::: {.callout-note}
+### Exemplo 2
+O conjunto de dados `erpcp` do pacote `sensitivitymw` contém 39 observações _matched_ por pares considerando as covariáveis `idade` e `fumante`.
+
+:::
+
+. . . 
+
+
+```{r}
+#| echo: true
+data(erpcp)
+glimpse(erpcp)
+```
+
+
+## Exemplos
+
+```{r}
+#| echo: true
+Gamma <- seq(1, 5, 0.005)
+pvalor <- Gamma
+for (i in 1:length(Gamma)) {
+  pvalor[i] <- senmw(erpcp, gamma = Gamma[i], method = "t")$pval
+}
+Gamma[tail(which(pvalor < 0.05), 1)]
+```
+
+## Exemplos
+
+```{r}
+#| echo: true
+plot(Gamma, pvalor, type = "l")
+```
+
+
 
 
 ## Referências
