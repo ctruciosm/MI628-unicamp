@@ -1,0 +1,60 @@
+---
+title: "Inferência Causal"
+subtitle: "Sobreposição"
+author: "Prof. Carlos Trucíos </br> ctrucios@unicamp.br"
+Email: "ctrucios@unicamp.br"
+institute: "Instituto de Matemática, Estatística e Computação Científica (IMECC), </br> Universidade Estadual de Campinas (UNICAMP)."
+toc: true
+toc-depth: 1
+toc-title: "Conteúdo"
+knitr:
+    opts_chunk: 
+      fig.align: 'center'
+execute:
+    message: false
+    warning: false
+format:
+    revealjs:
+        slide-number: true
+        show-slide-number: print
+        self-contained: false
+        chalkboard: true
+        width: 1600
+        height: 900
+        theme: [default, styles.scss]
+        incremental: true
+        code-fold: true
+        logo: "imagens/imecc.png"
+        footer: "Carlos Trucíos (IMECC/UNICAMP)  |  ME920/MI628 - Inferência Causal |  [ctruciosm.github.io](https://ctruciosm.github.io/)"
+        highlight-style: "a11y"
+        title-slide-attributes:
+            data-background-image: "imagens/unicamp.png"
+            data-background-size: 20%
+            data-background-position: 99% 5%
+            data-background-opacity: "1"
+---
+
+
+
+# Introdução
+## Introdução
+
+- As técnicas para estudos observacionais discutidas anteriormente baseiam-se em duas suposições: _ignorabilidade_ ($Z \perp\!\!\!\perp  \{ Y(1), Y(0)\} | X$) e _sobreposição_ ($0 < e(X) < 1$).
+- Já discutimos como agir quando a hipótese de ignorabilidade não parece apropriada.
+- Hoje discutiremos o que fazer quando a hipótese de sobreposição não parece apropriada.
+
+
+
+
+# Implicações
+## Implicações
+
+- Se algumas unidades tem $e(X) = 0$ ou $e(X) = 1$
+
+## Referências
+
+::: {.nonincremental}
+
+- Peng Ding (2023). A First Course in Causal Inference. Capítulo 20.
+
+:::
