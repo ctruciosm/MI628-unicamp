@@ -49,9 +49,64 @@ format:
 # Implicações
 ## Implicações
 
-- Se algumas unidades tem $e(X) = 0$ ou $e(X) = 1$
+- Se algumas unidades tem $e(X) = 0$ ou $e(X) = 1$ é dificil pensarmos na existência do contrafactual.
+- Mesmo se $e(X)$ não for exatamente 0 nem 1, $\hat{e}(X)$ pode estar muito perto de 0 ou 1, causando instabilidade nos estimadores.
+- Uma alternativa disso é assumimos _sobreposição forte_, ou seja que $$\eta \leq e(X) \leq 1 - \eta,     \quad, \eta \in (0, 1/2).$$ Contudo, essa suposição tem consequências não triviais (ver Teorema 20.1 do livro texto).
+- Quando _sobreposição forte_ não acontece, uma prática commum é o _Trimming_ do $\hat{e}(X),$ mas esta alternativa está longe de ser ótima.
+- Uma outra alternativa é a regressão descontinuada.
+
+
+# Regressão descontinuada
+## Regressão descontinuada
+
+- Seja $X \in \mathbb{R}$, um mecanismno (extremo) de atribuição de tratamento pode ser dado por $$Z = \mathbb{I}(X \geq x_0),$$ para algum valor $x_0$ pre-determinado.
+- Isto garante, automaticamente, que ignorabilidade aconteça.
+- Contudo, a suposição de sobreposição é violada pois $$e(X) = P(Z = 1 | X) = \mathbb{I}(X \geq x_0).$$
+
+. . . 
+
+<center>
+[Será que o mecanismo de aribuição de tratamento definido acima é algo irreal?]{style="color:red;"}
+</center>
+
+
+## Regressão descontinuada: exemplos
+
+::: {.callout-note}
+### Exemplo 1
+Thistlethwaite e Campbell (1960), estudam o efeito dos estudantes obterem um certificado de mérito sob o plano de carreira. A obtenção ou não do certificado depende de se pontuação no teste de qualificação está acima de um determinado valor de corte.
+:::
+
+. . . 
+
+
+
+::: {.callout-note}
+### Exemplo 2
+Bor et al. (2014) utilizaram regressão descontinuidade para estudar o efeito de quando iniciar pacientes com HIV com antirretrovirais sob a sua mortalidade. O tratamento é iniciado quando contagem de globulos brancos é menor do que 200/μL.
+:::
+
+
+. . . 
+
+ 
+::: {.callout-note}
+### Exemplo 3
+Carpenter e Dobkin (2009) estudaram o efeito do consumo de álcool sobre mortalidade e utilizam a idade minima legal para beber como uma descontinuidade para o consumo de álcool.
+:::
+
+
+## Regressão descontinuada: Formulação
+
+Regressão descontinuada pode identificar o efeito causal médio local para um determinado valor de corte $x_0$: $$\tau(x_0) = \mathbb{E} [Y(1) - Y(0) | X = X_0],$$ em que $X$ é a variável que determina o tratamento e é conhecida como _running variable._
+
 
 ## Referências
+
+Se $X$ for contínua pela direita em $x_0$, temos que \begin{align}
+
+
+\end{align}
 
 ::: {.nonincremental}
 
