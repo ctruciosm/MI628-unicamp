@@ -28,6 +28,70 @@
       margin: 0 0.8em 0.2em -1.6em;
       vertical-align: middle;
     }
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #767676;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #767676;  padding-left: 4px; }
+    div.sourceCode
+      { color: #545454; background-color: #fefefe; }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span { color: #545454; } /* Normal */
+    code span.al { color: #7928a1; } /* Alert */
+    code span.an { color: #696969; } /* Annotation */
+    code span.at { color: #a55a00; } /* Attribute */
+    code span.bn { color: #7928a1; } /* BaseN */
+    code span.bu { } /* BuiltIn */
+    code span.cf { color: #d91e18; } /* ControlFlow */
+    code span.ch { color: #008000; } /* Char */
+    code span.cn { color: #d91e18; } /* Constant */
+    code span.co { color: #696969; } /* Comment */
+    code span.cv { color: #696969; font-style: italic; } /* CommentVar */
+    code span.do { color: #696969; font-style: italic; } /* Documentation */
+    code span.dt { color: #7928a1; } /* DataType */
+    code span.dv { color: #7928a1; } /* DecVal */
+    code span.er { color: #7928a1; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #a55a00; } /* Float */
+    code span.fu { color: #06287e; } /* Function */
+    code span.im { } /* Import */
+    code span.in { color: #696969; } /* Information */
+    code span.kw { color: #d91e18; } /* Keyword */
+    code span.op { color: #00769e; } /* Operator */
+    code span.ot { color: #d91e18; } /* Other */
+    code span.pp { color: #7928a1; } /* Preprocessor */
+    code span.sc { color: #00769e; } /* SpecialChar */
+    code span.ss { color: #008000; } /* SpecialString */
+    code span.st { color: #008000; } /* String */
+    code span.va { color: #a55a00; } /* Variable */
+    code span.vs { color: #008000; } /* VerbatimString */
+    code span.wa { color: #696969; font-style: italic; } /* Warning */
   </style>
   <link rel="stylesheet" href="MI628_Aula18_files/libs/revealjs/dist/theme/quarto.css" id="theme">
   <link href="MI628_Aula18_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
@@ -347,6 +411,7 @@ Prof.&nbsp;Carlos Trucíos <br> ctrucios@unicamp.br
 <li class="fragment"><a href="#/introdução" id="/toc-introdução">Introdução</a></li>
 <li class="fragment"><a href="#/implicações" id="/toc-implicações">Implicações</a></li>
 <li class="fragment"><a href="#/regressão-descontinuada" id="/toc-regressão-descontinuada">Regressão descontinuada</a></li>
+<li class="fragment"><a href="#/regressão-perto-da-fronteira" id="/toc-regressão-perto-da-fronteira">Regressão perto da fronteira</a></li>
 </ul>
 </nav>
 </section>
@@ -444,8 +509,109 @@ Prof.&nbsp;Carlos Trucíos <br> ctrucios@unicamp.br
 </section>
 <section id="regressão-descontinuada-formulação" class="slide level2">
 <h2>Regressão descontinuada: Formulação</h2>
-<p>Regressão descontinuada pode identificar o efeito causal médio local para um determinado valor de corte <span class="math inline">\(x_0\)</span>: <span class="math display">\[\tau(x_0) = \mathbb{E} [Y(1) - Y(0) | X = X_0],\]</span> em que <span class="math inline">\(X\)</span> é a variável que determina o tratamento e é conhecida como <em>running variable</em></p>
+<p>Regressão descontinuada pode identificar o efeito causal médio local para um determinado valor de corte <span class="math inline">\(x_0\)</span>: <span class="math display">\[\tau(x_0) = \mathbb{E} [Y(1) - Y(0) | X = X_0],\]</span> em que <span class="math inline">\(X\)</span> é a variável que determina o tratamento e é conhecida como <em>running variable.</em></p>
 </section>
+<section id="regressão-descontinuada-formulação-1" class="slide level2">
+<h2>Regressão descontinuada: Formulação</h2>
+<p>Se <span class="math inline">\(\mathbb{E}[Y(1) | X = x]\)</span> for contínua pela direita em <span class="math inline">\(x_0\)</span>, temos que <span class="math display">\[\begin{align}
+\mathbb{E}[Y(1) | X = x_0] &amp;= \lim_{\epsilon \rightarrow 0^{+}} \mathbb{E}[Y(1) | X = x_0 + \epsilon] \\
+&amp; = \lim_{\epsilon \rightarrow 0^{+}} \mathbb{E}[Y(1) | Z = 1, X = x_0 + \epsilon] \\
+&amp; = \lim_{\epsilon \rightarrow 0^{+}} \mathbb{E}[Y | Z = 1, X = x_0 + \epsilon].
+\end{align}\]</span></p>
+<div class="fragment">
+<p>De forma semelhante, se <span class="math inline">\(\mathbb{E}[Y(0) | X = x]\)</span> for contínuo pela esquerda, <span class="math display">\[\mathbb{E}[Y(1) | X = x_0] = \lim_{\epsilon \rightarrow 0^{+}} \mathbb{E}[Y | Z = 0, X = x_0 - \epsilon].\]</span></p>
+</div>
+</section>
+<section id="regressão-descontinuada-formulação-2" class="slide level2">
+<h2>Regressão descontinuada: Formulação</h2>
+<div class="callout callout-tip callout-captioned callout-style-default">
+<div class="callout-body">
+<div class="callout-caption">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Tip</strong></p>
+</div>
+<div class="callout-content">
+<p>Asuma que o mecanismo de atribuicao de tratamento é dado por <span class="math inline">\(Z = \mathbb{I}(X \geq x_0),\)</span> em que <span class="math inline">\(x_0\)</span> é um ponto de corte pre-definido. Assuma também que <span class="math inline">\(\mathbb{E}[Y(1) | X = x]\)</span> é contínuo pela direita em <span class="math inline">\(x_0\)</span> e <span class="math inline">\(\mathbb{E}[Y(0) | X = x]\)</span> é contínuo pela esquerda em <span class="math inline">\(x_0\)</span>. Então, o efeito causal médio (local em <span class="math inline">\(X = x_0\)</span>) é dado por <span class="math display">\[\tau(x_0) = \lim_{\epsilon \rightarrow 0^{+}} \mathbb{E}[Y | Z = 1, X = x_0 + \epsilon] -  \lim_{\epsilon \rightarrow 0^{+}} \mathbb{E}[Y | Z = 0, X = x_0 - \epsilon].\]</span></p>
+</div>
+</div>
+</div>
+<div class="fragment">
+<p>Note que o parâmetro <span class="math inline">\(\tau(x_0)\)</span> envolve apenas a distribuição dos observáveis e então é identificável não parametricamente.</p>
+</div>
+</section></section>
+<section>
+<section id="regressão-perto-da-fronteira" class="title-slide slide level1 center">
+<h1>Regressão perto da fronteira</h1>
+
+</section>
+<section id="regressão-perto-da-fronteira-1" class="slide level2">
+<h2>Regressão perto da fronteira</h2>
+<p>Se termos sorte, uma análise gráfica nos ajudará a enxergar o efeito causal para um determinado ponto de corte <span class="math inline">\(x_0\)</span>. Contudo, isto não sempre é possível na prática.</p>
+<div class="fragment">
+<p>Para ilustrar isto, simularemos quatro conjunto de dados. Todos com discontinuidade em <span class="math inline">\(x_0 = 0\)</span> e veremos se a inspeção gráfica é suficiente por si só.</p>
+</div>
+</section>
+<section id="regressão-perto-da-fronteira-2" class="slide level2">
+<h2>Regressão perto da fronteira</h2>
+<div class="cell" data-layout-align="center">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">2</span>), <span class="at">mar =</span> <span class="fu">c</span>(<span class="dv">4</span>, <span class="dv">2</span>, <span class="dv">1</span>, <span class="dv">1</span>), <span class="at">mgp =</span> <span class="fu">c</span>(<span class="dv">2</span>,<span class="dv">1</span>,<span class="dv">0</span>))</span>
+<span id="cb1-2"><a href="#cb1-2"></a>n   <span class="ot">=</span> <span class="dv">500</span></span>
+<span id="cb1-3"><a href="#cb1-3"></a>x   <span class="ot">=</span> <span class="fu">rnorm</span>(n)</span>
+<span id="cb1-4"><a href="#cb1-4"></a>y0  <span class="ot">=</span> x <span class="sc">+</span> <span class="fu">rnorm</span>(n, <span class="dv">0</span>, <span class="fl">0.5</span>)</span>
+<span id="cb1-5"><a href="#cb1-5"></a>y1  <span class="ot">=</span> y0 <span class="sc">+</span> <span class="dv">5</span></span>
+<span id="cb1-6"><a href="#cb1-6"></a>z   <span class="ot">=</span> (x<span class="sc">&gt;=</span><span class="dv">0</span>)</span>
+<span id="cb1-7"><a href="#cb1-7"></a>y   <span class="ot">=</span> z<span class="sc">*</span>y1 <span class="sc">+</span> (<span class="dv">1</span><span class="sc">-</span>z)<span class="sc">*</span>y0</span>
+<span id="cb1-8"><a href="#cb1-8"></a><span class="fu">plot</span>(y0 <span class="sc">~</span> x, <span class="at">col =</span> <span class="st">"grey"</span>, <span class="at">pch =</span> <span class="dv">19</span>, <span class="at">cex =</span> <span class="fl">0.3</span>,</span>
+<span id="cb1-9"><a href="#cb1-9"></a>     <span class="at">ylim =</span> <span class="fu">c</span>(<span class="fu">min</span>(y), <span class="fu">max</span>(y)),</span>
+<span id="cb1-10"><a href="#cb1-10"></a>     <span class="at">xlab =</span> <span class="st">"X"</span>, <span class="at">ylab =</span> <span class="st">""</span>)</span>
+<span id="cb1-11"><a href="#cb1-11"></a><span class="fu">points</span>(y1 <span class="sc">~</span> x, <span class="at">col =</span> <span class="st">"grey"</span>, <span class="at">pch =</span> <span class="dv">19</span>, <span class="at">cex =</span> <span class="fl">0.3</span>)</span>
+<span id="cb1-12"><a href="#cb1-12"></a><span class="fu">points</span>(y <span class="sc">~</span> x, <span class="at">col =</span> <span class="st">"black"</span>, <span class="at">pch =</span> <span class="dv">19</span>, <span class="at">cex =</span> <span class="fl">0.3</span>)</span>
+<span id="cb1-13"><a href="#cb1-13"></a><span class="fu">abline</span>(<span class="at">v =</span> <span class="dv">0</span>, <span class="at">lty =</span> <span class="dv">2</span>)</span>
+<span id="cb1-14"><a href="#cb1-14"></a></span>
+<span id="cb1-15"><a href="#cb1-15"></a></span>
+<span id="cb1-16"><a href="#cb1-16"></a>y0  <span class="ot">=</span> x <span class="sc">+</span> <span class="fu">rnorm</span>(n, <span class="dv">0</span>, <span class="fl">0.5</span>)</span>
+<span id="cb1-17"><a href="#cb1-17"></a>y1  <span class="ot">=</span> y0 <span class="sc">+</span> <span class="dv">1</span></span>
+<span id="cb1-18"><a href="#cb1-18"></a>z   <span class="ot">=</span> (x<span class="sc">&gt;=</span><span class="dv">0</span>)</span>
+<span id="cb1-19"><a href="#cb1-19"></a>y   <span class="ot">=</span> z<span class="sc">*</span>y1 <span class="sc">+</span> (<span class="dv">1</span><span class="sc">-</span>z)<span class="sc">*</span>y0</span>
+<span id="cb1-20"><a href="#cb1-20"></a><span class="fu">plot</span>(y0 <span class="sc">~</span> x, <span class="at">col =</span> <span class="st">"grey"</span>, <span class="at">pch =</span> <span class="dv">19</span>, <span class="at">cex =</span> <span class="fl">0.3</span>,</span>
+<span id="cb1-21"><a href="#cb1-21"></a>     <span class="at">ylim =</span> <span class="fu">c</span>(<span class="fu">min</span>(y), <span class="fu">max</span>(y)),</span>
+<span id="cb1-22"><a href="#cb1-22"></a>     <span class="at">ylab =</span> <span class="st">""</span>, <span class="at">xlab =</span> <span class="st">"X"</span>)</span>
+<span id="cb1-23"><a href="#cb1-23"></a><span class="fu">points</span>(y1 <span class="sc">~</span> x, <span class="at">col =</span> <span class="st">"grey"</span>, <span class="at">pch =</span> <span class="dv">19</span>, <span class="at">cex =</span> <span class="fl">0.3</span>)</span>
+<span id="cb1-24"><a href="#cb1-24"></a><span class="fu">points</span>(y <span class="sc">~</span> x, <span class="at">col =</span> <span class="st">"black"</span>, <span class="at">pch =</span> <span class="dv">19</span>, <span class="at">cex =</span> <span class="fl">0.3</span>)</span>
+<span id="cb1-25"><a href="#cb1-25"></a><span class="fu">abline</span>(<span class="at">v =</span> <span class="dv">0</span>, <span class="at">lty =</span> <span class="dv">2</span>)</span>
+<span id="cb1-26"><a href="#cb1-26"></a></span>
+<span id="cb1-27"><a href="#cb1-27"></a></span>
+<span id="cb1-28"><a href="#cb1-28"></a>y0  <span class="ot">=</span> <span class="dv">2</span><span class="sc">*</span>x <span class="sc">+</span> <span class="fu">rnorm</span>(n, <span class="dv">0</span>, <span class="fl">0.5</span>)</span>
+<span id="cb1-29"><a href="#cb1-29"></a>y1  <span class="ot">=</span> <span class="dv">5</span> <span class="sc">+</span> <span class="fl">0.5</span><span class="sc">*</span>x <span class="sc">+</span> <span class="fu">rnorm</span>(n, <span class="dv">0</span>, <span class="fl">0.5</span>)</span>
+<span id="cb1-30"><a href="#cb1-30"></a>z   <span class="ot">=</span> (x<span class="sc">&gt;=</span><span class="dv">0</span>)</span>
+<span id="cb1-31"><a href="#cb1-31"></a>y   <span class="ot">=</span> z<span class="sc">*</span>y1 <span class="sc">+</span> (<span class="dv">1</span><span class="sc">-</span>z)<span class="sc">*</span>y0</span>
+<span id="cb1-32"><a href="#cb1-32"></a><span class="fu">plot</span>(y0 <span class="sc">~</span> x, <span class="at">col =</span> <span class="st">"grey"</span>, <span class="at">pch =</span> <span class="dv">19</span>, <span class="at">cex =</span> <span class="fl">0.3</span>,</span>
+<span id="cb1-33"><a href="#cb1-33"></a>     <span class="at">ylim =</span> <span class="fu">c</span>(<span class="fu">min</span>(y), <span class="fu">max</span>(y)),</span>
+<span id="cb1-34"><a href="#cb1-34"></a>     <span class="at">ylab =</span> <span class="st">""</span>, <span class="at">xlab =</span> <span class="st">"X"</span>)</span>
+<span id="cb1-35"><a href="#cb1-35"></a><span class="fu">points</span>(y1 <span class="sc">~</span> x, <span class="at">col =</span> <span class="st">"grey"</span>, <span class="at">pch =</span> <span class="dv">19</span>, <span class="at">cex =</span> <span class="fl">0.3</span>)</span>
+<span id="cb1-36"><a href="#cb1-36"></a><span class="fu">points</span>(y <span class="sc">~</span> x, <span class="at">col =</span> <span class="st">"black"</span>, <span class="at">pch =</span> <span class="dv">19</span>, <span class="at">cex =</span> <span class="fl">0.3</span>)</span>
+<span id="cb1-37"><a href="#cb1-37"></a><span class="fu">abline</span>(<span class="at">v =</span> <span class="dv">0</span>, <span class="at">lty =</span> <span class="dv">2</span>)</span>
+<span id="cb1-38"><a href="#cb1-38"></a></span>
+<span id="cb1-39"><a href="#cb1-39"></a></span>
+<span id="cb1-40"><a href="#cb1-40"></a></span>
+<span id="cb1-41"><a href="#cb1-41"></a>y0  <span class="ot">=</span> <span class="dv">2</span><span class="sc">*</span>x <span class="sc">+</span> <span class="fu">rnorm</span>(n, <span class="dv">0</span>, <span class="fl">0.5</span>)</span>
+<span id="cb1-42"><a href="#cb1-42"></a>y1  <span class="ot">=</span> <span class="dv">1</span> <span class="sc">+</span> <span class="fl">0.5</span><span class="sc">*</span>x <span class="sc">+</span> <span class="fu">rnorm</span>(n, <span class="dv">0</span>, <span class="fl">0.5</span>)</span>
+<span id="cb1-43"><a href="#cb1-43"></a>z   <span class="ot">=</span> (x<span class="sc">&gt;=</span><span class="dv">0</span>)</span>
+<span id="cb1-44"><a href="#cb1-44"></a>y   <span class="ot">=</span> z<span class="sc">*</span>y1 <span class="sc">+</span> (<span class="dv">1</span><span class="sc">-</span>z)<span class="sc">*</span>y0</span>
+<span id="cb1-45"><a href="#cb1-45"></a><span class="fu">plot</span>(y0 <span class="sc">~</span> x, <span class="at">col =</span> <span class="st">"grey"</span>, <span class="at">pch =</span> <span class="dv">19</span>, <span class="at">cex =</span> <span class="fl">0.3</span>,</span>
+<span id="cb1-46"><a href="#cb1-46"></a>     <span class="at">ylim =</span> <span class="fu">c</span>(<span class="fu">min</span>(y), <span class="fu">max</span>(y)),</span>
+<span id="cb1-47"><a href="#cb1-47"></a>     <span class="at">ylab =</span> <span class="st">""</span>, <span class="at">xlab =</span> <span class="st">"X"</span>)</span>
+<span id="cb1-48"><a href="#cb1-48"></a><span class="fu">points</span>(y1 <span class="sc">~</span> x, <span class="at">col =</span> <span class="st">"grey"</span>, <span class="at">pch =</span> <span class="dv">19</span>, <span class="at">cex =</span> <span class="fl">0.3</span>)</span>
+<span id="cb1-49"><a href="#cb1-49"></a><span class="fu">points</span>(y <span class="sc">~</span> x, <span class="at">col =</span> <span class="st">"black"</span>, <span class="at">pch =</span> <span class="dv">19</span>, <span class="at">cex =</span> <span class="fl">0.3</span>)</span>
+<span id="cb1-50"><a href="#cb1-50"></a><span class="fu">abline</span>(<span class="at">v =</span> <span class="dv">0</span>, <span class="at">lty =</span> <span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+
+</div>
+<img data-src="MI628_Aula18_files/figure-revealjs/unnamed-chunk-1-1.png" width="960" class="r-stretch quarto-figure-center"></section>
 <section id="referências" class="slide level2">
 <h2>Referências</h2>
 <div>

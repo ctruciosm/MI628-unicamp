@@ -100,13 +100,107 @@ Carpenter e Dobkin (2009) estudaram o efeito do consumo de álcool sobre mortali
 
 Regressão descontinuada pode identificar o efeito causal médio local para um determinado valor de corte $x_0$: $$\tau(x_0) = \mathbb{E} [Y(1) - Y(0) | X = X_0],$$ em que $X$ é a variável que determina o tratamento e é conhecida como _running variable._
 
+## Regressão descontinuada: Formulação
+
+Se $\mathbb{E}[Y(1) | X = x]$ for contínua pela direita em $x_0$, temos que \begin{align}
+\mathbb{E}[Y(1) | X = x_0] &= \lim_{\epsilon \rightarrow 0^{+}} \mathbb{E}[Y(1) | X = x_0 + \epsilon] \\
+& = \lim_{\epsilon \rightarrow 0^{+}} \mathbb{E}[Y(1) | Z = 1, X = x_0 + \epsilon] \\
+& = \lim_{\epsilon \rightarrow 0^{+}} \mathbb{E}[Y | Z = 1, X = x_0 + \epsilon].
+\end{align}
+
+. . . 
+
+De forma semelhante, se  $\mathbb{E}[Y(0) | X = x]$ for contínuo pela esquerda,  $$\mathbb{E}[Y(1) | X = x_0] = \lim_{\epsilon \rightarrow 0^{+}} \mathbb{E}[Y | Z = 0, X = x_0 - \epsilon].$$
+
+
+## Regressão descontinuada: Formulação
+
+
+::: {.callout-tip}
+Asuma que o mecanismo de atribuicao de tratamento é dado por $Z = \mathbb{I}(X \geq x_0),$ em que $x_0$ é um ponto de corte pre-definido. Assuma também que $\mathbb{E}[Y(1) | X = x]$ é contínuo pela direita em $x_0$ e $\mathbb{E}[Y(0) | X = x]$  é contínuo pela esquerda em $x_0$. Então, o efeito causal médio (local em $X = x_0$) é dado por $$\tau(x_0) = \lim_{\epsilon \rightarrow 0^{+}} \mathbb{E}[Y | Z = 1, X = x_0 + \epsilon] -  \lim_{\epsilon \rightarrow 0^{+}} \mathbb{E}[Y | Z = 0, X = x_0 - \epsilon].$$
+
+:::
+
+. . . 
+
+Note que o parâmetro $\tau(x_0)$ envolve apenas a distribuição dos observáveis e então é identificável não parametricamente.
+
+
+# Regressão perto da fronteira
+## Regressão perto da fronteira
+
+Se termos sorte, uma análise gráfica nos ajudará a enxergar o efeito causal para um determinado ponto de corte $x_0$. Contudo, isto não sempre é possível na prática.
+
+
+. . .
+
+Para ilustrar isto, simularemos quatro conjunto de dados. Todos com discontinuidade em $x_0 = 0$ e veremos se a inspeção gráfica é suficiente por si só.
+
+
+
+## Regressão perto da fronteira
+
+```{r}
+#| echo: true
+par(mfrow = c(2, 2), mar = c(4, 2, 1, 1), mgp = c(2,1,0))
+n   = 500
+x   = rnorm(n)
+y0  = x + rnorm(n, 0, 0.5)
+y1  = y0 + 5
+z   = (x>=0)
+y   = z*y1 + (1-z)*y0
+plot(y0 ~ x, col = "grey", pch = 19, cex = 0.3,
+     ylim = c(min(y), max(y)),
+     xlab = "X", ylab = "")
+points(y1 ~ x, col = "grey", pch = 19, cex = 0.3)
+points(y ~ x, col = "black", pch = 19, cex = 0.3)
+abline(v = 0, lty = 2)
+
+
+y0  = x + rnorm(n, 0, 0.5)
+y1  = y0 + 1
+z   = (x>=0)
+y   = z*y1 + (1-z)*y0
+plot(y0 ~ x, col = "grey", pch = 19, cex = 0.3,
+     ylim = c(min(y), max(y)),
+     ylab = "", xlab = "X")
+points(y1 ~ x, col = "grey", pch = 19, cex = 0.3)
+points(y ~ x, col = "black", pch = 19, cex = 0.3)
+abline(v = 0, lty = 2)
+
+
+y0  = 2*x + rnorm(n, 0, 0.5)
+y1  = 5 + 0.5*x + rnorm(n, 0, 0.5)
+z   = (x>=0)
+y   = z*y1 + (1-z)*y0
+plot(y0 ~ x, col = "grey", pch = 19, cex = 0.3,
+     ylim = c(min(y), max(y)),
+     ylab = "", xlab = "X")
+points(y1 ~ x, col = "grey", pch = 19, cex = 0.3)
+points(y ~ x, col = "black", pch = 19, cex = 0.3)
+abline(v = 0, lty = 2)
+
+
+
+y0  = 2*x + rnorm(n, 0, 0.5)
+y1  = 1 + 0.5*x + rnorm(n, 0, 0.5)
+z   = (x>=0)
+y   = z*y1 + (1-z)*y0
+plot(y0 ~ x, col = "grey", pch = 19, cex = 0.3,
+     ylim = c(min(y), max(y)),
+     ylab = "", xlab = "X")
+points(y1 ~ x, col = "grey", pch = 19, cex = 0.3)
+points(y ~ x, col = "black", pch = 19, cex = 0.3)
+abline(v = 0, lty = 2)
+```
+
+
+
+
 
 ## Referências
 
-Se $X$ for contínua pela direita em $x_0$, temos que \begin{align}
 
-
-\end{align}
 
 ::: {.nonincremental}
 
