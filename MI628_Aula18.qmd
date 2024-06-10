@@ -134,7 +134,11 @@ Se termos sorte, uma análise gráfica nos ajudará a enxergar o efeito causal p
 
 . . .
 
-Para ilustrar isto, simularemos quatro conjunto de dados. Todos com discontinuidade em $x_0 = 0$ e veremos se a inspeção gráfica é suficiente por si só.
+### Ilustração
+
+- Simularemos quatro conjunto de dados. 
+- Todos os _datasets_ serão com discontinuidade em $x_0 = 0$.
+- Veremos se a inspeção gráfica é suficiente por si só.
 
 
 
@@ -195,6 +199,109 @@ abline(v = 0, lty = 2)
 ```
 
 
+## Regressão perto da fronteira
+
+Suponhamos que $$\mathbb{E}(Y | Z = 1, X = x) = \gamma_1 + \beta_1 x\quad e \quad \mathbb{E}(Y | Z = 0, X = x) = \gamma_0 + \beta_0 x.$$
+
+. . . 
+
+Através de MQO podemos ajustar ambas as retas de regressão e obtermos $$\hat{\gamma}_1 + \hat{\beta}_1 x \quad e \quad \hat{\gamma}_0 + \hat{\beta}_0 x.$$
+
+. . . 
+
+Então, o efeito causal no ponto $X = x_0$ é dado por $$\hat{\tau}(x_0) = (\hat{\gamma}_1 - \hat{\gamma}_0) + (\hat{\beta}_1 - \hat{\beta}_0) x_0$$
+
+. . . 
+
+## Regressão perto da fronteira
+
+
+- $\hat{\tau} (x_0)$ pode também ser obtido como o coeficiente associado a $Z$ da regressão $Y \sim \{1, Z, X - x_0, Z(X-x_0) \}$.
+- Equivalentemente, $\hat{\tau} (x_0)$ pode também ser obtido como o coeficiente associado a $Z$ da regressão $Y \sim \{1, Z, R, L \}$, em que $R = max(X-x_0, 0)$ e $L = min(X-x_0, 0)$.
+- A recomendação é ajustar a regressão considerando apenas s observações locais perto do ponto de corte.
+- Como a escolha dos pontos locais é fundamental na regressão descontinuada, o commum é reportar intervalos de confiança para várias escolhas dos pontos locais (pode até servir como una análise de sensibilidade).
+
+
+
+# Exemplo
+## Exemplo
+
+::: {.callout-note}
+### Exemplo
+Lee (2008) estuda a _vantagem de já serem previamente eleitos_ no congresso dos Estados Unidos. "Eleitos são aqueles políticos que tiveram sucesso na eleição prévia. Se aquilo que os torna bem sucedidos é persistente ao longo do tempo, deve-se esperar que tenham um pouco mais de sucesso quando concorrerem à reeleição" Unidos."
+
+Este é um problema de inferência causal no qual regressão descontinuada é uma estratégia interessante.
+
+A variável $X$ (*running variable*) é o voto obtido nas eleições anteriores (centrado no 0) e o resultado ($Y$) é o voto na eleição atual com unidades sendo os distritos eleitorais. O tratamento ($Z$) é uma binária indicando se foi eleito na eleição anterior no distrito. 
+
+:::
+
+. . . 
+
+
+
+```{r}
+#| echo: true
+library(dplyr)
+house <- read.csv("datasets/house.csv")[, -1]
+glimpse(house)
+```
+
+## Exemplo
+
+```{r}
+#| echo: true
+plot(x ~ y, data = house, pch = 19, cex = 0.1)
+```
+
+. . . 
+
+Utilizaremos a função `rdrobust()` do pacote `rdrobust` que nos ajudará na nossa escolha dos pontos locais. A função implementa vários métodos de **pontos locais**.
+
+## Exemplo
+
+```{r}
+#| echo: true
+library(rdrobust)
+model <- rdrobust(house$y, house$x)
+cbind(model$coef, model$ci)
+```
+
+. . . 
+
+Também é possível fazer a regressão local por MQO:
+
+```{r}
+#| echo: true
+house$z <- (house$x >= 0)
+hh <- seq(0.05, 1, 0.01)
+local_regression <- sapply(hh, function(h) {
+  modelo <- lm(y ~ z + x + z*x, data = house, subset = abs(x) <= h)
+  cbind(modelo$coef[2], confint(modelo, 'zTRUE'))
+})
+local_regression <- t(local_regression)
+```
+
+## Exemplo
+```{r}
+#| echo: true
+library(ggplot2)
+dados <- data.frame(h = hh, point = local_regression[, 1], int_inf = local_regression[, 2], int_sup = local_regression[, 3])
+ggplot(data = dados) +
+  geom_point(aes(x = h, y = point)) + 
+  geom_point(aes(x = h, y = int_inf), color = "red") + 
+  geom_point(aes(x = h, y = int_sup), color = "red") 
+```
+
+
+## Comentários Finais
+
+- Escolha dos vizinhos perto de $x_0$
+- Regressão discontinuada assume que $\mathbb{E}(Y(1) | Z = x)$ é continuo pela direita e $\mathbb{E}(Y(0) | Z = x)$ é contínuo pela esquerda. 
+- Essa suposição pode algumas vezes ser violada. Por exemplo:
+    *   Se a taxa de mortalidade sofrer um "pulo" aos 18 anos, não poderiamos atribuir esse pulo à mudança do comportamento devido a que agora o cidadão pode beber.
+    *   Na prática, é dificil verificar se a suposição é valida ou não.
+    *   Existe um teste proposto por [McCrary (2008)](https://www.sciencedirect.com/science/article/pii/S0304407607001133?casa_token=9L-GxrsCFNIAAAAA:90XM_1Xxtz5SKvgNcFIDKVq2zj7yZWtsYKNMqY8M0GIJvjs74X3FWfU6Y7N3QuLkPORKevQcxIM) para testar a validez da regressão descontinuada.
 
 
 

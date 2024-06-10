@@ -412,6 +412,7 @@ Prof.&nbsp;Carlos Trucíos <br> ctrucios@unicamp.br
 <li class="fragment"><a href="#/implicações" id="/toc-implicações">Implicações</a></li>
 <li class="fragment"><a href="#/regressão-descontinuada" id="/toc-regressão-descontinuada">Regressão descontinuada</a></li>
 <li class="fragment"><a href="#/regressão-perto-da-fronteira" id="/toc-regressão-perto-da-fronteira">Regressão perto da fronteira</a></li>
+<li class="fragment"><a href="#/exemplo" id="/toc-exemplo">Exemplo</a></li>
 </ul>
 </nav>
 </section>
@@ -550,7 +551,12 @@ Prof.&nbsp;Carlos Trucíos <br> ctrucios@unicamp.br
 <h2>Regressão perto da fronteira</h2>
 <p>Se termos sorte, uma análise gráfica nos ajudará a enxergar o efeito causal para um determinado ponto de corte <span class="math inline">\(x_0\)</span>. Contudo, isto não sempre é possível na prática.</p>
 <div class="fragment">
-<p>Para ilustrar isto, simularemos quatro conjunto de dados. Todos com discontinuidade em <span class="math inline">\(x_0 = 0\)</span> e veremos se a inspeção gráfica é suficiente por si só.</p>
+<h3 id="ilustração">Ilustração</h3>
+<ul>
+<li class="fragment">Simularemos quatro conjunto de dados.</li>
+<li class="fragment">Todos os <em>datasets</em> serão com discontinuidade em <span class="math inline">\(x_0 = 0\)</span>.</li>
+<li class="fragment">Veremos se a inspeção gráfica é suficiente por si só.</li>
+</ul>
 </div>
 </section>
 <section id="regressão-perto-da-fronteira-2" class="slide level2">
@@ -612,6 +618,137 @@ Prof.&nbsp;Carlos Trucíos <br> ctrucios@unicamp.br
 
 </div>
 <img data-src="MI628_Aula18_files/figure-revealjs/unnamed-chunk-1-1.png" width="960" class="r-stretch quarto-figure-center"></section>
+<section id="regressão-perto-da-fronteira-3" class="slide level2">
+<h2>Regressão perto da fronteira</h2>
+<p>Suponhamos que <span class="math display">\[\mathbb{E}(Y | Z = 1, X = x) = \gamma_1 + \beta_1 x\quad e \quad \mathbb{E}(Y | Z = 0, X = x) = \gamma_0 + \beta_0 x.\]</span></p>
+<div class="fragment">
+<p>Através de MQO podemos ajustar ambas as retas de regressão e obtermos <span class="math display">\[\hat{\gamma}_1 + \hat{\beta}_1 x \quad e \quad \hat{\gamma}_0 + \hat{\beta}_0 x.\]</span></p>
+</div>
+<div class="fragment">
+<p>Então, o efeito causal no ponto <span class="math inline">\(X = x_0\)</span> é dado por <span class="math display">\[\hat{\tau}(x_0) = (\hat{\gamma}_1 - \hat{\gamma}_0) + (\hat{\beta}_1 - \hat{\beta}_0) x_0\]</span></p>
+</div>
+</section>
+<section id="regressão-perto-da-fronteira-4" class="slide level2">
+<h2>Regressão perto da fronteira</h2>
+<ul>
+<li class="fragment"><span class="math inline">\(\hat{\tau} (x_0)\)</span> pode também ser obtido como o coeficiente associado a <span class="math inline">\(Z\)</span> da regressão <span class="math inline">\(Y \sim \{1, Z, X - x_0, Z(X-x_0) \}\)</span>.</li>
+<li class="fragment">Equivalentemente, <span class="math inline">\(\hat{\tau} (x_0)\)</span> pode também ser obtido como o coeficiente associado a <span class="math inline">\(Z\)</span> da regressão <span class="math inline">\(Y \sim \{1, Z, R, L \}\)</span>, em que <span class="math inline">\(R = max(X-x_0, 0)\)</span> e <span class="math inline">\(L = min(X-x_0, 0)\)</span>.</li>
+<li class="fragment">A recomendação é ajustar a regressão considerando apenas s observações locais perto do ponto de corte.</li>
+<li class="fragment">Como a escolha dos pontos locais é fundamental na regressão descontinuada, o commum é reportar intervalos de confiança para várias escolhas dos pontos locais (pode até servir como una análise de sensibilidade).</li>
+</ul>
+</section></section>
+<section>
+<section id="exemplo" class="title-slide slide level1 center">
+<h1>Exemplo</h1>
+
+</section>
+<section id="exemplo-4" class="slide level2">
+<h2>Exemplo</h2>
+<div class="callout callout-note callout-captioned callout-style-default">
+<div class="callout-body">
+<div class="callout-caption">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Exemplo</strong></p>
+</div>
+<div class="callout-content">
+<p>Lee (2008) estuda a <em>vantagem de já serem previamente eleitos</em> no congresso dos Estados Unidos. “Eleitos são aqueles políticos que tiveram sucesso na eleição prévia. Se aquilo que os torna bem sucedidos é persistente ao longo do tempo, deve-se esperar que tenham um pouco mais de sucesso quando concorrerem à reeleição” Unidos.”</p>
+<p>Este é um problema de inferência causal no qual regressão descontinuada é uma estratégia interessante.</p>
+<p>A variável <span class="math inline">\(X\)</span> (<em>running variable</em>) é o voto obtido nas eleições anteriores (centrado no 0) e o resultado (<span class="math inline">\(Y\)</span>) é o voto na eleição atual com unidades sendo os distritos eleitorais. O tratamento (<span class="math inline">\(Z\)</span>) é uma binária indicando se foi eleito na eleição anterior no distrito.</p>
+</div>
+</div>
+</div>
+<div class="fragment">
+<div class="cell" data-layout-align="center">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb2-2"><a href="#cb2-2"></a>house <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"datasets/house.csv"</span>)[, <span class="sc">-</span><span class="dv">1</span>]</span>
+<span id="cb2-3"><a href="#cb2-3"></a><span class="fu">glimpse</span>(house)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>Rows: 6,558
+Columns: 2
+$ x &lt;dbl&gt; 0.1049, 0.1393, -0.0736, 0.0868, 0.3994, 0.1681, 0.2516, 0.2675, 0.1…
+$ y &lt;dbl&gt; 0.5810, 0.4611, 0.5434, 0.5846, 0.5803, 0.6244, 0.4873, 0.5710, 0.59…</code></pre>
+</div>
+</div>
+</div>
+</section>
+<section id="exemplo-6" class="slide level2">
+<h2>Exemplo</h2>
+<div class="cell" data-layout-align="center">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a><span class="fu">plot</span>(x <span class="sc">~</span> y, <span class="at">data =</span> house, <span class="at">pch =</span> <span class="dv">19</span>, <span class="at">cex =</span> <span class="fl">0.1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+
+</div>
+<img data-src="MI628_Aula18_files/figure-revealjs/unnamed-chunk-3-1.png" width="960" class="r-stretch quarto-figure-center"><div class="fragment">
+<p>Utilizaremos a função <code>rdrobust()</code> do pacote <code>rdrobust</code> que nos ajudará na nossa escolha dos pontos locais. A função implementa vários métodos de <strong>pontos locais</strong>.</p>
+</div>
+</section>
+<section id="exemplo-7" class="slide level2">
+<h2>Exemplo</h2>
+<div class="cell" data-layout-align="center">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a><span class="fu">library</span>(rdrobust)</span>
+<span id="cb5-2"><a href="#cb5-2"></a>model <span class="ot">&lt;-</span> <span class="fu">rdrobust</span>(house<span class="sc">$</span>y, house<span class="sc">$</span>x)</span>
+<span id="cb5-3"><a href="#cb5-3"></a><span class="fu">cbind</span>(model<span class="sc">$</span>coef, model<span class="sc">$</span>ci)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>                    Coeff   CI Lower   CI Upper
+Conventional   0.06372533 0.04224798 0.08520269
+Bias-Corrected 0.05937028 0.03789292 0.08084763
+Robust         0.05937028 0.03481238 0.08392818</code></pre>
+</div>
+</div>
+<div class="fragment">
+<p>Também é possível fazer a regressão local por MQO:</p>
+<div class="cell" data-layout-align="center">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1"></a>house<span class="sc">$</span>z <span class="ot">&lt;-</span> (house<span class="sc">$</span>x <span class="sc">&gt;=</span> <span class="dv">0</span>)</span>
+<span id="cb7-2"><a href="#cb7-2"></a>hh <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="fl">0.05</span>, <span class="dv">1</span>, <span class="fl">0.01</span>)</span>
+<span id="cb7-3"><a href="#cb7-3"></a>local_regression <span class="ot">&lt;-</span> <span class="fu">sapply</span>(hh, <span class="cf">function</span>(h) {</span>
+<span id="cb7-4"><a href="#cb7-4"></a>  modelo <span class="ot">&lt;-</span> <span class="fu">lm</span>(y <span class="sc">~</span> z <span class="sc">+</span> x <span class="sc">+</span> z<span class="sc">*</span>x, <span class="at">data =</span> house, <span class="at">subset =</span> <span class="fu">abs</span>(x) <span class="sc">&lt;=</span> h)</span>
+<span id="cb7-5"><a href="#cb7-5"></a>  <span class="fu">cbind</span>(modelo<span class="sc">$</span>coef[<span class="dv">2</span>], <span class="fu">confint</span>(modelo, <span class="st">'zTRUE'</span>))</span>
+<span id="cb7-6"><a href="#cb7-6"></a>})</span>
+<span id="cb7-7"><a href="#cb7-7"></a>local_regression <span class="ot">&lt;-</span> <span class="fu">t</span>(local_regression)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+</div>
+</section>
+<section id="exemplo-8" class="slide level2">
+<h2>Exemplo</h2>
+<div class="cell" data-layout-align="center">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb8-2"><a href="#cb8-2"></a>dados <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">h =</span> hh, <span class="at">point =</span> local_regression[, <span class="dv">1</span>], <span class="at">int_inf =</span> local_regression[, <span class="dv">2</span>], <span class="at">int_sup =</span> local_regression[, <span class="dv">3</span>])</span>
+<span id="cb8-3"><a href="#cb8-3"></a><span class="fu">ggplot</span>(<span class="at">data =</span> dados) <span class="sc">+</span></span>
+<span id="cb8-4"><a href="#cb8-4"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">x =</span> h, <span class="at">y =</span> point)) <span class="sc">+</span> </span>
+<span id="cb8-5"><a href="#cb8-5"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">x =</span> h, <span class="at">y =</span> int_inf), <span class="at">color =</span> <span class="st">"red"</span>) <span class="sc">+</span> </span>
+<span id="cb8-6"><a href="#cb8-6"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">x =</span> h, <span class="at">y =</span> int_sup), <span class="at">color =</span> <span class="st">"red"</span>) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+
+</div>
+<img data-src="MI628_Aula18_files/figure-revealjs/unnamed-chunk-6-1.png" width="960" class="r-stretch quarto-figure-center"></section>
+<section id="comentários-finais" class="slide level2">
+<h2>Comentários Finais</h2>
+<ul>
+<li class="fragment">Escolha dos vizinhos perto de <span class="math inline">\(x_0\)</span></li>
+<li class="fragment">Regressão discontinuada assume que <span class="math inline">\(\mathbb{E}(Y(1) | Z = x)\)</span> é continuo pela direita e <span class="math inline">\(\mathbb{E}(Y(0) | Z = x)\)</span> é contínuo pela esquerda.</li>
+<li class="fragment">Essa suposição pode algumas vezes ser violada. Por exemplo:
+<ul>
+<li class="fragment">Se a taxa de mortalidade sofrer um “pulo” aos 18 anos, não poderiamos atribuir esse pulo à mudança do comportamento devido a que agora o cidadão pode beber.</li>
+<li class="fragment">Na prática, é dificil verificar se a suposição é valida ou não.</li>
+<li class="fragment">Existe um teste proposto por <a href="https://www.sciencedirect.com/science/article/pii/S0304407607001133?casa_token=9L-GxrsCFNIAAAAA:90XM_1Xxtz5SKvgNcFIDKVq2zj7yZWtsYKNMqY8M0GIJvjs74X3FWfU6Y7N3QuLkPORKevQcxIM">McCrary (2008)</a> para testar a validez da regressão descontinuada.</li>
+</ul></li>
+</ul>
+</section>
 <section id="referências" class="slide level2">
 <h2>Referências</h2>
 <div>
