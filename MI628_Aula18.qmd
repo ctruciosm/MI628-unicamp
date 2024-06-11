@@ -83,7 +83,7 @@ Thistlethwaite e Campbell (1960), estudam o efeito dos estudantes obterem um cer
 
 ::: {.callout-note}
 ### Exemplo 2
-Bor et al. (2014) utilizaram regressão descontinuidade para estudar o efeito de quando iniciar pacientes com HIV com antirretrovirais sob a sua mortalidade. O tratamento é iniciado quando contagem de globulos brancos é menor do que 200/μL.
+Bor et al. (2014) utilizaram regressão descontinuidade para estudar o efeito de iniciar pacientes com HIV com antirretrovirais sob a sua mortalidade. O tratamento é iniciado quando contagem de globulos brancos é menor do que 200/μL.
 :::
 
 
@@ -98,7 +98,7 @@ Carpenter e Dobkin (2009) estudaram o efeito do consumo de álcool sobre mortali
 
 ## Regressão descontinuada: Formulação
 
-Regressão descontinuada pode identificar o efeito causal médio local para um determinado valor de corte $x_0$: $$\tau(x_0) = \mathbb{E} [Y(1) - Y(0) | X = X_0],$$ em que $X$ é a variável que determina o tratamento e é conhecida como _running variable._
+Regressão descontinuada pode identificar o efeito causal médio local para um determinado valor de corte $x_0$: $$\tau(x_0) = \mathbb{E} [Y(1) - Y(0) | X = x_0],$$ em que $X$ é a variável que determina o tratamento e é conhecida como _running variable._
 
 ## Regressão descontinuada: Formulação
 
@@ -110,13 +110,14 @@ Se $\mathbb{E}[Y(1) | X = x]$ for contínua pela direita em $x_0$, temos que \be
 
 . . . 
 
-De forma semelhante, se  $\mathbb{E}[Y(0) | X = x]$ for contínuo pela esquerda,  $$\mathbb{E}[Y(1) | X = x_0] = \lim_{\epsilon \rightarrow 0^{+}} \mathbb{E}[Y | Z = 0, X = x_0 - \epsilon].$$
+De forma semelhante, se  $\mathbb{E}[Y(0) | X = x]$ for contínuo pela esquerda em $x_0$,  $$\mathbb{E}[Y(1) | X = x_0] = \lim_{\epsilon \rightarrow 0^{+}} \mathbb{E}[Y | Z = 0, X = x_0 - \epsilon].$$
 
 
 ## Regressão descontinuada: Formulação
 
 
 ::: {.callout-tip}
+### Teorema
 Asuma que o mecanismo de atribuicao de tratamento é dado por $Z = \mathbb{I}(X \geq x_0),$ em que $x_0$ é um ponto de corte pre-definido. Assuma também que $\mathbb{E}[Y(1) | X = x]$ é contínuo pela direita em $x_0$ e $\mathbb{E}[Y(0) | X = x]$  é contínuo pela esquerda em $x_0$. Então, o efeito causal médio (local em $X = x_0$) é dado por $$\tau(x_0) = \lim_{\epsilon \rightarrow 0^{+}} \mathbb{E}[Y | Z = 1, X = x_0 + \epsilon] -  \lim_{\epsilon \rightarrow 0^{+}} \mathbb{E}[Y | Z = 0, X = x_0 - \epsilon].$$
 
 :::
@@ -129,7 +130,7 @@ Note que o parâmetro $\tau(x_0)$ envolve apenas a distribuição dos observáve
 # Regressão perto da fronteira
 ## Regressão perto da fronteira
 
-Se termos sorte, uma análise gráfica nos ajudará a enxergar o efeito causal para um determinado ponto de corte $x_0$. Contudo, isto não sempre é possível na prática.
+Se tivermos sorte, uma análise gráfica nos ajudará a enxergar o efeito causal para um determinado ponto de corte $x_0$. Contudo, isto não sempre é possível na prática.
 
 
 . . .
@@ -228,7 +229,7 @@ Então, o efeito causal no ponto $X = x_0$ é dado por $$\hat{\tau}(x_0) = (\hat
 
 ::: {.callout-note}
 ### Exemplo
-Lee (2008) estuda a _vantagem de já serem previamente eleitos_ no congresso dos Estados Unidos. "Eleitos são aqueles políticos que tiveram sucesso na eleição prévia. Se aquilo que os torna bem sucedidos é persistente ao longo do tempo, deve-se esperar que tenham um pouco mais de sucesso quando concorrerem à reeleição" Unidos."
+Lee (2008) estuda a _vantagem de já serem previamente eleitos_ no congresso dos Estados Unidos. "Eleitos são aqueles políticos que tiveram sucesso na eleição prévia. Se aquilo que os torna bem sucedidos é persistente ao longo do tempo, deve-se esperar que tenham um pouco mais de sucesso quando concorrerem à reeleição."
 
 Este é um problema de inferência causal no qual regressão descontinuada é uma estratégia interessante.
 

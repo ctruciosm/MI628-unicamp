@@ -7,7 +7,7 @@
 <link href="MI628_Aula18_files/libs/quarto-html/tippy.css" rel="stylesheet">
 <link href="MI628_Aula18_files/libs/quarto-html/quarto-html.min.css" rel="stylesheet" data-mode="light">
 <link href="MI628_Aula18_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
-  <meta name="generator" content="quarto-1.2.269">
+  <meta name="generator" content="quarto-1.2.280">
 
   <meta name="author" content="Prof.&nbsp;Carlos Trucíos  ctrucios@unicamp.br">
   <title>Inferência Causal</title>
@@ -487,7 +487,7 @@ Prof.&nbsp;Carlos Trucíos <br> ctrucios@unicamp.br
 <p><strong>Exemplo 2</strong></p>
 </div>
 <div class="callout-content">
-<p>Bor et al.&nbsp;(2014) utilizaram regressão descontinuidade para estudar o efeito de quando iniciar pacientes com HIV com antirretrovirais sob a sua mortalidade. O tratamento é iniciado quando contagem de globulos brancos é menor do que 200/μL.</p>
+<p>Bor et al.&nbsp;(2014) utilizaram regressão descontinuidade para estudar o efeito de iniciar pacientes com HIV com antirretrovirais sob a sua mortalidade. O tratamento é iniciado quando contagem de globulos brancos é menor do que 200/μL.</p>
 </div>
 </div>
 </div>
@@ -510,7 +510,7 @@ Prof.&nbsp;Carlos Trucíos <br> ctrucios@unicamp.br
 </section>
 <section id="regressão-descontinuada-formulação" class="slide level2">
 <h2>Regressão descontinuada: Formulação</h2>
-<p>Regressão descontinuada pode identificar o efeito causal médio local para um determinado valor de corte <span class="math inline">\(x_0\)</span>: <span class="math display">\[\tau(x_0) = \mathbb{E} [Y(1) - Y(0) | X = X_0],\]</span> em que <span class="math inline">\(X\)</span> é a variável que determina o tratamento e é conhecida como <em>running variable.</em></p>
+<p>Regressão descontinuada pode identificar o efeito causal médio local para um determinado valor de corte <span class="math inline">\(x_0\)</span>: <span class="math display">\[\tau(x_0) = \mathbb{E} [Y(1) - Y(0) | X = x_0],\]</span> em que <span class="math inline">\(X\)</span> é a variável que determina o tratamento e é conhecida como <em>running variable.</em></p>
 </section>
 <section id="regressão-descontinuada-formulação-1" class="slide level2">
 <h2>Regressão descontinuada: Formulação</h2>
@@ -520,7 +520,7 @@ Prof.&nbsp;Carlos Trucíos <br> ctrucios@unicamp.br
 &amp; = \lim_{\epsilon \rightarrow 0^{+}} \mathbb{E}[Y | Z = 1, X = x_0 + \epsilon].
 \end{align}\]</span></p>
 <div class="fragment">
-<p>De forma semelhante, se <span class="math inline">\(\mathbb{E}[Y(0) | X = x]\)</span> for contínuo pela esquerda, <span class="math display">\[\mathbb{E}[Y(1) | X = x_0] = \lim_{\epsilon \rightarrow 0^{+}} \mathbb{E}[Y | Z = 0, X = x_0 - \epsilon].\]</span></p>
+<p>De forma semelhante, se <span class="math inline">\(\mathbb{E}[Y(0) | X = x]\)</span> for contínuo pela esquerda em <span class="math inline">\(x_0\)</span>, <span class="math display">\[\mathbb{E}[Y(1) | X = x_0] = \lim_{\epsilon \rightarrow 0^{+}} \mathbb{E}[Y | Z = 0, X = x_0 - \epsilon].\]</span></p>
 </div>
 </section>
 <section id="regressão-descontinuada-formulação-2" class="slide level2">
@@ -531,7 +531,7 @@ Prof.&nbsp;Carlos Trucíos <br> ctrucios@unicamp.br
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
-<p><strong>Tip</strong></p>
+<p><strong>Teorema</strong></p>
 </div>
 <div class="callout-content">
 <p>Asuma que o mecanismo de atribuicao de tratamento é dado por <span class="math inline">\(Z = \mathbb{I}(X \geq x_0),\)</span> em que <span class="math inline">\(x_0\)</span> é um ponto de corte pre-definido. Assuma também que <span class="math inline">\(\mathbb{E}[Y(1) | X = x]\)</span> é contínuo pela direita em <span class="math inline">\(x_0\)</span> e <span class="math inline">\(\mathbb{E}[Y(0) | X = x]\)</span> é contínuo pela esquerda em <span class="math inline">\(x_0\)</span>. Então, o efeito causal médio (local em <span class="math inline">\(X = x_0\)</span>) é dado por <span class="math display">\[\tau(x_0) = \lim_{\epsilon \rightarrow 0^{+}} \mathbb{E}[Y | Z = 1, X = x_0 + \epsilon] -  \lim_{\epsilon \rightarrow 0^{+}} \mathbb{E}[Y | Z = 0, X = x_0 - \epsilon].\]</span></p>
@@ -549,7 +549,7 @@ Prof.&nbsp;Carlos Trucíos <br> ctrucios@unicamp.br
 </section>
 <section id="regressão-perto-da-fronteira-1" class="slide level2">
 <h2>Regressão perto da fronteira</h2>
-<p>Se termos sorte, uma análise gráfica nos ajudará a enxergar o efeito causal para um determinado ponto de corte <span class="math inline">\(x_0\)</span>. Contudo, isto não sempre é possível na prática.</p>
+<p>Se tivermos sorte, uma análise gráfica nos ajudará a enxergar o efeito causal para um determinado ponto de corte <span class="math inline">\(x_0\)</span>. Contudo, isto não sempre é possível na prática.</p>
 <div class="fragment">
 <h3 id="ilustração">Ilustração</h3>
 <ul>
@@ -653,7 +653,7 @@ Prof.&nbsp;Carlos Trucíos <br> ctrucios@unicamp.br
 <p><strong>Exemplo</strong></p>
 </div>
 <div class="callout-content">
-<p>Lee (2008) estuda a <em>vantagem de já serem previamente eleitos</em> no congresso dos Estados Unidos. “Eleitos são aqueles políticos que tiveram sucesso na eleição prévia. Se aquilo que os torna bem sucedidos é persistente ao longo do tempo, deve-se esperar que tenham um pouco mais de sucesso quando concorrerem à reeleição” Unidos.”</p>
+<p>Lee (2008) estuda a <em>vantagem de já serem previamente eleitos</em> no congresso dos Estados Unidos. “Eleitos são aqueles políticos que tiveram sucesso na eleição prévia. Se aquilo que os torna bem sucedidos é persistente ao longo do tempo, deve-se esperar que tenham um pouco mais de sucesso quando concorrerem à reeleição.”</p>
 <p>Este é um problema de inferência causal no qual regressão descontinuada é uma estratégia interessante.</p>
 <p>A variável <span class="math inline">\(X\)</span> (<em>running variable</em>) é o voto obtido nas eleições anteriores (centrado no 0) e o resultado (<span class="math inline">\(Y\)</span>) é o voto na eleição atual com unidades sendo os distritos eleitorais. O tratamento (<span class="math inline">\(Z\)</span>) é uma binária indicando se foi eleito na eleição anterior no distrito.</p>
 </div>
