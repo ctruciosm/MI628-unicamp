@@ -1,0 +1,277 @@
+---
+title: "Inferência Causal"
+subtitle: "IV"
+author: "Prof. Carlos Trucíos </br> ctrucios@unicamp.br"
+Email: "ctrucios@unicamp.br"
+institute: "Instituto de Matemática, Estatística e Computação Científica (IMECC), </br> Universidade Estadual de Campinas (UNICAMP)."
+toc: true
+toc-depth: 1
+toc-title: "Conteúdo"
+knitr:
+    opts_chunk: 
+      fig.align: 'center'
+execute:
+    message: false
+    warning: false
+format:
+    revealjs:
+        slide-number: true
+        show-slide-number: print
+        self-contained: false
+        chalkboard: true
+        width: 1600
+        height: 900
+        theme: [default, styles.scss]
+        incremental: true
+        code-fold: true
+        logo: "imagens/imecc.png"
+        footer: "Carlos Trucíos (IMECC/UNICAMP)  |  ME920/MI628 - Inferência Causal |  [ctruciosm.github.io](https://ctruciosm.github.io/)"
+        highlight-style: "a11y"
+        title-slide-attributes:
+            data-background-image: "imagens/unicamp.png"
+            data-background-size: 20%
+            data-background-position: 99% 5%
+            data-background-opacity: "1"
+---
+
+
+
+# Introdução
+## Introdução
+
+-
+
+# Exemplos
+## Exemplos
+
+::: {.callout-note}
+### Exemplo 1
+
+
+:::
+
+
+# IV
+## IV
+
+
+Seja $Y$ uma v.a e $D$ uma v.a (ou vetor aleatório) com segundo momento finito tais que $$Y = D^T \beta + e,$$ em que $\mathbb{E}(D\epsilon) = 0.$
+
+
+. . . 
+
+O coeficiente populacional por MQO é dado por $$\beta = \arg \min_b \mathbb{E}(Y - D^T b)^2 = \mathbb{E}(DD^T)^{-1}\mathbb{E}(DY).$$
+
+. . . 
+
+O estimador de MQO é dado por $$\hat{\beta} = \Big (\displaystyle \sum_{i = 1}^n D_i D_i^T \Big)^{-1} \sum_{i = 1}^n D_i Y_i$$
+
+
+
+## IV
+
+\begin{align}
+\hat{\beta} & = \Big (\displaystyle \sum_{i = 1}^n D_i D_i^T \Big)^{-1} \sum_{i = 1}^n D_i Y_i, \\
+            & =  \Big (\displaystyle \sum_{i = 1}^n D_i D_i^T \Big)^{-1} \sum_{i = 1}^n D_i (D_i^T \beta + e_i), \\
+            & = \beta + \Big ( \displaystyle \sum_{i = 1}^n D_i D_i^T \Big)^{-1} \Big (\sum_{i = 1}^n D_i e_i\Big), \\
+            & \xrightarrow{p} \beta + \mathbb{E}(DD^T)^{-1} \underbrace{\mathbb{E}(D\epsilon)}_{0}, \\
+            & = \beta
+\end{align}
+
+. . . 
+
+
+<center>
+[$\hat{\beta}$ converge em probabilidade para $\beta$]{style="color:red;"}
+</center>
+
+
+## IV
+
+E se o modelo for da forma  $$Y = D^T \beta + e, \quad \text{mas } \quad \mathbb{E}(D\epsilon) \neq 0$$
+
+. . . 
+
+
+Neste caso, teremos que
+
+$$\hat{\beta} \xrightarrow{p} \beta + \mathbb{E}(DD^T)^{-1} \mathbb{E}(D\epsilon) \neq \beta$$
+
+Isto muda completamente o modelo anterior e o estimador deixa de ter boas propriedades.
+
+. . . 
+
+
+::: {.callout-tip}
+### Definição
+Quando $\mathbb{E}(eD) = 0$ dizemos que $D$ é _exógena_ e quando $\mathbb{E}(eD) \neq 0$ dizemos que $D$ é _endógena_.
+:::
+
+
+. . . 
+
+
+<center>
+`r emo::ji("warning")` [(esta definição não é única em econometria)]{style="color:red;"} `r emo::ji("warning")` 
+</center> 
+
+
+## IV
+
+
+Quando $D$ é endógena, $\hat{\beta}$ é inconsistente para $\beta$. Assim, se quisermos um estimador consistente precisamos utilizar informação adicional, surgindo assim o modelo de variáveis instrumentais (IV).
+
+. . . 
+
+
+::: {.callout-tip}
+### Definição: Modelos linear de IV
+$$Y = D^T \beta + e, \quad com \quad \mathbb{E}(\epsilon Z) = 0$$
+:::
+
+
+. . . 
+
+- O modelo de IV permite que $\mathbb{E}(eD) \neq 0$ mas precisa que  $\mathbb{E}(\epsilon Z) = 0$
+- $\mathbb{E}(e) = 0$ está implícita e permite incluir intercepto no modelo.
+- A suposição de que $Z$ e $\epsilon$ devem ser não correlacionados não ajuda muito por si só (afinal, qualquer perturbação aleatória é também não correlacionada com $\epsilon$).
+- Assim, $Z$ deve também ser correlacionado com $D$.
+
+
+
+## IV
+
+<center>
+```{r}
+DiagrammeR::grViz("
+digraph {
+  graph []
+  node [shape = plaintext]
+    D
+    e
+    Y
+    Z
+  edge []
+    D->Y
+    Z->D
+    e->Y
+    e->D
+  { rank = same; Z; D; Y }
+}
+")
+```
+</center>
+
+
+
+## IV: Caso identificado
+
+Consideremos o caso em que $Z$ e $D$ tem a mesma dimensão e $\mathbb{E}(Z D^T)$ tem posto completo.
+
+. . . 
+
+
+\begin{align}
+\mathbb{E}(Ze) & = \mathbb{E}(Z[Y - D^T\beta]), \\
+& = \mathbb{E}(ZY) - \mathbb{E}(ZD^T)\beta, \\
+\beta & = \mathbb{E}(ZD^T)^{-1}\mathbb{E}(ZY).
+\end{align}
+
+. . . 
+
+O estimador MQO é dado por 
+
+$$\hat{\beta}_{IV} = \Big (\displaystyle \sum_{i = 1}^n Z_i D_i^T  \Big)^{-1} \sum_{i = 1}^n Z_i Y_i$$
+
+## IV: Caso identificado
+
+
+::: {.callout-note}
+### Exemplo
+Consideremos o modelo com intercepto e $D \in \mathbb{R}$. $$Y = \alpha + \beta D + \epsilon,$$ em que $\mathbb{E}(\epsilon) = 0$ e $\mathbb{C}ov(\epsilon, Z) = 0$.
+:::
+
+
+. . . 
+
+
+Neste modelo, 
+
+$$\mathbb{C}ov(Z, Y) = \beta \mathbb{C}ov(Z, D)$$
+
+
+. . . 
+
+
+
+$$\beta = \dfrac{\mathbb{C}ov(Z, D)}{\mathbb{C}ov(Z, Y)} = \dfrac{\mathbb{C}ov(Z, D) / \mathbb{V}(Z)}{\mathbb{C}ov(Z, Y) / \mathbb{V}(Z)}$$
+
+Que é equivalente ao coeficiente associado a $Z$ na regressão por MQO de $Y$ e $D$ sob $Z$.
+
+
+## IV: Caso identificado
+
+
+Se $Z$ for binário,
+$$ \beta = \dfrac{\mathbb{E}(Y | Z = 1) - \mathbb{E}(Y | Z = 0)}{\mathbb{E}(D | Z = 1) - \mathbb{E}(D | Z = 0)}.$$
+
+
+Ou seja, com uma IV $Z$ binária e uma variável de tratamento $D$ também binária, através do método de IV é possível estimamos
+
+
+
+
+## IV: Caso sobreidentificado
+
+- O caso anterior, é util quando $Z$ e $D$ tem a mesma dimensão. 
+- Se $Z$ tiver dimensão menor do que $D$ e $\mathbb{E}(Z D^T)$ não tem posto completo $$\mathbb{E}(ZY) = \mathbb{E}(ZD^T)\beta,$$ tem infinitas soluções.
+- Este caso é conhecido como subidentificado, refere-se a quando $\beta$ não é unicamente identificado (não será discutido aqui)
+- Para garantirmos identificabiblidade, precisamos que a dimensão de $Z$ seja, pelo menos, igual à dimensão de $D$.
+- Quando $Z$ tem dimensão maior do que $D$, temos formas alternativas de determinar $\beta$ a partir da relação $$\mathbb{E}(ZY) = \mathbb{E}(ZD^T)\beta.$$
+
+
+
+## IV: Caso sobreidentificado
+
+
+::: {.callout-tip}
+### MQ2E
+Para o obter o estimador através do método de minimos quadrados em 2 estágios, é preciso ajustar dois modelos de regressão:
+
+1. Ajustar por MQO a regressão de $D$ sob $Z$ e obter os valores ajustados $\hat{D}$
+2. Ajustar por MQO a regressão de $Y$ sob $\hat{D}$ e obter o coeficiente $\hat{\beta}_{MQ2E}$.
+
+:::
+
+. . . 
+
+
+\begin{align}
+\hat{\beta}_{MQ2E} & = \Big ( \displaystyle \sum_{i = 1}^n \hat{D}_i \hat{D}_i^T \Big)^{-1} \sum_{i = 1}^n \hat{D}_i
+Y_i, \\
+& = \Big ( \displaystyle \sum_{i = 1}^n \hat{D}_i \hat{D}_i^T \Big)^{-1} \sum_{i = 1}^n \hat{D}_i
+(D_i^T \beta + \epsilon_i), \\
+& = \Big ( \displaystyle \sum_{i = 1}^n \hat{D}_i \hat{D}_i^T \Big)^{-1} \sum_{i = 1}^n \hat{D}_i
+D_i^T \beta + \Big ( \displaystyle \sum_{i = 1}^n \hat{D}_i \hat{D}_i^T \Big)^{-1} \hat{D}_i \epsilon_i), \\
+\end{align}
+
+
+## IV: Caso sobreidentificado
+
+
+Da primeira regressão temos que $D_i = \hat{D}_i + \tilde{D}_i$, tal que $$\displaystyle \sum_{i = 1}^n \hat{D}_i \tilde{D}_i^T = 0$$
+
+
+. . .
+
+Então, $$\sum_{i = 1}^n \hat{D}_i D_i^T = \sum_{i = 1}^n \hat{D}_i \hat{D}_i^T$$
+
+## Referências
+
+
+
+::: {.nonincremental}
+
+- Peng Ding (2023). A First Course in Causal Inference. Capítulo 23.
+
+:::
