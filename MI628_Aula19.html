@@ -28,6 +28,70 @@
       margin: 0 0.8em 0.2em -1.6em;
       vertical-align: middle;
     }
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #767676;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #767676;  padding-left: 4px; }
+    div.sourceCode
+      { color: #545454; background-color: #fefefe; }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span { color: #545454; } /* Normal */
+    code span.al { color: #7928a1; } /* Alert */
+    code span.an { color: #696969; } /* Annotation */
+    code span.at { color: #a55a00; } /* Attribute */
+    code span.bn { color: #7928a1; } /* BaseN */
+    code span.bu { } /* BuiltIn */
+    code span.cf { color: #d91e18; } /* ControlFlow */
+    code span.ch { color: #008000; } /* Char */
+    code span.cn { color: #d91e18; } /* Constant */
+    code span.co { color: #696969; } /* Comment */
+    code span.cv { color: #696969; font-style: italic; } /* CommentVar */
+    code span.do { color: #696969; font-style: italic; } /* Documentation */
+    code span.dt { color: #7928a1; } /* DataType */
+    code span.dv { color: #7928a1; } /* DecVal */
+    code span.er { color: #7928a1; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #a55a00; } /* Float */
+    code span.fu { color: #06287e; } /* Function */
+    code span.im { } /* Import */
+    code span.in { color: #696969; } /* Information */
+    code span.kw { color: #d91e18; } /* Keyword */
+    code span.op { color: #00769e; } /* Operator */
+    code span.ot { color: #d91e18; } /* Other */
+    code span.pp { color: #7928a1; } /* Preprocessor */
+    code span.sc { color: #00769e; } /* SpecialChar */
+    code span.ss { color: #008000; } /* SpecialString */
+    code span.st { color: #008000; } /* String */
+    code span.va { color: #a55a00; } /* Variable */
+    code span.vs { color: #008000; } /* VerbatimString */
+    code span.wa { color: #696969; font-style: italic; } /* Warning */
   </style>
   <link rel="stylesheet" href="MI628_Aula19_files/libs/revealjs/dist/theme/quarto.css" id="theme">
   <link href="MI628_Aula19_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
@@ -349,8 +413,8 @@ Prof.&nbsp;Carlos Trucíos <br> ctrucios@unicamp.br
 <h2 id="toc-title">Conteúdo</h2>
 <ul>
 <li class="fragment"><a href="#/introdução" id="/toc-introdução">Introdução</a></li>
-<li class="fragment"><a href="#/exemplos" id="/toc-exemplos">Exemplos</a></li>
 <li class="fragment"><a href="#/iv" id="/toc-iv">IV</a></li>
+<li class="fragment"><a href="#/aplicação" id="/toc-aplicação">Aplicação</a></li>
 </ul>
 </nav>
 </section>
@@ -362,16 +426,22 @@ Prof.&nbsp;Carlos Trucíos <br> ctrucios@unicamp.br
 <section id="introdução-1" class="slide level2">
 <h2>Introdução</h2>
 <ul>
-<li class="fragment"></li>
+<li class="fragment"><strong>Confusão:</strong> variáveis de confusão não mensuradas geram estimadores não viesados do efeito causal.</li>
+<li class="fragment">Para identificar o efeito causal de <span class="math inline">\(D\)</span> sob <span class="math inline">\(Y\)</span> (com variáveis de confusão não medidas), precisamos de uma variável <span class="math inline">\(Z\)</span> que satisfaça as seguintes caracteristicas:</li>
 </ul>
-</section></section>
-<section>
-<section id="exemplos" class="title-slide slide level1 center">
-<h1>Exemplos</h1>
-
+<div class="fragment">
+<center>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="grViz html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-b1a036190d4d2d339e4f" style="width:960px;height:480px;"></div>
+<script type="application/json" data-for="htmlwidget-b1a036190d4d2d339e4f">{"x":{"diagram":"\ndigraph {\n  graph []\n  node [shape = plaintext]\n    U\n    Z\n    D\n    Y\n  edge []\n    D->Y\n    Z->D\n    U->Y\n    U->D\n  { rank = same; Z; D; Y }\n}\n","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script>
+</div>
+</div>
+</center>
+</div>
 </section>
-<section id="exemplos-1" class="slide level2">
-<h2>Exemplos</h2>
+<section id="introdução-2" class="slide level2">
+<h2>Introdução</h2>
 <div class="callout callout-note callout-captioned callout-style-default">
 <div class="callout-body">
 <div class="callout-caption">
@@ -381,7 +451,22 @@ Prof.&nbsp;Carlos Trucíos <br> ctrucios@unicamp.br
 <p><strong>Exemplo 1</strong></p>
 </div>
 <div class="callout-content">
-
+<p>Angrist e Krueger (1991) estudaram como a escolaridade (em anos) impacta nos salários. Eles utilizaram o trimestre de nascimento como variável instrumental. Esta IV é válida pois é trimestre de nascimento é pseudo-ateatório, afeta os anos de escolaridade (dependendo o trimetre de nascimento, algumas crianças começam a escola com mais ou menos anos) e não parece afetar diretamente os salários.</p>
+</div>
+</div>
+</div>
+<div class="fragment">
+<div class="callout callout-note callout-captioned callout-style-default">
+<div class="callout-body">
+<div class="callout-caption">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Exemplo 2</strong></p>
+</div>
+<div class="callout-content">
+<p>Angrist e Evans (1998) estudaram o efeito do tamanho da família na empregabilidade da mãe. Eles utilizaram a composição sexual dos irmãos como IV. Este IV é plausível por causa da pseudo-randomização da composição sexual dos irmãos. Além disso, os pais em os EUA com dois filhos do mesmo sexo têm maior probabilidade de ter um terceiro filho do que aqueles pais com dois filhos de sexo diferente. Também é plausível que a composição sexual dos irmãos não afeta diretamente o emprego e o trabalho da mãe</p>
+</div>
 </div>
 </div>
 </div>
@@ -418,7 +503,7 @@ Prof.&nbsp;Carlos Trucíos <br> ctrucios@unicamp.br
 </section>
 <section id="iv-3" class="slide level2">
 <h2>IV</h2>
-<p>E se o modelo for da forma <span class="math display">\[Y = D^T \beta + e, \quad \text{mas } \quad \mathbb{E}(D\epsilon) \neq 0\]</span></p>
+<p>E se o modelo for da forma <span class="math display">\[Y = D^T \beta + e, \quad \text{mas } \quad \mathbb{E}(D\epsilon) \neq 0?\]</span></p>
 <div class="fragment">
 <p>Neste caso, teremos que</p>
 <p><span class="math display">\[\hat{\beta} \xrightarrow{p} \beta + \mathbb{E}(DD^T)^{-1} \mathbb{E}(D\epsilon) \neq \beta\]</span></p>
@@ -434,7 +519,7 @@ Prof.&nbsp;Carlos Trucíos <br> ctrucios@unicamp.br
 <p><strong>Definição</strong></p>
 </div>
 <div class="callout-content">
-<p>Quando <span class="math inline">\(\mathbb{E}(eD) = 0\)</span> dizemos que <span class="math inline">\(D\)</span> é <em>exógena</em> e quando <span class="math inline">\(\mathbb{E}(eD) \neq 0\)</span> dizemos que <span class="math inline">\(D\)</span> é <em>endógena</em>.</p>
+<p>Quando <span class="math inline">\(\mathbb{E}(De) = 0\)</span> dizemos que <span class="math inline">\(D\)</span> é <em>exógena</em> e quando <span class="math inline">\(\mathbb{E}(De) \neq 0\)</span> dizemos que <span class="math inline">\(D\)</span> é <em>endógena</em>.</p>
 </div>
 </div>
 </div>
@@ -447,7 +532,7 @@ Prof.&nbsp;Carlos Trucíos <br> ctrucios@unicamp.br
 </section>
 <section id="iv-4" class="slide level2">
 <h2>IV</h2>
-<p>Quando <span class="math inline">\(D\)</span> é endógena, <span class="math inline">\(\hat{\beta}\)</span> é inconsistente para <span class="math inline">\(\beta\)</span>. Assim, se quisermos um estimador consistente precisamos utilizar informação adicional, surgindo assim o modelo de variáveis instrumentais (IV).</p>
+<p>Quando <span class="math inline">\(D\)</span> é endógena, <span class="math inline">\(\hat{\beta}\)</span> é inconsistente para <span class="math inline">\(\beta\)</span>. Assim, se quisermos um estimador consistente precisamos utilizar <strong>informação adicional</strong>, surgindo assim o modelo de variáveis instrumentais (IV).</p>
 <div class="fragment">
 <div class="callout callout-tip callout-captioned callout-style-default">
 <div class="callout-body">
@@ -458,14 +543,14 @@ Prof.&nbsp;Carlos Trucíos <br> ctrucios@unicamp.br
 <p><strong>Definição: Modelos linear de IV</strong></p>
 </div>
 <div class="callout-content">
-<p><span class="math display">\[Y = D^T \beta + e, \quad com \quad \mathbb{E}(\epsilon Z) = 0\]</span></p>
+<p><span class="math display">\[Y = D^T \beta + e, \quad com \quad \mathbb{E}(Z \epsilon) = 0\]</span></p>
 </div>
 </div>
 </div>
 </div>
 <div class="fragment">
 <ul>
-<li class="fragment">O modelo de IV permite que <span class="math inline">\(\mathbb{E}(eD) \neq 0\)</span> mas precisa que <span class="math inline">\(\mathbb{E}(\epsilon Z) = 0\)</span></li>
+<li class="fragment">O modelo de IV permite que <span class="math inline">\(\mathbb{E}(De) \neq 0\)</span> mas precisa que <span class="math inline">\(\mathbb{E}(Z \epsilon) = 0\)</span></li>
 <li class="fragment"><span class="math inline">\(\mathbb{E}(e) = 0\)</span> está implícita e permite incluir intercepto no modelo.</li>
 <li class="fragment">A suposição de que <span class="math inline">\(Z\)</span> e <span class="math inline">\(\epsilon\)</span> devem ser não correlacionados não ajuda muito por si só (afinal, qualquer perturbação aleatória é também não correlacionada com <span class="math inline">\(\epsilon\)</span>).</li>
 <li class="fragment">Assim, <span class="math inline">\(Z\)</span> deve também ser correlacionado com <span class="math inline">\(D\)</span>.</li>
@@ -477,8 +562,8 @@ Prof.&nbsp;Carlos Trucíos <br> ctrucios@unicamp.br
 <center>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
-<div class="grViz html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-dd2e842b912c5d2a49b5" style="width:960px;height:480px;"></div>
-<script type="application/json" data-for="htmlwidget-dd2e842b912c5d2a49b5">{"x":{"diagram":"\ndigraph {\n  graph []\n  node [shape = plaintext]\n    D\n    e\n    Y\n    Z\n  edge []\n    D->Y\n    Z->D\n    e->Y\n    e->D\n  { rank = same; Z; D; Y }\n}\n","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script>
+<div class="grViz html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-09ae7ea8e2911f0367ae" style="width:960px;height:480px;"></div>
+<script type="application/json" data-for="htmlwidget-09ae7ea8e2911f0367ae">{"x":{"diagram":"\ndigraph {\n  graph []\n  node [shape = plaintext]\n    D\n    e\n    Y\n    Z\n  edge []\n    D->Y\n    Z->D\n    e->Y\n    e->D\n  { rank = same; Z; D; Y }\n}\n","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script>
 </div>
 </div>
 </center>
@@ -531,10 +616,11 @@ Prof.&nbsp;Carlos Trucíos <br> ctrucios@unicamp.br
 <h2>IV: Caso sobreidentificado</h2>
 <ul>
 <li class="fragment">O caso anterior, é util quando <span class="math inline">\(Z\)</span> e <span class="math inline">\(D\)</span> tem a mesma dimensão.</li>
-<li class="fragment">Se <span class="math inline">\(Z\)</span> tiver dimensão menor do que <span class="math inline">\(D\)</span> e <span class="math inline">\(\mathbb{E}(Z D^T)\)</span> não tem posto completo <span class="math display">\[\mathbb{E}(ZY) = \mathbb{E}(ZD^T)\beta,\]</span> tem infinitas soluções.</li>
+<li class="fragment">Se <span class="math inline">\(Z\)</span> tiver dimensão menor do que <span class="math inline">\(D\)</span>, ou, de forma mais geral, se <span class="math inline">\(\mathbb{E}(Z D^T)\)</span> não tem posto completo, <span class="math inline">\(\mathbb{E}(ZY) = \mathbb{E}(ZD^T)\beta,\)</span> tem infinitas soluções.</li>
 <li class="fragment">Este caso é conhecido como subidentificado, refere-se a quando <span class="math inline">\(\beta\)</span> não é unicamente identificado (não será discutido aqui)</li>
 <li class="fragment">Para garantirmos identificabiblidade, precisamos que a dimensão de <span class="math inline">\(Z\)</span> seja, pelo menos, igual à dimensão de <span class="math inline">\(D\)</span>.</li>
 <li class="fragment">Quando <span class="math inline">\(Z\)</span> tem dimensão maior do que <span class="math inline">\(D\)</span>, temos formas alternativas de determinar <span class="math inline">\(\beta\)</span> a partir da relação <span class="math display">\[\mathbb{E}(ZY) = \mathbb{E}(ZD^T)\beta.\]</span></li>
+<li class="fragment">Este caso é conhecido sobre sobreidentificado e nestes casos utilizamos MQ2E.</li>
 </ul>
 </section>
 <section id="iv-caso-sobreidentificado-1" class="slide level2">
@@ -563,7 +649,7 @@ Y_i, \\
 &amp; = \Big ( \displaystyle \sum_{i = 1}^n \hat{D}_i \hat{D}_i^T \Big)^{-1} \sum_{i = 1}^n \hat{D}_i
 (D_i^T \beta + \epsilon_i), \\
 &amp; = \Big ( \displaystyle \sum_{i = 1}^n \hat{D}_i \hat{D}_i^T \Big)^{-1} \sum_{i = 1}^n \hat{D}_i
-D_i^T \beta + \Big ( \displaystyle \sum_{i = 1}^n \hat{D}_i \hat{D}_i^T \Big)^{-1} \hat{D}_i \epsilon_i), \\
+D_i^T \beta + \Big ( \displaystyle \sum_{i = 1}^n \hat{D}_i \hat{D}_i^T \Big)^{-1} \sum_{i = 1}^n \hat{D}_i \epsilon_i), \\
 \end{align}\]</span></p>
 </div>
 </section>
@@ -571,7 +657,179 @@ D_i^T \beta + \Big ( \displaystyle \sum_{i = 1}^n \hat{D}_i \hat{D}_i^T \Big)^{-
 <h2>IV: Caso sobreidentificado</h2>
 <p>Da primeira regressão temos que <span class="math inline">\(D_i = \hat{D}_i + \tilde{D}_i\)</span>, tal que <span class="math display">\[\displaystyle \sum_{i = 1}^n \hat{D}_i \tilde{D}_i^T = 0\]</span></p>
 <div class="fragment">
-<p>Então, <span class="math display">\[\sum_{i = 1}^n \hat{D}_i D_i^T = \sum_{i = 1}^n \hat{D}_i \hat{D}_i^T\]</span></p>
+<p>Então, <span class="math display">\[\sum_{i = 1}^n \hat{D}_i D_i^T = \sum_{i = 1}^n \hat{D}_i \hat{D}_i^T.\]</span></p>
+</div>
+<div class="fragment">
+<p><span class="math display">\[\hat{\beta}_{MQ2E} = \beta + \Big ( \displaystyle \sum_{i = 1}^n \hat{D}_i \hat{D}_i^T \Big)^{-1} \sum_{i = 1}^n \hat{D}_i \epsilon_i\]</span></p>
+</div>
+</section>
+<section id="iv-caso-sobreidentificado-3" class="slide level2">
+<h2>IV: Caso sobreidentificado</h2>
+<p>Da primeira regressão temos que <span class="math display">\[\hat{D}_i = \hat{\Gamma}^T Z_i.\]</span></p>
+<div class="fragment">
+<p><span class="math display">\[\begin{align}
+\hat{\beta}_{MQ2E} &amp; = \beta + \Big (\hat{\Gamma}^T \big ( n^{-1}\displaystyle \sum_{i = 1}^n Z_i Z_i^T\big) \hat{\Gamma} \Big)^{-1} \hat{\Gamma}^T \underbrace{n^{-1}\sum_{i = 1}^n Z_i \epsilon_i}_{\xrightarrow{p} \mathbb{E}(Z\epsilon)}, \\
+\hat{\beta}_{MQ2E} &amp; \xrightarrow{p} \beta.
+\end{align}\]</span></p>
+</div>
+</section>
+<section id="iv-exemplo" class="slide level2">
+<h2>IV: exemplo</h2>
+<p>Consideremos o seguinte modelo:</p>
+<p><span class="math display">\[\begin{align}
+Y_i &amp; = \beta_0 + \beta_1 D_i + \beta_2^T X_i + \epsilon_i, \\
+D_i &amp; = \gamma_0 + \gamma_1 Z_1 + \gamma_2^T X_i + \varepsilon_i,
+\end{align}\]</span> em que <span class="math inline">\(D\)</span> é endógena, <span class="math inline">\(Z\)</span> é a IV e <span class="math inline">\(X\)</span> são outras variáveis (todas exógenas).</p>
+<div class="fragment">
+<p>Este é um caso especial do visto anteriormente com:</p>
+<div>
+<ul>
+<li><span class="math inline">\(D = (1, D, X)\)</span></li>
+<li><span class="math inline">\(Z = (1, Z, X)\)</span></li>
+</ul>
+</div>
+</div>
+</section>
+<section id="iv-exemplo-1" class="slide level2">
+<h2>IV: exemplo</h2>
+<div class="callout callout-tip callout-captioned callout-style-default">
+<div class="callout-body">
+<div class="callout-caption">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>MQ2E</strong></p>
+</div>
+<div class="callout-content">
+<p>Para o obter o estimador através do método de minimos quadrados em 2 estágios, é preciso ajustar dois modelos de regressão:</p>
+<ol type="1">
+<li class="fragment">Ajustar por MQO a regressão de <span class="math inline">\(D\)</span> sob <span class="math inline">\((1, Z, X)\)</span> e obter os valores ajustados <span class="math inline">\(\hat{D}\)</span></li>
+<li class="fragment">Ajustar por MQO a regressão de <span class="math inline">\(Y\)</span> sob <span class="math inline">\((1, \hat{D}, X)\)</span> e obter o coeficiente <span class="math inline">\(\hat{\beta}_{MQ2E}\)</span>, em particular <span class="math inline">\(\hat{\beta}_{1, MQ2E}\)</span></li>
+</ol>
+</div>
+</div>
+</div>
+</section></section>
+<section>
+<section id="aplicação" class="title-slide slide level1 center">
+<h1>Aplicação</h1>
+
+</section>
+<section id="aplicação-1" class="slide level2">
+<h2>Aplicação</h2>
+<div class="callout callout-note callout-captioned callout-style-default">
+<div class="callout-body">
+<div class="callout-caption">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Aplicação</strong></p>
+</div>
+<div class="callout-content">
+<p>Card (1993) está interessado em estimar o efeito da educação sobre os salários. Os datos estão disponíveis <a href="https://dataverse.harvard.edu/file.xhtml?fileId=7440266&amp;version=4.0">aqui</a> e contém informação de 3010 homens com idades entre 14 e 24 no ano de 1966. Card utiliza como IV (<span class="math inline">\(Z\)</span>) uma variável binária que recebe o valor de 1 se a pessoa cresceu perto a uma faculdade, <span class="math inline">\(D\)</span> mede os anos de educação e <span class="math inline">\(Y\)</span> é o log-salário. Outras covariáveis tais como idade, raça, etc, são também incluidas.</p>
+</div>
+</div>
+</div>
+<div class="fragment">
+<div class="cell" data-layout-align="center">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="fu">library</span>(car)</span>
+<span id="cb1-2"><a href="#cb1-2"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb1-3"><a href="#cb1-3"></a>dados <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"datasets/card1995.csv"</span>)</span>
+<span id="cb1-4"><a href="#cb1-4"></a><span class="fu">glimpse</span>(dados)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>Rows: 3,010
+Columns: 36
+$ X        &lt;int&gt; 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18…
+$ id       &lt;int&gt; 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 19, 2…
+$ nearc2   &lt;int&gt; 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1…
+$ nearc4   &lt;int&gt; 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1…
+$ educ     &lt;int&gt; 7, 12, 12, 11, 12, 12, 18, 14, 12, 12, 9, 12, 11, 11, 16, 14,…
+$ age      &lt;int&gt; 29, 27, 34, 27, 34, 26, 33, 29, 28, 29, 28, 26, 24, 30, 31, 2…
+$ fatheduc &lt;int&gt; NA, 8, 14, 11, 8, 9, 14, 14, 12, 12, 11, 11, 11, 11, NA, 15, …
+$ motheduc &lt;int&gt; NA, 8, 12, 12, 7, 12, 14, 14, 12, 12, 12, 6, 6, 6, 8, 12, 8, …
+$ weight   &lt;int&gt; 158413, 380166, 367470, 380166, 367470, 380166, 367470, 49663…
+$ momdad14 &lt;int&gt; 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1…
+$ sinmom14 &lt;int&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0…
+$ step14   &lt;int&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0…
+$ reg661   &lt;int&gt; 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1…
+$ reg662   &lt;int&gt; 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0…
+$ reg663   &lt;int&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0…
+$ reg664   &lt;int&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0…
+$ reg665   &lt;int&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0…
+$ reg666   &lt;int&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0…
+$ reg667   &lt;int&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0…
+$ reg668   &lt;int&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0…
+$ reg669   &lt;int&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0…
+$ south66  &lt;int&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0…
+$ black    &lt;int&gt; 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0…
+$ smsa     &lt;int&gt; 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1…
+$ south    &lt;int&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1…
+$ smsa66   &lt;int&gt; 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1…
+$ wage     &lt;int&gt; 548, 481, 721, 250, 729, 500, 565, 608, 425, 515, 225, 400, 4…
+$ enroll   &lt;int&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0…
+$ KWW      &lt;int&gt; 15, 35, 42, 25, 34, 38, 41, 46, 32, 34, 29, 34, 22, 27, 43, 3…
+$ IQ       &lt;int&gt; NA, 93, 103, 88, 108, 85, 119, 108, 96, 97, 84, 89, 93, 74, 1…
+$ married  &lt;int&gt; 1, 1, 1, 1, 1, 1, 1, 1, 4, 1, 1, 1, 1, 1, 1, 6, 1, 1, 6, 1, 1…
+$ libcrd14 &lt;int&gt; 0, 1, 1, 1, 0, 1, 1, 1, 0, 1, 0, 1, 1, 0, 1, 1, 1, 1, 0, 0, 1…
+$ exper    &lt;int&gt; 16, 9, 16, 10, 16, 8, 9, 9, 10, 11, 13, 8, 7, 13, 9, 4, 16, 9…
+$ lwage    &lt;dbl&gt; 6.306275, 6.175867, 6.580639, 5.521461, 6.591674, 6.214608, 6…
+$ expersq  &lt;int&gt; 256, 81, 256, 100, 256, 64, 81, 81, 100, 121, 169, 64, 49, 16…
+$ region   &lt;int&gt; 661, 661, 661, 662, 662, 662, 662, 662, 662, 662, 669, 662, 6…</code></pre>
+</div>
+</div>
+</div>
+</section>
+<section id="aplicação-3" class="slide level2">
+<h2>Aplicação</h2>
+<div class="cell" data-layout-align="center">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a>Y <span class="ot">&lt;-</span> dados<span class="sc">$</span>lwage</span>
+<span id="cb3-2"><a href="#cb3-2"></a>D <span class="ot">&lt;-</span> dados<span class="sc">$</span>educ</span>
+<span id="cb3-3"><a href="#cb3-3"></a>Z <span class="ot">&lt;-</span> dados<span class="sc">$</span>nearc4</span>
+<span id="cb3-4"><a href="#cb3-4"></a>X <span class="ot">&lt;-</span> dados[, <span class="fu">c</span>(<span class="st">"exper"</span>, <span class="st">"expersq"</span>, <span class="st">"black"</span>, <span class="st">"south"</span>, <span class="st">"smsa"</span>, <span class="st">"reg661"</span>, <span class="st">"reg662"</span>, </span>
+<span id="cb3-5"><a href="#cb3-5"></a>               <span class="st">"reg663"</span>, <span class="st">"reg664"</span>, <span class="st">"reg665"</span>, <span class="st">"reg666"</span>, <span class="st">"reg667"</span>, <span class="st">"reg668"</span>, <span class="st">"smsa66"</span>)]</span>
+<span id="cb3-6"><a href="#cb3-6"></a>X <span class="ot">&lt;-</span> <span class="fu">as.matrix</span>(X)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<div class="fragment">
+<div class="cell" data-layout-align="center">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a>D_hat <span class="ot">&lt;-</span> <span class="fu">lm</span>(D <span class="sc">~</span> X <span class="sc">+</span> Z)<span class="sc">$</span>fitted.values</span>
+<span id="cb4-2"><a href="#cb4-2"></a>modelo_iv <span class="ot">&lt;-</span> <span class="fu">lm</span>(Y <span class="sc">~</span> D_hat <span class="sc">+</span> X)</span>
+<span id="cb4-3"><a href="#cb4-3"></a>beta_hat <span class="ot">&lt;-</span> <span class="fu">coef</span>(modelo_iv)[<span class="dv">2</span>]</span>
+<span id="cb4-4"><a href="#cb4-4"></a>beta_hat</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>    D_hat 
+0.1315038 </code></pre>
+</div>
+</div>
+</div>
+<div class="fragment">
+<div class="cell" data-layout-align="center">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a>modelo_iv<span class="sc">$</span>residuals <span class="ot">&lt;-</span> Y <span class="sc">-</span> <span class="fu">cbind</span>(<span class="dv">1</span>, D, X) <span class="sc">%*%</span> <span class="fu">coef</span>(modelo_iv)</span>
+<span id="cb6-2"><a href="#cb6-2"></a>V <span class="ot">&lt;-</span> <span class="fu">sqrt</span>(<span class="fu">hccm</span>(modelo_iv, <span class="at">type =</span> <span class="st">"hc0"</span>)[<span class="dv">2</span>, <span class="dv">2</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+</div>
+<div class="fragment">
+<div class="cell" data-layout-align="center">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1"></a><span class="fu">cbind</span>(beta_hat, beta_hat <span class="sc">-</span> <span class="fl">1.96</span><span class="sc">*</span>V, beta_hat <span class="sc">+</span> <span class="fl">1.96</span><span class="sc">*</span>V)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>       beta_hat                     
+D_hat 0.1315038 0.02566476 0.2373429</code></pre>
+</div>
+</div>
 </div>
 </section>
 <section id="referências" class="slide level2">

@@ -39,16 +39,54 @@ format:
 # Introdução
 ## Introdução
 
--
+- **Confusão:** variáveis de confusão não mensuradas geram estimadores não viesados do efeito causal.
+- Para identificar o efeito causal de $D$ sob $Y$ (com variáveis de confusão não medidas), precisamos de uma variável $Z$ que satisfaça as seguintes caracteristicas:
 
-# Exemplos
-## Exemplos
+. . . 
+
+
+<center>
+```{r}
+DiagrammeR::grViz("
+digraph {
+  graph []
+  node [shape = plaintext]
+    U
+    Z
+    D
+    Y
+  edge []
+    D->Y
+    Z->D
+    U->Y
+    U->D
+  { rank = same; Z; D; Y }
+}
+")
+```
+</center>
+
+
+
+
+## Introdução
 
 ::: {.callout-note}
 ### Exemplo 1
-
-
+Angrist e Krueger (1991) estudaram como a escolaridade (em anos) impacta nos salários. Eles utilizaram o trimestre de nascimento como variável instrumental. Esta IV é válida pois é trimestre de nascimento é pseudo-ateatório, afeta os anos de escolaridade (dependendo o trimetre de nascimento, algumas crianças começam a escola com mais ou menos anos) e não parece afetar diretamente os salários.
 :::
+
+
+
+. . . 
+
+
+::: {.callout-note}
+### Exemplo 2
+Angrist e Evans (1998) estudaram o efeito do tamanho da família na empregabilidade da mãe.  Eles utilizaram a composição sexual dos irmãos como IV. Este IV é plausível por causa da pseudo-randomização da composição sexual dos irmãos. Além disso, os pais em
+os EUA com dois filhos do mesmo sexo têm maior probabilidade de ter um terceiro filho do que aqueles pais com dois filhos de sexo diferente. Também é plausível que a composição sexual dos irmãos não afeta diretamente o emprego e o trabalho da mãe
+:::
+
 
 
 # IV
@@ -88,7 +126,7 @@ O estimador de MQO é dado por $$\hat{\beta} = \Big (\displaystyle \sum_{i = 1}^
 
 ## IV
 
-E se o modelo for da forma  $$Y = D^T \beta + e, \quad \text{mas } \quad \mathbb{E}(D\epsilon) \neq 0$$
+E se o modelo for da forma  $$Y = D^T \beta + e, \quad \text{mas } \quad \mathbb{E}(D\epsilon) \neq 0?$$
 
 . . . 
 
@@ -104,7 +142,7 @@ Isto muda completamente o modelo anterior e o estimador deixa de ter boas propri
 
 ::: {.callout-tip}
 ### Definição
-Quando $\mathbb{E}(eD) = 0$ dizemos que $D$ é _exógena_ e quando $\mathbb{E}(eD) \neq 0$ dizemos que $D$ é _endógena_.
+Quando $\mathbb{E}(De) = 0$ dizemos que $D$ é _exógena_ e quando $\mathbb{E}(De) \neq 0$ dizemos que $D$ é _endógena_.
 :::
 
 
@@ -119,20 +157,20 @@ Quando $\mathbb{E}(eD) = 0$ dizemos que $D$ é _exógena_ e quando $\mathbb{E}(e
 ## IV
 
 
-Quando $D$ é endógena, $\hat{\beta}$ é inconsistente para $\beta$. Assim, se quisermos um estimador consistente precisamos utilizar informação adicional, surgindo assim o modelo de variáveis instrumentais (IV).
+Quando $D$ é endógena, $\hat{\beta}$ é inconsistente para $\beta$. Assim, se quisermos um estimador consistente precisamos utilizar **informação adicional**, surgindo assim o modelo de variáveis instrumentais (IV).
 
 . . . 
 
 
 ::: {.callout-tip}
 ### Definição: Modelos linear de IV
-$$Y = D^T \beta + e, \quad com \quad \mathbb{E}(\epsilon Z) = 0$$
+$$Y = D^T \beta + e, \quad com \quad \mathbb{E}(Z \epsilon) = 0$$
 :::
 
 
 . . . 
 
-- O modelo de IV permite que $\mathbb{E}(eD) \neq 0$ mas precisa que  $\mathbb{E}(\epsilon Z) = 0$
+- O modelo de IV permite que $\mathbb{E}(De) \neq 0$ mas precisa que  $\mathbb{E}(Z \epsilon) = 0$
 - $\mathbb{E}(e) = 0$ está implícita e permite incluir intercepto no modelo.
 - A suposição de que $Z$ e $\epsilon$ devem ser não correlacionados não ajuda muito por si só (afinal, qualquer perturbação aleatória é também não correlacionada com $\epsilon$).
 - Assim, $Z$ deve também ser correlacionado com $D$.
@@ -224,10 +262,11 @@ Ou seja, com uma IV $Z$ binária e uma variável de tratamento $D$ também biná
 ## IV: Caso sobreidentificado
 
 - O caso anterior, é util quando $Z$ e $D$ tem a mesma dimensão. 
-- Se $Z$ tiver dimensão menor do que $D$ e $\mathbb{E}(Z D^T)$ não tem posto completo $$\mathbb{E}(ZY) = \mathbb{E}(ZD^T)\beta,$$ tem infinitas soluções.
+- Se $Z$ tiver dimensão menor do que $D$, ou, de forma mais geral, se $\mathbb{E}(Z D^T)$ não tem posto completo, $\mathbb{E}(ZY) = \mathbb{E}(ZD^T)\beta,$ tem infinitas soluções.
 - Este caso é conhecido como subidentificado, refere-se a quando $\beta$ não é unicamente identificado (não será discutido aqui)
 - Para garantirmos identificabiblidade, precisamos que a dimensão de $Z$ seja, pelo menos, igual à dimensão de $D$.
 - Quando $Z$ tem dimensão maior do que $D$, temos formas alternativas de determinar $\beta$ a partir da relação $$\mathbb{E}(ZY) = \mathbb{E}(ZD^T)\beta.$$
+- Este caso é conhecido sobre sobreidentificado e nestes casos utilizamos MQ2E.
 
 
 
@@ -252,7 +291,7 @@ Y_i, \\
 & = \Big ( \displaystyle \sum_{i = 1}^n \hat{D}_i \hat{D}_i^T \Big)^{-1} \sum_{i = 1}^n \hat{D}_i
 (D_i^T \beta + \epsilon_i), \\
 & = \Big ( \displaystyle \sum_{i = 1}^n \hat{D}_i \hat{D}_i^T \Big)^{-1} \sum_{i = 1}^n \hat{D}_i
-D_i^T \beta + \Big ( \displaystyle \sum_{i = 1}^n \hat{D}_i \hat{D}_i^T \Big)^{-1} \hat{D}_i \epsilon_i), \\
+D_i^T \beta + \Big ( \displaystyle \sum_{i = 1}^n \hat{D}_i \hat{D}_i^T \Big)^{-1} \sum_{i = 1}^n \hat{D}_i \epsilon_i), \\
 \end{align}
 
 
@@ -264,7 +303,130 @@ Da primeira regressão temos que $D_i = \hat{D}_i + \tilde{D}_i$, tal que $$\dis
 
 . . .
 
-Então, $$\sum_{i = 1}^n \hat{D}_i D_i^T = \sum_{i = 1}^n \hat{D}_i \hat{D}_i^T$$
+Então, $$\sum_{i = 1}^n \hat{D}_i D_i^T = \sum_{i = 1}^n \hat{D}_i \hat{D}_i^T.$$
+
+. . . 
+
+$$\hat{\beta}_{MQ2E} = \beta + \Big ( \displaystyle \sum_{i = 1}^n \hat{D}_i \hat{D}_i^T \Big)^{-1} \sum_{i = 1}^n \hat{D}_i \epsilon_i$$
+
+## IV: Caso sobreidentificado
+
+Da primeira regressão temos que $$\hat{D}_i = \hat{\Gamma}^T Z_i.$$
+
+. . . 
+
+
+\begin{align}
+\hat{\beta}_{MQ2E} & = \beta + \Big (\hat{\Gamma}^T \big ( n^{-1}\displaystyle \sum_{i = 1}^n Z_i Z_i^T\big) \hat{\Gamma} \Big)^{-1} \hat{\Gamma}^T \underbrace{n^{-1}\sum_{i = 1}^n Z_i \epsilon_i}_{\xrightarrow{p} \mathbb{E}(Z\epsilon)}, \\
+\hat{\beta}_{MQ2E} & \xrightarrow{p} \beta.
+\end{align}
+
+
+
+## IV: exemplo
+
+Consideremos o seguinte modelo:
+
+\begin{align}
+Y_i & = \beta_0 + \beta_1 D_i + \beta_2^T X_i + \epsilon_i, \\
+D_i & = \gamma_0 + \gamma_1 Z_1 + \gamma_2^T X_i + \varepsilon_i,
+\end{align}  em que $D$ é endógena, $Z$ é a IV e $X$ são outras variáveis (todas exógenas).
+
+. . . 
+
+Este é um caso especial do visto anteriormente com:
+
+::: {.nonincremental}
+
+- $D = (1, D, X)$
+- $Z = (1, Z, X)$
+
+:::
+
+
+## IV: exemplo
+
+
+
+
+::: {.callout-tip}
+### MQ2E
+Para o obter o estimador através do método de minimos quadrados em 2 estágios, é preciso ajustar dois modelos de regressão:
+
+1. Ajustar por MQO a regressão de $D$ sob $(1, Z, X)$ e obter os valores ajustados $\hat{D}$
+2. Ajustar por MQO a regressão de $Y$ sob $(1, \hat{D}, X)$ e obter o coeficiente $\hat{\beta}_{MQ2E}$, em particular $\hat{\beta}_{1, MQ2E}$
+
+:::
+
+
+# Aplicação
+
+## Aplicação
+
+::: {.callout-note}
+### Aplicação
+Card (1993) está interessado em estimar o efeito da educação sobre os salários. Os datos estão disponíveis [aqui](https://dataverse.harvard.edu/file.xhtml?fileId=7440266&version=4.0) e contém informação de 3010 homens com idades entre 14 e 24 no ano de 1966. Card utiliza como IV ($Z$) uma variável binária que recebe o valor de 1 se a pessoa cresceu perto a uma faculdade, $D$ mede os anos de educação e $Y$ é o log-salário. Outras covariáveis tais como idade, raça, etc, são também incluidas.
+:::
+
+
+. . . 
+
+
+```{r}
+#| echo: true
+library(car)
+library(dplyr)
+dados <- read.csv("datasets/card1995.csv")
+glimpse(dados)
+```
+
+
+
+## Aplicação
+
+```{r}
+#| echo: true
+Y <- dados$lwage
+D <- dados$educ
+Z <- dados$nearc4
+X <- dados[, c("exper", "expersq", "black", "south", "smsa", "reg661", "reg662", 
+               "reg663", "reg664", "reg665", "reg666", "reg667", "reg668", "smsa66")]
+X <- as.matrix(X)
+```
+
+
+. . . 
+
+
+```{r}
+#| echo: true
+D_hat <- lm(D ~ X + Z)$fitted.values
+modelo_iv <- lm(Y ~ D_hat + X)
+beta_hat <- coef(modelo_iv)[2]
+beta_hat
+```
+
+
+. . . 
+
+
+```{r}
+#| echo: true
+modelo_iv$residuals <- Y - cbind(1, D, X) %*% coef(modelo_iv)
+V <- sqrt(hccm(modelo_iv, type = "hc0")[2, 2])
+```
+
+
+. . . 
+
+
+```{r}
+#| echo: true
+cbind(beta_hat, beta_hat - 1.96*V, beta_hat + 1.96*V)
+```
+
+
+
 
 ## Referências
 
