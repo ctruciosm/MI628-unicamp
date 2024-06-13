@@ -7,7 +7,7 @@
 <link href="MI628_Aula19_files/libs/quarto-html/tippy.css" rel="stylesheet">
 <link href="MI628_Aula19_files/libs/quarto-html/quarto-html.min.css" rel="stylesheet" data-mode="light">
 <link href="MI628_Aula19_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
-  <meta name="generator" content="quarto-1.2.280">
+  <meta name="generator" content="quarto-1.2.269">
 
   <meta name="author" content="Prof.&nbsp;Carlos Trucíos  ctrucios@unicamp.br">
   <title>Inferência Causal</title>
@@ -384,7 +384,7 @@
       margin-right: 0; 
     }
   </style>
-  <script src="MI628_Aula19_files/libs/htmlwidgets-1.6.1/htmlwidgets.js"></script>
+  <script src="MI628_Aula19_files/libs/htmlwidgets-1.5.4/htmlwidgets.js"></script>
   <script src="MI628_Aula19_files/libs/viz-1.8.2/viz.js"></script>
   <link href="MI628_Aula19_files/libs/DiagrammeR-styles-0.2/styles.css" rel="stylesheet">
   <script src="MI628_Aula19_files/libs/grViz-binding-1.0.11/grViz.js"></script>
@@ -426,15 +426,15 @@ Prof.&nbsp;Carlos Trucíos <br> ctrucios@unicamp.br
 <section id="introdução-1" class="slide level2">
 <h2>Introdução</h2>
 <ul>
-<li class="fragment"><strong>Confusão:</strong> variáveis de confusão não mensuradas geram estimadores não viesados do efeito causal.</li>
+<li class="fragment"><strong>Confusão:</strong> variáveis de confusão não mensuradas geram estimadores viesados do efeito causal.</li>
 <li class="fragment">Para identificar o efeito causal de <span class="math inline">\(D\)</span> sob <span class="math inline">\(Y\)</span> (com variáveis de confusão não medidas), precisamos de uma variável <span class="math inline">\(Z\)</span> que satisfaça as seguintes caracteristicas:</li>
 </ul>
 <div class="fragment">
 <center>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
-<div class="grViz html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-b1a036190d4d2d339e4f" style="width:960px;height:480px;"></div>
-<script type="application/json" data-for="htmlwidget-b1a036190d4d2d339e4f">{"x":{"diagram":"\ndigraph {\n  graph []\n  node [shape = plaintext]\n    U\n    Z\n    D\n    Y\n  edge []\n    D->Y\n    Z->D\n    U->Y\n    U->D\n  { rank = same; Z; D; Y }\n}\n","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-4df408bfecc4a62da894" style="width:960px;height:480px;" class="grViz html-widget"></div>
+<script type="application/json" data-for="htmlwidget-4df408bfecc4a62da894">{"x":{"diagram":"\ndigraph {\n  graph []\n  node [shape = plaintext]\n    U\n    Z\n    D\n    Y\n  edge []\n    D->Y\n    Z->D\n    U->Y\n    U->D\n  { rank = same; Z; D; Y }\n}\n","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script>
 </div>
 </div>
 </center>
@@ -465,7 +465,7 @@ Prof.&nbsp;Carlos Trucíos <br> ctrucios@unicamp.br
 <p><strong>Exemplo 2</strong></p>
 </div>
 <div class="callout-content">
-<p>Angrist e Evans (1998) estudaram o efeito do tamanho da família na empregabilidade da mãe. Eles utilizaram a composição sexual dos irmãos como IV. Este IV é plausível por causa da pseudo-randomização da composição sexual dos irmãos. Além disso, os pais em os EUA com dois filhos do mesmo sexo têm maior probabilidade de ter um terceiro filho do que aqueles pais com dois filhos de sexo diferente. Também é plausível que a composição sexual dos irmãos não afeta diretamente o emprego e o trabalho da mãe</p>
+<p>Angrist e Evans (1998) estudaram o efeito do tamanho da família na empregabilidade da mãe. Eles utilizaram a composição sexual dos irmãos como IV. Esta IV é valida por causa da pseudo-aleatorização da composição sexual dos irmãos. Além disso, os pais em os EUA com dois filhos do mesmo sexo têm maior probabilidade de ter um terceiro filho do que aqueles pais com dois filhos de sexo diferente. Também é plausível que a composição sexual dos irmãos não afeta diretamente o emprego e o trabalho da mãe</p>
 </div>
 </div>
 </div>
@@ -519,7 +519,9 @@ Prof.&nbsp;Carlos Trucíos <br> ctrucios@unicamp.br
 <p><strong>Definição</strong></p>
 </div>
 <div class="callout-content">
-<p>Quando <span class="math inline">\(\mathbb{E}(De) = 0\)</span> dizemos que <span class="math inline">\(D\)</span> é <em>exógena</em> e quando <span class="math inline">\(\mathbb{E}(De) \neq 0\)</span> dizemos que <span class="math inline">\(D\)</span> é <em>endógena</em>.</p>
+<center>
+Quando <span class="math inline">\(\mathbb{E}(De) = 0\)</span> dizemos que <span class="math inline">\(D\)</span> é <em>exógena</em> e quando <span class="math inline">\(\mathbb{E}(De) \neq 0\)</span> dizemos que <span class="math inline">\(D\)</span> é <em>endógena</em>.
+</center>
 </div>
 </div>
 </div>
@@ -562,8 +564,8 @@ Prof.&nbsp;Carlos Trucíos <br> ctrucios@unicamp.br
 <center>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
-<div class="grViz html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-09ae7ea8e2911f0367ae" style="width:960px;height:480px;"></div>
-<script type="application/json" data-for="htmlwidget-09ae7ea8e2911f0367ae">{"x":{"diagram":"\ndigraph {\n  graph []\n  node [shape = plaintext]\n    D\n    e\n    Y\n    Z\n  edge []\n    D->Y\n    Z->D\n    e->Y\n    e->D\n  { rank = same; Z; D; Y }\n}\n","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-82f4a8ae92ed51a739b7" style="width:960px;height:480px;" class="grViz html-widget"></div>
+<script type="application/json" data-for="htmlwidget-82f4a8ae92ed51a739b7">{"x":{"diagram":"\ndigraph {\n  graph []\n  node [shape = plaintext]\n    D\n    e\n    Y\n    Z\n  edge []\n    D->Y\n    Z->D\n    e->Y\n    e->D\n  { rank = same; Z; D; Y }\n}\n","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script>
 </div>
 </div>
 </center>
@@ -607,16 +609,11 @@ Prof.&nbsp;Carlos Trucíos <br> ctrucios@unicamp.br
 <p>Que é equivalente ao coeficiente associado a <span class="math inline">\(Z\)</span> na regressão por MQO de <span class="math inline">\(Y\)</span> e <span class="math inline">\(D\)</span> sob <span class="math inline">\(Z\)</span>.</p>
 </div>
 </section>
-<section id="iv-caso-identificado-2" class="slide level2">
-<h2>IV: Caso identificado</h2>
-<p>Se <span class="math inline">\(Z\)</span> for binário, <span class="math display">\[ \beta = \dfrac{\mathbb{E}(Y | Z = 1) - \mathbb{E}(Y | Z = 0)}{\mathbb{E}(D | Z = 1) - \mathbb{E}(D | Z = 0)}.\]</span></p>
-<p>Ou seja, com uma IV <span class="math inline">\(Z\)</span> binária e uma variável de tratamento <span class="math inline">\(D\)</span> também binária, através do método de IV é possível estimamos</p>
-</section>
 <section id="iv-caso-sobreidentificado" class="slide level2">
 <h2>IV: Caso sobreidentificado</h2>
 <ul>
-<li class="fragment">O caso anterior, é util quando <span class="math inline">\(Z\)</span> e <span class="math inline">\(D\)</span> tem a mesma dimensão.</li>
-<li class="fragment">Se <span class="math inline">\(Z\)</span> tiver dimensão menor do que <span class="math inline">\(D\)</span>, ou, de forma mais geral, se <span class="math inline">\(\mathbb{E}(Z D^T)\)</span> não tem posto completo, <span class="math inline">\(\mathbb{E}(ZY) = \mathbb{E}(ZD^T)\beta,\)</span> tem infinitas soluções.</li>
+<li class="fragment">O caso anterior é util quando <span class="math inline">\(Z\)</span> e <span class="math inline">\(D\)</span> tem a mesma dimensão (caso identificado).</li>
+<li class="fragment">Se <span class="math inline">\(Z\)</span> tiver dimensão menor do que <span class="math inline">\(D\)</span>, <span class="math inline">\(\beta\)</span> tem infinitas soluções.</li>
 <li class="fragment">Este caso é conhecido como subidentificado, refere-se a quando <span class="math inline">\(\beta\)</span> não é unicamente identificado (não será discutido aqui)</li>
 <li class="fragment">Para garantirmos identificabiblidade, precisamos que a dimensão de <span class="math inline">\(Z\)</span> seja, pelo menos, igual à dimensão de <span class="math inline">\(D\)</span>.</li>
 <li class="fragment">Quando <span class="math inline">\(Z\)</span> tem dimensão maior do que <span class="math inline">\(D\)</span>, temos formas alternativas de determinar <span class="math inline">\(\beta\)</span> a partir da relação <span class="math display">\[\mathbb{E}(ZY) = \mathbb{E}(ZD^T)\beta.\]</span></li>
@@ -668,10 +665,19 @@ D_i^T \beta + \Big ( \displaystyle \sum_{i = 1}^n \hat{D}_i \hat{D}_i^T \Big)^{-
 <p>Da primeira regressão temos que <span class="math display">\[\hat{D}_i = \hat{\Gamma}^T Z_i.\]</span></p>
 <div class="fragment">
 <p><span class="math display">\[\begin{align}
-\hat{\beta}_{MQ2E} &amp; = \beta + \Big (\hat{\Gamma}^T \big ( n^{-1}\displaystyle \sum_{i = 1}^n Z_i Z_i^T\big) \hat{\Gamma} \Big)^{-1} \hat{\Gamma}^T \underbrace{n^{-1}\sum_{i = 1}^n Z_i \epsilon_i}_{\xrightarrow{p} \mathbb{E}(Z\epsilon)}, \\
-\hat{\beta}_{MQ2E} &amp; \xrightarrow{p} \beta.
+\hat{\beta}_{MQ2E} &amp; = \beta + \Big (\hat{\Gamma}^T \big ( n^{-1}\displaystyle \sum_{i = 1}^n Z_i Z_i^T\big) \hat{\Gamma} \Big)^{-1} \hat{\Gamma}^T \underbrace{n^{-1}\sum_{i = 1}^n Z_i \epsilon_i}_{\xrightarrow{p} \mathbb{E}(Z\epsilon)} \xrightarrow{p} \beta \\
 \end{align}\]</span></p>
 </div>
+<div class="fragment">
+<p>Cuja variância é dada por</p>
+<p><span class="math display">\[\hat{V}_{MQ2E} = \Big ( \displaystyle \sum_{i = 1}^n \hat{D}_i \hat{D}_i^T \Big )^{-1} \Big (\sum_{i = 1}^n \hat{\varepsilon}_i^2 \hat{D}_i \hat{D}_i^T  \Big ) \Big (\sum_{i = 1}^n \hat{D}_i \hat{D}_i^T \Big )^{-1},\]</span> em que <span class="math inline">\(\hat{\varepsilon}_i = Y_i - \hat{\beta}_{MQ2E}D_i\)</span></p>
+</div>
+</section>
+<section id="iv-caso-sobreidentificado-4" class="slide level2">
+<h2>IV: Caso sobreidentificado</h2>
+<p>Ou seja,</p>
+<p><span class="math display">\[\hat{V}_{MQ2E} = \Big ( \displaystyle \sum_{i = 1}^n \hat{D}_i \hat{D}_i^T \Big )^{-1} \Big (\sum_{i = 1}^n \hat{\varepsilon}_i^2 \hat{D}_i \hat{D}_i^T  \Big ) \Big (\sum_{i = 1}^n \hat{D}_i \hat{D}_i^T \Big )^{-1},\]</span></p>
+<p>é igual ao estimador EHW da variância mas substituindo <span class="math inline">\(\hat{\varepsilon}_i = Y_i - \hat{\beta}_{MQ2E}\hat{D}_i\)</span> por <span class="math inline">\(\hat{\varepsilon}_i = Y_i - \hat{\beta}_{MQ2E}D_i\)</span>.</p>
 </section>
 <section id="iv-exemplo" class="slide level2">
 <h2>IV: exemplo</h2>

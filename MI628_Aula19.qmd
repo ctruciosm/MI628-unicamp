@@ -39,7 +39,7 @@ format:
 # Introdução
 ## Introdução
 
-- **Confusão:** variáveis de confusão não mensuradas geram estimadores não viesados do efeito causal.
+- **Confusão:** variáveis de confusão não mensuradas geram estimadores viesados do efeito causal.
 - Para identificar o efeito causal de $D$ sob $Y$ (com variáveis de confusão não medidas), precisamos de uma variável $Z$ que satisfaça as seguintes caracteristicas:
 
 . . . 
@@ -83,8 +83,7 @@ Angrist e Krueger (1991) estudaram como a escolaridade (em anos) impacta nos sal
 
 ::: {.callout-note}
 ### Exemplo 2
-Angrist e Evans (1998) estudaram o efeito do tamanho da família na empregabilidade da mãe.  Eles utilizaram a composição sexual dos irmãos como IV. Este IV é plausível por causa da pseudo-randomização da composição sexual dos irmãos. Além disso, os pais em
-os EUA com dois filhos do mesmo sexo têm maior probabilidade de ter um terceiro filho do que aqueles pais com dois filhos de sexo diferente. Também é plausível que a composição sexual dos irmãos não afeta diretamente o emprego e o trabalho da mãe
+Angrist e Evans (1998) estudaram o efeito do tamanho da família na empregabilidade da mãe.  Eles utilizaram a composição sexual dos irmãos como IV. Esta IV é valida por causa da pseudo-aleatorização da composição sexual dos irmãos. Além disso, os pais em os EUA com dois filhos do mesmo sexo têm maior probabilidade de ter um terceiro filho do que aqueles pais com dois filhos de sexo diferente. Também é plausível que a composição sexual dos irmãos não afeta diretamente o emprego e o trabalho da mãe
 :::
 
 
@@ -142,7 +141,9 @@ Isto muda completamente o modelo anterior e o estimador deixa de ter boas propri
 
 ::: {.callout-tip}
 ### Definição
+<center>
 Quando $\mathbb{E}(De) = 0$ dizemos que $D$ é _exógena_ e quando $\mathbb{E}(De) \neq 0$ dizemos que $D$ é _endógena_.
+</center>
 :::
 
 
@@ -247,22 +248,11 @@ $$\beta = \dfrac{\mathbb{C}ov(Z, D)}{\mathbb{C}ov(Z, Y)} = \dfrac{\mathbb{C}ov(Z
 Que é equivalente ao coeficiente associado a $Z$ na regressão por MQO de $Y$ e $D$ sob $Z$.
 
 
-## IV: Caso identificado
-
-
-Se $Z$ for binário,
-$$ \beta = \dfrac{\mathbb{E}(Y | Z = 1) - \mathbb{E}(Y | Z = 0)}{\mathbb{E}(D | Z = 1) - \mathbb{E}(D | Z = 0)}.$$
-
-
-Ou seja, com uma IV $Z$ binária e uma variável de tratamento $D$ também binária, através do método de IV é possível estimamos
-
-
-
 
 ## IV: Caso sobreidentificado
 
-- O caso anterior, é util quando $Z$ e $D$ tem a mesma dimensão. 
-- Se $Z$ tiver dimensão menor do que $D$, ou, de forma mais geral, se $\mathbb{E}(Z D^T)$ não tem posto completo, $\mathbb{E}(ZY) = \mathbb{E}(ZD^T)\beta,$ tem infinitas soluções.
+- O caso anterior é util quando $Z$ e $D$ tem a mesma dimensão (caso identificado). 
+- Se $Z$ tiver dimensão menor do que $D$, $\beta$ tem infinitas soluções.
 - Este caso é conhecido como subidentificado, refere-se a quando $\beta$ não é unicamente identificado (não será discutido aqui)
 - Para garantirmos identificabiblidade, precisamos que a dimensão de $Z$ seja, pelo menos, igual à dimensão de $D$.
 - Quando $Z$ tem dimensão maior do que $D$, temos formas alternativas de determinar $\beta$ a partir da relação $$\mathbb{E}(ZY) = \mathbb{E}(ZD^T)\beta.$$
@@ -317,10 +307,23 @@ Da primeira regressão temos que $$\hat{D}_i = \hat{\Gamma}^T Z_i.$$
 
 
 \begin{align}
-\hat{\beta}_{MQ2E} & = \beta + \Big (\hat{\Gamma}^T \big ( n^{-1}\displaystyle \sum_{i = 1}^n Z_i Z_i^T\big) \hat{\Gamma} \Big)^{-1} \hat{\Gamma}^T \underbrace{n^{-1}\sum_{i = 1}^n Z_i \epsilon_i}_{\xrightarrow{p} \mathbb{E}(Z\epsilon)}, \\
-\hat{\beta}_{MQ2E} & \xrightarrow{p} \beta.
+\hat{\beta}_{MQ2E} & = \beta + \Big (\hat{\Gamma}^T \big ( n^{-1}\displaystyle \sum_{i = 1}^n Z_i Z_i^T\big) \hat{\Gamma} \Big)^{-1} \hat{\Gamma}^T \underbrace{n^{-1}\sum_{i = 1}^n Z_i \epsilon_i}_{\xrightarrow{p} \mathbb{E}(Z\epsilon)} \xrightarrow{p} \beta \\
 \end{align}
 
+. . . 
+
+Cuja variância é dada por 
+
+$$\hat{V}_{MQ2E} = \Big ( \displaystyle \sum_{i = 1}^n \hat{D}_i \hat{D}_i^T \Big )^{-1} \Big (\sum_{i = 1}^n \hat{\varepsilon}_i^2 \hat{D}_i \hat{D}_i^T  \Big ) \Big (\sum_{i = 1}^n \hat{D}_i \hat{D}_i^T \Big )^{-1},$$ em que $\hat{\varepsilon}_i = Y_i - \hat{\beta}_{MQ2E}D_i$
+
+
+## IV: Caso sobreidentificado
+
+Ou seja, 
+
+$$\hat{V}_{MQ2E} = \Big ( \displaystyle \sum_{i = 1}^n \hat{D}_i \hat{D}_i^T \Big )^{-1} \Big (\sum_{i = 1}^n \hat{\varepsilon}_i^2 \hat{D}_i \hat{D}_i^T  \Big ) \Big (\sum_{i = 1}^n \hat{D}_i \hat{D}_i^T \Big )^{-1},$$
+
+é igual ao estimador EHW da variância mas substituindo $\hat{\varepsilon}_i = Y_i - \hat{\beta}_{MQ2E}\hat{D}_i$ por $\hat{\varepsilon}_i = Y_i - \hat{\beta}_{MQ2E}D_i$.
 
 
 ## IV: exemplo
